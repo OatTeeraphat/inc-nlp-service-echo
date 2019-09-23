@@ -1,6 +1,8 @@
 package datasources
 
 import (
+	"fmt"
+	"inc-nlp-service-echo/commons"
 	"inc-nlp-service-echo/domains"
 
 	"github.com/jinzhu/gorm"
@@ -9,35 +11,30 @@ import (
 )
 
 // SyncGORM SyncORM
-func SyncGORM() *gorm.DB {
-	db, err := gorm.Open("postgres", "host=localhost port=54320 user=postgres dbname=fillchat sslmode=disable")
-
+func SyncGORM(config *commons.FillChat12Factor) *gorm.DB {
+	dbURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
+		config.NlpDBHost,
+		config.NlpDBPort,
+		config.NlpDBUsername,
+		config.NlpDBName,
+		config.NlpDBPassword,
+	)
+	db, err := gorm.Open("postgres", dbURI)
 	if err != nil {
 		println("postgres error connected", err.Error())
 	}
-
 	// Migrate the schema
 	db.AutoMigrate(&domains.NlpRecordDomain{})
-
-	// defer db.Close()
-
 	return db
 }
-
-// const myDomain [][]interface
 
 // FakeSyncGORM SyncORM
 func FakeSyncGORM() *gorm.DB {
 	db, err := gorm.Open("sqlite3", "fake_sqlite3.db")
-
 	if err != nil {
-		println("postgres error connected", err.Error())
+		println("postgres error connected: ", err.Error())
 	}
-
 	// Migrate the schema
 	db.AutoMigrate(&domains.NlpRecordDomain{})
-
-	// defer db.Close()
-
 	return db
 }

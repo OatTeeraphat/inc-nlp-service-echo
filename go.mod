@@ -8,6 +8,7 @@ require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/aryahadii/ngram v0.0.0-20170825131822-84d2901a89b2
 	github.com/astaxie/beego v1.12.0
+	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/dgryski/go-metro v0.0.0-20180109044635-280f6062b5bc
 	github.com/dgryski/go-spooky v0.0.0-20170606183049-ed3d087f40e2
 	github.com/elastic/go-elasticsearch/v7 v7.3.0
@@ -23,6 +24,7 @@ require (
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
+	github.com/spf13/viper v1.4.0
 	github.com/swaggo/echo-swagger v0.0.0-20190329130007-1219b460a043
 	github.com/swaggo/swag v1.6.2
 	github.com/urfave/cli v1.22.1 // indirect

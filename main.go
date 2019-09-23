@@ -1,6 +1,7 @@
 package main
 
 import (
+	"inc-nlp-service-echo/commons"
 	"inc-nlp-service-echo/controllers"
 	"inc-nlp-service-echo/datasources"
 	"inc-nlp-service-echo/repositories"
@@ -29,6 +30,9 @@ import (
 // @host petstore.swagger.io
 // @BasePath /v1
 func main() {
+	// OS ENV configuration
+	config := commons.NewFillChat12Factor()
+
 	// Echo instance
 	e := echo.New()
 
@@ -39,10 +43,8 @@ func main() {
 		middleware.RequestID(),
 	)
 
-	// e.HTTPErrorHandler = commons.FillChatHTTPErrorHandler
-
 	// sync GORM
-	data := datasources.SyncGORM()
+	data := datasources.SyncGORM(config)
 
 	// Repositories
 	nlpRecordRepo := repositories.NewNlpRecordRepository(data)
@@ -64,8 +66,10 @@ func main() {
 	e.GET("/v1/nlp/record/reply", c.ReadNlpReplyModelByShopController)
 
 	// Swagger
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	if config.IsSwagger == "true" {
+		e.GET("/swagger/*", echoSwagger.WrapHandler)
+	}
 
 	// Start server
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":" + config.EchoPort))
 }
