@@ -53,7 +53,7 @@ func SelectFillChat12FactorBuild() *FillChat12Factor {
 	return &FillChat12Factor{
 		Env:           os.Getenv("ENV"),
 		EchoAppName:   os.Getenv("ECHO_APP_NAME"),
-		EchoPort:      os.Getenv("ECHO_PORT"),
+		EchoPort:      os.Getenv("PORT"),
 		EchoLogLevel:  os.Getenv("ECHO_LOG_LEVEL"),
 		NlpDBDialects: os.Getenv("NLP_DB_DIALECTS"),
 		NlpDBName:     os.Getenv("NLP_DB_NAME"),
