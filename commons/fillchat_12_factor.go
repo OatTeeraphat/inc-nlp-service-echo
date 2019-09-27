@@ -11,6 +11,7 @@ type FillChat12Factor struct {
 	Env           string
 	EchoAppName   string
 	EchoPort      string
+	EchoLogLevel  string
 	NlpDBDialects string
 	NlpDBName     string
 	NlpDBHost     string
@@ -22,21 +23,21 @@ type FillChat12Factor struct {
 
 // NewFillChat12Factor switch
 func NewFillChat12Factor() *FillChat12Factor {
-	if os.Getenv("ENV") == "development" {
-		return SelectFillChat12FactorDevelopment()
+	var env = os.Getenv("ENV")
+
+	if env != "development" && env != "" {
+		return SelectFillChat12FactorBuild()
 	}
-	if os.Getenv("ENV") == "" {
-		return SelectFillChat12FactorDevelopment()
-	}
-	return SelectFillChat12FactorBuild()
+	return SelectFillChat12FactorDevelopment()
 }
 
-// SelectFillChat12FactorDevelopment !!!!!!!!! DEVELOPMENT !!!!!!
+// SelectFillChat12FactorDevelopment DEVELOPMENT
 func SelectFillChat12FactorDevelopment() *FillChat12Factor {
 	return &FillChat12Factor{
 		Env:           "development",
-		EchoPort:      "9000",
 		EchoAppName:   "EchoApp-DEV",
+		EchoPort:      "9000",
+		EchoLogLevel:  "DEBUG",
 		NlpDBDialects: "postgres",
 		NlpDBName:     "fillchat",
 		NlpDBHost:     "localhost",
@@ -47,12 +48,13 @@ func SelectFillChat12FactorDevelopment() *FillChat12Factor {
 	}
 }
 
-// SelectFillChat12FactorBuild !!!!!!!!! DOCKER ENVIRONMENT !!!!!!
+// SelectFillChat12FactorBuild DOCKER ENVIRONMENT
 func SelectFillChat12FactorBuild() *FillChat12Factor {
 	return &FillChat12Factor{
 		Env:           os.Getenv("ENV"),
-		EchoPort:      os.Getenv("ECHO_PORT"),
 		EchoAppName:   os.Getenv("ECHO_APP_NAME"),
+		EchoPort:      os.Getenv("ECHO_PORT"),
+		EchoLogLevel:  os.Getenv("ECHO_LOG_LEVEL"),
 		NlpDBDialects: os.Getenv("NLP_DB_DIALECTS"),
 		NlpDBName:     os.Getenv("NLP_DB_NAME"),
 		NlpDBHost:     os.Getenv("NLP_DB_HOST"),

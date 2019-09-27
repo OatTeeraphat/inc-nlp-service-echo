@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"inc-nlp-service-echo/commons"
 	"inc-nlp-service-echo/domains"
+	"log"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -19,9 +20,9 @@ func SyncGORM(config *commons.FillChat12Factor) *gorm.DB {
 		config.NlpDBName,
 		config.NlpDBPassword,
 	)
-	db, err := gorm.Open("postgres", dbURI)
+	db, err := gorm.Open(config.NlpDBDialects, dbURI)
 	if err != nil {
-		println("postgres error connected", err.Error())
+		log.Fatalln("database error connected", err.Error())
 	}
 	// Migrate the schema
 	db.AutoMigrate(&domains.NlpRecordDomain{})
@@ -32,7 +33,7 @@ func SyncGORM(config *commons.FillChat12Factor) *gorm.DB {
 func FakeSyncGORM() *gorm.DB {
 	db, err := gorm.Open("sqlite3", "fake_sqlite3.db")
 	if err != nil {
-		println("postgres error connected: ", err.Error())
+		log.Fatalln("database error connected: ", err.Error())
 	}
 	// Migrate the schema
 	db.AutoMigrate(&domains.NlpRecordDomain{})

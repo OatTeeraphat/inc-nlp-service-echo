@@ -1,0 +1,22 @@
+version: "2"
+services:
+  go-echo:
+    build: .
+    image: inc-nlp-service-echo
+    container_name: inc-nlp-service-echo
+    external_links: 
+      - my_postgres
+    ports: 
+      - 9000:9000
+    environment: 
+      - ENV=heroku
+      - ECHO_APP_NAME=inc-nlp-service-echo
+      - ECHO_PORT=9000
+      - ECHO_LOG_LEVEL=INFO
+      - NLP_DB_DIALECTS=postgres
+      - NLP_DB_NAME=fillchat
+      - NLP_DB_HOST=my_postgres
+      - NLP_DB_PORT=5432
+      - NLP_DB_USERNAME=postgres
+      - NLP_DB_PASSWORD=
+      - IS_SWAGGER=true
