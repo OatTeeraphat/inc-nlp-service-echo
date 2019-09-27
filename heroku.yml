@@ -1,5 +1,5 @@
 build:
   docker:
-    web: Dockerfile.swagger
+    web: Dockerfile
 run:
   web: /go/src/inc-nlp-service-echo/inc-nlp-service-echo
