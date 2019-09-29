@@ -34,12 +34,12 @@ func GenerateKeywordMinhash(keyword string) uint32 {
 // FindMinDistanceFromNlpModels find minimum distance from nlp model
 func FindMinDistanceFromNlpModels(nlpReplyModels []models.NlpReplyModel, incomingKeyword string) models.NlpReplyModel {
 
-	minDistance := math.Inf(InitialInfinityPositiveValue)
+	minDistance := float32(math.Inf(InitialInfinityPositiveValue))
 	minIDX := InitialMinimumIndex
 
 	for index, item := range nlpReplyModels {
 
-		distance := float64(levenshtein.ComputeDistance(item.Keyword, incomingKeyword))
+		distance := float32(levenshtein.ComputeDistance(item.Keyword, incomingKeyword))
 
 		nlpReplyModels[index].Distance = distance
 

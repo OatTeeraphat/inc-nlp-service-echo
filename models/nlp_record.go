@@ -10,12 +10,10 @@ type CreateNlpRecordModel struct {
 type NlpReplyModel struct {
 	Keyword  string  `json:"keyword"`
 	Intent   string  `json:"intent"`
-	Distance float64 `json:"distance"`
+	Distance float32 `json:"distance"`
 }
 
 // NewNlpReplyModel NewNlpReplyModel
 func NewNlpReplyModel() *NlpReplyModel {
-	return &NlpReplyModel{
-		Keyword: "",
-	}
+	return &NlpReplyModel{}
 }

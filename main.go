@@ -47,10 +47,11 @@ func main() {
 	orm := datasources.SyncGORM(config)
 
 	// Repositories
+	nlpTrainingRecordRepo := repositories.NewNlpTrainingRecordRepository(orm)
 	nlpRecordRepo := repositories.NewNlpRecordRepository(orm)
 
 	// Services
-	nlpRecordService := services.NewNlpRecordService(nlpRecordRepo)
+	nlpRecordService := services.NewNlpRecordService(nlpRecordRepo, nlpTrainingRecordRepo)
 
 	// Controllers
 	c := controllers.NewNlpController(nlpRecordService)

@@ -25,7 +25,10 @@ func SyncGORM(config *commons.FillChat12Factor) *gorm.DB {
 		log.Fatalln("database error connected", err.Error())
 	}
 	// Migrate the schema
-	db.AutoMigrate(&domains.NlpRecordDomain{})
+	db.AutoMigrate(
+		&domains.NlpRecordDomain{},
+		&domains.NlpTrainingRecordDomain{},
+	)
 	return db
 }
 
@@ -36,6 +39,9 @@ func FakeSyncGORM() *gorm.DB {
 		log.Fatalln("database error connected: ", err.Error())
 	}
 	// Migrate the schema
-	db.AutoMigrate(&domains.NlpRecordDomain{})
+	db.AutoMigrate(
+		&domains.NlpRecordDomain{},
+		&domains.NlpTrainingRecordDomain{},
+	)
 	return db
 }

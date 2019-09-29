@@ -12,7 +12,8 @@ import (
 
 // NlpRecordService NlpService
 type NlpRecordService struct {
-	nlpRecordRepository repositories.INlpRecordRepository
+	nlpTrainingRecordRepository repositories.INlpRecordTrainingRepository
+	nlpRecordRepository         repositories.INlpRecordRepository
 }
 
 // INlpRecordService INlpService
@@ -24,8 +25,11 @@ type INlpRecordService interface {
 }
 
 // NewNlpRecordService NewNlpService
-func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository) INlpRecordService {
-	return &NlpRecordService{nlpRecordRepository}
+func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, nlpTrainingRecordRepository repositories.INlpRecordTrainingRepository) INlpRecordService {
+	return &NlpRecordService{
+		nlpTrainingRecordRepository,
+		nlpRecordRepository,
+	}
 }
 
 // CreateNlpRecord GetNlpModelReply
@@ -133,6 +137,15 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 	}
 
 	nlpResult := nlps.FindMinDistanceFromNlpModels(nlpReplyModel, keyword)
+
+	if nlpResult.Distance != 0 {
+		var nlpTraningRecordDomain domains.NlpTrainingRecordDomain
+		nlpTraningRecordDomain.ShopID = 1
+		nlpTraningRecordDomain.Keyword = nlpResult.Keyword
+		nlpTraningRecordDomain.Intent = nlpResult.Intent
+		nlpTraningRecordDomain.Distance = nlpResult.Distance
+		svc.nlpTrainingRecordRepository.Save(&nlpTraningRecordDomain)
+	}
 
 	return nlpResult
 }
