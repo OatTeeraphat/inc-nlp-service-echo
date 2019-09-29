@@ -13,7 +13,7 @@ func TestENV(t *testing.T) {
 	convey.Convey("Subject: TestENV", t, func() {
 
 		convey.So(config.Env, convey.ShouldEqual, "development")
-		convey.So(config.AppName, convey.ShouldEqual, "AppName-DEV")
+		convey.So(config.EchoAppName, convey.ShouldEqual, "EchoApp-DEV")
 
 	})
 

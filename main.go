@@ -54,6 +54,7 @@ func main() {
 
 	// Controllers
 	c := controllers.NewNlpController(nlpRecordService)
+	c2 := controllers.NewFBWebhookController()
 
 	// Static
 	e.Static("/", "public")
@@ -64,6 +65,8 @@ func main() {
 	e.DELETE("/v1/nlp/record", c.DropNlpRecordByShopController)
 	e.GET("/v1/nlp/record", c.ReadNlpRecordByShopController)
 	e.GET("/v1/nlp/record/reply", c.ReadNlpReplyModelByShopController)
+	e.GET("/v1/fb/webhook", c2.VerifyFBWebhookController)
+	e.POST("/v1/fb/webhook", c2.ReplyFBWebhookController)
 
 	// Swagger
 	if config.IsSwagger == "true" {
