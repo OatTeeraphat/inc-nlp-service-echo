@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"inc-nlp-service-echo/models"
+	"inc-nlp-service-echo/services"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,6 +15,7 @@ import (
 
 // FBWebhookController FBWebhookController
 type FBWebhookController struct {
+	NlpService services.INlpRecordService
 }
 
 // IFBWebhookController IFBWebhookController
@@ -23,12 +25,12 @@ type IFBWebhookController interface {
 }
 
 // NewFBWebhookController NewFBWebhookController
-func NewFBWebhookController() IFBWebhookController {
-	return &FBWebhookController{}
+func NewFBWebhookController(nlpRecordService services.INlpRecordService) IFBWebhookController {
+	return &FBWebhookController{nlpRecordService}
 }
 
 // VerifyFBWebhookController VerifyFBWebhookController
-func (*FBWebhookController) VerifyFBWebhookController(e echo.Context) error {
+func (svc *FBWebhookController) VerifyFBWebhookController(e echo.Context) error {
 
 	verifyToken := e.QueryParam("hub.verify_token")
 
@@ -46,7 +48,7 @@ func (*FBWebhookController) VerifyFBWebhookController(e echo.Context) error {
 }
 
 // ReplyFBWebhookController ReplyFBWebhookController
-func (*FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
+func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 	facebookWebhookRequest := new(models.FacebookWebhookRequest)
 	e.Bind(&facebookWebhookRequest)
 
@@ -57,7 +59,10 @@ func (*FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 		for index, item := range facebookWebhookRequest.Entry {
 			fbTextReply := &models.FBTextReply{}
 			fbTextReply.Recipient.ID = item.Messaging[index].Sender.ID
-			fbTextReply.Message.Text = item.Messaging[index].Message.Text
+
+			nlpModel := svc.NlpService.ReadNlpReplyModel(item.Messaging[index].Message.Text, "1")
+
+			fbTextReply.Message.Text = nlpModel.Intent
 
 			var url = "https://graph.facebook.com/v4.0/me/messages?access_token=EAACl9cSyzQ4BAGuSYwZCCtZB5BG36hX6E88eGeWBAQ5QEBiIAteaczZCC1W5qNqmhXeZBrJ6cbgAQErDwgScrEsRMUoU4Cn7rZA6y4KdoQhYwneHsjyJLMZBNZAiss0CTuokgFiB5ODlvxX3aMh7rYxdzzSsYCSONiThp9D7AsFMCL2OGCH295ZB"
 

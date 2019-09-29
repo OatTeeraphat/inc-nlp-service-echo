@@ -54,7 +54,7 @@ func main() {
 
 	// Controllers
 	c := controllers.NewNlpController(nlpRecordService)
-	c2 := controllers.NewFBWebhookController()
+	c2 := controllers.NewFBWebhookController(nlpRecordService)
 
 	// Static
 	e.Static("/", "public")
