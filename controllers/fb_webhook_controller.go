@@ -57,9 +57,9 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 	if facebookWebhookRequest.Object == "page" {
 
 		for index, item := range facebookWebhookRequest.Entry {
-			fbTextReply := &models.FBTextReply{}
+			fbTextReply := models.NewFBTextReplyModel()
 			fbTextReply.Recipient.ID = item.Messaging[index].Sender.ID
-			fbTextReply.Message.Text = "DEFAULT_MESSAGE"
+			// fbTextReply.Message.Text = "DEFAULT_MESSAGE"
 
 			nlpModel := svc.NlpService.ReadNlpReplyModel(item.Messaging[index].Message.Text, "1")
 

@@ -12,3 +12,10 @@ type NlpReplyModel struct {
 	Intent   string  `json:"intent"`
 	Distance float64 `json:"distance"`
 }
+
+// NewNlpReplyModel NewNlpReplyModel
+func NewNlpReplyModel() *NlpReplyModel {
+	return &NlpReplyModel{
+		Keyword: "",
+	}
+}
