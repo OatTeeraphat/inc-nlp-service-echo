@@ -44,10 +44,10 @@ func main() {
 	)
 
 	// sync GORM
-	data := datasources.SyncGORM(config)
+	orm := datasources.SyncGORM(config)
 
 	// Repositories
-	nlpRecordRepo := repositories.NewNlpRecordRepository(data)
+	nlpRecordRepo := repositories.NewNlpRecordRepository(orm)
 
 	// Services
 	nlpRecordService := services.NewNlpRecordService(nlpRecordRepo)
