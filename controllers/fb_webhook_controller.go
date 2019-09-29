@@ -59,10 +59,13 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 		for index, item := range facebookWebhookRequest.Entry {
 			fbTextReply := &models.FBTextReply{}
 			fbTextReply.Recipient.ID = item.Messaging[index].Sender.ID
+			fbTextReply.Message.Text = "DEFAULT_MESSAGE"
 
 			nlpModel := svc.NlpService.ReadNlpReplyModel(item.Messaging[index].Message.Text, "1")
 
-			fbTextReply.Message.Text = nlpModel.Intent
+			if nlpModel.Intent != "" {
+				fbTextReply.Message.Text = nlpModel.Intent
+			}
 
 			var url = "https://graph.facebook.com/v4.0/me/messages?access_token=EAACl9cSyzQ4BAGuSYwZCCtZB5BG36hX6E88eGeWBAQ5QEBiIAteaczZCC1W5qNqmhXeZBrJ6cbgAQErDwgScrEsRMUoU4Cn7rZA6y4KdoQhYwneHsjyJLMZBNZAiss0CTuokgFiB5ODlvxX3aMh7rYxdzzSsYCSONiThp9D7AsFMCL2OGCH295ZB"
 
