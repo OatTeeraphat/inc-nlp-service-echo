@@ -24,20 +24,21 @@ func MHash(b []byte) uint64 { return metro.Hash64(b, 0) }
 
 // GenerateKeywordMinhash GenerateKeywordMinhash
 func GenerateKeywordMinhash(keyword string) uint32 {
+	log.WithFields(log.Fields{"step": 2, "module": "NLP_MODULE"}).Info("GenerateKeywordMinhash")
+
 	result, _ := ngram.Get(keyword, 2)
 	minWise := NewMinWise(spooky.Hash64, MHash, 10)
 	for _, s := range result {
 		minWise.Push([]byte(s))
 	}
+
+	log.WithFields(log.Fields{"step": 3, "module": "NLP_MODULE"}).Info("GenerateKeywordMinhash")
 	return uint32(minWise.minimums[0])
 }
 
 // FindMinDistanceFromNlpModels find minimum distance from nlp model
 func FindMinDistanceFromNlpModels(nlpReplyModels []models.NlpReplyModel, incomingKeyword string) models.NlpReplyModel {
-	log.WithFields(log.Fields{
-		"step":   1,
-		"module": "NLP_MODULE",
-	}).Info("find minimum distance")
+	log.WithFields(log.Fields{"step": 2, "module": "NLP_MODULE"}).Info("FindMinDistanceFromNlpModels")
 
 	minDistance := float32(math.Inf(InitialInfinityPositiveValue))
 	minIDX := InitialMinimumIndex
@@ -56,9 +57,6 @@ func FindMinDistanceFromNlpModels(nlpReplyModels []models.NlpReplyModel, incomin
 
 	nlpReplyModels[minIDX].Keyword = incomingKeyword
 
-	log.WithFields(log.Fields{
-		"step":   2,
-		"module": "NLP_MODULE",
-	}).Info(nlpReplyModels[minIDX])
+	log.WithFields(log.Fields{"step": 3, "module": "NLP_MODULE"}).Info(nlpReplyModels[minIDX])
 	return nlpReplyModels[minIDX]
 }

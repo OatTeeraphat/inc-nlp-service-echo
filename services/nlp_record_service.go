@@ -5,9 +5,10 @@ import (
 	"inc-nlp-service-echo/models"
 	"inc-nlp-service-echo/nlps"
 	"inc-nlp-service-echo/repositories"
-	"log"
 	"strconv"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // NlpRecordService NlpService
@@ -116,49 +117,59 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 	shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
 
 	if err != nil {
-		return nlpReplyModel[0]
+		log.Fatal("no shop_id is not integer")
 	}
 
 	if shopIDParseUint == 0 {
-		nlpReplyModel = append(nlpReplyModel, models.NlpReplyModel{})
-		return nlpReplyModel[0]
+		log.Fatal("no shop_id is 0")
 	}
 
+	log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("GenerateKeywordMinhash")
 	hashValue := nlps.GenerateKeywordMinhash(keyword)
+	log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE"}).Info("GenerateKeywordMinhash")
+
 	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(uint(shopIDParseUint), hashValue)
 
 	if len(nlpFindByKeyword) == 0 {
-		nlpReplyModel = append(nlpReplyModel, models.NlpReplyModel{})
-		return nlpReplyModel[0]
+		nlpReplyModel := models.NlpReplyModel{
+			Keyword:  keyword,
+			Intent:   "NO_INDEX",
+			Distance: 999,
+		}
+		svc.SaveNlpTrainingSets(&nlpReplyModel, 1)
+		return nlpReplyModel
 	}
 
 	for _, item := range nlpFindByKeyword {
 		nlpReplyModel = append(nlpReplyModel, models.NlpReplyModel{Keyword: item.Keyword, Intent: item.Intent})
 	}
 
+	log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("FindMinDistanceFromNlpModels")
 	nlpResult := nlps.FindMinDistanceFromNlpModels(nlpReplyModel, keyword)
+	log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE"}).Info("FindMinDistanceFromNlpModels")
 
 	if nlpResult.Distance != 0 {
-		var nlpTraningRecordDomain domains.NlpTrainingRecordDomain
-		nlpTraningRecordDomain.ShopID = 1
-		nlpTraningRecordDomain.Keyword = nlpResult.Keyword
-		nlpTraningRecordDomain.Intent = nlpResult.Intent
-		nlpTraningRecordDomain.Distance = nlpResult.Distance
-		svc.nlpTrainingRecordRepository.Save(&nlpTraningRecordDomain)
+		svc.SaveNlpTrainingSets(&nlpResult, 1)
 	}
 	return nlpResult
 }
 
+// SaveNlpTrainingSets SaveNlpTrainingSets
+func (svc NlpRecordService) SaveNlpTrainingSets(nlpResult *models.NlpReplyModel, shopID uint) {
+	var nlpTraningRecordDomain domains.NlpTrainingRecordDomain
+	nlpTraningRecordDomain.ShopID = shopID
+	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
+	nlpTraningRecordDomain.Intent = nlpResult.Intent
+	nlpTraningRecordDomain.Distance = nlpResult.Distance
+	svc.nlpTrainingRecordRepository.Save(&nlpTraningRecordDomain)
+}
+
 // DropNlpReplyByShop DropNlpReplyByShop
 func (svc NlpRecordService) DropNlpReplyByShop(shopID string) string {
-
 	shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
-
 	if err != nil {
 		log.Println(err)
 	}
-
 	svc.nlpRecordRepository.DeleteByShopID(uint(shopIDParseUint))
-
 	return "OK"
 }
