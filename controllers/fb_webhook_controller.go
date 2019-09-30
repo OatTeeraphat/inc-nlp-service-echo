@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 )
@@ -67,7 +68,7 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 				fbTextReply.Message.Text = nlpModel.Intent
 			}
 
-			var url = "https://graph.facebook.com/v4.0/me/messages?access_token=EAACl9cSyzQ4BAGuSYwZCCtZB5BG36hX6E88eGeWBAQ5QEBiIAteaczZCC1W5qNqmhXeZBrJ6cbgAQErDwgScrEsRMUoU4Cn7rZA6y4KdoQhYwneHsjyJLMZBNZAiss0CTuokgFiB5ODlvxX3aMh7rYxdzzSsYCSONiThp9D7AsFMCL2OGCH295ZB"
+			var url = "https://graph.facebook.com/v4.0/me/messages?access_token=" + os.Getenv("MOCK_POC_PAGE_TOKEN")
 
 			jsonValue, _ := json.Marshal(fbTextReply)
 			response, err := http.Post(url, "application/json", bytes.NewBuffer(jsonValue))
