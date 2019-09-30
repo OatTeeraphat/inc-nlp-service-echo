@@ -12,14 +12,16 @@ require (
 	github.com/go-openapi/jsonreference v0.19.3 // indirect
 	github.com/go-openapi/spec v0.19.3 // indirect
 	github.com/google/go-cmp v0.3.0 // indirect
+	github.com/gorilla/websocket v1.4.1
 	github.com/jinzhu/gorm v1.9.10
 	github.com/labstack/echo/v4 v4.1.10
 	github.com/mailru/easyjson v0.7.0 // indirect
+	github.com/sirupsen/logrus v1.2.0
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
 	github.com/swaggo/echo-swagger v0.0.0-20190329130007-1219b460a043
 	github.com/swaggo/swag v1.6.2
 	golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7 // indirect
-	golang.org/x/net v0.0.0-20190916140828-c8589233b77d // indirect
+	golang.org/x/net v0.0.0-20190916140828-c8589233b77d
 	golang.org/x/sys v0.0.0-20190916202348-b4ddaad3f8a3 // indirect
 	golang.org/x/tools v0.0.0-20190917032747-2dc213d980bc // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect

@@ -6,13 +6,29 @@ import (
 	"inc-nlp-service-echo/datasources"
 	"inc-nlp-service-echo/repositories"
 	"inc-nlp-service-echo/services"
+	"net/http"
+	"os"
 
 	// docs folder to server swagger
 	_ "inc-nlp-service-echo/docs"
 
+	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	log "github.com/sirupsen/logrus"
 	echoSwagger "github.com/swaggo/echo-swagger"
+)
+
+var (
+	// Websocket http upgrader
+	upgrader = websocket.Upgrader{
+		ReadBufferSize:    1024,
+		WriteBufferSize:   1024,
+		EnableCompression: true,
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
 )
 
 // @title Swagger Example API
@@ -30,6 +46,17 @@ import (
 // @host petstore.swagger.io
 // @BasePath /v1
 func main() {
+
+	log.SetFormatter(&log.JSONFormatter{})
+	log.SetOutput(os.Stdout)
+	log.SetLevel(log.DebugLevel)
+	log.SetReportCaller(true)
+
+	// log.WithFields(log.Fields{
+	// 	"step":   1,
+	// 	"module": "NLP_MODULE",
+	// }).Info("find minimum distance")
+
 	// OS ENV configuration
 	config := commons.NewFillChat12Factor()
 
@@ -68,6 +95,32 @@ func main() {
 	e.GET("/v1/nlp/record/reply", c.ReadNlpReplyModelByShopController)
 	e.GET("/v1/fb/webhook", c2.VerifyFBWebhookController)
 	e.POST("/v1/fb/webhook", c2.ReplyFBWebhookController)
+
+	e.GET("/v1/fb/webhook/socket.io", func(c echo.Context) error {
+		ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
+		if err != nil {
+			return err
+		}
+		defer ws.Close()
+
+		for {
+
+			// Read
+			_, msg, err := ws.ReadMessage()
+			if err != nil {
+				log.Error(err)
+			}
+			// fmt.Printf("%s\n", msg)
+
+			nlpResult := nlpRecordService.ReadNlpReplyModel(string(msg), "1")
+
+			// Write
+			errWrite := ws.WriteMessage(websocket.TextMessage, []byte(nlpResult.Intent))
+			if errWrite != nil {
+				log.Error(errWrite)
+			}
+		}
+	})
 
 	// Swagger
 	if config.IsSwagger == "true" {

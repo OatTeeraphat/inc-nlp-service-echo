@@ -8,6 +8,7 @@ import (
 	"github.com/aryahadii/ngram"
 	"github.com/dgryski/go-metro"
 	"github.com/dgryski/go-spooky"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -33,6 +34,10 @@ func GenerateKeywordMinhash(keyword string) uint32 {
 
 // FindMinDistanceFromNlpModels find minimum distance from nlp model
 func FindMinDistanceFromNlpModels(nlpReplyModels []models.NlpReplyModel, incomingKeyword string) models.NlpReplyModel {
+	log.WithFields(log.Fields{
+		"step":   1,
+		"module": "NLP_MODULE",
+	}).Info("find minimum distance")
 
 	minDistance := float32(math.Inf(InitialInfinityPositiveValue))
 	minIDX := InitialMinimumIndex
@@ -51,5 +56,9 @@ func FindMinDistanceFromNlpModels(nlpReplyModels []models.NlpReplyModel, incomin
 
 	nlpReplyModels[minIDX].Keyword = incomingKeyword
 
+	log.WithFields(log.Fields{
+		"step":   2,
+		"module": "NLP_MODULE",
+	}).Info(nlpReplyModels[minIDX])
 	return nlpReplyModels[minIDX]
 }
