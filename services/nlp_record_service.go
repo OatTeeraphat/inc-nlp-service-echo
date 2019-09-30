@@ -117,23 +117,24 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 	shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
 
 	if err != nil {
-		log.Fatal("no shop_id is not integer")
+		log.Error("no shop_id is not integer")
 	}
 
 	if shopIDParseUint == 0 {
-		log.Fatal("no shop_id is 0")
+		log.Error("no shop_id is 0")
 	}
 
-	log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("GenerateKeywordMinhash")
+	// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint}).Info("before minhash gen")
 	hashValue := nlps.GenerateKeywordMinhash(keyword)
-	log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE"}).Info("GenerateKeywordMinhash")
+	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint, "hashValue": hashValue}).Info("after minhash gen")
 
 	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(uint(shopIDParseUint), hashValue)
 
 	if len(nlpFindByKeyword) == 0 {
+		// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("no module")
 		nlpReplyModel := models.NlpReplyModel{
 			Keyword:  keyword,
-			Intent:   "NO_INDEX",
+			Intent:   "DEFAULT_MESSAGE",
 			Distance: 999,
 		}
 		svc.SaveNlpTrainingSets(&nlpReplyModel, 1)
@@ -144,9 +145,9 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 		nlpReplyModel = append(nlpReplyModel, models.NlpReplyModel{Keyword: item.Keyword, Intent: item.Intent})
 	}
 
-	log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("FindMinDistanceFromNlpModels")
+	// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info(nlpReplyModel)
 	nlpResult := nlps.FindMinDistanceFromNlpModels(nlpReplyModel, keyword)
-	log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE"}).Info("FindMinDistanceFromNlpModels")
+	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE"}).Info(nlpResult)
 
 	if nlpResult.Distance != 0 {
 		svc.SaveNlpTrainingSets(&nlpResult, 1)

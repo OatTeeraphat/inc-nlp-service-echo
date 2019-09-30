@@ -47,18 +47,21 @@ var (
 // @BasePath /v1
 func main() {
 
-	log.SetFormatter(&log.JSONFormatter{})
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.DebugLevel)
-	log.SetReportCaller(true)
-
-	// log.WithFields(log.Fields{
-	// 	"step":   1,
-	// 	"module": "NLP_MODULE",
-	// }).Info("find minimum distance")
-
 	// OS ENV configuration
 	config := commons.NewFillChat12Factor()
+
+	// do something here to set environment depending on an environment variable
+	// or command-line flag
+	if config.Env == "build" {
+		log.SetFormatter(&log.JSONFormatter{})
+	} else {
+		// The TextFormatter is default, you don't actually have to do this.
+		log.SetFormatter(&log.TextFormatter{})
+	}
+
+	log.SetOutput(os.Stdout)
+	log.SetLevel(log.DebugLevel)
+	// log.SetReportCaller(true)
 
 	// Echo instance
 	e := echo.New()

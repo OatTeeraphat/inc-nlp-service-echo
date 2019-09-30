@@ -3,15 +3,13 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"inc-nlp-service-echo/models"
 	"inc-nlp-service-echo/services"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
 )
 
 // FBWebhookController FBWebhookController
@@ -60,24 +58,26 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 		for index, item := range facebookWebhookRequest.Entry {
 			fbTextReply := models.NewFBTextReplyModel()
 			fbTextReply.Recipient.ID = item.Messaging[index].Sender.ID
-			// fbTextReply.Message.Text = "DEFAULT_MESSAGE"
 
 			nlpModel := svc.NlpService.ReadNlpReplyModel(item.Messaging[index].Message.Text, "1")
 
-			if nlpModel.Intent != "" {
-				fbTextReply.Message.Text = nlpModel.Intent
-			}
+			fbTextReply.Message.Text = nlpModel.Intent
 
-			var url = "https://graph.facebook.com/v4.0/me/messages?access_token=" + os.Getenv("MOCK_POC_PAGE_TOKEN")
+			var url = "https://graph.facebook.com/v4.0/me/messages?access_token=EAACl9cSyzQ4BAOYexUfyRJIeNQ4Ya7ofUdC7IX1AMP2njHn9bJyJNOxUdtRGnb5qxWNky96FwrNxqZCWurH62bwQM4YPjQnVdhICOSLFeKmQYwLnZAhSFnGjsTecsrNZBrO6x7IlZB4cWEIaFrP0aqJRwZC7CweipLQ68lcO8ceS9mNZBGAVHq"
 
 			jsonValue, _ := json.Marshal(fbTextReply)
 			response, err := http.Post(url, "application/json", bytes.NewBuffer(jsonValue))
 
 			if err != nil {
-				fmt.Printf("The HTTP request failed with error %s\n", err)
+				log.Error(err)
 			} else {
 				data, _ := ioutil.ReadAll(response.Body)
-				fmt.Println(string(data))
+
+				// data:
+				// {recipient_id: string,message_id: string}
+
+				log.Info(string(data))
+				// fmt.Println(string(data))
 			}
 		}
 	}
