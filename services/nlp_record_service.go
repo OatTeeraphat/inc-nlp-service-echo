@@ -146,11 +146,19 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 		nlpTraningRecordDomain.Distance = nlpResult.Distance
 		svc.nlpTrainingRecordRepository.Save(&nlpTraningRecordDomain)
 	}
-
 	return nlpResult
 }
 
 // DropNlpReplyByShop DropNlpReplyByShop
 func (svc NlpRecordService) DropNlpReplyByShop(shopID string) string {
+
+	shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	svc.nlpRecordRepository.DeleteByShopID(uint(shopIDParseUint))
+
 	return "OK"
 }

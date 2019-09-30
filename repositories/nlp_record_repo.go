@@ -20,6 +20,7 @@ type NlpRecordRepository struct {
 // INlpRecordRepository nlp query appearance interface
 type INlpRecordRepository interface {
 	Save(nlpRecordDomain *domains.NlpRecordDomain)
+	DeleteByShopID(shopID uint) *gorm.DB
 	BulkCreateNlpRecords(shopID uint, nlpRecordDomain []interface{}) error
 	FindByKeywordMinhash(shopID uint, keywordMinhash uint32) []domains.NlpRecordDomain
 	FindByKeyword(shopID uint, keyword string) []domains.NlpRecordDomain
@@ -54,7 +55,11 @@ func (repo *NlpRecordRepository) BulkCreateNlpRecords(shopID uint, nlpRecordDoma
 	return BulkInsert(repo.Datasources, nlpRecordDomain, 3000)
 }
 
-// TODO: implements
+// DeleteByShopID DeleteByShopID
+func (repo *NlpRecordRepository) DeleteByShopID(shopID uint) *gorm.DB {
+	return repo.Datasources.Unscoped().Delete(&domains.NlpRecordDomain{ShopID: shopID})
+}
+
 // BulkInsert multiple records at once
 // [objects]        Must be a slice of struct
 // [chunkSize]      Number of records to insert at once.
