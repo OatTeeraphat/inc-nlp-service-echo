@@ -49,5 +49,7 @@ func FindMinDistanceFromNlpModels(nlpReplyModels []models.NlpReplyModel, incomin
 		}
 	}
 
+	nlpReplyModels[minIDX].Keyword = incomingKeyword
+
 	return nlpReplyModels[minIDX]
 }
