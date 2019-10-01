@@ -2,40 +2,60 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>WebSocket</title>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.5.3/rxjs.umd.js" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+
+    <title>WebSocket</title>
 </head>
 
 <body>
-  <p id="output"></p>
+    <div id="container">
+        <!-- rxjs event -->
+    </div>
+    <script>
 
-  <script>
-    var loc = window.location;
-    var uri = 'ws:';
+        var loc = window.location;
+        var uri = 'ws:';
 
-    if (loc.protocol === 'https:') {
-      uri = 'wss:';
-    }
-    uri += '//' + loc.host;
-    uri += '/v1/fb/webhook/socket.io';
+        if (loc.protocol === 'https:') {
+        uri = 'wss:';
+        }
+        uri += '//' + loc.host;
+        uri += '/v1/fb/webhook/socket.io';
 
-    console.log(loc.pathname)
+        // console.log(loc.pathname)
 
-    ws = new WebSocket(uri)
+        ws = new WebSocket(uri)
 
-    ws.onopen = function() {
-      console.log('Connected')
-    }
+        ws.onopen = function() {
+            console.log('Connected')
+        }
 
-    ws.onmessage = function(evt) {
-      var out = document.getElementById('output');
-      out.innerHTML += evt.data + '<br>';
-    }
+        ws.onmessage = function(evt) {
 
-    setInterval(function() {
-      ws.send('Hello, Server!');
-    }, 1000);
-  </script>
+            var observable = rxjs.of(evt).pipe(rxjs.operators.delay(2000))
+
+            observable.subscribe(
+                x => { 
+                    const element = document.getElementById('container');
+                    let response = JSON.parse(evt.data)
+
+                    const newElement = document.createElement('div')
+
+                    newElement.innerText = response.keyword + response.intent + response.distance;
+                    element.appendChild(newElement)
+                },
+                e => { console.log(e) },
+                () => { console.log("send complete") }
+            )
+        }
+
+        setInterval(function() {
+        ws.send('สวัสดีครับ');
+        }, 5000);
+
+    </script>
 </body>
-
 </html>

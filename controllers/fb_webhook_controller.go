@@ -91,6 +91,7 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 // ReplyFBWebhookSocketIO ReplyFBWebhookSocketIO
 func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 	ws, err := svc.Ws.Upgrade(c.Response(), c.Request(), nil)
+
 	if err != nil {
 		return err
 	}
