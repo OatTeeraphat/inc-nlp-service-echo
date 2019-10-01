@@ -15,27 +15,27 @@
         },
         "version": "1.0"
     },
-    "host": "petstore.swagger.io",
-    "basePath": "/v1",
+    "host": "localhost:9000",
+    "basePath": "/",
     "paths": {
-        "/": {
+        "/v1/nlp/record": {
             "get": {
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
-                    "application/json"
+                    "text/html"
                 ],
                 "tags": [
-                    "admin"
+                    "customer"
                 ],
-                "summary": "Read user from the store",
+                "summary": "Read nlp record by shop id",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "User Id",
-                        "name": "id",
-                        "in": "path",
+                        "type": "string",
+                        "description": "shopID",
+                        "name": "shop_id",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -43,70 +43,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                }
-            }
-        },
-        "/{keyword}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin"
-                ],
-                "summary": "Read user from the store",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User Id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin"
-                ],
-                "summary": "Read user from the store",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User Id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/User"
+                            "type": "string"
                         }
                     }
                 }
@@ -116,18 +53,18 @@
                     "application/json"
                 ],
                 "produces": [
-                    "application/json"
+                    "text/html"
                 ],
                 "tags": [
-                    "admin"
+                    "customer"
                 ],
-                "summary": "Read user from the store",
+                "summary": "Drop nlp record by shop id",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "description": "User Id",
-                        "name": "id",
-                        "in": "path",
+                        "type": "string",
+                        "description": "shopID",
+                        "name": "shop_id",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -135,10 +72,101 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/User"
+                            "type": "string"
                         }
                     }
+                }
+            }
+        },
+        "/v1/nlp/record/reply": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Read nlp model by shop id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "shopID",
+                        "name": "shop_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Keyword",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.NlpReplyModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/nlp/record/upload.xlsx": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "text/html"
+                ],
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Upload nlp record with xlsx",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "this is a test file",
+                        "name": "xlsx",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "shopID",
+                        "name": "shop_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.NlpReplyModel": {
+            "type": "object",
+            "properties": {
+                "distance": {
+                    "type": "number"
+                },
+                "intent": {
+                    "type": "string"
+                },
+                "keyword": {
+                    "type": "string"
                 }
             }
         }
