@@ -58,7 +58,7 @@ func main() {
 	// }).Info("find minimum distance")
 
 	// OS ENV configuration
-	config := commons.NewFillChat12Factor()
+	config := commons.NewFillChatSelectENV()
 
 	// Echo instance
 	e := echo.New()

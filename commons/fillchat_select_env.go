@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 
-// FillChat12Factor FillChat12Factor
-type FillChat12Factor struct {
+// FillChatSelectENV FillChat12Factor
+type FillChatSelectENV struct {
 	Env           string
 	EchoAppName   string
 	EchoPort      string
@@ -21,19 +21,19 @@ type FillChat12Factor struct {
 	IsSwagger     string
 }
 
-// NewFillChat12Factor switch
-func NewFillChat12Factor() *FillChat12Factor {
+// NewFillChatSelectENV switch
+func NewFillChatSelectENV() *FillChatSelectENV {
 	var env = os.Getenv("ENV")
 
 	if env != "development" && env != "" {
-		return SelectFillChat12FactorBuild()
+		return SelectFillChatSelectENVBuild()
 	}
-	return SelectFillChat12FactorDevelopment()
+	return SelectFillChatSelectENVDevelopment()
 }
 
-// SelectFillChat12FactorDevelopment DEVELOPMENT
-func SelectFillChat12FactorDevelopment() *FillChat12Factor {
-	return &FillChat12Factor{
+// SelectFillChatSelectENVDevelopment DEVELOPMENT
+func SelectFillChatSelectENVDevelopment() *FillChatSelectENV {
+	return &FillChatSelectENV{
 		Env:           "development",
 		EchoAppName:   "EchoApp-DEV",
 		EchoPort:      "9000",
@@ -48,9 +48,9 @@ func SelectFillChat12FactorDevelopment() *FillChat12Factor {
 	}
 }
 
-// SelectFillChat12FactorBuild DOCKER ENVIRONMENT
-func SelectFillChat12FactorBuild() *FillChat12Factor {
-	return &FillChat12Factor{
+// SelectFillChatSelectENVBuild DOCKER ENVIRONMENT
+func SelectFillChatSelectENVBuild() *FillChatSelectENV {
+	return &FillChatSelectENV{
 		Env:           os.Getenv("ENV"),
 		EchoAppName:   os.Getenv("ECHO_APP_NAME"),
 		EchoPort:      os.Getenv("PORT"),
