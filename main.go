@@ -34,14 +34,21 @@ import (
 // @host localhost:9000
 // @BasePath /
 func main() {
-	log.SetFormatter(&log.TextFormatter{})
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.DebugLevel)
-	log.SetReportCaller(true)
-
 	// Configuration
 	common0 := commons.NewFillChatSelectENV()
 	common1 := commons.NewFillChatMiddleware()
+
+	// do something here to set environment depending on an environment variable
+	// or command-line flag
+	if common0.Env != "development" {
+		log.SetFormatter(&log.JSONFormatter{})
+	} else {
+		// The TextFormatter is default, you don't actually have to do this.
+		log.SetFormatter(&log.TextFormatter{})
+	}
+	log.SetOutput(os.Stdout)
+	log.SetLevel(log.DebugLevel)
+	// log.SetReportCaller(true)
 
 	// Websocket http upgrader
 	ws := websocket.Upgrader{
@@ -52,20 +59,6 @@ func main() {
 			return true
 		},
 	}
-
-	// do something here to set environment depending on an environment variable
-	// or command-line flag
-	if config.Env == "build" {
-		log.SetFormatter(&log.JSONFormatter{})
-	} else {
-		// The TextFormatter is default, you don't actually have to do this.
-		log.SetFormatter(&log.TextFormatter{})
-	}
-
-	log.SetOutput(os.Stdout)
-	log.SetLevel(log.DebugLevel)
-	// log.SetReportCaller(true)
-
 	// Echo instance
 	e := echo.New()
 

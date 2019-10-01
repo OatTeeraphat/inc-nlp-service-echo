@@ -8,8 +8,6 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	log "github.com/sirupsen/logrus"
-
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
@@ -96,7 +94,7 @@ func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	// defer ws.Close()
+	defer ws.Close()
 
 	for {
 
@@ -107,8 +105,9 @@ func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 		}
 
 		if string(msg) != "" {
-			// fmt.Printf("%s\n", msg)
 			nlpResult := svc.NlpService.ReadNlpReplyModel(string(msg), "1")
+
+			log.Info(nlpResult)
 
 			data, _ := json.Marshal(nlpResult)
 
@@ -119,5 +118,14 @@ func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 			}
 		}
 
+	}
+}
+
+func readLoop(c *websocket.Conn) {
+	for {
+		if _, _, err := c.NextReader(); err != nil {
+			c.Close()
+			break
+		}
 	}
 }
