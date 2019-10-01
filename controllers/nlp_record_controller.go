@@ -33,8 +33,8 @@ func NewNlpController(nlpRecordService services.INlpRecordService) INlpControlle
 // @Tags customer
 // @Accept  json
 // @Produce  json
-// @Param shop_id query string true "shopID"
-// @Param keyword query string true "Keyword"
+// @Param shop_id query string true "shop identify"
+// @Param keyword query string true "incomming keyword"
 // @Success 200 {object} models.NlpReplyModel
 // @Router /v1/nlp/record/reply [get]
 func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) error {
@@ -49,7 +49,7 @@ func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) erro
 // @Tags customer
 // @Accept  json
 // @Produce  json
-// @Param shop_id query string true "shopID"
+// @Param shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [get]
 func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error {
@@ -67,23 +67,23 @@ func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error 
 // @Tags customer
 // @Accept  json
 // @Produce  text/html
-// @Param shop_id query string true "shopID"
+// @Param shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [get]
 func (con *NlpController) ReadNlpRecordByShopController(e echo.Context) error {
 	// shopID := e.QueryParam("shop_id")
 	// keyword := e.QueryParam("keyword")
 	// response := con.NlpService.ReadNlpReplyModel(keyword, shopID)
-	return e.JSON(http.StatusOK, "response")
+	return e.JSON(http.StatusOK, "OK")
 }
 
 // UploadXlsxNlpRecordByShopController create new nlp records by shop
 // @Summary Upload nlp record with xlsx
-// @Tags customer
+// @Tags 	customer
 // @Accept  multipart/form-data
 // @Produce text/html
 // @Param   xlsx formData file true  "this is a test file"
-// @Param shop_id query string true "shopID"
+// @Param 	shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record/upload.xlsx [post]
 func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) error {
@@ -94,7 +94,6 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 	sheetMap := result.GetSheetMap()
 	sheetName := sheetMap[1]
 	xlsxSheet := result.GetRows(sheetName)
-
 	e.Logger().Debug(sheetMap)
 	response := con.NlpService.UploadXlsxNlpRecord(shopID, xlsxSheet)
 
@@ -103,10 +102,10 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 
 // DropNlpRecordByShopController delete nlp record by shop
 // @Summary Drop nlp record by shop id
-// @Tags customer
-// @Accept  json
-// @Produce  text/html
-// @Param shop_id query string true "shopID"
+// @Tags 	customer
+// @Accept  text/html
+// @Produce text/html
+// @Param 	shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [delete]
 func (con *NlpController) DropNlpRecordByShopController(e echo.Context) error {

@@ -43,17 +43,15 @@ func main() {
 	common0 := commons.NewFillChatSelectENV()
 	common1 := commons.NewFillChatMiddleware()
 
-	var (
-		// Websocket http upgrader
-		ws = websocket.Upgrader{
-			ReadBufferSize:    1024,
-			WriteBufferSize:   1024,
-			EnableCompression: true,
-			CheckOrigin: func(r *http.Request) bool {
-				return true
-			},
-		}
-	)
+	// Websocket http upgrader
+	ws := websocket.Upgrader{
+		ReadBufferSize:    1024,
+		WriteBufferSize:   1024,
+		EnableCompression: true,
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
 
 	// Echo instance
 	e := echo.New()

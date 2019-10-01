@@ -94,7 +94,7 @@ func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	defer ws.Close()
+	// defer ws.Close()
 
 	for {
 
@@ -103,13 +103,19 @@ func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 		if err != nil {
 			log.Error(err)
 		}
-		// fmt.Printf("%s\n", msg)
-		nlpResult := svc.NlpService.ReadNlpReplyModel(string(msg), "1")
 
-		// Write
-		errWrite := ws.WriteMessage(websocket.TextMessage, []byte(nlpResult.Intent))
-		if errWrite != nil {
-			log.Error(errWrite)
+		if string(msg) != "" {
+			// fmt.Printf("%s\n", msg)
+			nlpResult := svc.NlpService.ReadNlpReplyModel(string(msg), "1")
+
+			data, _ := json.Marshal(nlpResult)
+
+			// Write
+			errWrite := ws.WriteMessage(websocket.TextMessage, []byte(data))
+			if errWrite != nil {
+				log.Error(errWrite)
+			}
 		}
+
 	}
 }
