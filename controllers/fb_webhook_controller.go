@@ -7,26 +7,30 @@ import (
 	"inc-nlp-service-echo/models"
 	"inc-nlp-service-echo/services"
 	"io/ioutil"
-	"log"
 	"net/http"
 
+	log "github.com/sirupsen/logrus"
+
+	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 )
 
 // FBWebhookController FBWebhookController
 type FBWebhookController struct {
 	NlpService services.INlpRecordService
+	Ws         websocket.Upgrader
 }
 
 // IFBWebhookController IFBWebhookController
 type IFBWebhookController interface {
 	VerifyFBWebhookController(e echo.Context) error
 	ReplyFBWebhookController(e echo.Context) error
+	ReplyFBWebhookSocketIO(c echo.Context) error
 }
 
 // NewFBWebhookController NewFBWebhookController
-func NewFBWebhookController(nlpRecordService services.INlpRecordService) IFBWebhookController {
-	return &FBWebhookController{nlpRecordService}
+func NewFBWebhookController(nlpRecordService services.INlpRecordService, ws websocket.Upgrader) IFBWebhookController {
+	return &FBWebhookController{nlpRecordService, ws}
 }
 
 // VerifyFBWebhookController VerifyFBWebhookController
@@ -82,4 +86,30 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 	}
 
 	return e.String(http.StatusOK, "OK")
+}
+
+// ReplyFBWebhookSocketIO ReplyFBWebhookSocketIO
+func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
+	ws, err := svc.Ws.Upgrade(c.Response(), c.Request(), nil)
+	if err != nil {
+		return err
+	}
+	defer ws.Close()
+
+	for {
+
+		// Read
+		_, msg, err := ws.ReadMessage()
+		if err != nil {
+			log.Error(err)
+		}
+		// fmt.Printf("%s\n", msg)
+		nlpResult := svc.NlpService.ReadNlpReplyModel(string(msg), "1")
+
+		// Write
+		errWrite := ws.WriteMessage(websocket.TextMessage, []byte(nlpResult.Intent))
+		if errWrite != nil {
+			log.Error(errWrite)
+		}
+	}
 }
