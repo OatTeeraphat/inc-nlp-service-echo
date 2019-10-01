@@ -12,7 +12,7 @@ import (
 )
 
 // SyncGORM SyncORM
-func SyncGORM(config *commons.FillChat12Factor) *gorm.DB {
+func SyncGORM(config *commons.FillChatSelectENV) *gorm.DB {
 	dbURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
 		config.NlpDBHost,
 		config.NlpDBPort,

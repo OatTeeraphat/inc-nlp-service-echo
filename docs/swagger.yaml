@@ -1,5 +1,15 @@
-basePath: /v1
-host: petstore.swagger.io
+basePath: /
+definitions:
+  models.NlpReplyModel:
+    properties:
+      distance:
+        type: number
+      intent:
+        type: string
+      keyword:
+        type: string
+    type: object
+host: localhost:9000
 info:
   contact:
     email: support@swagger.io
@@ -13,86 +23,93 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
-  /:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: User Id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/User'
-            type: object
-      summary: Read user from the store
-      tags:
-      - admin
-  /{keyword}:
+  /v1/nlp/record:
     delete:
       consumes:
       - application/json
       parameters:
-      - description: User Id
-        in: path
-        name: id
+      - description: shopID
+        in: query
+        name: shop_id
         required: true
-        type: integer
+        type: string
       produces:
-      - application/json
+      - text/html
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/User'
-            type: object
-      summary: Read user from the store
+            type: string
+      summary: Drop nlp record by shop id
       tags:
-      - admin
+      - customer
     get:
       consumes:
       - application/json
       parameters:
-      - description: User Id
-        in: path
-        name: id
+      - description: shopID
+        in: query
+        name: shop_id
         required: true
-        type: integer
+        type: string
       produces:
-      - application/json
+      - text/html
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/User'
-            type: object
-      summary: Read user from the store
+            type: string
+      summary: Read nlp record by shop id
       tags:
-      - admin
-    post:
+      - customer
+  /v1/nlp/record/reply:
+    get:
       consumes:
       - application/json
       parameters:
-      - description: User Id
-        in: path
-        name: id
+      - description: shopID
+        in: query
+        name: shop_id
         required: true
-        type: integer
+        type: string
+      - description: Keyword
+        in: query
+        name: keyword
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/User'
-            type: object
-      summary: Read user from the store
+            $ref: '#/definitions/models.NlpReplyModel'
+      summary: Read nlp model by shop id
       tags:
-      - admin
+      - customer
+  /v1/nlp/record/upload.xlsx:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: this is a test file
+        in: formData
+        name: xlsx
+        required: true
+        type: file
+      - description: shopID
+        in: query
+        name: shop_id
+        required: true
+        type: string
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Upload nlp record with xlsx
+      tags:
+      - customer
 swagger: "2.0"

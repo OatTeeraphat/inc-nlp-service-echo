@@ -19,18 +19,6 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-var (
-	// Websocket http upgrader
-	upgrader = websocket.Upgrader{
-		ReadBufferSize:    1024,
-		WriteBufferSize:   1024,
-		EnableCompression: true,
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
-)
-
 // @title Swagger Example API
 // @version 1.0
 // @description This is a sample server Petstore server.
@@ -43,12 +31,27 @@ var (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host petstore.swagger.io
-// @BasePath /v1
+// @host localhost:9000
+// @BasePath /
 func main() {
+	log.SetFormatter(&log.TextFormatter{})
+	log.SetOutput(os.Stdout)
+	log.SetLevel(log.DebugLevel)
+	log.SetReportCaller(true)
 
-	// OS ENV configuration
-	config := commons.NewFillChat12Factor()
+	// Configuration
+	common0 := commons.NewFillChatSelectENV()
+	common1 := commons.NewFillChatMiddleware()
+
+	// Websocket http upgrader
+	ws := websocket.Upgrader{
+		ReadBufferSize:    1024,
+		WriteBufferSize:   1024,
+		EnableCompression: true,
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
 
 	// do something here to set environment depending on an environment variable
 	// or command-line flag
@@ -74,62 +77,37 @@ func main() {
 	)
 
 	// sync GORM
-	orm := datasources.SyncGORM(config)
+	orm := datasources.SyncGORM(common0)
 
 	// Repositories
-	nlpTrainingRecordRepo := repositories.NewNlpTrainingRecordRepository(orm)
-	nlpRecordRepo := repositories.NewNlpRecordRepository(orm)
+	repo0 := repositories.NewNlpTrainingRecordRepository(orm)
+	repo1 := repositories.NewNlpRecordRepository(orm)
 
 	// Services
-	nlpRecordService := services.NewNlpRecordService(nlpRecordRepo, nlpTrainingRecordRepo)
+	svc0 := services.NewNlpRecordService(repo1, repo0)
 
 	// Controllers
-	c := controllers.NewNlpController(nlpRecordService)
-	c2 := controllers.NewFBWebhookController(nlpRecordService)
+	c0 := controllers.NewNlpController(svc0)
+	c2 := controllers.NewFBWebhookController(svc0, ws)
 
 	// Static
 	e.Static("/", "public")
 
+	// Swagger
+	q := e.Group("/swagger")
+	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
+	q.GET("/*", echoSwagger.WrapHandler)
+
 	// Routes
-	e.POST("/v1/nlp/record", c.CreateNlpRecordByShopController)
-	e.POST("/v1/nlp/record/upload.xlsx", c.UploadXlsxNlpRecordByShopController)
-	e.DELETE("/v1/nlp/record", c.DropNlpRecordByShopController)
-	e.GET("/v1/nlp/record", c.ReadNlpRecordByShopController)
-	e.GET("/v1/nlp/record/reply", c.ReadNlpReplyModelByShopController)
+	e.POST("/v1/nlp/record", c0.CreateNlpRecordByShopController)
+	e.POST("/v1/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)
+	e.DELETE("/v1/nlp/record", c0.DropNlpRecordByShopController)
+	e.GET("/v1/nlp/record", c0.ReadNlpRecordByShopController)
+	e.GET("/v1/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
 	e.GET("/v1/fb/webhook", c2.VerifyFBWebhookController)
 	e.POST("/v1/fb/webhook", c2.ReplyFBWebhookController)
-
-	e.GET("/v1/fb/webhook/socket.io", func(c echo.Context) error {
-		ws, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
-		if err != nil {
-			return err
-		}
-		defer ws.Close()
-
-		for {
-
-			// Read
-			_, msg, err := ws.ReadMessage()
-			if err != nil {
-				log.Error(err)
-			}
-			// fmt.Printf("%s\n", msg)
-
-			nlpResult := nlpRecordService.ReadNlpReplyModel(string(msg), "1")
-
-			// Write
-			errWrite := ws.WriteMessage(websocket.TextMessage, []byte(nlpResult.Intent))
-			if errWrite != nil {
-				log.Error(errWrite)
-			}
-		}
-	})
-
-	// Swagger
-	if config.IsSwagger == "true" {
-		e.GET("/swagger/*", echoSwagger.WrapHandler)
-	}
+	e.GET("/v1/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":" + config.EchoPort))
+	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
 }
