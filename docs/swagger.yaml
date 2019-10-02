@@ -26,9 +26,9 @@ paths:
   /v1/nlp/record:
     delete:
       consumes:
-      - application/json
+      - text/html
       parameters:
-      - description: shopID
+      - description: shop identify
         in: query
         name: shop_id
         required: true
@@ -47,7 +47,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: shopID
+      - description: shop identify
         in: query
         name: shop_id
         required: true
@@ -67,12 +67,12 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: shopID
+      - description: shop identify
         in: query
         name: shop_id
         required: true
         type: string
-      - description: Keyword
+      - description: incomming keyword
         in: query
         name: keyword
         required: true
@@ -97,7 +97,7 @@ paths:
         name: xlsx
         required: true
         type: file
-      - description: shopID
+      - description: shop identify
         in: query
         name: shop_id
         required: true

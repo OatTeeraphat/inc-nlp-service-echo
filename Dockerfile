@@ -8,9 +8,12 @@ WORKDIR $GOPATH/src/inc-nlp-service-echo/
 COPY go.mod .
 COPY go.sum .
 
-RUN go mod download
+RUN go mod tidy
+RUN go get -u github.com/swaggo/swag/cmd/swag
 
 COPY . .
+
+RUN swag init
 
 ENV CGO_ENABLED=0
 

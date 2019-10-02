@@ -23,9 +23,9 @@ require (
 	github.com/swaggo/swag v1.6.3
 	github.com/urfave/cli v1.22.1 // indirect
 	golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7 // indirect
-	golang.org/x/net v0.0.0-20190930134127-c5a3c61f89f3
+	golang.org/x/net v0.0.0-20191002035440-2ec189313ef0 // indirect
 	golang.org/x/sys v0.0.0-20190916202348-b4ddaad3f8a3 // indirect
-	golang.org/x/tools v0.0.0-20191001123449-8b695b21ef34 // indirect
+	golang.org/x/tools v0.0.0-20191001184121-329c8d646ebe // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/yaml.v2 v2.2.3 // indirect
 )

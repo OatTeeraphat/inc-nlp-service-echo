@@ -9,12 +9,13 @@ services:
     ports: 
       - 9000:9000
     environment: 
+      - TZ=Asia/Bangkok
       - ENV=heroku
       - ECHO_APP_NAME=inc-nlp-service-echo
-      - ECHO_PORT=9000
+      - PORT=9000
       - ECHO_LOG_LEVEL=INFO
       - NLP_DB_DIALECTS=postgres
-      - NLP_DB_NAME=fillchat
+      - NLP_DB_NAME=postgres
       - NLP_DB_HOST=my_postgres
       - NLP_DB_PORT=5432
       - NLP_DB_USERNAME=postgres
