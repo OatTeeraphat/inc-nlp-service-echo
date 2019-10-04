@@ -1,8 +1,8 @@
 version: "3"
 services:
-  my_postgres:
+  postgres:
     image: "postgres:11"
-    container_name: "my_postgres"
+    container_name: "postgres"
     ports:
       - "54320:5432"
     volumes:

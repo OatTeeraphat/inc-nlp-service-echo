@@ -5,7 +5,7 @@ services:
     image: inc-nlp-service-echo
     container_name: inc-nlp-service-echo
     external_links: 
-      - my_postgres
+      - postgres
     ports: 
       - 9000:9000
     environment: 
@@ -16,7 +16,7 @@ services:
       - ECHO_LOG_LEVEL=INFO
       - NLP_DB_DIALECTS=postgres
       - NLP_DB_NAME=postgres
-      - NLP_DB_HOST=my_postgres
+      - NLP_DB_HOST=postgres
       - NLP_DB_PORT=5432
       - NLP_DB_USERNAME=postgres
       - NLP_DB_PASSWORD=
