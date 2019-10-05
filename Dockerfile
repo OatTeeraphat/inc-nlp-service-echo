@@ -5,11 +5,13 @@ RUN apk add ca-certificates
 ENV GO111MODULE=on
 WORKDIR $GOPATH/src/inc-nlp-service-echo/
 
+# swagger generate libs
+RUN go get -u github.com/swaggo/swag/cmd/swag
+
 COPY go.mod .
 COPY go.sum .
 
 RUN go mod tidy
-RUN go get -u github.com/swaggo/swag/cmd/swag
 
 COPY . .
 
