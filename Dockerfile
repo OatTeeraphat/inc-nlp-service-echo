@@ -7,6 +7,7 @@ WORKDIR $GOPATH/src/inc-nlp-service-echo/
 
 # swagger generate libs
 RUN go get -u github.com/swaggo/swag/cmd/swag
+RUN swag init
 
 COPY go.mod .
 COPY go.sum .
@@ -14,8 +15,6 @@ COPY go.sum .
 RUN go mod tidy
 
 COPY . .
-
-RUN swag init
 
 ENV CGO_ENABLED=0
 
