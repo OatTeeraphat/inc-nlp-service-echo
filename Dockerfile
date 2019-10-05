@@ -23,6 +23,9 @@ RUN go build
 FROM alpine
 RUN apk add ca-certificates
 COPY --from=build-env /go/src/inc-nlp-service-echo/ /go/src/inc-nlp-service-echo/
+
+RUN ls /go/src/inc-nlp-service-echo/
+
 RUN chmod 700 /go/src/inc-nlp-service-echo/inc-nlp-service-echo
 
 CMD /go/src/inc-nlp-service-echo/inc-nlp-service-echo
