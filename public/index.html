@@ -4,58 +4,33 @@
 <head>
     <meta charset="utf-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.5.3/rxjs.umd.js" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
     <link rel="stylesheet" href="index.css">
-
     <title>WebSocket</title>
 </head>
 
 <body>
-    <div id="container">
-        <!-- rxjs event -->
+    <!-- <img src="assets/util_mobile_frame.png" alt="ajax"> -->
+
+    <div id="app-4">
+        <input @keyup.13="onSendNlpKeyword()" type="text" v-model="keyword_input" placeholder="input your keyword"/>
+        <!-- simple html binding -->
+        <input type="text" v-model="keyword"/>
+        <!-- input binding -->
+        <input type="text" v-model="intent"/>
+        <!-- simple html binding -->
+        <span>{{ distance }}</span>
+
+        <button @click="onSendNlpKeyword()">Greet</button>
     </div>
+
+
+    <!-- <button onclick="onSendNlpKeyword()"> send </button> -->
+
+    <script src="utils/two_way_dom_binding.js"></script>
+    <script src="websockets/nlp_reply_model_ws_open.js"></script>
     <script>
-
-        var loc = window.location;
-        var uri = 'ws:';
-
-        if (loc.protocol === 'https:') {
-        uri = 'wss:';
-        }
-        uri += '//' + loc.host;
-        uri += '/v1/fb/webhook/socket.io';
-
-        // console.log(loc.pathname)
-
-        ws = new WebSocket(uri)
-
-        ws.onopen = function() {
-            console.log('Connected')
-        }
-
-        ws.onmessage = function(evt) {
-
-            var observable = rxjs.of(evt).pipe(rxjs.operators.delay(2000))
-
-            observable.subscribe(
-                x => { 
-                    const element = document.getElementById('container');
-                    let response = JSON.parse(evt.data)
-
-                    const newElement = document.createElement('div')
-
-                    newElement.innerText = response.keyword + response.intent + response.distance;
-                    element.appendChild(newElement)
-                },
-                e => { console.log(e) },
-                () => { console.log("send complete") }
-            )
-        }
-
-        setInterval(function() {
-        ws.send('สวัสดีครับ');
-        }, 5000);
-
     </script>
+
 </body>
 </html>
