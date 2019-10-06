@@ -1,5 +1,5 @@
 // for anything initialize
-exports.getHost = function() {
+getHost = function() {
     var loc = window.location;
     var uri = 'ws:';
 

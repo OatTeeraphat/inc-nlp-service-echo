@@ -5,32 +5,32 @@
     <meta charset="utf-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.5.3/rxjs.umd.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <link rel="stylesheet" href="index.css">
-    <title>WebSocket</title>
+    <title>WebChat</title>
 </head>
 
 <body>
-    <!-- <img src="assets/util_mobile_frame.png" alt="ajax"> -->
+    <div id="webchat">
 
-    <div id="app-4">
-        <input @keyup.13="onSendNlpKeyword()" type="text" v-model="keyword_input" placeholder="input your keyword"/>
-        <!-- simple html binding -->
-        <input type="text" v-model="keyword"/>
-        <!-- input binding -->
-        <input type="text" v-model="intent"/>
-        <!-- simple html binding -->
-        <span>{{ distance }}</span>
+        <div class="columns is-desktop">
+            <span class="column"> {{ nlp_model.keyword }} </span>
+            <span class="column"> {{ nlp_model.intent }} </span>
+            <span class="column"> {{ nlp_model.distance }}</span>
+        </div>
 
-        <button @click="onSendNlpKeyword()">Greet</button>
+        <div class="columns is-desktop">
+            <input class="column is-2" @keyup.13="onSendNlpKeyword()" type="text" v-model="keyword_input" placeholder="input your keyword"/>
+            <button class="column is-2" is-primary is-large @click="onSendNlpKeyword()">Greet</button>
+        </div>
+
+
     </div>
 
-
-    <!-- <button onclick="onSendNlpKeyword()"> send </button> -->
-
-    <script src="utils/two_way_dom_binding.js"></script>
-    <script src="websockets/nlp_reply_model_ws_open.js"></script>
-    <script>
-    </script>
+    <script src="index.js"></script>
+    <script src="repositories/rx_subject_ws.js" ></script>
+    <script src="services/webchat_service.js" ></script>
+    <script src="presenters/webchat_presenter.js"></script>
 
 </body>
 </html>
