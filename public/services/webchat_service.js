@@ -1,8 +1,6 @@
 class WebChatService {
 
     rxSubjectWS = new RxSubjectWS()
-    
-
     nextNlpKeywordSource$ = this.rxSubjectWS.fillChatNlpReplyModelWS()
 
     subscription(nlp_model) {
