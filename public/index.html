@@ -8,29 +8,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
     <link rel="stylesheet" href="index.css">
     <title>WebChat</title>
+    <style>
+        #iphone-x {
+            min-width: 50vw;
+            min-height: 50vh;
+            background-image: url('./assets/iphone-x.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            position: relative;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="webchat">
 
-        <div class="columns is-desktop">
-            <span class="column"> {{ nlp_model.keyword }} </span>
-            <span class="column"> {{ nlp_model.intent }} </span>
-            <span class="column"> {{ nlp_model.distance }}</span>
-        </div>
+    <div class="column is-mobile is-half is-offset-one-quarter">
 
-        <div class="columns is-desktop">
-            <input class="column is-2" @keyup.13="onSendNlpKeyword()" type="text" v-model="keyword_input" placeholder="input your keyword"/>
-            <button class="column is-2" is-primary is-large @click="onSendNlpKeyword()">Greet</button>
-        </div>
+        <div id="webchat" class="column is-centered">
+
+            <div id="iphone-x" class="column is-desktop">
+                <span class="column"> {{ nlp_model.keyword }} </span>
+                <span class="column"> {{ nlp_model.intent }} </span>
+                <span class="column"> {{ nlp_model.distance }}</span>
+            </div>
+
+            <div class="is-desktop">
+                <div class="field">
+                    <div class="control">
+                        <input class="input is-small" @keyup.13="onSendNlpKeyword()" type="text" v-model="keyword_input" placeholder="input your keyword"/>
+                    </div>
+                </div>
+                <button class="button is-dark" is-primary is-large @click="onSendNlpKeyword()">Greet</button>
+            </div>
 
 
-        <!-- chat_logs -->
-        <div v-for="item in chat_logs">
-            <span> {{ item }} </span>
-        </div>
-
-
+            <!-- chat_logs -->
+            <div v-for="item in chat_logs">
+                <span> {{ item }} </span>
+            </div>
+            </div>
     </div>
 
     <script src="index.js"></script>

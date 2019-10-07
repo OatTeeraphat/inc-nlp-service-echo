@@ -2,7 +2,6 @@ const { debounceTime, map, pipe, take, skip } = rxjs.operators
 const { Subject, zip, forkJoin } = rxjs
 
 class WebChatService {
-
     webChatRepo = new WebChatRepository()
     nextNlpKeywordSource$ = this.webChatRepo.getFillChatNlpReplyModelWS()
     keepWebChatLogsSource$ = new Subject()
@@ -27,6 +26,4 @@ class WebChatService {
     nextNlpKeyword(keyword_input) {
         this.nextNlpKeywordSource$.next(keyword_input)
     }
-
-
 }
