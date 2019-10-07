@@ -1,36 +1,26 @@
-
 var webChatComponent = new Vue({
     el: '#webchat',
     data: {
         webChatService: new WebChatService(),
-        keyword_input: "keyword_input",
+        keyword_input: "",
         nlp_model: {
-            keyword: "keyword",
-            intent: "intent",
-            distance: 0,
-        }
-    },
-    beforeCreated: function() {
-        console.log("beforeCreated")
+            keyword: "",
+            intent: "",
+            distance: 0
+        },
+        chat_logs: []
     },
     created: function () {
-        console.log("created")
-        this.webChatService.subscription(this.nlp_model) 
+        this.subscription = this.webChatService.zipEventSourceSubscription(this.nlp_model, this.chat_logs)
     },
     methods: {
         onSendNlpKeyword: function() {
             this.webChatService.nextNlpKeyword(this.keyword_input)
-            // clear input box
+            this.webChatService.keepWebChatLogs(this.nlp_model)
             this.keyword_input = ""
-
         },
     },
     beforeDestroy: function() {
-        console.log("before destroy")
-        // this.webChatService.unsubscribe()
-    },
-    destroy: function() {
-        console.log("destroy")
-        this.webChatService.unsubscribe()
+        this.subscription.unsubscribe()
     }
 })
