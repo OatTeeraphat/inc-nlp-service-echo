@@ -1,20 +1,14 @@
-const { WebSocketSubject } = rxjs.webSocket;
-const { debounceTime, map, pipe } = rxjs.operators
-
-
-let keyword_input = ""
-let nlp_model = {
-    keyword: "keyword",
-    intent: "intent",
-    distance: 0,
-}
 
 var webChatComponent = new Vue({
     el: '#webchat',
     data: {
         webChatService: new WebChatService(),
-        keyword_input: keyword_input,
-        nlp_model: nlp_model
+        keyword_input: "keyword_input",
+        nlp_model: {
+            keyword: "keyword",
+            intent: "intent",
+            distance: 0,
+        }
     },
     beforeCreated: function() {
         console.log("beforeCreated")

@@ -1,7 +1,9 @@
+const { debounceTime, map, pipe } = rxjs.operators
+
 class WebChatService {
 
-    rxSubjectWS = new RxSubjectWS()
-    nextNlpKeywordSource$ = this.rxSubjectWS.fillChatNlpReplyModelWS()
+    webChatRepo = new WebChatRepository()
+    nextNlpKeywordSource$ = this.webChatRepo.getFillChatNlpReplyModelWS()
 
     subscription(nlp_model) {
         return this.nextNlpKeywordSource$
