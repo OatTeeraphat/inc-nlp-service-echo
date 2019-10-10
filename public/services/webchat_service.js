@@ -1,4 +1,4 @@
-const { debounceTime, map, pipe, take, skip } = rxjs.operators
+const { debounceTime, map, pipe, take, skip, retryWhen, tap, delay } = rxjs.operators
 const { Subject, zip, forkJoin } = rxjs
 
 class WebChatService {
@@ -9,7 +9,19 @@ class WebChatService {
     zipEventSource$ = zip(this.nextNlpKeywordSource$, this.keepWebChatLogsSource$)
 
     zipEventSourceSubscription(nlp_model, chat_logs) {
-        return this.zipEventSource$.pipe(debounceTime(100)).subscribe(event => {
+        return this.zipEventSource$
+        .pipe(
+            retryWhen(errors =>
+                errors.pipe(
+                  tap(err => {
+                    console.error('Got error', err);
+                  }),
+                  delay(1000)
+                )
+            ),
+            debounceTime(100)
+            )
+        .subscribe(event => {
             
             nlp_model.keyword = event[0].keyword
             nlp_model.intent = event[0].intent
