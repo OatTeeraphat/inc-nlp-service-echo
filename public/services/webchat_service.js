@@ -21,14 +21,20 @@ class WebChatService {
             ),
             debounceTime(100)
             )
-        .subscribe(event => {
-            
-            nlp_model.keyword = event[0].keyword
-            nlp_model.intent = event[0].intent
-            nlp_model.distance = event[0].distance
-
-            chat_logs.push(Object.assign({}, nlp_model))
-        })
+        .subscribe( 
+            event => {
+                nlp_model.keyword = event[0].keyword
+                nlp_model.intent = event[0].intent
+                nlp_model.distance = event[0].distance
+                chat_logs.push(Object.assign({}, nlp_model))
+            },
+            error => {
+                console.log(error)
+            },
+            () => {
+                console.log("complete")
+            }
+        )
     }
 
     keepWebChatLogs(nlp_model_log) {
