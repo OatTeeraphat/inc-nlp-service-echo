@@ -6,13 +6,12 @@ import (
 	"inc-nlp-service-echo/datasources"
 	"inc-nlp-service-echo/repositories"
 	"inc-nlp-service-echo/services"
-	"net/http"
+	"inc-nlp-service-echo/websockets"
 	"os"
 
 	// docs folder to server swagger
 	_ "inc-nlp-service-echo/docs"
 
-	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	log "github.com/sirupsen/logrus"
@@ -51,16 +50,11 @@ func main() {
 	// log.SetReportCaller(true)
 
 	// Websocket http upgrader
-	ws := websocket.Upgrader{
-		ReadBufferSize:    1024,
-		WriteBufferSize:   1024,
-		EnableCompression: true,
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-	}
+
 	// Echo instance
 	e := echo.New()
+
+	ws := websockets.NewWebSocket()
 
 	// Middleware
 	e.Use(
@@ -81,7 +75,7 @@ func main() {
 
 	// Controllers
 	c0 := controllers.NewNlpController(svc0)
-	c2 := controllers.NewFBWebhookController(svc0, ws)
+	c2 := controllers.NewFBWebhookController(svc0, *ws.Upgrader)
 
 	// Static
 	e.Static("/", "public")
@@ -99,8 +93,12 @@ func main() {
 	e.GET("/v1/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
 	e.GET("/v1/fb/webhook", c2.VerifyFBWebhookController)
 	e.POST("/v1/fb/webhook", c2.ReplyFBWebhookController)
-	e.GET("/v1/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)
+	e.Any("/v1/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)
+	// e.GET("/v1/fb/webhook/socket.io", websockets.NewWebSocket)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
+
+	defer e.Close()
+	defer orm.Close()
 }

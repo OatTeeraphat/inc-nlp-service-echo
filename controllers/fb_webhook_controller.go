@@ -15,8 +15,8 @@ import (
 
 // FBWebhookController FBWebhookController
 type FBWebhookController struct {
-	NlpService services.INlpRecordService
-	Ws         websocket.Upgrader
+	NlpService        services.INlpRecordService
+	WebSocketUpgrader websocket.Upgrader
 }
 
 // IFBWebhookController IFBWebhookController
@@ -90,36 +90,41 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 
 // ReplyFBWebhookSocketIO ReplyFBWebhookSocketIO
 func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
-	ws, err := svc.Ws.Upgrade(c.Response(), c.Request(), nil)
+	ws, err := svc.WebSocketUpgrader.Upgrade(c.Response(), c.Request(), nil)
 
 	if err != nil {
 		return err
 	}
+
 	defer ws.Close()
 
 	for {
-
-		// Read
 		_, msg, err := ws.ReadMessage()
-		if err != nil {
-			log.Error(err)
-		}
 
-		if string(msg) != "" {
-			nlpResult := svc.NlpService.ReadNlpReplyModel(string(msg), "1")
+		stringMsg := string(msg)
+		log.Info(stringMsg)
 
-			log.Info(nlpResult)
+		go func(msg []byte) {
 
-			data, _ := json.Marshal(nlpResult)
-
-			// Write
-			errWrite := ws.WriteMessage(websocket.TextMessage, []byte(data))
-			if errWrite != nil {
-				log.Error(errWrite)
+			if err != nil {
+				log.Error(err)
 			}
-		}
+			if string(msg) != "" {
+				nlpResult := svc.NlpService.ReadNlpReplyModel(stringMsg, "1")
 
+				log.Info(nlpResult)
+
+				data, _ := json.Marshal(nlpResult)
+
+				// Write
+				err := ws.WriteMessage(websocket.TextMessage, []byte(data))
+				if err != nil {
+					log.Error(err)
+				}
+			}
+		}(msg)
 	}
+
 }
 
 func readLoop(c *websocket.Conn) {
