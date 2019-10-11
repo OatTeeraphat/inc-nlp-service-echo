@@ -7,7 +7,20 @@ var data = {
         intent: "intent",
         distance: 0
     },
-    chat_logs: []
+    chat_logs: [
+        {
+            keyword: "keyword",
+            intent: "intent",
+        },
+        {
+            keyword: "keyword",
+            intent: "intent", 
+        },
+        {
+            keyword: "keyword",
+            intent: "intent", 
+        }
+    ]
 }
 
 var webChatComponent = new Vue({

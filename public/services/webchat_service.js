@@ -26,7 +26,12 @@ class WebChatService {
                 nlp_model.keyword = event[0].keyword
                 nlp_model.intent = event[0].intent
                 nlp_model.distance = event[0].distance
-                chat_logs.push(Object.assign({}, nlp_model))
+
+                chat_logs.push(Object.assign({}, { 
+                    keyword: event[0].keyword, 
+                    intent: event[0].intent 
+                }))
+                
             },
             error => {
                 console.log(error)
