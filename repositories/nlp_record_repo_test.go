@@ -13,10 +13,10 @@ import (
 func TestDatasource(t *testing.T) {
 	convey.Convey("Subject: NewNlpRecordRepository testcase", t, func() {
 
-		data := datasources.FakeSyncGORM()
+		orm := datasources.FakeSyncGORM()
 
 		convey.Convey("Save 2 NlpRecordDomains", func() {
-			nlpRecordRepo := repositories.NewNlpRecordRepository(data)
+			nlpRecordRepo := repositories.NewNlpRecordRepository(orm)
 			var nlpRecordDomain domains.NlpRecordDomain
 			nlpRecordDomain.ShopID = 1
 			nlpRecordDomain.Keyword = "mock_keyword"
@@ -39,7 +39,7 @@ func TestDatasource(t *testing.T) {
 		})
 
 		convey.Convey("Save Another Domain", func() {
-			nlpRecordRepo := repositories.NewNlpRecordRepository(data)
+			nlpRecordRepo := repositories.NewNlpRecordRepository(orm)
 
 			var nlpRecordDomain domains.NlpRecordDomain
 			nlpRecordDomain.ShopID = 1
@@ -55,7 +55,7 @@ func TestDatasource(t *testing.T) {
 		})
 
 		convey.Convey("FindByKeywordMinhash", func() {
-			nlpRecordRepo := repositories.NewNlpRecordRepository(data)
+			nlpRecordRepo := repositories.NewNlpRecordRepository(orm)
 
 			for i := 1; i <= 10; i++ {
 				var nlpRecordDomain domains.NlpRecordDomain
@@ -93,6 +93,6 @@ func TestDatasource(t *testing.T) {
 			// convey.So(resultByKeywordMinhash[0].Keyword, convey.ShouldEqual, "mock_keyword1")
 		})
 
-		data.DropTableIfExists(&domains.NlpRecordDomain{})
+		orm.DropTableIfExists(&domains.NlpRecordDomain{})
 	})
 }

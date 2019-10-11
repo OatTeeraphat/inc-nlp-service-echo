@@ -34,7 +34,7 @@ func SyncGORM(config *commons.FillChatSelectENV) *gorm.DB {
 
 // FakeSyncGORM SyncORM
 func FakeSyncGORM() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "fake_sqlite3.db")
+	db, err := gorm.Open("sqlite3", "../fake_sqlite3.db")
 	if err != nil {
 		log.Fatalln("database error connected: ", err.Error())
 	}

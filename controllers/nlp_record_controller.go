@@ -39,8 +39,8 @@ func NewNlpController(nlpRecordService services.INlpRecordService) INlpControlle
 // @Router /v1/nlp/record/reply [get]
 func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) error {
 	keyword := e.QueryParam("keyword")
-	shopID := e.QueryParam("shop_id")
-	response := con.NlpService.ReadNlpReplyModel(keyword, shopID)
+	// shopID := e.QueryParam("shop_id")
+	response := con.NlpService.ReadNlpReplyModel(keyword)
 	return e.JSON(http.StatusOK, response)
 }
 
@@ -53,12 +53,12 @@ func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) erro
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [get]
 func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error {
-	shopID := e.QueryParam("shop_id")
+	// shopID := e.QueryParam("shop_id")
 
 	createNlpRecordModel := new([]models.CreateNlpRecordModel)
 	e.Bind(&createNlpRecordModel)
 
-	response := con.NlpService.CreateNlpRecord(*createNlpRecordModel, shopID)
+	response := con.NlpService.CreateNlpRecord(*createNlpRecordModel)
 	return e.String(http.StatusOK, response)
 }
 
@@ -87,7 +87,7 @@ func (con *NlpController) ReadNlpRecordByShopController(e echo.Context) error {
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record/upload.xlsx [post]
 func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) error {
-	shopID := e.QueryParam("shop_id")
+	// shopID := e.QueryParam("shop_id")
 	// sheetName := e.QueryParam("sheet_name")
 	file, _, _ := e.Request().FormFile("xlsx")
 	result, _ := excelize.OpenReader(file)
@@ -95,7 +95,7 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 	sheetName := sheetMap[1]
 	xlsxSheet := result.GetRows(sheetName)
 	e.Logger().Debug(sheetMap)
-	response := con.NlpService.UploadXlsxNlpRecord(shopID, xlsxSheet)
+	response := con.NlpService.UploadXlsxNlpRecord(xlsxSheet)
 
 	return e.String(http.StatusOK, response)
 }
@@ -109,7 +109,7 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [delete]
 func (con *NlpController) DropNlpRecordByShopController(e echo.Context) error {
-	shopID := e.QueryParam("shop_id")
-	response := con.NlpService.DropNlpReplyByShop(shopID)
+	// shopID := e.QueryParam("shop_id")
+	response := con.NlpService.DropNlpReplyByShop()
 	return e.String(http.StatusOK, response)
 }

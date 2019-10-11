@@ -7,7 +7,7 @@ import (
 // NlpTrainingRecordDomain NlpTrainingRecordDomain
 type NlpTrainingRecordDomain struct {
 	gorm.Model
-	ShopID   uint
+	// ShopID   uint
 	Keyword  string
 	Distance float32
 	Intent   string

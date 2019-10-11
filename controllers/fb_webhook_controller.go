@@ -62,7 +62,7 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 			fbTextReply := models.NewFBTextReplyModel()
 			fbTextReply.Recipient.ID = item.Messaging[index].Sender.ID
 
-			nlpModel := svc.NlpService.ReadNlpReplyModel(item.Messaging[index].Message.Text, "1")
+			nlpModel := svc.NlpService.ReadNlpReplyModel(item.Messaging[index].Message.Text)
 
 			fbTextReply.Message.Text = nlpModel.Intent
 
@@ -92,6 +92,8 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 	ws, err := svc.WebSocketUpgrader.Upgrade(c.Response(), c.Request(), nil)
 
+	log.Debug("socket connected")
+
 	if err != nil {
 		return err
 	}
@@ -102,7 +104,7 @@ func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 		_, msg, err := ws.ReadMessage()
 
 		stringMsg := string(msg)
-		log.Info(stringMsg)
+		log.Debug(stringMsg)
 
 		go func(msg []byte) {
 
@@ -110,7 +112,7 @@ func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
 				log.Error(err)
 			}
 			if string(msg) != "" {
-				nlpResult := svc.NlpService.ReadNlpReplyModel(stringMsg, "1")
+				nlpResult := svc.NlpService.ReadNlpReplyModel(stringMsg)
 
 				log.Info(nlpResult)
 

@@ -20,10 +20,10 @@ type NlpRecordRepository struct {
 // INlpRecordRepository nlp query appearance interface
 type INlpRecordRepository interface {
 	Save(nlpRecordDomain *domains.NlpRecordDomain)
-	DeleteByShopID(shopID uint) *gorm.DB
-	BulkCreateNlpRecords(shopID uint, nlpRecordDomain []interface{}) error
-	FindByKeywordMinhash(shopID uint, keywordMinhash uint32) []domains.NlpRecordDomain
-	FindByKeyword(shopID uint, keyword string) []domains.NlpRecordDomain
+	Delete() *gorm.DB
+	BulkCreateNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error
+	FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain
+	FindByKeyword(keyword string) []domains.NlpRecordDomain
 }
 
 // NewNlpRecordRepository new nlp record instance
@@ -37,27 +37,27 @@ func (repo *NlpRecordRepository) Save(nlpRecordDomain *domains.NlpRecordDomain) 
 }
 
 // FindByKeyword find similar keyword group
-func (repo *NlpRecordRepository) FindByKeyword(shopID uint, keyword string) []domains.NlpRecordDomain {
+func (repo *NlpRecordRepository) FindByKeyword(keyword string) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
 	repo.Datasources.Where(&domains.NlpRecordDomain{Keyword: keyword}).Find(&nlpRecordDomain)
 	return nlpRecordDomain
 }
 
 // FindByKeywordMinhash find similar keyword group
-func (repo *NlpRecordRepository) FindByKeywordMinhash(shopID uint, keywordMinhash uint32) []domains.NlpRecordDomain {
+func (repo *NlpRecordRepository) FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.Datasources.Find(&nlpRecordDomain, &domains.NlpRecordDomain{KeywordMinhash: keywordMinhash, ShopID: shopID})
+	repo.Datasources.Find(&nlpRecordDomain, &domains.NlpRecordDomain{KeywordMinhash: keywordMinhash})
 	return nlpRecordDomain
 }
 
 // BulkCreateNlpRecords BulkCreateNlpRecords
-func (repo *NlpRecordRepository) BulkCreateNlpRecords(shopID uint, nlpRecordDomain []interface{}) error {
-	return BulkInsert(repo.Datasources, nlpRecordDomain, 3000)
+func (repo *NlpRecordRepository) BulkCreateNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error {
+	return BulkInsert(repo.Datasources, nlpRecordDomain, bulkCount)
 }
 
-// DeleteByShopID DeleteByShopID
-func (repo *NlpRecordRepository) DeleteByShopID(shopID uint) *gorm.DB {
-	return repo.Datasources.Unscoped().Delete(&domains.NlpRecordDomain{ShopID: shopID})
+// Delete Delete
+func (repo *NlpRecordRepository) Delete() *gorm.DB {
+	return repo.Datasources.Unscoped().Delete(&domains.NlpRecordDomain{})
 }
 
 // BulkInsert multiple records at once

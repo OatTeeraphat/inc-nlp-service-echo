@@ -5,7 +5,6 @@ import (
 	"inc-nlp-service-echo/models"
 	"inc-nlp-service-echo/nlps"
 	"inc-nlp-service-echo/repositories"
-	"strconv"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -19,10 +18,10 @@ type NlpRecordService struct {
 
 // INlpRecordService INlpService
 type INlpRecordService interface {
-	UploadXlsxNlpRecord(shopID string, xlsxSheet [][]string) string
-	DropNlpReplyByShop(ShopID string) string
-	ReadNlpReplyModel(keyword string, shopID string) models.NlpReplyModel
-	CreateNlpRecord(createNlpModel []models.CreateNlpRecordModel, shopID string) string
+	UploadXlsxNlpRecord(xlsxSheet [][]string) string
+	DropNlpReplyByShop() string
+	ReadNlpReplyModel(keyword string) models.NlpReplyModel
+	CreateNlpRecord(createNlpModel []models.CreateNlpRecordModel) string
 }
 
 // NewNlpRecordService NewNlpService
@@ -34,16 +33,10 @@ func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, 
 }
 
 // CreateNlpRecord GetNlpModelReply
-func (svc NlpRecordService) CreateNlpRecord(createNlpModel []models.CreateNlpRecordModel, shopID string) string {
-	shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+func (svc NlpRecordService) CreateNlpRecord(createNlpModel []models.CreateNlpRecordModel) string {
 
 	for _, item := range createNlpModel {
 		var nlpRecordDomain domains.NlpRecordDomain
-		nlpRecordDomain.ShopID = uint(shopIDParseUint)
 		nlpRecordDomain.Keyword = item.Keyword
 		hashValue := nlps.GenerateKeywordMinhash(item.Keyword)
 		nlpRecordDomain.KeywordMinhash = hashValue
@@ -55,12 +48,7 @@ func (svc NlpRecordService) CreateNlpRecord(createNlpModel []models.CreateNlpRec
 }
 
 // UploadXlsxNlpRecord XlsxCreateNlpRecord
-func (svc NlpRecordService) UploadXlsxNlpRecord(shopID string, xlsxSheet [][]string) string {
-	shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+func (svc NlpRecordService) UploadXlsxNlpRecord(xlsxSheet [][]string) string {
 
 	var nlpRecord []interface{}
 	var tooLongSentence int
@@ -90,14 +78,13 @@ func (svc NlpRecordService) UploadXlsxNlpRecord(shopID string, xlsxSheet [][]str
 			continue
 		}
 		nlpRecord = append(nlpRecord, domains.NlpRecordDomain{
-			ShopID:         uint(shopIDParseUint),
 			Keyword:        keyword,
 			Intent:         intent,
 			KeywordMinhash: nlps.GenerateKeywordMinhash(keyword),
 		})
 	}
 
-	err = svc.nlpRecordRepository.BulkCreateNlpRecords(uint(shopIDParseUint), nlpRecord)
+	err := svc.nlpRecordRepository.BulkCreateNlpRecords(nlpRecord, 3000)
 
 	if err != nil {
 		log.Fatal(err)
@@ -107,28 +94,28 @@ func (svc NlpRecordService) UploadXlsxNlpRecord(shopID string, xlsxSheet [][]str
 }
 
 // ReadNlpReplyModel ReadNlpReplyModel
-func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) models.NlpReplyModel {
+func (svc NlpRecordService) ReadNlpReplyModel(keyword string) models.NlpReplyModel {
 	var nlpReplyModel []models.NlpReplyModel
 
 	if keyword == "" {
 		log.Fatal("no keyword")
 	}
 
-	shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
+	// shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
 
-	if err != nil {
-		log.Error("no shop_id is not integer")
-	}
+	// if err != nil {
+	// 	log.Error("no shop_id is not integer")
+	// }
 
-	if shopIDParseUint == 0 {
-		log.Error("no shop_id is 0")
-	}
+	// if shopIDParseUint == 0 {
+	// 	log.Error("no shop_id is 0")
+	// }
 
 	// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint}).Info("before minhash gen")
 	hashValue := nlps.GenerateKeywordMinhash(keyword)
 	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint, "hashValue": hashValue}).Info("after minhash gen")
 
-	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(uint(shopIDParseUint), hashValue)
+	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(hashValue)
 
 	if len(nlpFindByKeyword) == 0 {
 		// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("no module")
@@ -158,7 +145,6 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 // SaveNlpTrainingSets SaveNlpTrainingSets
 func (svc NlpRecordService) SaveNlpTrainingSets(nlpResult *models.NlpReplyModel, shopID uint) {
 	var nlpTraningRecordDomain domains.NlpTrainingRecordDomain
-	nlpTraningRecordDomain.ShopID = shopID
 	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
 	nlpTraningRecordDomain.Intent = nlpResult.Intent
 	nlpTraningRecordDomain.Distance = nlpResult.Distance
@@ -166,11 +152,8 @@ func (svc NlpRecordService) SaveNlpTrainingSets(nlpResult *models.NlpReplyModel,
 }
 
 // DropNlpReplyByShop DropNlpReplyByShop
-func (svc NlpRecordService) DropNlpReplyByShop(shopID string) string {
-	shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
-	if err != nil {
-		log.Println(err)
-	}
-	svc.nlpRecordRepository.DeleteByShopID(uint(shopIDParseUint))
+func (svc NlpRecordService) DropNlpReplyByShop() string {
+
+	svc.nlpRecordRepository.Delete()
 	return "OK"
 }
