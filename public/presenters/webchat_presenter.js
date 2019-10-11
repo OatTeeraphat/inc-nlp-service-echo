@@ -1,16 +1,18 @@
-const webChatService = new WebChatService()
+var webChatService = new WebChatService()
 
-const webChatComponent = new Vue({
-    el: '#webchat',
-    data: {
-        keyword_input: "",
-        nlp_model: {
-            keyword: "keyword",
-            intent: "intent",
-            distance: 0
-        },
-        chat_logs: []
+var data = {
+    keyword_input: "",
+    nlp_model: {
+        keyword: "keyword",
+        intent: "intent",
+        distance: 0
     },
+    chat_logs: []
+}
+
+var webChatComponent = new Vue({
+    el: '#webchat',
+    data: data,
     created: function () {
         this.subscription = webChatService.zipEventSourceSubscription(this.nlp_model, this.chat_logs)
     },
