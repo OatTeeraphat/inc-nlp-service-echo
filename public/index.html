@@ -28,9 +28,13 @@
         <div id="webchat" class="column is-centered">
 
             <div id="iphone-x" class="column is-desktop">
-                <span class="column"> {{ nlp_model.keyword }} </span>
+                <!-- chat_logs -->
+                <div v-for="item in chat_logs">
+                    <span> {{ item }} </span>
+                </div>
+                <!-- <span class="column"> {{ nlp_model.keyword }} </span>
                 <span class="column"> {{ nlp_model.intent }} </span>
-                <span class="column"> {{ nlp_model.distance }}</span>
+                <span class="column"> {{ nlp_model.distance }}</span> -->
             </div>
 
             <div class="is-desktop">
@@ -41,13 +45,7 @@
                 </div>
                 <button class="button is-dark" is-primary is-large @click="onSendNlpKeyword()">Greet</button>
             </div>
-
-
-            <!-- chat_logs -->
-            <div v-for="item in chat_logs">
-                <span> {{ item }} </span>
-            </div>
-            </div>
+        </div>    
     </div>
 
     <script src="index.js"></script>
