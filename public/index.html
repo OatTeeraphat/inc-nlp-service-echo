@@ -18,6 +18,12 @@
             background-size: contain;
             position: relative;
         }
+        #example1 {
+            border: 2px solid red;
+            padding: 4px;
+            border-radius: 25px;
+        }
+          
     </style>
 </head>
 
@@ -30,7 +36,7 @@
             <div id="iphone-x" class="column is-desktop">
                 <!-- chat_logs -->
                 <div v-for="item in chat_logs">
-                    <span> {{ item }} </span>
+                    <span id="example1"> {{ item.intent }} </span>
                 </div>
             </div>
 
@@ -44,11 +50,9 @@
             </div>
         </div>    
     </div>
-
+</body>
     <script src="index.js"></script>
     <script src="repositories/webchat_repository.js" ></script>
     <script src="services/webchat_service.js" ></script>
     <script src="presenters/webchat_presenter.js"></script>
-
-</body>
 </html>
