@@ -101,16 +101,6 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string) models.NlpReplyMod
 		log.Fatal("no keyword")
 	}
 
-	// shopIDParseUint, err := strconv.ParseUint(shopID, 10, 32)
-
-	// if err != nil {
-	// 	log.Error("no shop_id is not integer")
-	// }
-
-	// if shopIDParseUint == 0 {
-	// 	log.Error("no shop_id is 0")
-	// }
-
 	// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint}).Info("before minhash gen")
 	hashValue := nlps.GenerateKeywordMinhash(keyword)
 	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint, "hashValue": hashValue}).Info("after minhash gen")
