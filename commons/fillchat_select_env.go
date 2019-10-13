@@ -39,11 +39,11 @@ func SelectFillChatSelectENVDevelopment() *FillChatSelectENV {
 		EchoPort:      "9000",
 		EchoLogLevel:  "DEBUG",
 		NlpDBDialects: "postgres",
-		NlpDBName:     "fillchat",
-		NlpDBHost:     "localhost",
-		NlpDBPort:     "54320",
-		NlpDBUsername: "postgres",
-		NlpDBPassword: "",
+		NlpDBName:     "zhfufgfc",
+		NlpDBHost:     "rosie.db.elephantsql.com",
+		NlpDBPort:     "5432",
+		NlpDBUsername: "zhfufgfc",
+		NlpDBPassword: "v9j1_BnlOFAtqjtN-1FY_4Yc08w2cZmM",
 		IsSwagger:     "true",
 	}
 }
