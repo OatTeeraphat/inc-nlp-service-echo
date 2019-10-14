@@ -69,9 +69,10 @@ func main() {
 	// Repositories
 	repo0 := repositories.NewNlpTrainingRecordRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
+	repo3 := repositories.NewShopStoryRepository(orm)
 
 	// Services
-	svc0 := services.NewNlpRecordService(repo1, repo0)
+	svc0 := services.NewNlpRecordService(repo1, repo0, repo3)
 
 	// Controllers
 	c0 := controllers.NewNlpController(svc0)

@@ -15,6 +15,7 @@ import (
 type NlpRecordService struct {
 	nlpTrainingRecordRepository repositories.INlpRecordTrainingRepository
 	nlpRecordRepository         repositories.INlpRecordRepository
+	shopStoryRepository         repositories.IShopStoryRepository
 }
 
 // INlpRecordService INlpService
@@ -26,10 +27,11 @@ type INlpRecordService interface {
 }
 
 // NewNlpRecordService NewNlpService
-func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, nlpTrainingRecordRepository repositories.INlpRecordTrainingRepository) INlpRecordService {
+func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, nlpTrainingRecordRepository repositories.INlpRecordTrainingRepository, shopStoryRepository repositories.IShopStoryRepository) INlpRecordService {
 	return &NlpRecordService{
 		nlpTrainingRecordRepository,
 		nlpRecordRepository,
+		shopStoryRepository,
 	}
 }
 
@@ -37,9 +39,10 @@ func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, 
 func (svc NlpRecordService) CreateNlpRecord(createNlpModel []models.CreateNlpRecordModel) string {
 
 	for _, item := range createNlpModel {
+		hashValue := nlps.GenerateKeywordMinhash(item.Keyword)
+
 		var nlpRecordDomain domains.NlpRecordDomain
 		nlpRecordDomain.Keyword = item.Keyword
-		hashValue := nlps.GenerateKeywordMinhash(item.Keyword)
 		nlpRecordDomain.KeywordMinhash = hashValue
 		nlpRecordDomain.Intent = item.Intent
 
@@ -106,7 +109,12 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 	}
 
 	keywordMinhash = nlps.GenerateKeywordMinhash(keyword)
-	listStoryIDsInShopFound = []uint32{1, 2}
+
+	shopStoryDomainFoundByShopID := svc.shopStoryRepository.FindByShopID(1)
+
+	for _, item := range shopStoryDomainFoundByShopID {
+		listStoryIDsInShopFound = append(listStoryIDsInShopFound, item.StoryID)
+	}
 
 	// nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(hashValue)
 	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(keywordMinhash, listStoryIDsInShopFound)
