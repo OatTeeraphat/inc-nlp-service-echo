@@ -39,8 +39,8 @@ func NewNlpController(nlpRecordService services.INlpRecordService) INlpControlle
 // @Router /v1/nlp/record/reply [get]
 func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) error {
 	keyword := e.QueryParam("keyword")
-	// shopID := e.QueryParam("shop_id")
-	response := con.NlpService.ReadNlpReplyModel(keyword)
+	shopID := e.QueryParam("shop_id")
+	response := con.NlpService.ReadNlpReplyModel(keyword, shopID)
 	return e.JSON(http.StatusOK, response)
 }
 

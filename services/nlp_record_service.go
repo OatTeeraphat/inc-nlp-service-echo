@@ -21,7 +21,7 @@ type NlpRecordService struct {
 type INlpRecordService interface {
 	UploadXlsxNlpRecord(xlsxSheet [][]string) string
 	DropNlpReplyByShop() string
-	ReadNlpReplyModel(keyword string) models.NlpReplyModel
+	ReadNlpReplyModel(keyword string, shopID string) models.NlpReplyModel
 	CreateNlpRecord(createNlpModel []models.CreateNlpRecordModel) string
 }
 
@@ -96,8 +96,9 @@ func (svc NlpRecordService) UploadXlsxNlpRecord(xlsxSheet [][]string) string {
 }
 
 // ReadNlpReplyModel ReadNlpReplyModel
-func (svc NlpRecordService) ReadNlpReplyModel(keyword string) models.NlpReplyModel {
+func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) models.NlpReplyModel {
 	var nlpReplyModel []models.NlpReplyModel
+	var listStoryIDsInShopFound []uint32
 
 	if keyword == "" {
 		log.Fatal("no keyword")
@@ -107,7 +108,10 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string) models.NlpReplyMod
 	hashValue := nlps.GenerateKeywordMinhash(keyword)
 	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint, "hashValue": hashValue}).Info("after minhash gen")
 
-	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(hashValue)
+	listStoryIDsInShopFound = []uint32{1, 2}
+
+	// nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(hashValue)
+	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(hashValue, listStoryIDsInShopFound)
 
 	if len(nlpFindByKeyword) == 0 {
 		// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("no module")

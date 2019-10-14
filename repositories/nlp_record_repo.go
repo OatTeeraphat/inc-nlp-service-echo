@@ -23,6 +23,7 @@ type INlpRecordRepository interface {
 	Delete() *gorm.DB
 	BulkCreateNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error
 	FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain
+	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
 }
 
@@ -40,6 +41,13 @@ func (repo *NlpRecordRepository) Save(nlpRecordDomain *domains.NlpRecordDomain) 
 func (repo *NlpRecordRepository) FindByKeyword(keyword string) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
 	repo.Datasources.Where(&domains.NlpRecordDomain{Keyword: keyword}).Find(&nlpRecordDomain)
+	return nlpRecordDomain
+}
+
+// FindByKeywordMinhashAndStoryID find similar keyword group and story ids
+func (repo *NlpRecordRepository) FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain {
+	var nlpRecordDomain []domains.NlpRecordDomain
+	repo.Datasources.Where("story_id IN(?) and keyword_minhash = ?", storyID, keywordMinhash).Find(&nlpRecordDomain)
 	return nlpRecordDomain
 }
 
