@@ -11,6 +11,7 @@ type NlpTrainingRecordDomain struct {
 	Keyword  string
 	Distance float32
 	Intent   string
+	StoryID  uint32
 }
 
 // TableName NlpRecordDomain

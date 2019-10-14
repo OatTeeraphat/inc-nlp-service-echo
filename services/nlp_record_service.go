@@ -5,6 +5,7 @@ import (
 	"inc-nlp-service-echo/models"
 	"inc-nlp-service-echo/nlps"
 	"inc-nlp-service-echo/repositories"
+	"inc-nlp-service-echo/utils"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -81,6 +82,7 @@ func (svc NlpRecordService) UploadXlsxNlpRecord(xlsxSheet [][]string) string {
 			Keyword:        keyword,
 			Intent:         intent,
 			KeywordMinhash: nlps.GenerateKeywordMinhash(keyword),
+			StoryID:        utils.NewRandomIDBetween(1, 3),
 		})
 	}
 
@@ -119,7 +121,11 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string) models.NlpReplyMod
 	}
 
 	for _, item := range nlpFindByKeyword {
-		nlpReplyModel = append(nlpReplyModel, models.NlpReplyModel{Keyword: item.Keyword, Intent: item.Intent})
+		eachNlpModel := models.NlpReplyModel{Keyword: item.Keyword, Intent: item.Intent, StoryID: item.StoryID}
+		eachNlpModel.Keyword = item.Keyword
+		eachNlpModel.Intent = item.Intent
+		eachNlpModel.StoryID = item.StoryID
+		nlpReplyModel = append(nlpReplyModel, eachNlpModel)
 	}
 
 	// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info(nlpReplyModel)
@@ -138,6 +144,7 @@ func (svc NlpRecordService) SaveNlpTrainingSets(nlpResult *models.NlpReplyModel,
 	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
 	nlpTraningRecordDomain.Intent = nlpResult.Intent
 	nlpTraningRecordDomain.Distance = nlpResult.Distance
+	nlpTraningRecordDomain.StoryID = nlpResult.StoryID
 	svc.nlpTrainingRecordRepository.Save(&nlpTraningRecordDomain)
 }
 
