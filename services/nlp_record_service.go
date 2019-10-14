@@ -99,19 +99,17 @@ func (svc NlpRecordService) UploadXlsxNlpRecord(xlsxSheet [][]string) string {
 func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) models.NlpReplyModel {
 	var nlpReplyModel []models.NlpReplyModel
 	var listStoryIDsInShopFound []uint32
+	var keywordMinhash uint32
 
 	if keyword == "" {
 		log.Fatal("no keyword")
 	}
 
-	// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint}).Info("before minhash gen")
-	hashValue := nlps.GenerateKeywordMinhash(keyword)
-	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE", "keyword": keyword, "shop_id": shopIDParseUint, "hashValue": hashValue}).Info("after minhash gen")
-
+	keywordMinhash = nlps.GenerateKeywordMinhash(keyword)
 	listStoryIDsInShopFound = []uint32{1, 2}
 
 	// nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(hashValue)
-	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(hashValue, listStoryIDsInShopFound)
+	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(keywordMinhash, listStoryIDsInShopFound)
 
 	if len(nlpFindByKeyword) == 0 {
 		// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("no module")
