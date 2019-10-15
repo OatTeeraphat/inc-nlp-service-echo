@@ -70,13 +70,17 @@ func main() {
 	repo0 := repositories.NewNlpTrainingRecordRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
 	repo3 := repositories.NewShopStoryRepository(orm)
+	repo4 := repositories.NewStoryRepository(orm)
+	// repo5 := repositories.NewShopStoryRepository(orm)
 
 	// Services
 	svc0 := services.NewNlpRecordService(repo1, repo0, repo3)
+	svc1 := services.NewStoryService(repo4)
 
 	// Controllers
 	c0 := controllers.NewNlpController(svc0)
 	c2 := controllers.NewFBWebhookController(svc0, *ws.Upgrader)
+	c3 := controllers.NewStoryController(svc1)
 
 	// Static
 	e.Static("/", "public")
@@ -87,6 +91,9 @@ func main() {
 	q.GET("/*", echoSwagger.WrapHandler)
 
 	// Routes
+	e.GET("/v1/story", c3.ReadAllStoryRecordController)
+	e.POST("/v1/story", c3.NewStoryRecordController)
+
 	e.POST("/v1/nlp/record", c0.CreateNlpRecordByShopController)
 	e.POST("/v1/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)
 	e.DELETE("/v1/nlp/record", c0.DropNlpRecordByShopController)
