@@ -1,7 +1,7 @@
 class GetStoryModelAdapter extends Array {
 
     adapt(models) {
-        
+
         models.map( model => {
             this.push({
                 id: model.id,

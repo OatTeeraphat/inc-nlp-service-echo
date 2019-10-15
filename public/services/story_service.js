@@ -2,6 +2,7 @@ class StoryService {
     
     constructor(httpRepository = new HttpRepository()) {
         this.httpRepository = httpRepository
+        this.deleteNextStoryID$ = new Subject()
     }
 
     getStoryStateSubscription(stories) {
@@ -12,7 +13,21 @@ class StoryService {
         )
     }
 
-    removeStoryStateByID(storyID) {
-        return this.httpRepository.deleteStoryByID(storyID)
+    deleteStoryByIDSubscription(stories) {
+        return this.deleteNextStoryID$
+            .pipe(
+                switchMap( storyID => this.httpRepository.deleteStoryByID(storyID)
+                    .pipe(
+                        mapTo(storyID) 
+                    )
+                )
+            )
+            .subscribe(
+                nextStoryID => stories.splice(stories.findIndex(({id}) => id == nextStoryID), 1)
+            )
+    }
+
+    deleteNextStoryID(storyID) {
+        this.deleteNextStoryID$.next(storyID)
     }
 }
