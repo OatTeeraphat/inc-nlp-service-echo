@@ -1,4 +1,4 @@
-nlpPresenter = Vue.component('nlp-presenter', {    
+var nlpLogPresenter = Vue.component('nlp-log-presenter', {    
     template: `
     <table class="table">
         <thead>
@@ -7,21 +7,23 @@ nlpPresenter = Vue.component('nlp-presenter', {
                 <th scope="col">keyword</th>
                 <th scope="col">intent</th>
                 <th scope="col">story</th>
+                <th scope="col">distance</th>
             </tr>
         </thead>
-        <tbody v-for="item in nlp_records">
+        <tbody v-for="item in nlp_training_logs">
             <tr>
                 <th scope="row">{{ item.id }}</th>
                 <td>{{ item.keyword }}</td>
                 <td>{{ item.intent }}</td>
                 <td>{{ item.story_name }}</td>
+                <td>{{ item.distance }}</td>
             </tr>
         </tbody>
     </table>
     `,
     data: function () {
         return {
-            nlp_records: [
+            nlp_training_logs: [
                 { id: 1, keyword: 'สวัสดีครับ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 0 },
                 { id: 2, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
                 { id: 3, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },

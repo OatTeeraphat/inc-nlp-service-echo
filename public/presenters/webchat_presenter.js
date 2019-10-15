@@ -24,6 +24,9 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
         this.webChatService = new WebChatService()
         this.subscription = this.webChatService.zipEventSourceSubscription(this.nlp_model, this.chat_logs)
     },
+    beforeDestroy: function () {
+        this.subscription.unsubscribe()
+    },
     methods: {
         onSendNlpKeyword: function () {
             this.webChatService.nextNlpKeyword(this.keyword_input)
@@ -31,7 +34,4 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
             this.keyword_input = ""
         }
     },
-    beforeDestroy: function () {
-        this.subscription.unsubscribe()
-    }
 })

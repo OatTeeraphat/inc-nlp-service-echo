@@ -1,8 +1,9 @@
 var routes = [
     { path: '/', component: mainPresenter },
     { path: '/nlp', name: 'nlp', component: nlpPresenter },
+    { path: '/logs', name: 'logs', component: nlpLogPresenter },
     { path: '/story', name: 'story', component: storyPresenter },
-    { path: '/webchat', name: 'web-chat-component', component: webChatPresenter }
+    { path: '/webchat', name: 'webchat', component: webChatPresenter }
 ]
   
 var router = new VueRouter({
@@ -11,7 +12,7 @@ var router = new VueRouter({
 });
 
 Vue.use(VueRouter)
-  
+
 new Vue({
     el: '#app',
     router

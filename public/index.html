@@ -19,7 +19,8 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li> <router-link class="nav-link" to="/" exact> HOME </router-link> </li>
-                    <li> <router-link class="nav-link" to="nlp"> NLP </router-link> </li>
+                    <li> <router-link class="nav-link" :to="{ path: '/nlp'}"> NLP </router-link> </li>
+                    <li> <router-link class="nav-link" :to="{ path: '/logs'}"> LOGS </router-link> </li>
                     <li> <router-link class="nav-link" :to="{ path: '/story'}" append> STORY</router-link> </li>
                     <li> <router-link class="nav-link" :to="{ path: '/webchat'}" append> WEB CHAT</router-link> </li>
                 </ul>
@@ -42,6 +43,7 @@
 
     <!-- presenters -->
     <script src="presenters/main_presenter.js"></script>
+    <script src="presenters/nlp_log_presenter.js"></script>
     <script src="presenters/nlp_presenter.js"></script>
     <script src="presenters/story_presenter.js"></script>
     <script src="presenters/webchat_presenter.js"></script>
