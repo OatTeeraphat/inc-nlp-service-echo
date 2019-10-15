@@ -4,55 +4,37 @@
 <head>
     <meta charset="utf-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.5.3/rxjs.umd.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
-    <title>WebChat</title>
-    <style>
-        #iphone-x {
-            min-width: 50vw;
-            min-height: 50vh;
-            background-image: url('./assets/iphone-x.png');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            position: relative;
-        }
-        #example1 {
-            border: 2px solid red;
-            padding: 4px;
-            border-radius: 25px;
-        }
-          
-    </style>
+    <title>Go echo</title>
+
 </head>
 
 <body>
-
-    <div class="column is-mobile is-half is-offset-one-quarter">
-
-        <div id="webchat" class="column is-centered">
-
-            <div id="iphone-x" class="column is-desktop">
-                <!-- chat_logs -->
-                <div v-for="item in chat_logs">
-                    <span id="example1"> {{ item.intent }} </span>
-                </div>
+    <div id="app" class="container">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li> <router-link class="nav-link" to="/" exact> Home </router-link> </li>
+                    <li> <router-link class="nav-link" to="nlp"> NLP </router-link> </li>
+                    <li> <router-link class="nav-link" :to="{ path: '/story'}" append> Story</router-link> </li>
+                    <li> <router-link class="nav-link" :to="{ path: '/webchat'}" append> WebChat</router-link> </li>
+                </ul>
             </div>
-
-            <div class="is-desktop">
-                <div class="field">
-                    <div class="control">
-                        <input class="input is-small" @keyup.13="onSendNlpKeyword()" type="text" v-model="keyword_input" placeholder="input your keyword"/>
-                    </div>
-                </div>
-                <button class="button is-dark" is-primary is-large @click="onSendNlpKeyword()">Greet</button>
-            </div>
-        </div>    
+        </nav>
+        <router-view></router-view>
     </div>
+
 </body>
-    <script src="index.js"></script>
+    <script src="utils/index.js"></script>
+
     <script src="repositories/webchat_repository.js" ></script>
     <script src="services/webchat_service.js" ></script>
     <script src="presenters/webchat_presenter.js"></script>
+
+    <script type="module" src="app.js"> </script>    
+
 </html>

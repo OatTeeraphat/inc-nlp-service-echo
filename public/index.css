@@ -1,7 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
-html {
-    font-family: "Nunito", sans-serif;
-}
+
+html { font-family: "Nunito", sans-serif; }
+
+body { margin: 0; }
+/*   
+ul { list-style-type: none; margin: 0; padding: 0; width: 25%; background-color: #f1f1f1; position: fixed; height: 100%; overflow: auto; }
+  
+li a { display: block; color: #000; padding: 8px 16px; text-decoration: none; }
+  
+li a.active { background-color: #4CAF50; color: white; }
+  
+li a:hover:not(.active) { background-color: #555; color: white} */
 
 /* A simple example of a media query. */
 @media only screen and (min-width: 480px){
@@ -16,4 +25,19 @@ html {
 /* A simple example of a media query. */
 @media only screen and (min-width: 1024px){
     /* some css here */
+}
+
+#iphone-x {
+    min-width: 50vw;
+    min-height: 50vh;
+    background-image: url('./assets/iphone-x.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    position: relative;
+}
+#example1 {
+    border: 2px solid red;
+    padding: 4px;
+    border-radius: 25px;
 }
