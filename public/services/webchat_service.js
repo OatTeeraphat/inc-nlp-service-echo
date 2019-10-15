@@ -2,10 +2,11 @@ class WebChatService {
     
     constructor(
         socketRepo = new SocketRepository(), 
-        keepWebChatLogsSource$ = new Subject()
     ) {
-        this.nextNlpKeywordSource$ = socketRepo.getFillChatNlpReplyModelWS()
-        this.keepChatLogsSource$ = keepWebChatLogsSource$
+        this.socketRepo = socketRepo
+        this.keepChatLogsSource$ = new Subject()
+
+        this.nextNlpKeywordSource$ = this.socketRepo.getFillChatNlpReplyModelWS()
         this.zipWebChatEventSource$ = zip(this.nextNlpKeywordSource$, this.keepChatLogsSource$)
     }
     
@@ -17,7 +18,7 @@ class WebChatService {
                   tap(err => {
                     console.error('Got error', err);
                   }),
-                  delay(1000)
+                  delay(1600)
                 )
             ),
             debounceTime(100)
@@ -32,7 +33,7 @@ class WebChatService {
                     keyword: event[0].keyword, 
                     intent: event[0].intent 
                 }))
-                
+
             },
             error => {
                 console.log(error)

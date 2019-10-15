@@ -74,7 +74,7 @@ func (con *NlpController) ReadNlpRecordByShopController(e echo.Context) error {
 	// shopID := e.QueryParam("shop_id")
 	// keyword := e.QueryParam("keyword")
 	// response := con.NlpService.ReadNlpReplyModel(keyword, shopID)
-	return e.JSON(http.StatusOK, "OK")
+	return e.String(http.StatusOK, "OK")
 }
 
 // UploadXlsxNlpRecordByShopController create new nlp records by shop

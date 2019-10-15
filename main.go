@@ -93,6 +93,7 @@ func main() {
 	// Routes
 	e.GET("/v1/story", c3.ReadAllStoryRecordController)
 	e.POST("/v1/story", c3.NewStoryRecordController)
+	e.DELETE("/v1/story", c3.DeleteStoryByIDController)
 
 	e.POST("/v1/nlp/record", c0.CreateNlpRecordByShopController)
 	e.POST("/v1/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)

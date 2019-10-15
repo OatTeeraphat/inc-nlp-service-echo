@@ -16,6 +16,7 @@ type IStoryRepository interface {
 	Save(storyDomain *domains.StoryDomain)
 	FindAll() []domains.StoryDomain
 	FindByName(storyName string) domains.StoryDomain
+	DeleteByID(ID uint) *gorm.DB
 }
 
 // NewStoryRepository story desc instance
@@ -40,4 +41,11 @@ func (repo *StoryRepository) FindByName(storyName string) domains.StoryDomain {
 	var storyDomain domains.StoryDomain
 	repo.Datasources.Where(&domains.StoryDomain{Name: storyName}).Find(&storyDomain)
 	return storyDomain
+}
+
+// DeleteByID DeleteByID
+func (repo *StoryRepository) DeleteByID(ID uint) *gorm.DB {
+	var storyDomain domains.StoryDomain
+	storyDomain.ID = ID
+	return repo.Datasources.Unscoped().Delete(&storyDomain)
 }

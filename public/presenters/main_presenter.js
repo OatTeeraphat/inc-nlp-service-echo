@@ -7,6 +7,7 @@ var mainPresenter = Vue.component('main-presenter', {
         }
     },
     created: function () {
+        
     },
     beforeDestroy: function () {
     },

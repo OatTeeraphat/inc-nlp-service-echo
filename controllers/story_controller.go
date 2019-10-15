@@ -17,6 +17,7 @@ type StoryController struct {
 type IStoryController interface {
 	ReadAllStoryRecordController(e echo.Context) error
 	NewStoryRecordController(e echo.Context) error
+	DeleteStoryByIDController(e echo.Context) error
 }
 
 // NewStoryController new story controller instace
@@ -26,7 +27,7 @@ func NewStoryController(svc0 services.IStoryService) IStoryController {
 
 // ReadAllStoryRecordController ReadAllStoryRecordController
 func (con StoryController) ReadAllStoryRecordController(e echo.Context) error {
-	response := con.StoryService.ReadAllStoryRecord()
+	response := con.StoryService.ReadAllStoryRecordService()
 	return e.JSON(http.StatusOK, response)
 }
 
@@ -35,5 +36,12 @@ func (con StoryController) NewStoryRecordController(e echo.Context) error {
 	var body models.NewStoryModel
 	e.Bind(&body)
 	response := con.StoryService.NewStoryRecordService(body)
-	return e.JSON(http.StatusOK, response)
+	return e.String(http.StatusOK, response)
+}
+
+// DeleteStoryByIDController DeleteStoryByIDController
+func (con StoryController) DeleteStoryByIDController(e echo.Context) error {
+	storyID := e.QueryParam("id")
+	response := con.StoryService.DeleteStoryByIDService(storyID)
+	return e.String(http.StatusOK, response)
 }
