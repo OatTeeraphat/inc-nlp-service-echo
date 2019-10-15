@@ -1,32 +1,6 @@
-var webChatService = new WebChatService()
-
-var data = {
-    keyword_input: "",
-    nlp_model: {
-        keyword: "keyword",
-        intent: "intent",
-        distance: 0
-    },
-    chat_logs: [
-        {
-            keyword: "keyword",
-            intent: "intent",
-        },
-        {
-            keyword: "keyword",
-            intent: "intent", 
-        },
-        {
-            keyword: "keyword",
-            intent: "intent", 
-        }
-    ]
-}
-
-var webChatComponent = Vue.component('web-chat-component', {
+var webChatPresenter = Vue.component('web-chat-presenter', {    
     template: `
-    <div id="webchat">
-            
+    <div>
         <div v-for="item in chat_logs">
             <span> {{ item.intent }} </span>
         </div>
@@ -35,20 +9,29 @@ var webChatComponent = Vue.component('web-chat-component', {
         <button class="button is-dark" is-primary is-large @click="onSendNlpKeyword()">Greet</button>
     </div> 
     `,
-    data: () => {
-        return data
+    data: function () {
+        return {
+            keyword_input: "",  
+            nlp_model: {
+                keyword: "",
+                intent: "",
+                distance: 0
+            },
+            chat_logs: []
+        }
     },
     created: function () {
-        this.subscription = webChatService.zipEventSourceSubscription(this.nlp_model, this.chat_logs)
+        this.webChatService = new WebChatService()
+        this.subscription = this.webChatService.zipEventSourceSubscription(this.nlp_model, this.chat_logs)
     },
     methods: {
-        onSendNlpKeyword:    function() {
-            webChatService.nextNlpKeyword(this.keyword_input)
-            webChatService.keepWebChatLogs(this.nlp_model)
+        onSendNlpKeyword: function () {
+            this.webChatService.nextNlpKeyword(this.keyword_input)
+            this.webChatService.keepWebChatLogs(this.nlsp_model)
             this.keyword_input = ""
         }
     },
-    beforeDestroy: function() {
+    beforeDestroy: function () {
         this.subscription.unsubscribe()
     }
 })

@@ -18,21 +18,32 @@
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li> <router-link class="nav-link" to="/" exact> Home </router-link> </li>
+                    <li> <router-link class="nav-link" to="/" exact> HOME </router-link> </li>
                     <li> <router-link class="nav-link" to="nlp"> NLP </router-link> </li>
-                    <li> <router-link class="nav-link" :to="{ path: '/story'}" append> Story</router-link> </li>
-                    <li> <router-link class="nav-link" :to="{ path: '/webchat'}" append> WebChat</router-link> </li>
+                    <li> <router-link class="nav-link" :to="{ path: '/story'}" append> STORY</router-link> </li>
+                    <li> <router-link class="nav-link" :to="{ path: '/webchat'}" append> WEB CHAT</router-link> </li>
                 </ul>
             </div>
         </nav>
-        <router-view></router-view>
+        <router-view></router-views>
     </div>
 
 </body>
     <script src="utils/index.js"></script>
 
-    <script src="repositories/webchat_repository.js" ></script>
+    <!-- repositories -->
+    <script src="repositories/http_repository.js" ></script>
+    <script src="repositories/socket_repository.js" ></script>
+
+    <!-- services -->
+    <script src="services/index.js" ></script>
     <script src="services/webchat_service.js" ></script>
+    <script src="services/story_service.js" ></script>
+
+    <!-- presenters -->
+    <script src="presenters/main_presenter.js"></script>
+    <script src="presenters/nlp_presenter.js"></script>
+    <script src="presenters/story_presenter.js"></script>
     <script src="presenters/webchat_presenter.js"></script>
 
     <script type="module" src="app.js"> </script>    

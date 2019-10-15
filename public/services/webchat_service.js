@@ -1,15 +1,16 @@
-const { debounceTime, map, pipe, take, skip, retryWhen, tap, delay } = rxjs.operators
-const { Subject, zip, forkJoin } = rxjs
-
 class WebChatService {
-    webChatRepo = new WebChatRepository()
-    nextNlpKeywordSource$ = this.webChatRepo.getFillChatNlpReplyModelWS()
-    keepWebChatLogsSource$ = new Subject()
-
-    zipEventSource$ = zip(this.nextNlpKeywordSource$, this.keepWebChatLogsSource$)
-
+    
+    constructor(
+        socketRepo = new SocketRepository(), 
+        keepWebChatLogsSource$ = new Subject()
+    ) {
+        this.nextNlpKeywordSource$ = socketRepo.getFillChatNlpReplyModelWS()
+        this.keepChatLogsSource$ = keepWebChatLogsSource$
+        this.zipWebChatEventSource$ = zip(this.nextNlpKeywordSource$, this.keepChatLogsSource$)
+    }
+    
     zipEventSourceSubscription(nlp_model, chat_logs) {
-        return this.zipEventSource$
+        return this.zipWebChatEventSource$
         .pipe(
             retryWhen(errors =>
                 errors.pipe(
@@ -43,7 +44,7 @@ class WebChatService {
     }
 
     keepWebChatLogs(nlp_model_log) {
-        this.keepWebChatLogsSource$.next(nlp_model_log)
+        this.keepChatLogsSource$.next(nlp_model_log)
     }
 
     nextNlpKeyword(keyword_input) {
