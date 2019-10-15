@@ -27,7 +27,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
     methods: {
         onSendNlpKeyword: function () {
             this.webChatService.nextNlpKeyword(this.keyword_input)
-            this.webChatService.keepWebChatLogs(this.nlsp_model)
+            this.webChatService.keepWebChatLogs(this.nlp_model)
             this.keyword_input = ""
         }
     },

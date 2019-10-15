@@ -3,6 +3,6 @@ const { WebSocketSubject } = rxjs.webSocket;
 class SocketRepository {
 
     getFillChatNlpReplyModelWS() {
-        return new WebSocketSubject({url: getHost() + '/v1/fb/webhook/socket.io'})
+        return new WebSocketSubject({url: getSocketHost() + '/v1/fb/webhook/socket.io'})
     }
 }
