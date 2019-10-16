@@ -10,7 +10,7 @@ class WebChatService {
         this.zipWebChatEventSource$ = zip(this.nextNlpKeywordSource$, this.keepChatLogsSource$)
     }
     
-    zipEventSourceSubscription(nlp_model, chat_logs) {
+    zipEventSourceSubscription(chat_logs) {
         return this.zipWebChatEventSource$
         .pipe(
             retryWhen(errors =>
@@ -25,15 +25,9 @@ class WebChatService {
             )
         .subscribe( 
             event => {
-                nlp_model.keyword = event[0].keyword
-                nlp_model.intent = event[0].intent
-                nlp_model.distance = event[0].distance
-
-                chat_logs.push(Object.assign({}, { 
-                    keyword: event[0].keyword, 
-                    intent: event[0].intent 
-                }))
-
+                chat_logs.push(
+                    new GetNlpChatLogsAdapter().adapt(event[0])
+                )
             },
             error => {
                 console.log(error)

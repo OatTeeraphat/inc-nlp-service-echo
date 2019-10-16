@@ -22,7 +22,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
     },
     created: function () {
         this.webChatService = new WebChatService()
-        this.subscription = this.webChatService.zipEventSourceSubscription(this.nlp_model, this.chat_logs)
+        this.subscription = this.webChatService.zipEventSourceSubscription(this.chat_logs)
     },
     beforeDestroy: function () {
         this.subscription.unsubscribe()
