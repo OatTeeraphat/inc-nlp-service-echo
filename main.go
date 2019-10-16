@@ -107,7 +107,6 @@ func main() {
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
-
 	defer e.Close()
 	defer orm.Close()
 }
