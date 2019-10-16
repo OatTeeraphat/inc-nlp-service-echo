@@ -40,7 +40,7 @@ func NewNlpController(nlpRecordService services.INlpRecordService) INlpControlle
 func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) error {
 	keyword := e.QueryParam("keyword")
 	shopID := e.QueryParam("shop_id")
-	response := con.NlpService.ReadNlpReplyModel(keyword, shopID)
+	response := con.NlpService.ReadNlpReplyModelService(keyword, shopID)
 	return e.JSON(http.StatusOK, response)
 }
 
@@ -58,7 +58,7 @@ func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error 
 	createNlpRecordModel := new([]models.CreateNlpRecordModel)
 	e.Bind(&createNlpRecordModel)
 
-	response := con.NlpService.CreateNlpRecord(*createNlpRecordModel)
+	response := con.NlpService.CreateNlpRecordService(*createNlpRecordModel)
 	return e.String(http.StatusOK, response)
 }
 
@@ -95,7 +95,7 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 	sheetName := sheetMap[1]
 	xlsxSheet := result.GetRows(sheetName)
 	e.Logger().Debug(sheetMap)
-	response := con.NlpService.UploadXlsxNlpRecord(xlsxSheet)
+	response := con.NlpService.UploadXlsxNlpRecordService(xlsxSheet)
 
 	return e.String(http.StatusOK, response)
 }
@@ -110,6 +110,6 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 // @Router /v1/nlp/record [delete]
 func (con *NlpController) DropNlpRecordByShopController(e echo.Context) error {
 	// shopID := e.QueryParam("shop_id")
-	response := con.NlpService.DropNlpReplyByShop()
+	response := con.NlpService.DropNlpReplyByShopService()
 	return e.String(http.StatusOK, response)
 }

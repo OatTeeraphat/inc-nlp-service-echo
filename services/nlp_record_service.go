@@ -20,10 +20,10 @@ type NlpRecordService struct {
 
 // INlpRecordService INlpService
 type INlpRecordService interface {
-	UploadXlsxNlpRecord(xlsxSheet [][]string) string
-	DropNlpReplyByShop() string
-	ReadNlpReplyModel(keyword string, shopID string) models.NlpReplyModel
-	CreateNlpRecord(createNlpModel []models.CreateNlpRecordModel) string
+	UploadXlsxNlpRecordService(xlsxSheet [][]string) string
+	DropNlpReplyByShopService() string
+	ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel
+	CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string
 }
 
 // NewNlpRecordService NewNlpService
@@ -35,8 +35,8 @@ func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, 
 	}
 }
 
-// CreateNlpRecord GetNlpModelReply
-func (svc NlpRecordService) CreateNlpRecord(createNlpModel []models.CreateNlpRecordModel) string {
+// CreateNlpRecordService GetNlpModelReply
+func (svc NlpRecordService) CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string {
 
 	for _, item := range createNlpModel {
 		hashValue := nlps.GenerateKeywordMinhash(item.Keyword)
@@ -51,8 +51,8 @@ func (svc NlpRecordService) CreateNlpRecord(createNlpModel []models.CreateNlpRec
 	return "OK"
 }
 
-// UploadXlsxNlpRecord XlsxCreateNlpRecord
-func (svc NlpRecordService) UploadXlsxNlpRecord(xlsxSheet [][]string) string {
+// UploadXlsxNlpRecordService XlsxCreateNlpRecord
+func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) string {
 
 	var nlpRecord []interface{}
 	var tooLongSentence int
@@ -98,8 +98,8 @@ func (svc NlpRecordService) UploadXlsxNlpRecord(xlsxSheet [][]string) string {
 	return "OK"
 }
 
-// ReadNlpReplyModel ReadNlpReplyModel
-func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) models.NlpReplyModel {
+// ReadNlpReplyModelService ReadNlpReplyModel
+func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel {
 	var nlpReplyModel []models.NlpReplyModel
 	var listStoryIDsInShopFound []uint32
 	var keywordMinhash uint32
@@ -126,7 +126,7 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 			Intent:   "DEFAULT_MESSAGE",
 			Distance: 999,
 		}
-		svc.SaveNlpTrainingSets(&nlpReplyModel, 1)
+		svc.SaveNlpTrainingSetsService(&nlpReplyModel, 1)
 		return nlpReplyModel
 	}
 
@@ -143,13 +143,13 @@ func (svc NlpRecordService) ReadNlpReplyModel(keyword string, shopID string) mod
 	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE"}).Info(nlpResult)
 
 	if nlpResult.Distance != 0 {
-		svc.SaveNlpTrainingSets(&nlpResult, 1)
+		svc.SaveNlpTrainingSetsService(&nlpResult, 1)
 	}
 	return nlpResult
 }
 
-// SaveNlpTrainingSets SaveNlpTrainingSets
-func (svc NlpRecordService) SaveNlpTrainingSets(nlpResult *models.NlpReplyModel, shopID uint) {
+// SaveNlpTrainingSetsService SaveNlpTrainingSets
+func (svc NlpRecordService) SaveNlpTrainingSetsService(nlpResult *models.NlpReplyModel, shopID uint) {
 	var nlpTraningRecordDomain domains.NlpTrainingRecordDomain
 	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
 	nlpTraningRecordDomain.Intent = nlpResult.Intent
@@ -158,8 +158,8 @@ func (svc NlpRecordService) SaveNlpTrainingSets(nlpResult *models.NlpReplyModel,
 	svc.nlpTrainingRecordRepository.Save(&nlpTraningRecordDomain)
 }
 
-// DropNlpReplyByShop DropNlpReplyByShop
-func (svc NlpRecordService) DropNlpReplyByShop() string {
+// DropNlpReplyByShopService DropNlpReplyByShop
+func (svc NlpRecordService) DropNlpReplyByShopService() string {
 
 	svc.nlpRecordRepository.Delete()
 	return "OK"

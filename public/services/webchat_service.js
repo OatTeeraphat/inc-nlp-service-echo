@@ -28,6 +28,7 @@ class WebChatService {
                 chat_logs.push(
                     new GetNlpChatLogsAdapter().adapt(event[0])
                 )
+                console.log(chat_logs)
             },
             error => {
                 console.log(error)
