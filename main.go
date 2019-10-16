@@ -71,16 +71,21 @@ func main() {
 	repo1 := repositories.NewNlpRecordRepository(orm)
 	repo3 := repositories.NewShopStoryRepository(orm)
 	repo4 := repositories.NewStoryRepository(orm)
-	// repo5 := repositories.NewShopStoryRepository(orm)
+	repo5 := repositories.NewShopStoryRepository(orm)
+	repo6 := repositories.NewShopRepository(orm)
 
 	// Services
 	svc0 := services.NewNlpRecordService(repo1, repo0, repo3)
 	svc1 := services.NewStoryService(repo4)
+	svc2 := services.NewShopStoryService(repo5, repo6)
+	svc3 := services.NewShopService(repo6)
 
 	// Controllers
 	c0 := controllers.NewNlpController(svc0)
 	c2 := controllers.NewFBWebhookController(svc0, *ws.Upgrader)
 	c3 := controllers.NewStoryController(svc1)
+	c4 := controllers.NewShopStoryController(svc2)
+	c5 := controllers.NewShopController(svc3)
 
 	// Static
 	e.Static("/", "public")
@@ -94,6 +99,14 @@ func main() {
 	e.GET("/v1/story", c3.ReadAllStoryRecordController)
 	e.POST("/v1/story", c3.NewStoryRecordController)
 	e.DELETE("/v1/story", c3.DeleteStoryByIDController)
+
+	e.GET("/v1/shop", c5.ReadShopByIDController)
+	// e.POST("/v1/shop", c5.ReadShopByIDController)
+	// e.DELETE("/v1/shop", c5.ReadShopByIDController)
+
+	e.POST("/v1/shop/story", c4.CreateShopStoryController)
+	// e.GET("/v1/shop/story", c4.CreateShopStoryController)
+	// e.DELETE("/v1/shop/story", c4.CreateShopStoryController)
 
 	e.POST("/v1/nlp/record", c0.CreateNlpRecordByShopController)
 	e.POST("/v1/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)

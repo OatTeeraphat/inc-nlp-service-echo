@@ -13,12 +13,18 @@ type ShopStoryRepository struct {
 
 // IShopStoryRepository shop story mapping interface
 type IShopStoryRepository interface {
+	Save(shopStoryDomain *domains.ShopStoryDomain)
 	FindByShopID(shopID uint32) []domains.ShopStoryDomain
 }
 
 // NewShopStoryRepository shop story mapping instance
 func NewShopStoryRepository(data *gorm.DB) IShopStoryRepository {
 	return &ShopStoryRepository{data}
+}
+
+// Save find similar shop ids
+func (repo *ShopStoryRepository) Save(shopStoryDomain *domains.ShopStoryDomain) {
+	repo.Datasources.Create(&shopStoryDomain)
 }
 
 // FindByShopID find similar shop ids
