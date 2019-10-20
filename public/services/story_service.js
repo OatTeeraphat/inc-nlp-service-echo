@@ -1,7 +1,8 @@
 class StoryService {
     
-    constructor(httpRepository = new HttpRepository()) {
+    constructor(httpRepository = new HttpRepository(), sweetAlertAjaxWrapper = new SweetAlertAjaxWrapper()) {
         this.httpRepository = httpRepository
+        this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
         this.unsubscribe = new Subject()
     }
     
@@ -14,7 +15,8 @@ class StoryService {
     }
 
     deleteStoryByID(storyID) {
-        return sweetAlertAjaxWrapper(this.httpRepository.deleteStoryByID(storyID)).pipe(
+        let event$ = this.httpRepository.deleteStoryByID(storyID)
+        return this.sweetAlertAjaxWrapper.confirmTransaction(event$).pipe(
             takeUntil(this.unsubscribe)
         )
     }

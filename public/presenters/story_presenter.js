@@ -46,7 +46,6 @@ var storyPresenter = Vue.component('story-presenter', {
             )
             .subscribe(
                 it => {
-                    console.debug(it)
                     this.stories = this.stories.filter( item => item.id !== id )
                 },
                 e => { console.debug(e) },
