@@ -1,2 +1,2 @@
-const { debounceTime, map, pipe, take, skip, retryWhen, tap, delay, first, switchMap, mapTo } = rxjs.operators
-const { Subject, zip, forkJoin, of } = rxjs
+const { debounceTime, takeUntil, map, pipe, take, skip, retryWhen, tap, delay, first, switchMap, mapTo, catchError, finalize} = rxjs.operators
+const { Subject, zip, forkJoin, of, from, throwError } = rxjs

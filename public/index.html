@@ -7,7 +7,7 @@
     
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
@@ -32,8 +32,8 @@
             
             <nav class="nav nav-underline nav-sub container bg-light">
                 <router-link class="nav-link active" to="/" exact> HOME </router-link>
-                <router-link class="nav-link" :to="{ path: '/nlp'}"> NLP </router-link>
-                <router-link class="nav-link" :to="{ path: '/logs'}"> LOGS </router-link>
+                <router-link class="nav-link" :to="{ path: '/nlp'}"> NLP SET </router-link>
+                <router-link class="nav-link" :to="{ path: '/logs'}"> NLP LOGS </router-link>
                 <router-link class="nav-link" :to="{ path: '/story'}"> STORY </router-link>
                 <router-link class="nav-link" :to="{ path: '/webchat'}"> WEB CHAT</router-link>
             </nav>
@@ -48,6 +48,13 @@
     </div>
 
 </body>
+    <!-- <script>
+        swal("loading ... ", {
+            buttons: false,
+            timer: 600,
+        });
+    </script> -->
+
     <script src="utils/index.js"></script>
 
     <!-- adapter -->
