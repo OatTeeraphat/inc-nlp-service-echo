@@ -1,23 +1,33 @@
 nlpPresenter = Vue.component('nlp-presenter', {    
     template: `
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">keyword</th>
-                <th scope="col">intent</th>
-                <th scope="col">story</th>
-            </tr>
-        </thead>
-        <tbody v-for="item in nlp_records">
-            <tr>
-                <th scope="row">{{ item.id }}</th>
-                <td>{{ item.keyword }}</td>
-                <td>{{ item.intent }}</td>
-                <td>{{ item.story_name }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-fixed">
+                <thead>
+                    <tr>
+                        <th class="col-1" scope="col">#</th>
+                        <th class="col-4" scope="col">Keyword</th>
+                        <th class="col-4" scope="col">Intent</th>
+                        <th class="col-3" scope="col">Story</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="tr-input">
+                        <th class="col-1" scope="row"></th>
+                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here"></td>
+                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here"></td>
+                        <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here"></td>
+                    </tr>
+                    <tr v-for="item in nlp_records">
+                        <th class="col-1" scope="row">{{ item.id }}</th>
+                        <td class="col-4">{{ item.keyword }}</td>
+                        <td class="col-4">{{ item.intent }}</td>
+                        <td class="col-3">{{ item.story_name }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     `,
     data: function () {
         return {
