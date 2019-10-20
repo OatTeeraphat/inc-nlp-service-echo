@@ -17,6 +17,21 @@ getHttpHost = function () {
 
 class SweetAlertAjaxWrapper {
 
+    readTransaction = (ajaxFunction) => {
+        return ajaxFunction.pipe(
+            catchError( e => {
+                console.error(e)
+                if (e instanceof Error) {
+                    swal({ text: e.message, icon: "error", timer: 600 })
+                }
+                if ( e instanceof AjaxError ) {
+                    swal({ text: e.response.message, icon: "error", timer: 600 })
+                }
+                return throwError(new Error("fallback"))
+            }),
+        )
+    }
+
     confirmTransaction = (ajaxFunction) => {
         return from( swal("Click on either the button or outside the modal.") )
         .pipe(
