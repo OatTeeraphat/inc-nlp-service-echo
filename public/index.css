@@ -266,3 +266,27 @@ th i{
     box-shadow: none;
     border-bottom: 2px solid #663ab7;
 }
+
+.from-search{
+    position: relative;
+    border-radius: 3px;
+    padding-right: 1.5rem;
+}
+.from-search i{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.from-search input{
+    border-bottom: 2px solid #dee2e6;
+    padding: 0 5px 5px !important;
+    transition: all 0.3s ease;
+}
+.from-search input:focus{
+    outline: 0;
+    border-bottom: 2px solid #663ab7;
+}
+
+input:checked ~ .checkmark {
+  background-color: #663ab7;
+}

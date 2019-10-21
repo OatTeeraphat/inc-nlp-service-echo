@@ -4,12 +4,15 @@ nlpPresenter = Vue.component('nlp-presenter', {
         <div class="col">
             <div class="row">
                 <div class="col-12 col-md-9">
-                    <div class="mt-3 mb-4">
-                        <h4 class="">NLP Training Set</h4>
+                    <div class="col mt-3 mb-1">
+                        <h3 class="">NLP Training Set</h3>
                     </div>
                 </div>
                 <div class="col-12 col-md-3 text-right pt-3">
-                    <i class="fe fe-search"></i>
+                    <div class="from-search mt-1 mb-1">
+                        <input type="text" class="form-control-plaintext p-0" placeholder="Search Here">
+                        <i class="fe fe-search"></i>
+                    </div>
                 </div>
             </div>
             <div class="table-responsive">
@@ -33,7 +36,6 @@ nlpPresenter = Vue.component('nlp-presenter', {
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence Here"></td>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here"></td>
                             <td class="col-2">
-            
                                 <div class="form-group tr-dropdown mb-0">
                                     <select class="form-control form-control-sm" id="exampleFormControlSelect1" required>
                                         <option value="" disabled selected hidden>Story Here</option>
@@ -51,7 +53,9 @@ nlpPresenter = Vue.component('nlp-presenter', {
                             </td>
                         </tr>
                         <tr v-for="item in nlp_records">
-                            <th scope="row" class="col-1">{{ item.id }}</th>
+                            <th scope="row" class="col-1">
+                                <input type="checkbox" value="">
+                            </th>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                             <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
