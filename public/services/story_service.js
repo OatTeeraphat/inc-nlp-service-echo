@@ -6,14 +6,12 @@ class StoryService {
         this.unsubscribe = new Subject()
     }
     
-
     getStoryState() {
         let event$ = this.httpRepository.getAllStories()
         return this.sweetAlertAjaxWrapper.readTransaction(event$).pipe(
             takeUntil(this.unsubscribe),
             map( json => new GetStoryModelAdapter().adapt(json.response) )
         )
-        
     }
 
     deleteStoryByID(storyID) {  
