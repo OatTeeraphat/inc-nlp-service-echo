@@ -20,7 +20,6 @@ class SweetAlertAjaxWrapper {
     readTransaction = (ajaxFunction) => {
         return ajaxFunction.pipe(
             catchError( e => {
-                console.error(e)
                 if (e instanceof Error) {
                     swal({ text: e.message, icon: "error", timer: 600 })
                 }
@@ -32,12 +31,17 @@ class SweetAlertAjaxWrapper {
         )
     }
 
+    // confirmTransaction is cancel return { cancel: true } **
     confirmTransaction = (ajaxFunction) => {
-        return from( swal("Click on either the button or outside the modal.") )
+        return from( swal("confirm transaction", { buttons: { cancel: true, ok: true } }) )
         .pipe(
-            switchMap( () => ajaxFunction ),
+            switchMap( it => {
+                if (it) {
+                    return ajaxFunction
+                }
+                return of({cancel: true})
+            }),
             catchError( e => {
-                console.error(e)
                 if (e instanceof Error) {
                     swal({ text: e.message, icon: "error", timer: 600 })
                 }
@@ -46,7 +50,7 @@ class SweetAlertAjaxWrapper {
                 }
                 return throwError(new Error("fallback"))
             }),
-            finalize(() => swal(`The returned .. .`, {icon: "success", timer: 600}))
+            finalize(() => swal('resolve', {icon: "success", timer: 600}))
         )
     }
 }

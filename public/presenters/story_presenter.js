@@ -32,8 +32,10 @@ var storyPresenter = Vue.component('story-presenter', {
     },
     methods: {
         removeStoryByID: function(id) {
-            this.storyService.deleteStoryByID(id).subscribe( it => { 
-                this.stories = this.stories.filter( item => item.id !== id ) 
+            this.storyService.deleteStoryByID(id).subscribe( it => {
+                if ( !it.cancel ) {
+                    return this.stories = this.stories.filter( item => item.id !== id )
+                }
             })
         }
     },
