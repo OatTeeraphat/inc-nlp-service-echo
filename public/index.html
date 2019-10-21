@@ -8,7 +8,8 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 
-    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" type="text/css" href="assets/icon/feather.icon.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     
@@ -27,7 +28,7 @@
         
         <div class="fixed-top navbar-warpper bg-light">
             <nav class="navbar navbar-expand-lg navbar-dark container">
-                <a class="navbar-brand mr-auto mr-lg-0 d-none" href="#"><img src="assets/logo-black.png" alt=""></a>
+                <a class="navbar-brand mr-auto mr-lg-0 invisible" href="#"><img src="assets/logo-black.png" alt=""></a>
                 <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -43,7 +44,6 @@
 
         </div>
         
-
         <div class="container">
             <router-view></router-views>
         </div>
@@ -74,9 +74,6 @@
     <script src="presenters/webchat_presenter.js"></script>
 
     <script type="module" src="app.js"> </script>   
-    
-    <script>
-        feather.replace()
-    </script>
+
 
 </html>
