@@ -18,3 +18,19 @@ type NlpReplyModel struct {
 func NewNlpReplyModel() *NlpReplyModel {
 	return &NlpReplyModel{}
 }
+
+// NlpRecordPaginationSearchModel NlpRecordPaginationSearchModel
+type NlpRecordPaginationSearchModel struct {
+	Page       string       `json:"page"`
+	Limit      string       `json:"limit"`
+	Total      string       `json:"total"`
+	NlpRecords []NlpRecords `json:"nlp_records"`
+}
+
+// NlpRecords NlpRecords
+type NlpRecords struct {
+	ID        uint32 `json:"id"`
+	Keyword   string `json:"keyword"`
+	Intent    string `json:"intent"`
+	StoryName string `json:"story_name"`
+}
