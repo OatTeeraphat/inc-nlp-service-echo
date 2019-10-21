@@ -16,7 +16,7 @@ class StoryService {
         
     }
 
-    deleteStoryByID(storyID) {
+    deleteStoryByID(storyID) {  
         let event$ = this.httpRepository.deleteStoryByID(storyID)
         return this.sweetAlertAjaxWrapper.confirmTransaction(event$).pipe(
             takeUntil(this.unsubscribe)

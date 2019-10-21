@@ -1,4 +1,4 @@
-nlpPresenter = Vue.component('nlp-presenter', {    
+var nlpRecordsPresenter = Vue.component('nlp-presenter', {    
     template: `
     <div class="row">
         <div class="table-responsive">
@@ -58,9 +58,16 @@ nlpPresenter = Vue.component('nlp-presenter', {
         }
     },
     created: function () {
+        nlpRecordsService = new NlpRecordsService()
+        nlpRecordsService.getNlpRecordsPagination().subscribe( it => {
+            this.nlp_records = it.nlp_records
+        })
     },
     beforeDestroy: function () {
     },
     methods: {
+        infiniteScroll: function (event) {
+            console.log(event)
+        }
     },
 })
