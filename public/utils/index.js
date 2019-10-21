@@ -33,13 +33,18 @@ class SweetAlertAjaxWrapper {
 
     // confirmTransaction is cancel return { cancel: true } **
     confirmTransaction = (ajaxFunction) => {
-        return from( swal("confirm transaction", { buttons: { cancel: true, ok: true } }) )
-        .pipe(
+        return from( swal("confirm transaction", { buttons: { cancel: true, ok: true } }) ).pipe(
             switchMap( it => {
                 if (it) {
                     return ajaxFunction
                 }
                 return of({cancel: true})
+            }),
+            map( it => { 
+                if (!it.cancel) {
+                    swal('resolve', {icon: "success", timer: 600}) 
+                }
+                return it
             }),
             catchError( e => {
                 if (e instanceof Error) {
@@ -50,7 +55,7 @@ class SweetAlertAjaxWrapper {
                 }
                 return throwError(new Error("fallback"))
             }),
-            finalize(() => swal('resolve', {icon: "success", timer: 600}))
+            finalize(() =>  { console.log("completet") })
         )
     }
 }
