@@ -6,23 +6,34 @@ nlpPresenter = Vue.component('nlp-presenter', {
                 <thead>
                     <tr>
                         <th class="col-1" scope="col">#</th>
-                        <th class="col-4" scope="col">Keyword</th>
+                        <th class="col-5" scope="col">Keyword</th>
                         <th class="col-4" scope="col">Intent</th>
-                        <th class="col-3" scope="col">Story</th>
+                        <th class="col-2" scope="col">Story</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="tr-input">
-                        <th class="col-1" scope="row"></th>
-                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here"></td>
+                        <th scope="row" class="col-1"></th>
+                        <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here"></td>
                         <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here"></td>
-                        <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here"></td>
+                        <td class="col-2">
+                            
+                            <div class="form-group tr-dropdown mb-0">
+                                <select class="form-control form-control-sm" id="exampleFormControlSelect1">
+                                <option>Story Here</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                </select>
+                            </div>
+                        </td>
                     </tr>
                     <tr v-for="item in nlp_records">
-                        <th class="col-1" scope="row">{{ item.id }}</th>
-                        <td class="col-4">{{ item.keyword }}</td>
-                        <td class="col-4">{{ item.intent }}</td>
-                        <td class="col-3">{{ item.story_name }}</td>
+                        <th scope="row" class="col-1">{{ item.id }}</th>
+                        <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
+                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
+                        <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                     </tr>
                 </tbody>
             </table>
