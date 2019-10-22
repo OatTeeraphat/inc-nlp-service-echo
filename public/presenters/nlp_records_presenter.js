@@ -57,7 +57,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             <th class="col-1 text-center" scope="col">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody @scroll="infiniteHandler">
                         <tr class="tr-add">
                             <td colspan="5" class="col-12"><strong class="mx-3"><i class="fe fe-plus-circle mr-1"></i> Add Row</strong></td>
                         </tr>
@@ -90,67 +90,53 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             <th scope="row" class="col-1">
                                 <input type="checkbox" value="">
                             </th>
-                            <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
+                            <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.id"></td>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                             <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                             <td class="col-1 text-center">
-                                <button type="button" class="btn btn-link btn-table hover-danger" title="Cancle">
+                                <button type="button" class="btn btn-link btn-table hover-danger" title="cancel">
                                     <i class="fe fe-delete"></i>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table>    
+                <div class="row" v-show="isShowLoadingIndicator">
+                    <div class="col-12" style="display:flex; justify-content: center;">
+                        <div class="dot-flashing"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     `,
     data: function () {
         return {
-            nlp_records: [
-                { id: 1, keyword: 'สวัสดีครับ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 0 },
-                { id: 2, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 3, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 4, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 5, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 6, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 7, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 8, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 9, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 10, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 11, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 12, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 13, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 14, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 15, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 16, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 17, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 18, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 19, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 20, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 21, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 22, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-            ]
+            page: 1,
+            isShowLoadingIndicator: false,
+            nlp_records: []
         }
     },
     created: function () {
-
         this.infiniteHandler$$ = new Subject()
         this.nlpRecordsService = new NlpRecordsService()
 
-        this.nlpRecordsService.getNlpRecordsPagination().subscribe( it => this.nlp_records.push(...it.nlp_records)  )
+        this.nlpRecordsService.getNlpRecordsPagination(this.page).subscribe( it => this.nlp_records.push(...it.nlp_records)  )
 
+        this.infiniteHandlerSource$ = this.infiniteHandler$$.pipe( 
+            delay(1600)
+        )
+        console.log(this.page)
 
-        this.infiniteHandler$$.pipe( map ( it => it.srcElement ) )
-        .subscribe( it => {
-            if (it.scrollTop + it.clientHeight >= it.scrollHeight) {
-                this.page ++
+        this.nlpRecordPaginationSource$ = this.nlpRecordsService.getNlpRecordsPagination(this.page)
 
-                this.nlpRecordsService.getNlpRecordsPagination()
-                .subscribe( it => {
-                    this.nlp_records.push(...it.nlp_records)
-                })
-            } 
+        zip( this.infiniteHandlerSource$, this.nlpRecordPaginationSource$ ).pipe( 
+            repeat() 
+        )
+        .subscribe( ([event, item]) => {
+            this.nlp_records.push(...item.nlp_records)
+            this.isShowLoadingIndicator = false
+            this.page ++ 
         })
 
     },
@@ -159,7 +145,11 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     },
     methods: {
         infiniteHandler: function (event) {
-            this.infiniteHandler$$.next(event)
+            let {scrollTop, clientHeight, scrollHeight } = event.srcElement
+            if (scrollTop + clientHeight >= scrollHeight / 2) {
+                this.isShowLoadingIndicator = true
+                this.infiniteHandler$$.next(event)
+            }
         }
     },
 })

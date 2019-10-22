@@ -3,9 +3,9 @@ class NlpRecordsService {
         this.httpRepository = httpRepository
     }
 
-    getNlpRecordsPagination = () => {
-        return this.httpRepository.getNlpRecordsPagination("keyword", "intent", "story", "page").pipe(
-            map( json => new GetNlpRecordsPagination().adapt(json.response) )
+    getNlpRecordsPagination = (page) => {
+        return this.httpRepository.getNlpRecordsPagination("keyword", "intent", "story", page).pipe(
+            map( json => new GetNlpRecordsPagination().adapt(json.response) ),
         )
     }
 }
