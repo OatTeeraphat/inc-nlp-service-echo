@@ -135,18 +135,24 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     },
     created: function () {
 
-        this.infiniteHandler$$ = new BehaviorSubject({ page: 1 })
+        this.infiniteHandler$$ = new Subject()
         this.nlpRecordsService = new NlpRecordsService()
 
-        this.infiniteHandler$$.pipe(
-            debounceTime(600),
-        ).subscribe( it => {
-            console.log(it)
+        this.nlpRecordsService.getNlpRecordsPagination().subscribe( it => this.nlp_records.push(...it.nlp_records)  )
+
+
+        this.infiniteHandler$$.pipe( map ( it => it.srcElement ) )
+        .subscribe( it => {
+            if (it.scrollTop + it.clientHeight >= it.scrollHeight) {
+                this.page ++
+
+                this.nlpRecordsService.getNlpRecordsPagination()
+                .subscribe( it => {
+                    this.nlp_records.push(...it.nlp_records)
+                })
+            } 
         })
 
-        this.nlpRecordsService.getNlpRecordsPagination().subscribe( it => {
-            this.nlp_records = it.nlp_records
-        })
     },
     beforeDestroy: function () {
         this.infiniteHandler$$.complete()
