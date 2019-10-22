@@ -111,7 +111,7 @@ func main() {
 	e.POST("/v1/nlp/record", c0.CreateNlpRecordByShopController)
 	e.POST("/v1/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)
 	e.DELETE("/v1/nlp/record", c0.DropNlpRecordByShopController)
-	e.GET("/v1/nlp/record", c0.ReadNlpRecordByShopController)
+	e.GET("/v1/nlp/record/pagination", c0.ReadPaginationNlpRecordController)
 	e.GET("/v1/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
 	e.GET("/v1/fb/webhook", c2.VerifyFBWebhookController)
 	e.POST("/v1/fb/webhook", c2.ReplyFBWebhookController)

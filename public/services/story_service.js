@@ -1,33 +1,28 @@
 class StoryService {
     
-    constructor(httpRepository = new HttpRepository()) {
+    constructor(httpRepository = new HttpRepository(), sweetAlertAjaxWrapper = new SweetAlertAjaxWrapper()) {
         this.httpRepository = httpRepository
-        this.deleteNextStoryID$ = new Subject()
+        this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
+        this.unsubscribe = new Subject()
     }
-
-    getStoryStateSubscription(stories) {
-        return this.httpRepository.getAllStories().subscribe(
-            it => {
-                stories.push(...it) 
-            }
+    
+    getStoryState() {
+        let event$ = this.httpRepository.getAllStories()
+        return this.sweetAlertAjaxWrapper.readTransaction(event$).pipe(
+            takeUntil(this.unsubscribe),
+            map( json => new GetStoryModelAdapter().adapt(json.response) )
         )
     }
 
-    deleteStoryByIDSubscription(stories) {
-        return this.deleteNextStoryID$
-            .pipe(
-                switchMap( storyID => this.httpRepository.deleteStoryByID(storyID)
-                    .pipe(
-                        mapTo(storyID) 
-                    )
-                )
-            )
-            .subscribe(
-                nextStoryID => stories.splice(stories.findIndex(({id}) => id == nextStoryID), 1)
-            )
+    deleteStoryByID(storyID) {  
+        let event$ = this.httpRepository.deleteStoryByID(storyID)
+        return this.sweetAlertAjaxWrapper.confirmTransaction(event$).pipe(
+            takeUntil(this.unsubscribe)
+        )
     }
 
-    deleteNextStoryID(storyID) {
-        this.deleteNextStoryID$.next(storyID)
+    disposable() {
+        this.unsubscribe.next()
+        this.unsubscribe.complete()
     }
 }

@@ -22,6 +22,7 @@ type NlpRecordService struct {
 type INlpRecordService interface {
 	UploadXlsxNlpRecordService(xlsxSheet [][]string) string
 	DropNlpReplyByShopService() string
+	ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) models.NlpRecordPaginationSearchModel
 	ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel
 	CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string
 }
@@ -160,7 +161,29 @@ func (svc NlpRecordService) SaveNlpTrainingSetsService(nlpResult *models.NlpRepl
 
 // DropNlpReplyByShopService DropNlpReplyByShop
 func (svc NlpRecordService) DropNlpReplyByShopService() string {
-
 	svc.nlpRecordRepository.Delete()
 	return "OK"
+}
+
+// ReadPaginationNlpRecordService ReadPaginationNlpRecordService
+func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) models.NlpRecordPaginationSearchModel {
+	var nlpRecordPaginationSearchModel models.NlpRecordPaginationSearchModel
+
+	nlpRecordPaginationSearchModel.Page = page
+	nlpRecordPaginationSearchModel.Limit = "20"
+	nlpRecordPaginationSearchModel.Total = "100"
+
+	nlpRecordPaginationSearchModel.NlpRecords = []models.NlpRecords{}
+
+	for i := 1; i < 100; i++ {
+		var nlpModels models.NlpRecords
+		nlpModels.ID = uint32(i)
+		nlpModels.Keyword = "mock_keyword"
+		nlpModels.Intent = "mock_intent"
+		nlpModels.StoryName = "story_name"
+
+		nlpRecordPaginationSearchModel.NlpRecords = append(nlpRecordPaginationSearchModel.NlpRecords, nlpModels)
+	}
+
+	return nlpRecordPaginationSearchModel
 }

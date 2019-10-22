@@ -17,8 +17,8 @@ type NlpController struct {
 // INlpController nlp rest api interface
 type INlpController interface {
 	ReadNlpReplyModelByShopController(e echo.Context) error
+	ReadPaginationNlpRecordController(e echo.Context) error
 	CreateNlpRecordByShopController(e echo.Context) error
-	ReadNlpRecordByShopController(e echo.Context) error
 	UploadXlsxNlpRecordByShopController(e echo.Context) error
 	DropNlpRecordByShopController(e echo.Context) error
 }
@@ -62,7 +62,7 @@ func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error 
 	return e.String(http.StatusOK, response)
 }
 
-// ReadNlpRecordByShopController get nlp records by shop
+// ReadPaginationNlpRecordController get nlp records by shop
 // @Summary Read nlp record by shop id
 // @Tags customer
 // @Accept  json
@@ -70,11 +70,13 @@ func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error 
 // @Param shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [get]
-func (con *NlpController) ReadNlpRecordByShopController(e echo.Context) error {
-	// shopID := e.QueryParam("shop_id")
-	// keyword := e.QueryParam("keyword")
-	// response := con.NlpService.ReadNlpReplyModel(keyword, shopID)
-	return e.String(http.StatusOK, "OK")
+func (con *NlpController) ReadPaginationNlpRecordController(e echo.Context) error {
+	intent := e.QueryParam("intent")
+	keyword := e.QueryParam("keyword")
+	story := e.QueryParam("story")
+	page := e.QueryParam("page")
+	response := con.NlpService.ReadPaginationNlpRecordService(keyword, intent, story, page)
+	return e.JSON(http.StatusOK, response)
 }
 
 // UploadXlsxNlpRecordByShopController create new nlp records by shop
