@@ -164,6 +164,8 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                     this.getNlpRecords = this.getNlpRecords.filter( item => {
                         return !this.listNlpRecordByIDsChecked.ids.includes(item.id)
                     })
+
+                    this.listNlpRecordByIDsChecked.ids = []
                 }
             })
         }
