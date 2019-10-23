@@ -86,11 +86,11 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                                 </button>
                             </td>
                         </tr>
-                        <tr v-for="item in nlp_records">
+                        <tr v-for="item in nlpRecords">
                             <th scope="row" class="col-1">
                                 <input type="checkbox" value="">
                             </th>
-                            <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.id"></td>
+                            <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                             <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                             <td class="col-1 text-center">
@@ -114,39 +114,35 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         return {
             page: 1,
             isShowLoadingIndicator: false,
-            nlp_records: []
+            nlpRecords: []
         }
     },
     created: function () {
-        this.infiniteHandler$$ = new Subject()
         this.nlpRecordsService = new NlpRecordsService()
 
-        this.nlpRecordsService.getNlpRecordsPagination(this.page).subscribe( it => this.nlp_records.push(...it.nlp_records)  )
-
-        this.infiniteHandlerSource$ = this.infiniteHandler$$.pipe(
-            debounceTime(600),
-            map( () => {
-                this.page = this.page + 1
-                return { event: event, page: this.page }
-            }),
-            switchMap( it => this.nlpRecordsService.getNlpRecordsPagination(it.page)),
-        )
-        this.infiniteHandlerSource$.subscribe( item => {
-            console.log(item)
-            this.nlp_records.push(...item.nlp_records)
-            this.isShowLoadingIndicator = false
+        this.nlpRecordsService.getNlpRecordsPagination(this.page).subscribe( it => {
+            this.nlpRecords.push(...it.nlp_records)
+            this.page = this.page + 1
         })
 
+        this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
+            console.debug(item)
+            this.nlpRecords.push(...item.nlp_records)
+            this.isShowLoadingIndicator = false
+            this.page = this.page + 1
+        })
+        
     },
     beforeDestroy: function () {
-        this.infiniteHandler$$.complete()
+        this.nlpRecordsService.disposable()
     },
     methods: {
         infiniteHandler: function (event) {
             let {scrollTop, clientHeight, scrollHeight } = event.srcElement
+
             if (scrollTop + clientHeight >= scrollHeight / 1.2) {
                 this.isShowLoadingIndicator = true
-                this.infiniteHandler$$.next({event: event, page: this.page})
+                this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
             }
         }
     },

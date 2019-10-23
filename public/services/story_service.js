@@ -7,16 +7,16 @@ class StoryService {
     }
     
     getStoryState() {
-        let event$ = this.httpRepository.getAllStories()
-        return this.sweetAlertAjaxWrapper.readTransaction(event$).pipe(
+        let getAllStoriesEvent$ = this.httpRepository.getAllStories()
+        return this.sweetAlertAjaxWrapper.readTransaction(getAllStoriesEvent$).pipe(
             takeUntil(this.unsubscribe),
             map( json => new GetStoryModelAdapter().adapt(json.response) )
         )
     }
 
     deleteStoryByID(storyID) {  
-        let event$ = this.httpRepository.deleteStoryByID(storyID)
-        return this.sweetAlertAjaxWrapper.confirmTransaction(event$).pipe(
+        let deleteStoryByIDEvent$ = this.httpRepository.deleteStoryByID(storyID)
+        return this.sweetAlertAjaxWrapper.confirmTransaction(deleteStoryByIDEvent$).pipe(
             takeUntil(this.unsubscribe)
         )
     }
