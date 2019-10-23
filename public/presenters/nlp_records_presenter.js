@@ -24,7 +24,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             </button>
                             <div class="dropdown-menu">
                                 <button @click="selectAllNlpRecord" class="dropdown-item">Select All</button>
-                                <button @click="" class="dropdown-item">Save All</button>
+                                <!-- <button @click="" class="dropdown-item">Save All</button> -->
                                 <div class="dropdown-divider"></div>
                                 <button @click="bulkDeleteNlpRecord" class="dropdown-item text-danger">Delete All</button>
                             </div>
@@ -128,9 +128,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             if ( !item.cancel ) {
                 this.getNlpRecords.push(...item.nlp_records)
-                this.isShowLoadingIndicator = false
-                this.page = this.page + 1
             }
+            this.isShowLoadingIndicator = false
+            this.page = this.page + 1
         })
     },
     beforeDestroy: function () {
