@@ -23,10 +23,10 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                                 Bulk Action
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Select All</a>
-                                <a class="dropdown-item" href="#">Save All</a>
+                                <button @click="selectAllNlpRecord" class="dropdown-item">Select All</button>
+                                <button @click="" class="dropdown-item">Save All</button>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#">Delete All</a>
+                                <button @click="bulkDeleteNlpRecord" class="dropdown-item text-danger">Delete All</button>
                             </div>
                         </div>
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -88,9 +88,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                         </tr>
                         <tr v-for="item in getNlpRecords">
                             <th scope="row" class="col-1">
-                                <input type="checkbox" value="">
+                                <input :value="item.id" v-model="listNlpRecordByIDsChecked.ids" type="checkbox">
                             </th>
-                            <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
+                            <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.id"></td>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                             <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                             <td class="col-1 text-center">
@@ -114,6 +114,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         return {
             page: 1,
             isShowLoadingIndicator: false,
+            listNlpRecordByIDsChecked: { ids: [] },
             getNlpRecords: [],
             searchNlpRecords: []
         }
@@ -128,13 +129,11 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
 
         this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             if ( !item.cancel ) {
-                console.debug(item)
                 this.getNlpRecords.push(...item.nlp_records)
                 this.isShowLoadingIndicator = false
                 this.page = this.page + 1
             }
         })
-
     },
     beforeDestroy: function () {
         this.nlpRecordsService.disposable()
@@ -147,6 +146,27 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                 this.isShowLoadingIndicator = true
                 this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
             }
+        },
+        
+        selectAllNlpRecord: function(event) {
+            this.listNlpRecordByIDsChecked.ids = []
+
+            this.getNlpRecords.forEach( select => {
+                this.listNlpRecordByIDsChecked.ids.push(select.id)
+            })
+
+        },
+        bulkDeleteNlpRecord: function(event) {
+            
+            this.nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( alertEvent => {
+
+                if( !alertEvent.cancel ) {
+                    this.getNlpRecords = this.getNlpRecords.filter( item => {
+                        return !this.listNlpRecordByIDsChecked.ids.includes(item.id)
+                    })
+                }
+            })
         }
+
     },
 })
