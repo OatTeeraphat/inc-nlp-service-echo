@@ -123,20 +123,18 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
 
         this.nlpRecordsService.getNlpRecordsPagination(this.page).subscribe( it => this.nlp_records.push(...it.nlp_records)  )
 
-        this.infiniteHandlerSource$ = this.infiniteHandler$$.pipe( 
-            delay(1600)
+        this.infiniteHandlerSource$ = this.infiniteHandler$$.pipe(
+            debounceTime(600),
+            map( () => {
+                this.page = this.page + 1
+                return { event: event, page: this.page }
+            }),
+            switchMap( it => this.nlpRecordsService.getNlpRecordsPagination(it.page)),
         )
-        console.log(this.page)
-
-        this.nlpRecordPaginationSource$ = this.nlpRecordsService.getNlpRecordsPagination(this.page)
-
-        zip( this.infiniteHandlerSource$, this.nlpRecordPaginationSource$ ).pipe( 
-            repeat() 
-        )
-        .subscribe( ([event, item]) => {
+        this.infiniteHandlerSource$.subscribe( item => {
+            console.log(item)
             this.nlp_records.push(...item.nlp_records)
             this.isShowLoadingIndicator = false
-            this.page ++ 
         })
 
     },
@@ -146,9 +144,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     methods: {
         infiniteHandler: function (event) {
             let {scrollTop, clientHeight, scrollHeight } = event.srcElement
-            if (scrollTop + clientHeight >= scrollHeight / 2) {
+            if (scrollTop + clientHeight >= scrollHeight / 1.2) {
                 this.isShowLoadingIndicator = true
-                this.infiniteHandler$$.next(event)
+                this.infiniteHandler$$.next({event: event, page: this.page})
             }
         }
     },
