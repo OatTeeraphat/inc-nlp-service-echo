@@ -17,20 +17,24 @@ getHttpHost = function () {
 
 class SweetAlertAjaxWrapper {
 
+    constructor() {
+        this.duration = 900
+    }
+
+    // readTransaction 
     readTransaction = (ajaxFunction) => {
         return ajaxFunction.pipe(
             catchError( e => {
                 if (e instanceof Error) {
-                    swal({ text: e.message, icon: "error", timer: 600 })
+                    swal({ text: e.message, icon: "error", timer: this.duration })
                 }
                 if ( e instanceof AjaxError ) {
-                    swal({ text: e.response.message, icon: "error", timer: 600 })
+                    swal({ text: e.response.message, icon: "error", timer: this.duration })
                 }
                 return throwError(new Error("fallback"))
             }),
         )
     }
-
     // confirmTransaction is cancel return { cancel: true } **
     confirmTransaction = (ajaxFunction) => {
         return from( swal("confirm transaction", { buttons: { cancel: true, ok: true } }) ).pipe(
@@ -42,20 +46,20 @@ class SweetAlertAjaxWrapper {
             }),
             map( it => { 
                 if (!it.cancel) {
-                    swal('resolve', {icon: "success", timer: 600}) 
+                    swal('resolve', {icon: "success", timer: this.duration}) 
                 }
                 return it
             }),
             catchError( e => {
                 if (e instanceof Error) {
-                    swal({ text: e.message, icon: "error", timer: 600 })
+                    swal({ text: e.message, icon: "error", timer: this.duration })
                 }
                 if ( e instanceof AjaxError ) {
-                    swal({ text: e.response.message, icon: "error", timer: 600 })
+                    swal({ text: e.response.message, icon: "error", timer: this.duration })
                 }
                 return throwError(new Error("fallback"))
             }),
-            finalize(() =>  { console.log("completet") })
+            finalize(() =>  { console.log("complete") })
         )
     }
 }

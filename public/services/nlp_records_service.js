@@ -1,5 +1,10 @@
 class NlpRecordsService {
-    constructor(httpRepository = new HttpRepository()) {
+
+    constructor(
+        httpRepository = new HttpRepository(),
+        sweetAlertAjaxWrapper = new SweetAlertAjaxWrapper()
+    ) {
+        this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
         this.httpRepository = httpRepository
         this.infiniteHandler$$ = new Subject()
         this.unsubscribe = new Subject()
@@ -16,7 +21,7 @@ class NlpRecordsService {
         return this.infiniteHandler$$.pipe(
             takeUntil(this.unsubscribe),
             debounceTime(600),
-            switchMap( it => this.getNlpRecordsPagination(it.page)),
+            switchMap( it => this.sweetAlertAjaxWrapper.readTransaction(this.getNlpRecordsPagination(it.page)) ),
         )
     }
 

@@ -126,12 +126,14 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         })
 
         this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
-            console.debug(item)
-            this.nlpRecords.push(...item.nlp_records)
-            this.isShowLoadingIndicator = false
-            this.page = this.page + 1
+            if ( !item.cancel ) {
+                console.debug(item)
+                this.nlpRecords.push(...item.nlp_records)
+                this.isShowLoadingIndicator = false
+                this.page = this.page + 1
+            }
         })
-        
+
     },
     beforeDestroy: function () {
         this.nlpRecordsService.disposable()
