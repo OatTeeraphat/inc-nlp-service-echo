@@ -102,7 +102,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                     </tbody>
                 </table>    
                 <div class="row" v-show="isShowLoadingIndicator">
-                    <div class="col-12" style="display:flex; justify-content: center;">
+                    <div class="col-12 dot-flashing-center">
                         <div class="dot-flashing"></div>
                     </div>
                 </div>

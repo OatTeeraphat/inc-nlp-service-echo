@@ -627,3 +627,10 @@ th i{
 input:checked ~ .checkmark {
   background-color: #663ab7;
 }
+
+.dot-flashing-center {
+    display: flex; 
+    height: 1rem;
+    justify-content: center;
+    align-items: flex-start;
+}
