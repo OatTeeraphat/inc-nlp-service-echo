@@ -86,7 +86,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                                 </button>
                             </td>
                         </tr>
-                        <tr v-for="item in nlpRecords">
+                        <tr v-for="item in getNlpRecords">
                             <th scope="row" class="col-1">
                                 <input type="checkbox" value="">
                             </th>
@@ -100,7 +100,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             </td>
                         </tr>
                     </tbody>
-                </table>    
+                </table>
                 <div class="row" v-show="isShowLoadingIndicator">
                     <div class="col-12 dot-flashing-center">
                         <div class="dot-flashing"></div>
@@ -114,21 +114,22 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         return {
             page: 1,
             isShowLoadingIndicator: false,
-            nlpRecords: []
+            getNlpRecords: [],
+            searchNlpRecords: []
         }
     },
     created: function () {
         this.nlpRecordsService = new NlpRecordsService()
 
         this.nlpRecordsService.getNlpRecordsPagination(this.page).subscribe( it => {
-            this.nlpRecords.push(...it.nlp_records)
+            this.getNlpRecords.push(...it.nlp_records)
             this.page = this.page + 1
         })
 
         this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             if ( !item.cancel ) {
                 console.debug(item)
-                this.nlpRecords.push(...item.nlp_records)
+                this.getNlpRecords.push(...item.nlp_records)
                 this.isShowLoadingIndicator = false
                 this.page = this.page + 1
             }
