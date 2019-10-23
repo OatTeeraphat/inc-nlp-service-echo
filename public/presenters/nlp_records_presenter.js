@@ -24,6 +24,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             </button>
                             <div class="dropdown-menu">
                                 <button @click="selectAllNlpRecord" class="dropdown-item">Select All</button>
+                                <button @click="deselectAllNlpRecord" class="dropdown-item">Deselect All</button>
                                 <!-- <button @click="" class="dropdown-item">Save All</button> -->
                                 <div class="dropdown-divider"></div>
                                 <button @click="bulkDeleteNlpRecord" class="dropdown-item text-danger">Delete All</button>
@@ -151,7 +152,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             this.getNlpRecords.forEach( select => {
                 this.listNlpRecordByIDsChecked.ids.push(select.id)
             })
-
+        },
+        deselectAllNlpRecord: function(event) {
+            this.listNlpRecordByIDsChecked.ids = []
         },
         bulkDeleteNlpRecord: function(event) {
             
