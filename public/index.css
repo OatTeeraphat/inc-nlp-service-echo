@@ -633,6 +633,7 @@ input:checked ~ .checkmark {
   background-color: #663ab7;
 }
 
+<<<<<<< HEAD
 .dropdown-file{
     width: 300px;
     padding: 15px;
@@ -665,3 +666,11 @@ input:checked ~ .checkmark {
     overflow-y: scroll;
 }
 
+=======
+.dot-flashing-center {
+    display: flex; 
+    height: 1rem;
+    justify-content: center;
+    align-items: flex-start;
+}
+>>>>>>> 985c4b413297c869eb7e3d8c7e8b2ff0d0565c1d

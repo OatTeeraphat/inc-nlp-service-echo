@@ -23,10 +23,11 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                                 Bulk Action
                             </button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Select All</a>
-                                <a class="dropdown-item" href="#">Trained Select</a>
+                                <button @click="selectAllNlpRecord" class="dropdown-item">Select All</button>
+                                <button @click="deselectAllNlpRecord" class="dropdown-item">Deselect All</button>
+                                <!-- <button @click="" class="dropdown-item">Save All</button> -->
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" href="#">Delete All</a>
+                                <button @click="bulkDeleteNlpRecord" class="dropdown-item text-danger">Delete All</button>
                             </div>
                         </div>
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -69,8 +70,8 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             <th class="col-1 text-center" scope="col">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="tr-add d-none">
+                    <tbody @scroll="infiniteHandler">
+                        <tr class="tr-add">
                             <td colspan="5" class="col-12"><strong class="mx-3"><i class="fe fe-plus-circle mr-1"></i> Add Row</strong></td>
                         </tr>
                         <tr class="tr-input">
@@ -98,80 +99,92 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                                 </button>
                             </td>
                         </tr>
-                        <tr v-for="item in nlp_records">
+                        <tr v-for="item in getNlpRecords">
                             <th scope="row" class="col-1">
-                                <input type="checkbox" value="">
+                                <input :value="item.id" v-model="listNlpRecordByIDsChecked.ids" type="checkbox">
                             </th>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                             <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                             <td class="col-1 text-center">
-                                <button type="button" class="btn btn-link btn-table hover-danger" title="Cancle">
+                                <button type="button" class="btn btn-link btn-table hover-danger" title="cancel">
                                     <i class="fe fe-delete"></i>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <div class="row" v-show="isShowLoadingIndicator">
+                    <div class="col-12 dot-flashing-center">
+                        <div class="dot-flashing"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     `,
     data: function () {
         return {
-            nlp_records: [
-                { id: 1, keyword: 'สวัสดีครับ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 0 },
-                { id: 2, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 3, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 4, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 5, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 6, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 7, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 8, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 9, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 10, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 11, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 12, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 13, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 14, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 15, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 16, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 17, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 18, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 19, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 20, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 21, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-                { id: 22, keyword: 'สวัสดีค่ะ', intent: 'Greeting', story_name: 'แนะนำสินค้า', distance: 1 },
-            ]
+            page: 1,
+            isShowLoadingIndicator: false,
+            listNlpRecordByIDsChecked: { ids: [] },
+            getNlpRecords: [],
+            searchNlpRecords: []
         }
     },
     created: function () {
-
-        this.infiniteHandler$$ = new Subject()
         this.nlpRecordsService = new NlpRecordsService()
-
-        this.nlpRecordsService.getNlpRecordsPagination().subscribe( it => this.nlp_records.push(...it.nlp_records)  )
-
-
-        this.infiniteHandler$$.pipe( map ( it => it.srcElement ) )
-        .subscribe( it => {
-            if (it.scrollTop + it.clientHeight >= it.scrollHeight) {
-                this.page ++
-
-                this.nlpRecordsService.getNlpRecordsPagination()
-                .subscribe( it => {
-                    this.nlp_records.push(...it.nlp_records)
-                })
-            } 
+        this.nlpRecordsService.getNlpRecordsPagination(this.page).subscribe( it => {
+            this.getNlpRecords.push(...it.nlp_records)
+            this.page = this.page + 1
         })
-
+        this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
+            if ( !item.cancel ) {
+                this.getNlpRecords.push(...item.nlp_records)
+            }
+            this.isShowLoadingIndicator = false
+            this.page = this.page + 1
+        })
     },
     beforeDestroy: function () {
-        this.infiniteHandler$$.complete()
+        this.nlpRecordsService.disposable()
     },
     methods: {
         infiniteHandler: function (event) {
-            this.infiniteHandler$$.next(event)
+            let {scrollTop, clientHeight, scrollHeight } = event.srcElement
+
+            if (scrollTop + clientHeight >= scrollHeight / 1.2) {
+                this.isShowLoadingIndicator = true
+                this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
+            }
+        },
+        selectAllNlpRecord: function(event) {
+            this.listNlpRecordByIDsChecked.ids = []
+
+            this.getNlpRecords.forEach( select => {
+                this.listNlpRecordByIDsChecked.ids.push(select.id)
+            })
+        },
+        deselectAllNlpRecord: function(event) {
+            this.listNlpRecordByIDsChecked.ids = []
+        },
+        bulkDeleteNlpRecord: function(event) {
+            
+            // bulk delete 
+            this.nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( alertEvent => {
+
+                if( !alertEvent.cancel ) {
+                    this.getNlpRecords = this.getNlpRecords.filter( item => {
+                        return !this.listNlpRecordByIDsChecked.ids.includes(item.id)
+                    })
+
+                    this.listNlpRecordByIDsChecked.ids = []
+                }
+            })
+
+            // next page event
+            this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
         }
+
     },
 })
