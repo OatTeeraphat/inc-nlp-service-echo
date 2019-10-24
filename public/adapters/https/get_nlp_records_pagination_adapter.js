@@ -13,7 +13,7 @@ class GetNlpRecordsPagination {
             item.nlp_records.push({
                 id: it.id,
                 keyword: it.keyword,
-                intent: it.keyword,
+                intent: it.intent,
                 story_name: it.story_name
             })
 
