@@ -31,7 +31,19 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             </div>
                         </div>
                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                            <button type="button" class="btn btn-secondary"><i class="fe fe-upload"></i></button>
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fe fe-upload mr-1"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-file" aria-labelledby="btnGroupDrop">
+                                    <strong>Upload Training Set<strong>
+                                    <div class="custom-file mt-2 mb-1">
+                                        <label class="custom-file-label" for="customFile">Choose file</label>
+                                        <input type="file" class="custom-file-input" id="customFile">
+                                    </div>
+                                    <small class="text-muted">XLSX file max size 20 mb</small>
+                                </div>
+                            </div>
                             <div class="btn-group" role="group">
                                 <button id="btnGroupDrop1" type="button" class="btn btn-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fe fe-download mr-1"></i>
@@ -62,7 +74,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                         <tr class="tr-add">
                             <td colspan="5" class="col-12"><strong class="mx-3"><i class="fe fe-plus-circle mr-1"></i> Add Row</strong></td>
                         </tr>
-                        <tr class="tr-input d-none">
+                        <tr class="tr-input">
                             <th scope="row" class="col-1">
                                 <button type="button" class="btn btn-table btn-link hover-danger" title="Cancle">
                                     <i class="fe fe-x text-danger "></i>
