@@ -418,6 +418,11 @@ th i{
   }
 }
 
+.headline{
+    font-size: 0.66em;
+    color: #6b757c;
+}
+
 .nav-scroller {
   position: relative;
   z-index: 2;
@@ -627,3 +632,36 @@ th i{
 input:checked ~ .checkmark {
   background-color: #663ab7;
 }
+
+.dropdown-file{
+    width: 300px;
+    padding: 15px;
+}
+
+.card-webchat .card-body {
+    border: none;
+    background: #dfdfdf;
+    min-height: 235px;
+    height: 30vh;
+}
+
+.btn-card-webchat{
+    top: -2px;
+    position: relative;
+}
+
+.warpper .card{
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+.warpper .card-body {
+    background: inherit;
+    border-radius: .25rem;
+    min-height: 165px;
+    height: calc(3vh - 4.5rem);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
