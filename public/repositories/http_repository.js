@@ -19,7 +19,8 @@ class HttpRepository {
         url: getHttpHost() + '/v1/story?id=' + id 
     })
 
-
     bulkDeleteNlpRecordsByIDs = (ids) => of(ids)
+
+    deleteNlpRecordByID = (id) => of(id)
 
 }

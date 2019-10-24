@@ -95,7 +95,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                             <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                             <td class="col-1 text-center">
-                                <button type="button" class="btn btn-link btn-table hover-danger" title="cancel">
+                                <button @click="deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
                                     <i class="fe fe-delete"></i>
                                 </button>
                             </td>
@@ -160,7 +160,14 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             })
             // next page event
             this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
+        },
+        deleteNlpRecordByID: function (id) {
+            this.nlpRecordsService.deleteNlpRecordByID(id).subscribe( alertEvent => {
+                if (!alertEvent.cancel) {
+                    this.getNlpRecords = this.getNlpRecords.filter( item => item.id !== id)
+                }
+            })
+            
         }
-
     },
 })

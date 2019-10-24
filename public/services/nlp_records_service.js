@@ -35,6 +35,14 @@ class NlpRecordsService {
         )
     }
 
+    deleteNlpRecordByID = (id) => {
+        let deleteNlpRecordEvent$ = this.httpRepository.deleteNlpRecordByID(id)
+        return this.sweetAlertAjaxWrapper.confirmTransaction(deleteNlpRecordEvent$).pipe(
+            takeUntil(this.unsubscribe),
+            map( json => json)
+        )
+    }
+
     nextPageNlpRecordsByInfiniteScroll = (page) => {
         this.infiniteHandler$$.next({page: page})
     }

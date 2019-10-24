@@ -57,7 +57,7 @@ class SweetAlertAjaxWrapper {
                 if ( e instanceof AjaxError ) {
                     swal({ text: e.response.message, icon: "error", timer: this.duration })
                 }
-                return throwError(new Error("fallback"))
+                return throwError(e)
             }),
             finalize(() =>  { console.log("complete") })
         )
