@@ -158,6 +158,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         },
         bulkDeleteNlpRecord: function(event) {
             
+            // bulk delete 
             this.nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( alertEvent => {
 
                 if( !alertEvent.cancel ) {
@@ -168,6 +169,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                     this.listNlpRecordByIDsChecked.ids = []
                 }
             })
+
+            // next page event
+            this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
         }
 
     },
