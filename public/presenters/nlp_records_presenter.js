@@ -122,10 +122,6 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     },
     created: function () {
         this.nlpRecordsService = new NlpRecordsService()
-        this.nlpRecordsService.getNlpRecordsPagination(this.page).subscribe( it => {
-            this.getNlpRecords.push(...it.nlp_records)
-            this.page = this.page + 1
-        })
         this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             if ( !item.cancel ) {
                 this.getNlpRecords.push(...item.nlp_records)
@@ -140,7 +136,6 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     methods: {
         infiniteHandler: function (event) {
             let {scrollTop, clientHeight, scrollHeight } = event.srcElement
-
             if (scrollTop + clientHeight >= scrollHeight / 1.2) {
                 this.isShowLoadingIndicator = true
                 this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
@@ -148,28 +143,21 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         },
         selectAllNlpRecord: function(event) {
             this.listNlpRecordByIDsChecked.ids = []
-
-            this.getNlpRecords.forEach( select => {
-                this.listNlpRecordByIDsChecked.ids.push(select.id)
-            })
+            this.getNlpRecords.forEach( select => { this.listNlpRecordByIDsChecked.ids.push(select.id) })
         },
         deselectAllNlpRecord: function(event) {
             this.listNlpRecordByIDsChecked.ids = []
         },
         bulkDeleteNlpRecord: function(event) {
-            
             // bulk delete 
             this.nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( alertEvent => {
-
                 if( !alertEvent.cancel ) {
                     this.getNlpRecords = this.getNlpRecords.filter( item => {
                         return !this.listNlpRecordByIDsChecked.ids.includes(item.id)
                     })
-
                     this.listNlpRecordByIDsChecked.ids = []
                 }
             })
-
             // next page event
             this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
         }

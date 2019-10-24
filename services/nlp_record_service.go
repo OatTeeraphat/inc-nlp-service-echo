@@ -172,11 +172,11 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	var nlpRecordPaginationSearchModel models.NlpRecordPaginationSearchModel
 
 	nlpRecordPaginationSearchModel.Page = page
-	nlpRecordPaginationSearchModel.Limit = "20"
+	nlpRecordPaginationSearchModel.Limit = "40"
 
 	nlpRecordsCount := svc.nlpRecordRepository.Count()
 
-	pageSizeFloat := float64(nlpRecordsCount) / 20
+	pageSizeFloat := float64(nlpRecordsCount) / 40
 
 	nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Floor(pageSizeFloat), 'f', 0, 64)
 
@@ -192,7 +192,7 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 
 	nlpRecordPaginationSearchModel.NlpRecords = []models.NlpRecords{}
 
-	for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 20) {
+	for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 40) {
 		var nlpModels models.NlpRecords
 		nlpModels.ID = item.ID
 		nlpModels.Keyword = item.Keyword
