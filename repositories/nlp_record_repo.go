@@ -20,11 +20,13 @@ type NlpRecordRepository struct {
 // INlpRecordRepository nlp query appearance interface
 type INlpRecordRepository interface {
 	Save(nlpRecordDomain *domains.NlpRecordDomain)
-	Delete() *gorm.DB
 	BulkCreateNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error
 	FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain
 	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
+	Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain
+	Count() int64
+	Delete() *gorm.DB
 }
 
 // NewNlpRecordRepository new nlp record instance
@@ -66,6 +68,20 @@ func (repo *NlpRecordRepository) BulkCreateNlpRecords(nlpRecordDomain []interfac
 // Delete Delete
 func (repo *NlpRecordRepository) Delete() *gorm.DB {
 	return repo.Datasources.Unscoped().Delete(&domains.NlpRecordDomain{})
+}
+
+// Count Count
+func (repo *NlpRecordRepository) Count() int64 {
+	var totalPage int64
+	repo.Datasources.Table("nlp_records").Count(&totalPage)
+	return totalPage
+}
+
+// Pagination Pagination
+func (repo *NlpRecordRepository) Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain {
+	var nlpRecordDomain []domains.NlpRecordDomain
+	repo.Datasources.Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id asc").Find(&nlpRecordDomain)
+	return nlpRecordDomain
 }
 
 // BulkInsert multiple records at once

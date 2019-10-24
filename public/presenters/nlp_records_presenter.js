@@ -91,7 +91,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             <th scope="row" class="col-1">
                                 <input :value="item.id" v-model="listNlpRecordByIDsChecked.ids" type="checkbox">
                             </th>
-                            <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.id"></td>
+                            <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                             <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                             <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                             <td class="col-1 text-center">

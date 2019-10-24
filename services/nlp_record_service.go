@@ -6,6 +6,8 @@ import (
 	"inc-nlp-service-echo/nlps"
 	"inc-nlp-service-echo/repositories"
 	"inc-nlp-service-echo/utils"
+	"math"
+	"strconv"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -171,16 +173,31 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 
 	nlpRecordPaginationSearchModel.Page = page
 	nlpRecordPaginationSearchModel.Limit = "20"
-	nlpRecordPaginationSearchModel.Total = "100"
+
+	nlpRecordsCount := svc.nlpRecordRepository.Count()
+
+	pageSizeFloat := float64(nlpRecordsCount) / 20
+
+	nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Floor(pageSizeFloat), 'f', 0, 64)
+
+	pageInt, err := strconv.Atoi(page)
+
+	if err != nil {
+		log.Error(err)
+	}
+
+	log.Info(nlpRecordsCount)
+
+	// nlpRecordPaginationSearchModel.Total = string(nlpRecordsCount)
 
 	nlpRecordPaginationSearchModel.NlpRecords = []models.NlpRecords{}
 
-	for i := 1; i < 100; i++ {
+	for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 20) {
 		var nlpModels models.NlpRecords
-		nlpModels.ID = uint32(i)
-		nlpModels.Keyword = "mock_keyword"
-		nlpModels.Intent = "mock_intent"
-		nlpModels.StoryName = "story_name"
+		nlpModels.ID = item.ID
+		nlpModels.Keyword = item.Keyword
+		nlpModels.Intent = item.Intent
+		nlpModels.StoryName = "mock_story_name"
 
 		nlpRecordPaginationSearchModel.NlpRecords = append(nlpRecordPaginationSearchModel.NlpRecords, nlpModels)
 	}
