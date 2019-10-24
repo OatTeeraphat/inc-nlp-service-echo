@@ -21,7 +21,9 @@ class NlpRecordsService {
         return this.infiniteHandler$$.pipe(
             takeUntil(this.unsubscribe),
             debounceTime(200),
-            concatMap( ({ page }) => this.sweetAlertAjaxWrapper.readTransaction(this.getNlpRecordsPagination(page)) ),
+            concatMap( ({ page }) => 
+                this.sweetAlertAjaxWrapper.readTransaction( this.getNlpRecordsPagination(page) ) 
+            ),
         )
     }
 
