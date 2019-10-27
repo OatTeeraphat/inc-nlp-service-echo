@@ -26,7 +26,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                         </div>
                         <p class="card-text">Natural Language is accessible via our REST API.</p>
                         <div class="input-group">
-                            <input  @keyup.13="onSendNlpKeyword()" type="text" class="form-control" placeholder="Enter Sentence, To Be Analyze">
+                            <input  @keyup.13="onSendNlpKeyword()" v-model="keyword_input" type="text" class="form-control" placeholder="Enter Sentence, To Be Analyze">
                             <div class="input-group-append">
                                 <button @click="onSendNlpKeyword()" class="btn btn-purple text-white" type="button" id="button-addon2">Analyze</button>
                             </div>
@@ -58,7 +58,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                                                 <span class="text-muted">{{ this.current_time }} : <br></span>hi
                                             </code>
                                             <code class="highlighter-rouge d-block" v-for="item in chat_logs" >
-                                                <span class="text-muted">10/24/2019, 10:20:12 PM : <br></span>{ keyword: "", intent: "", distance: 0 }
+                                                <span class="text-muted">10/24/2019, 10:20:12 PM : <br></span> {{ item }}
                                             </code>
                                         </div>
                                     </div>
@@ -90,7 +90,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                                                 <span class="text-muted">{{ this.current_time }} : <br></span>hi
                                             </code>
                                             <code class="highlighter-rouge d-block" v-for="item in chat_logs" >
-                                                <span class="text-muted">10/24/2019, 10:20:12 PM : <br></span>{ keyword: "", intent: "", distance: 0 }
+                                                <span class="text-muted">10/24/2019, 10:20:12 PM : <br></span> {{ item }}
                                             </code>
                                         </div>
                                     </div>
@@ -102,28 +102,29 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
             </div>
         </div>
 
-
-
-        
-
     </div> 
     `,
     data: function () {
         return {
             keyword_input: "",  
-            nlp_model: {
-                keyword: "",
-                intent: "",
-                distance: 0
-            },
             chat_logs: [],
             current_time : ""
         }
     },
+    created: function () {
+        this.webChatService = new WebChatService()
+        this.subscription = this.webChatService.getFillChatNlpReplyModelWS().subscribe( item => {
+            console.log(item)
+            this.chat_logs.push( new GetNlpChatLogsAdapter().adapt(item))
+        })
+        this.getCurrentTime()
+    },
+    beforeDestroy: function () {
+        this.subscription.unsubscribe()
+    },
     methods: {
         onSendNlpKeyword: function () {
             this.webChatService.nextNlpKeyword(this.keyword_input)
-            this.webChatService.keepWebChatLogs(this.nlp_model)
             this.keyword_input = ""
         },
         getCurrentTime: function() {
@@ -131,12 +132,4 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
             this.current_time = d.toLocaleString();
         }
     },
-    created: function () {
-        this.webChatService = new WebChatService()
-        this.subscription = this.webChatService.zipEventSourceSubscription(this.chat_logs)
-        this.getCurrentTime()
-    },
-    beforeDestroy: function () {
-        this.subscription.unsubscribe()
-    }
 })

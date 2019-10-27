@@ -1,5 +1,3 @@
-
-
 var mainPresenter = Vue.component('main-presenter', {    
     template: `
     <div>
