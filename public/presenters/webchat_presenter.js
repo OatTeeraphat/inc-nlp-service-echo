@@ -113,14 +113,14 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
     },
     created: function () {
         this.webChatService = new WebChatService()
-        this.subscription = this.webChatService.getFillChatNlpReplyModelWS().subscribe( item => {
+        this.webChatService.getFillChatNlpReplyModelWS().subscribe( item => {
             console.log(item)
             this.chat_logs.push( new GetNlpChatLogsAdapter().adapt(item))
         })
         this.getCurrentTime()
     },
     beforeDestroy: function () {
-        this.subscription.unsubscribe()
+        this.webChatService.disposable()
     },
     methods: {
         onSendNlpKeyword: function () {

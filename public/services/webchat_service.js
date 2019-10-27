@@ -4,11 +4,13 @@ class WebChatService {
         socketRepo = new SocketRepository(), 
     ) {
         this.socketRepo = socketRepo
+        this.unsubscribe = new Subject()
         this.nextNlpKeywordSource$ = this.socketRepo.getFillChatNlpReplyModelWS()
     }
     
     getFillChatNlpReplyModelWS() {
         return this.nextNlpKeywordSource$.pipe(
+            takeUntil(this.unsubscribe),
             retryWhen(errors =>
                 errors.pipe(
                   tap(err => {
@@ -18,6 +20,11 @@ class WebChatService {
                 )
             ),
         )
+    }
+
+    disposable() {
+        this.unsubscribe.next()
+        this.unsubscribe.complete()
     }
 
     nextNlpKeyword(keyword_input) {
