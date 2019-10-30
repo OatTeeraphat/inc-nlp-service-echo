@@ -1,10 +1,11 @@
 var webChatPresenter = Vue.component('web-chat-presenter', {    
     template: `
-    <div>
+	<div class="warp">
+		<nav-presenter></nav-presenter>
         <div class="row">
             <div class="col-12 col-md-9 mb-4">
                 <div class="">
-                    <h2 class="">Debugger<span class="headline"> - Lets you preview your own service </span></h2>
+                    <h2 class="">Debugger</h2>
                 </div>
             </div>
             <div class="col-12 col-md-3 text-right">
@@ -58,7 +59,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                                                 <span class="text-muted">{{ this.getCurrentTime() }} : <br></span>hi
                                             </code>
                                             <code class="highlighter-rouge d-block" v-for="item in chat_logs" >
-                                                <span class="text-muted">{{  getCurrentTime() }} : <br></span>{{ item }}
+                                                <span class="text-muted">10/24/2019, 10:20:12 PM : <br></span> {{ item }}
                                             </code>
                                         </div>
                                     </div>
@@ -90,7 +91,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                                                 <span class="text-muted">{{ this.getCurrentTime() }} : <br></span>hi
                                             </code>
                                             <code class="highlighter-rouge d-block" v-for="item in chat_logs" >
-                                                <span class="text-muted">10/24/2019, 10:20:12 PM : <br></span>{ keyword: "", intent: "", distance: 0 }
+                                                <span class="text-muted">10/24/2019, 10:20:12 PM : <br></span> {{ item }}
                                             </code>
                                         </div>
                                     </div>
@@ -101,28 +102,29 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                 </div>
             </div>
         </div>
-
-
-
-        
-
+    </div>
     </div> 
     `,
     data: function () {
         return {
             keyword_input: "",  
-            nlp_model: {
-                keyword: "",
-                intent: "",
-                distance: 0
-            },
             chat_logs: [],
         }
+    },
+    created: function () {
+        this.webChatService = new WebChatService()
+        this.webChatService.getFillChatNlpReplyModelWS().subscribe( item => {
+            console.log(item)
+            this.chat_logs.push( new GetNlpChatLogsAdapter().adapt(item))
+        })
+        this.getCurrentTime()
+    },
+    beforeDestroy: function () {
+        this.webChatService.disposable()
     },
     methods: {
         onSendNlpKeyword: function () {
             this.webChatService.nextNlpKeyword(this.keyword_input)
-            this.webChatService.keepWebChatLogs(this.nlp_model)
             this.keyword_input = ""
         },
         getCurrentTime: function() {
@@ -130,12 +132,4 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
             return d.toISOString()
         }
     },
-    created: function () {
-        this.webChatService = new WebChatService()
-        this.subscription = this.webChatService.zipEventSourceSubscription(this.chat_logs)
-        this.getCurrentTime()
-    },
-    beforeDestroy: function () {
-        this.subscription.unsubscribe()
-    }
 })

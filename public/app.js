@@ -1,5 +1,6 @@
 var routes = [
     { path: '/', component: mainPresenter },
+    { path: '/dashboard', name: 'dashboard', component: dashboardPresenter },
     { path: '/nlp', name: 'nlp', component: nlpRecordsPresenter },
     { path: '/logs', name: 'logs', component: nlpLogPresenter },
     { path: '/story', name: 'story', component: storyPresenter },

@@ -18,29 +18,11 @@
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="assets/css/three-dot.min.css">
     
-    <title>FillChat Management</title>
+    <title>FillFeel Management</title>
 </head>
  
 <body>
     <div id="app">
-        
-        <div class="fixed-top navbar-warpper bg-light">
-            <nav class="navbar navbar-expand-lg navbar-dark container">
-                <a class="navbar-brand mr-auto mr-lg-0" href="#"><img src="assets/logo-black.png" alt=""></a>
-                <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </nav>
-            
-            <nav class="nav nav-underline nav-sub container bg-light">
-                <router-link class="nav-link active" to="/" exact> HOME </router-link>
-                <router-link class="nav-link" :to="{ path: '/nlp'}"> NLP SET </router-link>
-                <router-link class="nav-link" :to="{ path: '/logs'}"> NLP LOGS </router-link>
-                <router-link class="nav-link" :to="{ path: '/story'}"> STORY </router-link>
-                <router-link class="nav-link" :to="{ path: '/webchat'}"> DEBUGGER </router-link>
-            </nav>
-
-        </div>
         
         <div class="container">
             <router-view></router-views>
@@ -69,10 +51,13 @@
 
     <!-- presenters -->
     <script src="presenters/main_presenter.js"></script>
+    <script src="presenters/dashboard_presenter.js"></script>
     <script src="presenters/nlp_log_presenter.js"></script>
     <script src="presenters/nlp_records_presenter.js"></script>
     <script src="presenters/story_presenter.js"></script>
     <script src="presenters/webchat_presenter.js"></script>
+    <script src="presenters/nav_presenter.js"></script>
+    
 
     <script type="module" src="app.js"> </script>   
     <!-- <script>

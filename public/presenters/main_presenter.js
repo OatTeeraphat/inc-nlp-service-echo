@@ -1,21 +1,58 @@
-
-
 var mainPresenter = Vue.component('main-presenter', {    
     template: `
-    <div>
-        <h1>Home</h1>
-        <p>This is home page</p>
+    <div class="login-warp">
+        <div class="justify-content-center">
+            <div class="row justify-content-center login-logo">
+                <img class="visible" src="assets/logo-white.png" alt="">
+            </div>
+            <form class="form-signin">
+                <div class="text-center mb-4">
+                    <h1 class="h5 mb-3 font-weight-normal">Log in to your account</h1>
+                    <p></p>
+                </div>
+
+                <div class="form-label-group">
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                    <label for="inputEmail">Email address</label>
+                </div>
+
+                <div class="form-label-group">
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    <label for="inputPassword">Password</label>
+                </div>
+
+                <div class="checkbox mb-3">
+                    <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-purple btn-block" type="submit">Sign in</button>
+                <div class="text-center"><a class="btn btn-link mt-4 text-center" href="#" role="button"><small class="text-muted text-center">I'm forgot my password</small></a></a></div>
+                
+            </form>
+        </div>
+
     </div>
     `,
     data: function () {
         return {
         }
     },
-    created: function () {
-        
-    },
-    beforeDestroy: function () {
-    },
     methods: {
+        toggleBodyClass(addRemoveClass, className) {
+            const el = document.body;
+
+            if (addRemoveClass === 'addClass') {
+                el.classList.add(className);
+            } else {
+                el.classList.remove(className);
+            }
+        },
     },
+    mounted() {
+        this.toggleBodyClass('addClass', 'bg-purple');
+    },
+    destroyed() {
+        this.toggleBodyClass('removeClass', 'bg-purple');
+    }
 })

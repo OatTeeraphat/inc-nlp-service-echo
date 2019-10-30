@@ -4,15 +4,13 @@ class WebChatService {
         socketRepo = new SocketRepository(), 
     ) {
         this.socketRepo = socketRepo
-        this.keepChatLogsSource$ = new Subject()
-
+        this.unsubscribe = new Subject()
         this.nextNlpKeywordSource$ = this.socketRepo.getFillChatNlpReplyModelWS()
-        this.zipWebChatEventSource$ = zip(this.nextNlpKeywordSource$, this.keepChatLogsSource$)
     }
     
-    zipEventSourceSubscription(chat_logs) {
-        return this.zipWebChatEventSource$
-        .pipe(
+    getFillChatNlpReplyModelWS() {
+        return this.nextNlpKeywordSource$.pipe(
+            takeUntil(this.unsubscribe),
             retryWhen(errors =>
                 errors.pipe(
                   tap(err => {
@@ -21,26 +19,12 @@ class WebChatService {
                   delay(1600)
                 )
             ),
-            debounceTime(100)
-            )
-        .subscribe( 
-            event => {
-                chat_logs.push(
-                    new GetNlpChatLogsAdapter().adapt(event[0])
-                )
-                console.log(chat_logs)
-            },
-            error => {
-                console.log(error)
-            },
-            () => {
-                console.log("complete")
-            }
         )
     }
 
-    keepWebChatLogs(nlp_model_log) {
-        this.keepChatLogsSource$.next(nlp_model_log)
+    disposable() {
+        this.unsubscribe.next()
+        this.unsubscribe.complete()
     }
 
     nextNlpKeyword(keyword_input) {

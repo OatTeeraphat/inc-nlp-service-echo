@@ -1,5 +1,7 @@
 var storyPresenter = Vue.component('story-presenter', {    
     template: `
+    <div class="warp">
+        <nav-presenter></nav-presenter>
         <div class="row">
             <div class="col">
                 <div class="row">
@@ -158,6 +160,7 @@ var storyPresenter = Vue.component('story-presenter', {
                 </div>
             </div>
         </div>
+    </div>
     `,
     data: function () {
         return {
