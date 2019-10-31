@@ -6,7 +6,8 @@ var mainPresenter = Vue.component('main-presenter', {
                 <img class="visible" src="assets/logo-white.png" alt="">
             </div>
             <form class="form-signin">
-                <div class="linear-activity invisible">
+                
+                <div class="linear-activity" v-bind:class="{ invisible: true }">
                     <div class="indeterminate"></div>
                 </div>
                 <div class="text-center mb-4">
@@ -49,7 +50,6 @@ var mainPresenter = Vue.component('main-presenter', {
     `,
     data: function () {
         return {
-            // :value="item.id" v-model="listNlpRecordByIDsChecked.ids"
             username: "",
             password: "",
             rememberMe: false,
