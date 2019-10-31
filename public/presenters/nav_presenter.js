@@ -3,7 +3,7 @@ var navPresenter = Vue.component('nav-presenter', {
 	<div class="fixed-top navbar-warpper bg-light">
 	
 		<nav class="navbar navbar-expand-lg navbar-dark container">
-			<a class="navbar-brand mr-auto mr-lg-0" href="#"><img src="assets/logo-black.png" alt=""></a>
+			<a class="navbar-brand mr-auto mr-lg-0 visible" href="#"><img src="assets/logo-black.png" alt=""></a>
 			<button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
 				<span class="navbar-toggler-icon"></span>
 			</button>

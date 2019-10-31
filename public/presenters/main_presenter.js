@@ -6,6 +6,9 @@ var mainPresenter = Vue.component('main-presenter', {
                 <img class="visible" src="assets/logo-white.png" alt="">
             </div>
             <form class="form-signin">
+                <div class="linear-activity invisible">
+                    <div class="indeterminate"></div>
+                </div>
                 <div class="text-center mb-4">
                     <h1 class="h5 mb-3 font-weight-normal">Log in to your account</h1>
                     <p></p>
@@ -31,7 +34,15 @@ var mainPresenter = Vue.component('main-presenter', {
 
             </form>
         </div>
-
+        <div class="fixed-bottom py-4"><div class="text-center">
+            <a class="btn btn-link mt-4 text-center" href="#" role="button">
+                <small class="text-white text-center mr-2">Term & Privacy Policy</small>
+            </a>
+            <a class="btn btn-link mt-4 text-center" href="#" role="button">
+                <span class="text-white text-center">•</span>
+                <small class="text-white text-center ml-2">Instruction Manual</small>
+            </a>
+        </div>
     </div>
     `,
     data: function () {
