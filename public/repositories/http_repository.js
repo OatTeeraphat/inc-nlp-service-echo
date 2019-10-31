@@ -23,4 +23,8 @@ class HttpRepository {
 
     deleteNlpRecordByID = (id) => of(id)
 
+    signIn = (username, password) => of({ username, password })
+
+    signOut = () => of()
+
 }
