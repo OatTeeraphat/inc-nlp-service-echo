@@ -34,14 +34,16 @@ var mainPresenter = Vue.component('main-presenter', {
 
             </form>
         </div>
-        <div class="fixed-bottom py-4"><div class="text-center">
-            <a class="btn btn-link mt-4 text-center" href="#" role="button">
-                <small class="text-white text-center mr-2">Term & Privacy Policy</small>
-            </a>
-            <a class="btn btn-link mt-4 text-center" href="#" role="button">
-                <span class="text-white text-center">•</span>
-                <small class="text-white text-center ml-2">Instruction Manual</small>
-            </a>
+        <div class="fixed-bottom py-4">
+            <div class="text-center">
+                <a class="btn btn-link mt-4 text-center" href="#" role="button">
+                    <small class="text-white text-center mr-2">Term & Privacy Policy</small>
+                </a>
+                <a class="btn btn-link mt-4 text-center" href="#" role="button">
+                    <span class="text-white text-center">•</span>
+                    <small class="text-white text-center ml-2">Instruction Manual</small>
+                </a>
+            </div>
         </div>
     </div>
     `,
