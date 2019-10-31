@@ -12,12 +12,12 @@ var mainPresenter = Vue.component('main-presenter', {
                 </div>
 
                 <div class="form-label-group">
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                    <input v-model="username" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                     <label for="inputEmail">Email address</label>
                 </div>
 
                 <div class="form-label-group">
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                     <label for="inputPassword">Password</label>
                 </div>
 
@@ -26,9 +26,9 @@ var mainPresenter = Vue.component('main-presenter', {
                     <input type="checkbox" value="remember-me"> Remember me
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-purple btn-block" type="submit">Sign in</button>
+                <button @click="signIn" class="btn btn-lg btn-primary btn-purple btn-block" type="submit">Sign in</button>
                 <div class="text-center"><a class="btn btn-link mt-4 text-center" href="#" role="button"><small class="text-muted text-center">I'm forgot my password</small></a></a></div>
-                
+
             </form>
         </div>
 
@@ -36,6 +36,9 @@ var mainPresenter = Vue.component('main-presenter', {
     `,
     data: function () {
         return {
+            username: "",
+            password: "",
+            rememberMe: false,
         }
     },
     methods: {
@@ -48,6 +51,15 @@ var mainPresenter = Vue.component('main-presenter', {
                 el.classList.remove(className);
             }
         },
+
+        signIn() {
+            if (this.rememberMe) {
+                //  TODO Set Cookie long live
+            }
+            // set Cookie short live
+            console.log(this.username, this.password)
+        },
+
     },
     mounted() {
         this.toggleBodyClass('addClass', 'bg-purple');
