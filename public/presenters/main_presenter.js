@@ -26,7 +26,7 @@ var mainPresenter = Vue.component('main-presenter', {
 
                 <div class="checkbox mb-3">
                     <label>
-                    <input type="checkbox" value="remember-me"> Remember me
+                    <input :value="rememberMe" v-model="rememberMe" type="checkbox" value="remember-me"> Remember me
                     </label>
                 </div>
                 <button @click="signIn" class="btn btn-lg btn-primary btn-purple btn-block" type="submit">Sign in</button>
@@ -49,6 +49,7 @@ var mainPresenter = Vue.component('main-presenter', {
     `,
     data: function () {
         return {
+            // :value="item.id" v-model="listNlpRecordByIDsChecked.ids"
             username: "",
             password: "",
             rememberMe: false,
@@ -68,9 +69,13 @@ var mainPresenter = Vue.component('main-presenter', {
         signIn() {
             if (this.rememberMe) {
                 //  TODO Set Cookie long live
+                console.log("TODO Set Cookie long live")
+            } else {
+                // set Cookie short live
+                console.log("set Cookie short live")
             }
-            // set Cookie short live
             console.log(this.username, this.password)
+
         },
 
     },
