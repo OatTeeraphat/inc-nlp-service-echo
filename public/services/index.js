@@ -16,6 +16,7 @@ const {
     delay, 
     first, 
     switchMap, 
+    mergeMap,
     exhaustMap, 
     mapTo, 
     catchError, 

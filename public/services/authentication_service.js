@@ -10,16 +10,37 @@ class AuthenticationService {
     signIn = (username, password) => {
         return of({ username, password }).pipe(
             debounceTime(300),
-            switchMap( it => {
-                let isNotEmpty = it.username != "" && it.password != ""
+            switchMap(
+                it => {
+                    if (this.isEmptyUsernameAndPassword(it)) {
+                        return throwError("username or password can not be empty")
+                    }
 
-                if (isNotEmpty) {
-                    return this.httpRepository.signIn(username, password)
+                    if (this.isNotEmail(it.username)) {
+                        return throwError("email invalid format")
+                    }
+                    return this.httpRepository.signIn(it.username, it.password)
                 }
+            ),
+            catchError(e => {
+                console.error(e)
 
-                return throwError(new Error("username or password can not be empty"))
+                if ( e instanceof AjaxError ) {
+                    return throwError(e)
+                }
+                
+                return throwError(e)
             })
         )
+    }
+
+    isNotEmail = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return !re.test(String(email).toLowerCase());
+    }
+
+    isEmptyUsernameAndPassword = ({ username, password }) => {
+        return username == "" || password == ""
     }
     
 }

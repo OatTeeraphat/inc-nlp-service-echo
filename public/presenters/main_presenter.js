@@ -61,7 +61,7 @@ var mainPresenter = Vue.component('main-presenter', {
     },
     created: function() {
         this.authService = new AuthenticationService()
-    }, 
+    },
     methods: {
         toggleBodyClass(addRemoveClass, className) {
             const el = document.body;
@@ -77,11 +77,11 @@ var mainPresenter = Vue.component('main-presenter', {
             this.isNotSignInLoading = false
             this.authService.signIn(this.username, this.password).subscribe(
                 it => {
-                    console.log(it)
                     this.isNotSignInLoading = true
                 },
-                e => {
-                    this.flashMessage = e.message
+                error => {
+                    console.log(error)
+                    this.flashMessage = error
                     this.isNotSignInLoading = true
                 }
             )
