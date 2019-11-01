@@ -1,7 +1,7 @@
 var storyPresenter = Vue.component('story-presenter', {    
     template: `
     <div class="warp">
-        <nav-presenter></nav-presenter>
+        <nav-component></nav-component>
         <div class="row">
             <div class="col">
                 <div class="row">

@@ -1,7 +1,7 @@
 var nlpLogPresenter = Vue.component('nlp-log-presenter', {    
     template: `
     <div class="warp" >
-        <nav-presenter></nav-presenter>
+        <nav-component></nav-component>
         <div class="row">
             <div class="col">
                 <div class="row">

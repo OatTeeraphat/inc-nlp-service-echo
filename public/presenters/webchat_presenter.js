@@ -1,7 +1,7 @@
 var webChatPresenter = Vue.component('web-chat-presenter', {    
     template: `
 	<div class="warp">
-		<nav-presenter></nav-presenter>
+		<nav-component></nav-component>
         <div class="row">
             <div class="col-12 col-md-9 mb-4">
                 <div class="">

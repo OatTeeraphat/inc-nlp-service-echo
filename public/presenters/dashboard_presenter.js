@@ -1,7 +1,7 @@
 var dashboardPresenter = Vue.component('dashboard-presenter', {
 	template: `
 	<div class="warp">
-		<nav-presenter></nav-presenter>
+		<nav-component></nav-component>
 		<h1>Home</h1>
 		<p>This is home page</p>
 		<div class="row">

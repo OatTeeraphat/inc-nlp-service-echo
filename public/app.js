@@ -6,7 +6,7 @@ const routes = [
     { path: '/story', name: 'story', component: storyPresenter },
     { path: '/webchat', name: 'webchat', component: webChatPresenter }
 ]
-  
+
 const router = new VueRouter({ routes });
 
 const repo0 = new HttpRepository()
@@ -14,7 +14,7 @@ const repo1 = new SweetAlertAjaxWrapper()
 const repo2 = new SocketRepository()
 
 Vue.use({
-    
+
     // The install method will be called with the Vue constructor as the first argument, along with possible options
     install (Vue, options = {}) {
         
