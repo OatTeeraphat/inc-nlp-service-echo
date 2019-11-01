@@ -27,11 +27,9 @@
  
 <body>
     <div id="app">
-        
         <div class="container">
             <router-view></router-views>
         </div>
-
     </div>
 
 </body>
@@ -47,6 +45,8 @@
     <script src="repositories/http_repository.js" ></script>
     <script src="repositories/socket_repository.js" ></script>
 
+    <!-- service helpers -->
+    <script src="services/helpers/sweet_alert_helper.js"></script>
     <!-- services -->
     <script src="services/authentication_service.js"></script>
     <script src="services/webchat_service.js" ></script>
@@ -66,11 +66,5 @@
     <script src="component/chart/chart_model_validation_component.js"></script>
 
     <script type="module" src="app.js"> </script>
-
-    <!-- <script>
-        test pattern
-        let event$ = new Subject()
-        event$.subscribe( it => { console.log(it) } )
-    </script> -->
 
 </html>
