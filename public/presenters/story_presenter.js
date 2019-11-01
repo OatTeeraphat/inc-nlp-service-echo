@@ -177,15 +177,14 @@ var storyPresenter = Vue.component('story-presenter', {
         }
     },
     created: function () {
-        this.storyService = new StoryService()
-        this.storyService.getStoryState().subscribe(it => { 
+        this.$storyService.getStoryState().subscribe(it => { 
             this.stories.push(...it) 
         })
     },
     
     methods: {
         removeStoryByID: function(id) {
-            this.storyService.deleteStoryByID(id).subscribe( alertEvent => {
+            this.$storyService.deleteStoryByID(id).subscribe( alertEvent => {
                 if ( !alertEvent.cancel ) {
                     return this.stories = this.stories.filter( item => item.id !== id )
                 }
@@ -193,6 +192,6 @@ var storyPresenter = Vue.component('story-presenter', {
         }
     },
     beforeDestroy: function () {
-        this.storyService.disposable()
+        this.$storyService.disposable()
     },
 })

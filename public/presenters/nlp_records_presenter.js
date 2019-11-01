@@ -136,8 +136,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         }
     },
     created: function () {
-        this.nlpRecordsService = new NlpRecordsService()
-        this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
+        this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             if ( !item.cancel ) {
                 this.getNlpRecords.push(...item.nlp_records)
             }
@@ -146,14 +145,14 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         })
     },
     beforeDestroy: function () {
-        this.nlpRecordsService.disposable()
+        this.$nlpRecordsService.disposable()
     },
     methods: {
         infiniteHandler: function (event) {
             let {scrollTop, clientHeight, scrollHeight } = event.srcElement
             if (scrollTop + clientHeight >= scrollHeight / 1.2) {
                 this.isShowLoadingIndicator = true
-                this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
+                this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
             }
         },
         selectAllNlpRecord: function(event) {
@@ -165,7 +164,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         },
         bulkDeleteNlpRecord: function(event) {
             // bulk delete 
-            this.nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( alertEvent => {
+            this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( alertEvent => {
                 if( !alertEvent.cancel ) {
                     this.getNlpRecords = this.getNlpRecords.filter( item => {
                         return !this.listNlpRecordByIDsChecked.ids.includes(item.id)
@@ -174,10 +173,10 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                 }
             })
             // next page event
-            this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
+            this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
         },
         deleteNlpRecordByID: function (id) {
-            this.nlpRecordsService.deleteNlpRecordByID(id).subscribe( alertEvent => {
+            this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( alertEvent => {
                 if (!alertEvent.cancel) {
                     this.getNlpRecords = this.getNlpRecords.filter( item => item.id !== id)
                 }

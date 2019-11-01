@@ -1,8 +1,7 @@
+// authentication service
 class AuthenticationService {
-    constructor(
-        httpRepository = new HttpRepository(),
-        sweetAlertAjaxWrapper = new SweetAlertAjaxWrapper()
-    ) {
+
+    constructor( httpRepository, sweetAlertAjaxWrapper ) {
         this.httpRepository = httpRepository
         this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
     }

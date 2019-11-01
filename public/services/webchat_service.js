@@ -1,8 +1,6 @@
 class WebChatService {
     
-    constructor(
-        socketRepo = new SocketRepository(), 
-    ) {
+    constructor( socketRepo ) {
         this.socketRepo = socketRepo
         this.unsubscribe = new Subject()
         this.nextNlpKeywordSource$ = this.socketRepo.getFillChatNlpReplyModelWS()

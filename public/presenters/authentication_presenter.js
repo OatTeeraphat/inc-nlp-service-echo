@@ -60,7 +60,6 @@ var mainPresenter = Vue.component('main-presenter', {
         }
     },
     created: function() {
-        this.authService = new AuthenticationService()
     },
     methods: {
         toggleBodyClass(addRemoveClass, className) {
@@ -72,12 +71,13 @@ var mainPresenter = Vue.component('main-presenter', {
                 el.classList.remove(className);
             }
         },
-
         signIn() {
             this.isNotSignInLoading = false
-            this.authService.signIn(this.username, this.password).subscribe(
-                it => {
+            this.$authService.signIn(this.username, this.password).subscribe(
+                () => {
                     this.isNotSignInLoading = true
+
+                    return this.$router.replace(this.$route.query.redirect || '/dashboard')
                 },
                 error => {
                     console.log(error)
@@ -86,7 +86,6 @@ var mainPresenter = Vue.component('main-presenter', {
                 }
             )
         },
-
     },
     mounted() {
         this.toggleBodyClass('addClass', 'bg-purple');

@@ -1,9 +1,7 @@
+
 class StoryService {
     
-    constructor(
-        httpRepository = new HttpRepository(),
-        sweetAlertAjaxWrapper = new SweetAlertAjaxWrapper()
-    ){
+    constructor(httpRepository,sweetAlertAjaxWrapper ) {
         this.httpRepository = httpRepository
         this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
         this.unsubscribe = new Subject()
