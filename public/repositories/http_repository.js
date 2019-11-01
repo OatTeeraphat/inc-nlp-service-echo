@@ -19,11 +19,17 @@ class HttpRepository {
         url: getHttpHost() + '/v1/story?id=' + id 
     })
 
-    bulkDeleteNlpRecordsByIDs = (ids) => of(ids)
+    bulkDeleteNlpRecordsByIDs = (ids) => of(ids).pipe(
+        delay(600)
+    )
 
-    deleteNlpRecordByID = (id) => of(id)
+    deleteNlpRecordByID = (id) => of(id).pipe(
+        delay(600)
+    )
 
-    signIn = (username, password) => of({ username, password })
+    signIn = (username, password) => of({ username, password }).pipe(
+        delay(600)
+    )
 
     signOut = () => of()
 

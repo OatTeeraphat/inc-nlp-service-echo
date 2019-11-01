@@ -7,7 +7,7 @@ var mainPresenter = Vue.component('main-presenter', {
             </div>
             <form class="form-signin">
                 
-                <div class="linear-activity" v-bind:class="{ invisible: true }">
+                <div class="linear-activity" v-bind:class="{ invisible: isNotSignInLoading }">
                     <div class="indeterminate"></div>
                 </div>
                 <div class="text-center mb-4">
@@ -15,7 +15,9 @@ var mainPresenter = Vue.component('main-presenter', {
                     <p></p>
                 </div>
 
+                <label class="text-danger">{{ this.flashMessage }}</label>
                 <div class="form-label-group">
+                    
                     <input v-model="username" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                     <label for="inputEmail">Email address</label>
                 </div>
@@ -50,11 +52,16 @@ var mainPresenter = Vue.component('main-presenter', {
     `,
     data: function () {
         return {
+            isNotSignInLoading: true,
+            flashMessage: "",
             username: "",
             password: "",
             rememberMe: false,
         }
     },
+    created: function() {
+        this.authService = new AuthenticationService()
+    }, 
     methods: {
         toggleBodyClass(addRemoveClass, className) {
             const el = document.body;
@@ -67,15 +74,17 @@ var mainPresenter = Vue.component('main-presenter', {
         },
 
         signIn() {
-            if (this.rememberMe) {
-                //  TODO Set Cookie long live
-                console.log("TODO Set Cookie long live")
-            } else {
-                // set Cookie short live
-                console.log("set Cookie short live")
-            }
-            console.log(this.username, this.password)
-
+            this.isNotSignInLoading = false
+            this.authService.signIn(this.username, this.password).subscribe(
+                it => {
+                    console.log(it)
+                    this.isNotSignInLoading = true
+                },
+                e => {
+                    this.flashMessage = e.message
+                    this.isNotSignInLoading = true
+                }
+            )
         },
 
     },
