@@ -33,15 +33,23 @@ Vue.use({
 
 const router = new VueRouter({ routes });
 
+Vue.use(VueRouter)
+
 router.beforeEach((to, from, next) => {
-    // ...
-    // console.log(to, from, next)
-    // if (!false) next({path: '/'})
-    // else next()
+    console.log(to.path)
+    // if (to.name !== '/') {
+    //     next('/dashboard')
+    // }
+    // else {
+    //     next()
+    // }
+
+    // if(to.path === '/') {
+    //     next("/dashboard")
+    // }
+
     next()
 })
-
-Vue.use(VueRouter)
 
 new Vue({
     el: '#app',

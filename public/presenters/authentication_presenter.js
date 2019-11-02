@@ -78,7 +78,7 @@ var mainPresenter = Vue.component('main-presenter', {
                     this.isNotSignInLoading = true
 
                     // return this.$router.replace(this.$route.query.redirect || '/dashboard')
-                    return this.$router.push({ path: 'dashboard' })
+                    return this.$router.go({ path: 'dashboard' })
                 },
                 error => {
                     console.log(error)
