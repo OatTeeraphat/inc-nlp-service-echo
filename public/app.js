@@ -1,5 +1,5 @@
 const routes = [
-    { path: '/', component: mainPresenter },
+    { path: '/', name: 'auth',  component: mainPresenter },
     { path: '/dashboard', name: 'dashboard', component: dashboardPresenter },
     { path: '/nlp', name: 'nlp', component: nlpRecordsPresenter },
     { path: '/logs', name: 'logs', component: nlpLogPresenter },
@@ -7,7 +7,6 @@ const routes = [
     { path: '/webchat', name: 'webchat', component: webChatPresenter }
 ]
 
-const router = new VueRouter({ routes });
 
 const repo0 = new HttpRepository()
 const repo1 = new SweetAlertAjaxWrapper()
@@ -30,6 +29,16 @@ Vue.use({
       Vue.prototype.$storyService = new StoryService(repo0, repo1)
       Vue.prototype.$webChatService = new WebChatService(repo2)
     }
+})
+
+const router = new VueRouter({ routes });
+
+router.beforeEach((to, from, next) => {
+    // ...
+    // console.log(to, from, next)
+    // if (!false) next({path: '/'})
+    // else next()
+    next()
 })
 
 Vue.use(VueRouter)

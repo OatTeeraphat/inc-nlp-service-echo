@@ -27,7 +27,9 @@
 <body>
     <div id="app">
         <div class="container">
-            <router-view></router-views>
+            <transition name="slide">
+                <router-view></router-views>
+            </transition>
         </div>
     </div>
 </body>
