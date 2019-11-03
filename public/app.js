@@ -7,7 +7,6 @@ const routes = [
     { path: '/webchat', name: 'webchat', component: webChatPresenter }
 ]
 
-
 const repo0 = new HttpRepository()
 const repo1 = new SweetAlertAjaxWrapper()
 const repo2 = new SocketRepository()
@@ -31,7 +30,7 @@ Vue.use({
     }
 })
 
-const router = new VueRouter({ routes });
+const router = new VueRouter({ routes, mode: 'history' });
 
 Vue.use(VueRouter)
 
