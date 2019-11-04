@@ -8,7 +8,7 @@ const routes = [
 ]
 
 // helpers initialize
-const helper0 = new CookieHelper()
+const helper0 = new CookieRepository(Cookies)
 const helper1 = new SweetAlertAjaxHelper()
 
 // repositories initialize
