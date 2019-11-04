@@ -1,5 +1,5 @@
 // sweet alert observable wrapper
-class SweetAlertAjaxWrapper {
+class SweetAlertAjaxHelper {
 
     constructor() {
         this.duration = 900

@@ -7,8 +7,12 @@ const routes = [
     { path: '/webchat', name: 'webchat', component: webChatPresenter }
 ]
 
-const repo0 = new HttpRepository()
-const repo1 = new SweetAlertAjaxWrapper()
+// helpers initialize
+const helper0 = new CookieHelper()
+const helper1 = new SweetAlertAjaxHelper()
+
+// repositories initialize
+const repo0 = new HttpRepository(helper0)
 const repo2 = new SocketRepository()
 
 Vue.use({
@@ -23,9 +27,9 @@ Vue.use({
         Vue.prototype.$myInfo = (name, age) => {}
 
         // Add $surname instance property directly to Vue components
-        Vue.prototype.$authService = new AuthenticationService(repo0, repo1)
-        Vue.prototype.$nlpRecordsService = new NlpRecordsService(repo0, repo1)
-        Vue.prototype.$storyService = new StoryService(repo0, repo1)
+        Vue.prototype.$authService = new AuthenticationService(repo0, helper1)
+        Vue.prototype.$nlpRecordsService = new NlpRecordsService(repo0, helper1)
+        Vue.prototype.$storyService = new StoryService(repo0, helper1)
         Vue.prototype.$webChatService = new WebChatService(repo2)
     }
 })

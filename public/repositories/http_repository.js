@@ -2,6 +2,10 @@ const { ajax, AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } = rxjs.aj
 
 class HttpRepository {
 
+    constructor(cookiesHelper) {
+        this.cookiesHelper = cookiesHelper
+    }
+
     getNlpRecordsPagination = (keyword, intent, story, page) => ajax ({
         method: "GET", 
         url: getHttpHost() + `/v1/nlp/record/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
