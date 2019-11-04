@@ -92,6 +92,7 @@ func main() {
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root:   "public",
 		Browse: true,
+		HTML5:  true,
 	}))
 
 	// Swagger

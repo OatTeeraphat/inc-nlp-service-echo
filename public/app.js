@@ -13,7 +13,9 @@ const helper1 = new SweetAlertAjaxHelper()
 
 // repositories initialize
 const repo0 = new HttpRepository(helper0)
+const repo1 = new CacheStorageRepository()
 const repo2 = new SocketRepository()
+const repo3 = new LocalStorageRepository()
 
 Vue.use({
 

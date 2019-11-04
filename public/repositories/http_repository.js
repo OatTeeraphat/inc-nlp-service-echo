@@ -1,5 +1,3 @@
-const { ajax, AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } = rxjs.ajax
-
 class HttpRepository {
 
     constructor(cookiesHelper) {
