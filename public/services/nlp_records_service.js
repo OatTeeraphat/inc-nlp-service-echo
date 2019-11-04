@@ -4,7 +4,7 @@ class NlpRecordsService {
     constructor(httpRepository,sweetAlertAjaxWrapper ) {
         this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
         this.httpRepository = httpRepository
-        this.infiniteHandler$$ = new BehaviorSubject({ page: 1 })
+        this.infiniteHandler$$ = new Subject()
         this.unsubscribe = new Subject()
     }
 
