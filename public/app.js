@@ -1,4 +1,3 @@
-
 // helpers initialize
 const helper1 = new SweetAlertAjaxHelper()
 
@@ -9,6 +8,12 @@ const repo2 = new SocketRepository()
 const repo3 = new LocalStorageRepository()
 const repo4 = new CookieRepository(Cookies)
 
+// service initialize
+const authService = new AuthenticationService(repo0, helper1, repo4)
+const nlpRecordsService = new NlpRecordsService(repo0, helper1)
+const storyService = new StoryService(repo0, helper1)
+const webChatService = new WebChatService(repo2)
+
 const ifNotAuthenticated = (to, from, next) => {
     let isAuth = repo4.getCustomerSession() !== undefined
 
@@ -16,7 +21,7 @@ const ifNotAuthenticated = (to, from, next) => {
         next()
         return
     }
-        next('/dashboard')
+    next("/nlp")
 }
 
 const ifAuthenticated = (to, from, next) => {
@@ -25,7 +30,8 @@ const ifAuthenticated = (to, from, next) => {
         next()
         return
     }
-    next('/login')  
+
+    next('/login')
 }
 
 const routes = [
@@ -44,10 +50,10 @@ Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
     install (Vue, options = {}) {   
         // Add $surname instance property directly to Vue components
-        Vue.prototype.$authService = new AuthenticationService(repo0, helper1, repo4)
-        Vue.prototype.$nlpRecordsService = new NlpRecordsService(repo0, helper1)
-        Vue.prototype.$storyService = new StoryService(repo0, helper1)
-        Vue.prototype.$webChatService = new WebChatService(repo2)
+        Vue.prototype.$authService = authService
+        Vue.prototype.$nlpRecordsService = nlpRecordsService
+        Vue.prototype.$storyService = storyService
+        Vue.prototype.$webChatService = webChatService
     }
 })
 

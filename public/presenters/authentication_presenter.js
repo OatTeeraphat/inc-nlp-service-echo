@@ -15,7 +15,7 @@ var mainPresenter = Vue.component('main-presenter', {
                     <p></p>
                 </div>
 
-                <label class="text-danger">{{ this.flashMessage }}</label>
+                <label class="invalid-feedback">{{ this.flashMessage }}</label>
                 <div class="form-label-group">
                     
                     <input v-model="username" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
