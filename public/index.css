@@ -500,6 +500,8 @@ input:checked ~ .checkmark {
   color: #777;
 }
 
+.dashboard-usage > span{font-size: 0.5em;margin-left: 5px;color: #000;}
+
 /* Fallback for Edge
 -------------------------------------------------- */
 @supports (-ms-ime-align: auto) {
