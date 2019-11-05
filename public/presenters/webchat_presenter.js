@@ -41,7 +41,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                         <div class="row">
                             <div class="col">
                                 <div class="d-flex justify-content-between align-item-start">
-                                    <h6 class="card-title"><strong>Inspect</strong></h6>
+                                    <h6 class="card-title"><strong>Result</strong></h6>
                                     <button type="button" class="btn btn-link hover-alert btn-card-webchat mb-2 text-muted" title="Clear Current Logs">
                                         <small>
                                             <i class="fe fe-more-vertical"></i>
@@ -55,12 +55,23 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                                 <div class="warpper">
                                     <div class="card">
                                         <div class="card-body">
-                                            <code class="highlighter-rouge d-block">
-                                                <span class="text-muted">{{ this.getCurrentTime() }} : <br></span>hi
-                                            </code>
-                                            <code class="highlighter-rouge d-block" v-for="item in chat_logs" >
-                                                <span class="text-muted">10/24/2019, 10:20:12 PM : <br></span> {{ item }}
-                                            </code>
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <h2>hi <i class="fe fe-chevrons-right"></i> hello</h2>
+                                                </div>
+                                                <div class="col">
+                                                    <h4 class="mb-0 mt-2"><span class="badge badge-primary btn-purple px-2">NLP API</span></h4>
+                                                </div>
+                                            </div>
+                                            <p class="mb-2">98.887% of confidence</p>
+                                            <hr>
+                                            <p class="mb-0"><strong>Proximity : k=3</strong></p>
+                                            <code><p class="mb-0">hi <i class="fe fe-chevrons-right"></i> hello (98.887% of confidence)</p></code>
+                                            <code><p class="mb-0">hi <i class="fe fe-chevrons-right"></i> hello (98.887% of confidence)</p></code>
+                                            <code><p class="mb-0">hi <i class="fe fe-chevrons-right"></i> himom (98.27% of confidence)</p></code>
+                                            <hr>
+                                            <p class="mb-0"><strong>Performance Static</strong></p>
+                                            <code><p class="mb-0">found in 0.93μsec</code>
                                         </div>
                                     </div>
                                 </div>
