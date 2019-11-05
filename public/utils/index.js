@@ -34,7 +34,8 @@ const {
     of, 
     from, 
     throwError, 
-    fromEvent 
+    fromEvent,
+    interval
 } = rxjs
 
 const { 
