@@ -16,6 +16,7 @@ var navPresenter = Vue.component('nav-component', {
 			<router-link class="nav-link" :to="{ path: '/logs'}"> NLP LOGS </router-link>
 			<router-link class="nav-link" :to="{ path: '/story'}"> STORY </router-link>
 			<router-link class="nav-link" :to="{ path: '/webchat'}"> DEBUGGER </router-link>
+			<a class="nav-link" @click="signOut"> SIGN OUT </a>
 		</nav>
 
 	</div>
@@ -25,10 +26,13 @@ var navPresenter = Vue.component('nav-component', {
 		}
 	},
 	created: function () {
-
 	},
 	beforeDestroy: function () {
 	},
 	methods: {
+		signOut: function () {
+			this.$authService.signOut()
+			this.$router.replace("/")
+		} 
 	},
 })

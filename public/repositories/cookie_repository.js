@@ -1,22 +1,18 @@
 class CookieRepository {
     
-    constructor(key) {
-        this.key = key
-        this.value = new Subject()
-        this.synchronize()
+    constructor(cookies) {
+        this.cookies = cookies
     }
 
-    synchronize = () => {
-        this.getValue().subscribe((value) => { Cookies.set(this.key, value); });
+    setCustomerSession(value, duration = 7) {
+        return this.cookies.set("x-customer-session", value, { expires: duration })
     }
 
-    getValue = () => {
-        return this.value;
+    removeCustomerSession() {
+        return this.cookies.remove("x-customer-session")
     }
 
-    setValue = (value) => {
-        this.value.next(value);
+    getCustomerSession() {
+        return this.cookies.get("x-customer-session")
     }
-    
-
 }

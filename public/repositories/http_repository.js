@@ -1,6 +1,7 @@
-const { ajax, AjaxRequest, AjaxResponse, AjaxError, AjaxTimeoutError } = rxjs.ajax
-
 class HttpRepository {
+
+    constructor() {
+    }
 
     getNlpRecordsPagination = (keyword, intent, story, page) => ajax ({
         method: "GET", 
@@ -27,8 +28,8 @@ class HttpRepository {
         delay(600)
     )
 
-    signIn = (username, password) => of({ username, password }).pipe(
-        delay(600)
+    signIn = (username, password) => of({ username, password, token: "token"}).pipe(
+        delay(1600)
     )
 
     signOut = () => of()

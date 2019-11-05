@@ -37,6 +37,14 @@ const {
     fromEvent 
 } = rxjs
 
+const { 
+    ajax, 
+    AjaxRequest, 
+    AjaxResponse, 
+    AjaxError, 
+    AjaxTimeoutError 
+} = rxjs.ajax
+
 getSocketHost = function() {
     var loc = window.location;
     var uri = 'ws:';

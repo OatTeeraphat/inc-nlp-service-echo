@@ -89,6 +89,11 @@ func main() {
 
 	// Static
 	e.Static("/", "public")
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:   "public",
+		Browse: true,
+		HTML5:  true,
+	}))
 
 	// Swagger
 	q := e.Group("/swagger")
