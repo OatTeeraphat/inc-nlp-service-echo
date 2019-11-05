@@ -74,11 +74,13 @@ var mainPresenter = Vue.component('main-presenter', {
         signIn() {
             this.isNotSignInLoading = false
             this.$authService.signIn(this.username, this.password).subscribe(
-                () => {
+                it => {
+                    
+                    console.log(it)
                     this.isNotSignInLoading = true
 
                     // return this.$router.replace(this.$route.query.redirect || '/dashboard')
-                    return this.$router.go({ path: 'dashboard' })
+                    return this.$router.go({ path: 'nlp' })
                 },
                 error => {
                     console.log(error)
@@ -87,6 +89,9 @@ var mainPresenter = Vue.component('main-presenter', {
                 }
             )
         },
+        signOut() {
+            this.$authService.signOut()
+        }
     },
     mounted() {
         this.toggleBodyClass('addClass', 'bg-purple');

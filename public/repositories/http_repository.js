@@ -1,7 +1,6 @@
 class HttpRepository {
 
-    constructor(cookiesHelper) {
-        this.cookiesHelper = cookiesHelper
+    constructor() {
     }
 
     getNlpRecordsPagination = (keyword, intent, story, page) => ajax ({
@@ -30,7 +29,7 @@ class HttpRepository {
     )
 
     signIn = (username, password) => of({ username, password }).pipe(
-        delay(600)
+        delay(1600)
     )
 
     signOut = () => of()

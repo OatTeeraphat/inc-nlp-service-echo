@@ -2,18 +2,17 @@ class CookieRepository {
     
     constructor(cookies) {
         this.cookies = cookies
-        console.log(this.cookies)
     }
 
-    setUserSession(value, duration = "1D") {
-        return this.cookies.set("user", value, duration)
+    setCustomerSession(value, duration = 7) {
+        return this.cookies.set("x-customer-session", value, { expires: duration })
     }
 
-    removeUserSession() {
-        return this.cookies.remove("user")
+    removeCustomerSession() {
+        return this.cookies.remove("x-customer-session")
     }
 
-    getUserSession() {
-        return this.cookies.get("user")
+    getCustomerSession() {
+        return this.cookies.get("x-customer-session")
     }
 }

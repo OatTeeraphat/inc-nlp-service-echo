@@ -1,9 +1,14 @@
 // authentication service
 class AuthenticationService {
 
-    constructor( httpRepository, sweetAlertAjaxWrapper ) {
+    constructor( httpRepository, sweetAlertAjaxWrapper, cookieRepository) {
         this.httpRepository = httpRepository
+        this.cookieRepository = cookieRepository
         this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
+    }
+
+    signOut = () => {
+        return this.cookieRepository.removeCustomerSession()
     }
 
     // ล้อกอินจ้า
@@ -12,7 +17,7 @@ class AuthenticationService {
             debounceTime(300),
             switchMap(
                 it => {
-                    if (this.isEmptyUsernameAndPassword(it)) {
+                    if (this.isEmptyUsernameOrPassword(it)) {
                         return throwError("username or password can not be empty")
                     }
 
@@ -20,6 +25,13 @@ class AuthenticationService {
                         return throwError("email invalid format")
                     }
                     return this.httpRepository.signIn(it.username, it.password)
+                    // .pipe(
+                    //     map( it => {
+                    //         let {username, token, expired} = it
+                    //         this.cookieRepository.setCustomerSession(username)
+                    //         return it
+                    //     })
+                    // )
                 }
             ),
             catchError(e => {
@@ -41,7 +53,7 @@ class AuthenticationService {
     }
 
     // เช็ค input box ว่างเปล่า
-    isEmptyUsernameAndPassword = ({ username, password }) => {
+    isEmptyUsernameOrPassword = ({ username, password }) => {
         return username == "" || password == ""
     }
     
