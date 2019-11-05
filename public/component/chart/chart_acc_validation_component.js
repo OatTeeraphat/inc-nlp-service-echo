@@ -1,36 +1,35 @@
-Vue.component('line-chart', {
+Vue.component('line-chart-acc', {
 	extends: VueChartJs.Line,
 	mounted() {
 		this.renderChart({
-			labels: ['10', '20', '30', '40', '50', '60', '70'],
+			labels: ['10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
 			datasets: [
 				{
 					label: "Accuracy",
-					pointRadius: 4,
+					pointRadius: 2,
 					pointBackgroundColor: "rgba(255,255,255,1)",
-					pointBorderWidth: 2,
+					pointBorderWidth: 4,
 					fill: false,
 					backgroundColor: "transparent",
 					borderWidth: 2,
 					borderColor: "#673AB7",
-					data: [0, 19, 27, 35, 60, 87, 100]
+					data: [82, 87, 80, 95, 91, 83, 87, 89, 85, 90]
 				},
 				{
 					label: "Batch Size",
 					fill: false,
-					pointRadius: 4,
+					pointRadius: 2,
 					pointBackgroundColor: "rgba(255,255,255,1)",
-					pointBorderWidth: 2,
+					pointBorderWidth: 4,
 					backgroundColor: "transparent",
 					borderWidth: 2,
 					borderColor: "#e83e8c",
-					data: [0, 20, 30, 42, 50, 75, 83]
+					data: [20, 40, 60, 90, 87, 91, 92, 95, 99, 100]
 				}
 			],
 		}, { 
 			responsive: true, 
-			maintainAspectRatio: false,
-			maintainAspectRatio: false,
+			maintainAspectRatio: true,
 			layout: {
 				padding: {
 					right: 10
