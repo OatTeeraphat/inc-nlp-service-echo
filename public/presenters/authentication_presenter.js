@@ -5,7 +5,7 @@ var mainPresenter = Vue.component('main-presenter', {
             <div class="row justify-content-center login-logo">
                 <img class="visible" src="assets/logo-white.png" alt="">
             </div>
-            <form class="form-signin">
+            <form @submit.prevent="signIn" class="form-signin">
                 
                 <div class="linear-activity" v-bind:class="{ invisible: isNotSignInLoading }">
                     <div class="indeterminate"></div>
@@ -32,7 +32,7 @@ var mainPresenter = Vue.component('main-presenter', {
                     <input :value="rememberMe" v-model="rememberMe" type="checkbox" value="remember-me"> Remember me
                     </label>
                 </div>
-                <button @click="signIn" class="btn btn-lg btn-primary btn-purple btn-block" type="submit">Sign in</button>
+                <button class="btn btn-lg btn-primary btn-purple btn-block" type="submit">Sign in</button>
                 <div class="text-center"><a class="btn btn-link mt-4 text-center" href="#" role="button"><small class="text-muted text-center">I'm forgot my password</small></a></a></div>
 
             </form>
@@ -79,8 +79,7 @@ var mainPresenter = Vue.component('main-presenter', {
                     console.log(it)
                     this.isNotSignInLoading = true
 
-                    // return this.$router.replace(this.$route.query.redirect || '/dashboard')
-                    return this.$router.go({ path: 'nlp' })
+                    this.$router.push('/nlp')
                 },
                 error => {
                     console.log(error)
@@ -88,9 +87,6 @@ var mainPresenter = Vue.component('main-presenter', {
                     this.isNotSignInLoading = true
                 }
             )
-        },
-        signOut() {
-            this.$authService.signOut()
         }
     },
     mounted() {

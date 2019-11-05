@@ -11,6 +11,10 @@ class AuthenticationService {
         return this.cookieRepository.removeCustomerSession()
     }
 
+    isAuthentication = () => {
+        return this.cookieRepository.getCustomerSession() !== undefined
+    }
+
     // ล้อกอินจ้า
     signIn = (username, password) => {
         return of({ username, password }).pipe(
@@ -24,14 +28,13 @@ class AuthenticationService {
                     if (this.isNotEmail(it.username)) {
                         return throwError("email invalid format")
                     }
-                    return this.httpRepository.signIn(it.username, it.password)
-                    // .pipe(
-                    //     map( it => {
-                    //         let {username, token, expired} = it
-                    //         this.cookieRepository.setCustomerSession(username)
-                    //         return it
-                    //     })
-                    // )
+                    return this.httpRepository.signIn(it.username, it.password).pipe(
+                        map( it => {
+                            let {username, token, expired} = it
+                            this.cookieRepository.setCustomerSession(token)
+                            return it
+                        })
+                    )
                 }
             ),
             catchError(e => {

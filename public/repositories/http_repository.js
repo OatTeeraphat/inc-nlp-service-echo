@@ -28,7 +28,7 @@ class HttpRepository {
         delay(600)
     )
 
-    signIn = (username, password) => of({ username, password }).pipe(
+    signIn = (username, password) => of({ username, password, token: "token"}).pipe(
         delay(1600)
     )
 
