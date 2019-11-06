@@ -35,7 +35,6 @@ class NlpRecordsService {
                     console.log("errors")
                     return throwError("cancel transaction")
                 }
-
                 return of(it)
             })
         )
@@ -46,7 +45,6 @@ class NlpRecordsService {
         return this.sweetAlertAjaxHelper.confirmTransaction(deleteNlpRecordEvent$).pipe(
             takeUntil(this.unsubscribe),
             switchMap( it => {
-                
                 if (this.sweetAlertAjaxHelper.isSwalCancelEvent(it)) {
                     console.log("errors")
                     return throwError("cancel transaction")

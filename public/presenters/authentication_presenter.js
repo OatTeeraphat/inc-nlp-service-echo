@@ -73,7 +73,7 @@ var mainPresenter = Vue.component('main-presenter', {
         },
         signIn() {
             this.isNotSignInLoading = false
-            this.$authService.signIn(this.username, this.password).subscribe(
+            this.$authService.signIn(this.username, this.password, this.rememberMe).subscribe(
                 it => {
                     this.isNotSignInLoading = true
                     this.$router.push('/nlp')

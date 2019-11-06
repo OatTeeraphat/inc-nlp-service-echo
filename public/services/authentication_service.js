@@ -16,7 +16,7 @@ class AuthenticationService {
     }
 
     // ล้อกอินจ้า
-    signIn = (username, password) => {
+    signIn = (username, password, rememberMe) => {
         return of({ username, password }).pipe(
             debounceTime(300),
             switchMap(
@@ -31,8 +31,15 @@ class AuthenticationService {
                     return this.httpRepository.signIn(it.username, it.password).pipe(
                         map( it => {
                             let {username, token, expired} = it
+                            console.log(rememberMe)
+
+                            if (rememberMe) {
+                                this.cookieRepository.setCustomerSession(token, 365)
+                                return 
+                            }
+                            
                             this.cookieRepository.setCustomerSession(token)
-                            return it
+                            return
                         })
                     )
                 }
@@ -40,8 +47,7 @@ class AuthenticationService {
             catchError(e => {
                 console.error(e)
 
-                if ( e instanceof AjaxError ) {
-                    return throwError(e)
+                if ( e instanceof AjaxError ) { return throwError(e)
                 }
                 
                 return throwError(e)

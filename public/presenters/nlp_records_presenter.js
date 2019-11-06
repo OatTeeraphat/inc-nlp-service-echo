@@ -136,15 +136,17 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         }
     },
     mounted: function () {
-        this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
-            this.getNlpRecords.push(...item.nlp_records)
-            this.isShowLoadingIndicator = false
-            this.page = this.page + 1
-        })
+        this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( 
+            item => {
+                this.getNlpRecords.push(...item.nlp_records)
+                this.isShowLoadingIndicator = false
+                this.page = this.page + 1
+            },
+            error => {
+                this.isShowLoadingIndicator = false
+            }
+        )
         this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
-    },
-    beforeDestroy: function () {
-        this.$nlpRecordsService.disposable()
     },
     methods: {
         infiniteHandler: function (event) {
@@ -174,5 +176,8 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.getNlpRecords = this.getNlpRecords.filter( item => item.id !== id) )
             
         }
+    },
+    beforeDestroy: function () {
+        this.$nlpRecordsService.disposable()
     },
 })
