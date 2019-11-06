@@ -30,7 +30,12 @@ Vue.component('line-chart-api-usage', {
 					]
 				}
 			],
-		}, { 
+		}, {
+			plugins: {
+				datalabels: {
+					 display: false
+				}
+			},
 			responsive: true, 
 			maintainAspectRatio: true,
 			bezierCurve: false,
