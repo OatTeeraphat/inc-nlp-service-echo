@@ -1,6 +1,7 @@
 class HttpRepository {
 
     constructor() {
+        // this.$cache = new SomeClass()
     }
     
     signIn = (username, password) => of({ username, password, token: "token"}).pipe(
@@ -12,13 +13,11 @@ class HttpRepository {
     getNlpRecordsPagination = (keyword, intent, story, page) => ajax ({
         method: "GET", 
         url: getHttpHost() + `/v1/nlp/record/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
-        headers: { "Cache-Control": "max-age=30000" }
     })
 
     getAllStories = () => ajax({ 
         method: "GET", 
         url: getHttpHost() + '/v1/story',
-        headers: { "Cache-Control": "max-age=30000" }
     })
 
     deleteStoryByID = (id) => ajax({ 

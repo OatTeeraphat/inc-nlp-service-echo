@@ -18,7 +18,7 @@ class NlpRecordsService {
     getNlpRecordsByInfiniteScrollSubject = () => {
         return this.infiniteHandler$$.pipe(
             takeUntil(this.unsubscribe),
-            debounceTime(200),
+            debounceTime(600),
             concatMap( ({ page }) => 
                 this.sweetAlertAjaxHelper.readTransaction( this.getNlpRecordsPagination(page) ) 
             ),

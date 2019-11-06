@@ -7,39 +7,28 @@ class AuthenticationService {
         this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
     }
 
-    signOut = () => {
-        return this.cookieRepository.removeCustomerSession()
-    }
-
-    isAuthentication = () => {
-        return this.cookieRepository.getCustomerSession() !== undefined
-    }
-
     // ล้อกอินจ้า
     signIn = (username, password, rememberMe) => {
         return of({ username, password }).pipe(
             debounceTime(300),
             switchMap(
                 it => {
-                    if (this.isEmptyUsernameOrPassword(it)) {
-                        return throwError("username or password can not be empty")
-                    }
+                    if (this.isEmptyUsernameOrPassword(it)) return throwError("username or password can not be empty")
+                    if (this.isNotEmail(it.username)) return throwError("email invalid format")
 
-                    if (this.isNotEmail(it.username)) {
-                        return throwError("email invalid format")
-                    }
                     return this.httpRepository.signIn(it.username, it.password).pipe(
                         map( it => {
                             let {username, token, expired} = it
+                            // TODO: Change to real ajax call
                             console.log(rememberMe)
 
                             if (rememberMe) {
                                 this.cookieRepository.setCustomerSession(token, 365)
-                                return 
+                            } else {
+                                this.cookieRepository.setCustomerSession(token)
                             }
                             
-                            this.cookieRepository.setCustomerSession(token)
-                            return
+                            return empty()
                         })
                     )
                 }
@@ -55,6 +44,10 @@ class AuthenticationService {
         )
     }
 
+    isAuthentication = () => {
+        return this.cookieRepository.getCustomerSession() !== undefined
+    }
+
     // เช็ค email format
     isNotEmail = (email) => {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -64,6 +57,10 @@ class AuthenticationService {
     // เช็ค input box ว่างเปล่า
     isEmptyUsernameOrPassword = ({ username, password }) => {
         return username == "" || password == ""
+    }
+
+    signOut = () => {
+        return this.cookieRepository.removeCustomerSession()
     }
     
 }
