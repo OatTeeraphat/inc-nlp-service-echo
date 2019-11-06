@@ -37,6 +37,7 @@ const ifAuthenticated = (to, from, next) => {
 const routes = [
     { path: '/', name: 'auth',  component: mainPresenter, beforeEnter: ifNotAuthenticated },
     { path: '/login', name: 'login',  component: mainPresenter, beforeEnter: ifNotAuthenticated },
+    { path: '/welcome', name: 'welcome',  component: welcomePresenter },
     { path: '/dashboard', name: 'dashboard', component: dashboardPresenter, beforeEnter: ifAuthenticated },
     { path: '/nlp', name: 'nlp', component: nlpRecordsPresenter, beforeEnter: ifAuthenticated },
     { path: '/logs', name: 'logs', component: nlpLogPresenter, beforeEnter: ifAuthenticated },
