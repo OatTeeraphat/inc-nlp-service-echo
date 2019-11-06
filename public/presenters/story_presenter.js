@@ -184,10 +184,8 @@ var storyPresenter = Vue.component('story-presenter', {
     
     methods: {
         deleteStoryByID: function(id) {
-            this.$storyService.deleteStoryByID(id).subscribe( alertEvent => {
-                if ( !alertEvent.cancel ) {
-                    return this.stories = this.stories.filter( item => item.id !== id )
-                }
+            this.$storyService.deleteStoryByID(id).subscribe( () =>  {
+                this.stories = this.stories.filter( item => item.id !== id ) 
             })
         }
     },

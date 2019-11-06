@@ -137,9 +137,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     },
     mounted: function () {
         this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
-            if ( !item.cancel ) {
-                this.getNlpRecords.push(...item.nlp_records)
-            }
+            this.getNlpRecords.push(...item.nlp_records)
             this.isShowLoadingIndicator = false
             this.page = this.page + 1
         })
@@ -165,23 +163,15 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         },
         bulkDeleteNlpRecord: function(event) {
             // bulk delete 
-            this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( alertEvent => {
-                if( !alertEvent.cancel ) {
-                    this.getNlpRecords = this.getNlpRecords.filter( item => {
-                        return !this.listNlpRecordByIDsChecked.ids.includes(item.id)
-                    })
-                    this.listNlpRecordByIDsChecked.ids = []
-                }
+            this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( () => {
+                this.getNlpRecords = this.getNlpRecords.filter( item => !this.listNlpRecordByIDsChecked.ids.includes(item.id) )
+                this.listNlpRecordByIDsChecked.ids = []
             })
             // next page event
             this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
         },
         deleteNlpRecordByID: function (id) {
-            this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( alertEvent => {
-                if (!alertEvent.cancel) {
-                    this.getNlpRecords = this.getNlpRecords.filter( item => item.id !== id)
-                }
-            })
+            this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.getNlpRecords = this.getNlpRecords.filter( item => item.id !== id) )
             
         }
     },

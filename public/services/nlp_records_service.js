@@ -1,8 +1,8 @@
 // nlp records service
 class NlpRecordsService {
 
-    constructor(httpRepository,sweetAlertAjaxWrapper ) {
-        this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
+    constructor(httpRepository,sweetAlertAjaxHelper ) {
+        this.sweetAlertAjaxHelper = sweetAlertAjaxHelper
         this.httpRepository = httpRepository
         this.infiniteHandler$$ = new Subject()
         this.unsubscribe = new Subject()
@@ -20,24 +20,40 @@ class NlpRecordsService {
             takeUntil(this.unsubscribe),
             debounceTime(200),
             concatMap( ({ page }) => 
-                this.sweetAlertAjaxWrapper.readTransaction( this.getNlpRecordsPagination(page) ) 
+                this.sweetAlertAjaxHelper.readTransaction( this.getNlpRecordsPagination(page) ) 
             ),
         )
     }
 
     bulkDeleteNlpRecordsByIDs = (ids) => {
         let bulkDeleteEvent$ = this.httpRepository.bulkDeleteNlpRecordsByIDs(ids)
-        return this.sweetAlertAjaxWrapper.confirmTransaction(bulkDeleteEvent$).pipe(
+        return this.sweetAlertAjaxHelper.confirmTransaction(bulkDeleteEvent$).pipe(
             takeUntil(this.unsubscribe),
-            map( json => json)
+            switchMap( it => {
+                
+                if (this.sweetAlertAjaxHelper.isSwalCancelEvent(it)) {
+                    console.log("errors")
+                    return throwError("cancel transaction")
+                }
+
+                return of(it)
+            })
         )
     }
 
     deleteNlpRecordByID = (id) => {
         let deleteNlpRecordEvent$ = this.httpRepository.deleteNlpRecordByID(id)
-        return this.sweetAlertAjaxWrapper.confirmTransaction(deleteNlpRecordEvent$).pipe(
+        return this.sweetAlertAjaxHelper.confirmTransaction(deleteNlpRecordEvent$).pipe(
             takeUntil(this.unsubscribe),
-            map( json => json)
+            switchMap( it => {
+                
+                if (this.sweetAlertAjaxHelper.isSwalCancelEvent(it)) {
+                    console.log("errors")
+                    return throwError("cancel transaction")
+                }
+
+                return of(it)
+            })
         )
     }
 
