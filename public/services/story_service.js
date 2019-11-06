@@ -7,7 +7,6 @@ class StoryService {
         this.unsubscribe = new Subject()
     }
     
-    
     getStoryState() {
         let getAllStoriesEvent$ = this.httpRepository.getAllStories()
         return this.sweetAlertAjaxWrapper.readTransaction(getAllStoriesEvent$).pipe(

@@ -100,7 +100,7 @@ var storyPresenter = Vue.component('story-presenter', {
                                         </th>
                                         <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Story Name" v-model="item.name"></td>
                                         <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description" v-model="item.desc"></td>
-                                        <td class="col-2 text-center" @click="removeStoryByID(item.id)" >
+                                        <td class="col-2 text-center" @click="deleteStoryByID(item.id)" >
                                             <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
                                                 <i class="fe fe-delete"></i>
                                             </button>
@@ -147,7 +147,7 @@ var storyPresenter = Vue.component('story-presenter', {
                                         </th>
                                         <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intents" v-model="item.intent"></td>
                                         <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description" v-model="item.desc"></td>
-                                        <td class="col-2 text-center" @click="removeStoryByID(item.id)" >
+                                        <td class="col-2 text-center" @click="deleteStoryByID(item.id)" >
                                             <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
                                                 <i class="fe fe-delete"></i>
                                             </button>
@@ -183,7 +183,7 @@ var storyPresenter = Vue.component('story-presenter', {
     },
     
     methods: {
-        removeStoryByID: function(id) {
+        deleteStoryByID: function(id) {
             this.$storyService.deleteStoryByID(id).subscribe( alertEvent => {
                 if ( !alertEvent.cancel ) {
                     return this.stories = this.stories.filter( item => item.id !== id )

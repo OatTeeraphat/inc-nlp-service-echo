@@ -4,10 +4,6 @@ class NlpReplyStatisticService {
         this.unsubscribe = new Subject()
     }
 
-    // this.httpRepository.getNlpReplyStatistic().pipe(
-    //     map( it => new GetNlpReplyStatisticAdapter().adapt(it) )
-    // )
-    
     getNlpReplyStatistic = () => {
         return interval(1600).pipe(
             takeUntil(this.unsubscribe),
