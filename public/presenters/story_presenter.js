@@ -176,7 +176,7 @@ var storyPresenter = Vue.component('story-presenter', {
             ]
         }
     },
-    created: function () {
+    mounted: function () {
         this.$storyService.getStoryState().subscribe(it => { 
             this.stories.push(...it) 
         })

@@ -2,6 +2,12 @@ class HttpRepository {
 
     constructor() {
     }
+    
+    signIn = (username, password) => of({ username, password, token: "token"}).pipe(
+        delay(1600)
+    )
+
+    signOut = () => of()
 
     getNlpRecordsPagination = (keyword, intent, story, page) => ajax ({
         method: "GET", 
@@ -28,10 +34,12 @@ class HttpRepository {
         delay(600)
     )
 
-    signIn = (username, password) => of({ username, password, token: "token"}).pipe(
-        delay(1600)
+    getNlpReplyStatisticByClientID = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
+        delay(600)
     )
 
-    signOut = () => of()
+    getNlpReplyStatistic = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
+        delay(600)
+    )
 
 }

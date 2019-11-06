@@ -135,7 +135,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             searchNlpRecords: []
         }
     },
-    created: function () {
+    mounted: function () {
         this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             if ( !item.cancel ) {
                 this.getNlpRecords.push(...item.nlp_records)

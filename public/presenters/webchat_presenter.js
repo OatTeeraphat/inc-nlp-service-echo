@@ -122,7 +122,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
             chat_logs: [],
         }
     },
-    created: function () {
+    mounted: function () {
         this.$webChatService.getFillChatNlpReplyModelWS().subscribe( item => {
             console.log(item)
             this.chat_logs.push( new GetNlpChatLogsAdapter().adapt(item))

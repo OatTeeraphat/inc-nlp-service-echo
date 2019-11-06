@@ -1,17 +1,38 @@
 var welcomePresenter = Vue.component('welcome-presenter', {
     template: `
     <div class="container">
-            <p> {{ this.counter }} </p>
+
+        <div class="row justify-content-center">
+
+            <div v-for="item of nlpCounterDigitSpliter">
+            
+                <p class="digit-box" v-bind:key="item">{{ item }}</p>
+
+            </div>
+            
+            
+        </div>
     </div>
     `,
-    mounted: function () {
-        interval(600).subscribe(it => {
-            this.counter = it + 1
-        })
-    },
     data: function() {
         return {
-            counter: 0
+            // type can be BY_FILL_FEEL or BY_CLIENT_ID
+            isFlip: false,
+            type: "BY_FILL_FEEL",
+            initialNlpCounter: 0,
         }
-    }
+    },
+    mounted: function () {
+        this.$nlpReplyStatisticService.getNlpReplyStatistic().subscribe( it => {
+            this.initialNlpCounter = this.initialNlpCounter + it.reply_count 
+        })
+    },
+    computed: {
+        nlpCounterDigitSpliter: function(e) {
+            return (""+ this.initialNlpCounter ).split("")
+        }
+    },
+    beforeDestroy: function () {
+        this.$nlpReplyStatisticService.disposable()
+    },
 })
