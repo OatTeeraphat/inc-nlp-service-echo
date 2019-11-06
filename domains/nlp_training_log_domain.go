@@ -4,8 +4,8 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// NlpTrainingRecordDomain NlpTrainingRecordDomain
-type NlpTrainingRecordDomain struct {
+// NlpTrainingLogDomain NlpTrainingLogDomain
+type NlpTrainingLogDomain struct {
 	gorm.Model
 	// ShopID   uint
 	Keyword  string
@@ -15,6 +15,6 @@ type NlpTrainingRecordDomain struct {
 }
 
 // TableName NlpRecordDomain
-func (NlpTrainingRecordDomain) TableName() string {
-	return "nlp_training_records"
+func (NlpTrainingLogDomain) TableName() string {
+	return "nlp_training_logs"
 }

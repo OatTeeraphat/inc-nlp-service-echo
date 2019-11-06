@@ -27,7 +27,7 @@ func SyncGORM(config *commons.FillChatSelectENV) *gorm.DB {
 	// Migrate the schema
 	db.AutoMigrate(
 		&domains.NlpRecordDomain{},
-		&domains.NlpTrainingRecordDomain{},
+		&domains.NlpTrainingLogDomain{},
 		&domains.ShopStoryDomain{},
 		&domains.StoryDomain{},
 		&domains.ShopDomain{},
@@ -44,7 +44,7 @@ func FakeSyncGORM() *gorm.DB {
 	// Migrate the schema
 	db.AutoMigrate(
 		&domains.NlpRecordDomain{},
-		&domains.NlpTrainingRecordDomain{},
+		&domains.NlpTrainingLogDomain{},
 		&domains.ShopStoryDomain{},
 		&domains.StoryDomain{},
 		&domains.ShopDomain{},
