@@ -18,7 +18,7 @@ class NlpTrainingLogService {
     getNlpTrainingLogPaginationByInfiniteScrollSubject = () => {
         return this.infiniteHandler$$.pipe(
             takeUntil(this.unsubscribe),
-            debounceTime(200),
+            throttleTime(200),
             exhaustMap( ({ page }) => 
                 this.sweetAlertAjaxHelper.readTransaction( this.getNlpTrainingLogPagination(page) ) 
             ),

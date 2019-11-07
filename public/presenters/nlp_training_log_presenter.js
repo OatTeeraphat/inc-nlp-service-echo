@@ -106,6 +106,7 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
         this.$nlpTrainingLogService.nextNlpTrainingLogPaginationPage(1)
     },
     beforeDestroy: function () {
+        this.$nlpTrainingLogService.disposable()
     },
     methods: {
     },
