@@ -8,8 +8,15 @@ class NlpRecordsService {
         this.unsubscribe = new Subject()
     }
 
+    getNlpRecordsPaginationByKeyword = (keyword, page) => {
+        return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
+            takeUntil(this.unsubscribe),
+            map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
+        )
+    }
+
     getNlpRecordsPagination = (page) => {
-        return this.httpRepository.getNlpRecordsPagination("keyword", "intent", "story", page).pipe(
+        return this.httpRepository.getNlpRecordsPagination(page).pipe(
             takeUntil(this.unsubscribe),
             map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
         )
