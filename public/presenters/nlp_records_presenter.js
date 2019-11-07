@@ -103,7 +103,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                             </tr>
                             <tr v-for="item in nlpRecords">
                                 <th scope="row" class="col-1">
-                                    <input :value="item.id" v-model="nlpCheckedList.ids" type="checkbox">
+                                    <input :value="item.id" v-model="nlpRecordsCheckedList.ids" type="checkbox">
                                 </th>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
@@ -128,16 +128,12 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     `,
     data: function () {
         return {
-            // page: 1,
-            // listNlpRecordByIDsChecked: { ids: [] },
-            // getNlpRecords: [],
-            // searchNlpRecords: [],
             isShowLoadingIndicator: false,
             page: 1,
             limit: 1,
             total: 1,
             nlpRecords: [],
-            nlpCheckedList: { ids: [] },
+            nlpRecordsCheckedList: { ids: [] },
         }
     },
     mounted: function () {
@@ -162,17 +158,17 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             }
         },
         selectAllNlpRecord: function(event) {
-            this.nlpCheckedList.ids = []
-            this.nlpRecords.forEach( select => { this.nlpCheckedList.ids.push(select.id) })
+            this.nlpRecordsCheckedList.ids = []
+            this.nlpRecords.forEach( select => { this.nlpRecordsCheckedList.ids.push(select.id) })
         },
         deselectAllNlpRecord: function(event) {
-            this.nlpCheckedList.ids = []
+            this.nlpRecordsCheckedList.ids = []
         },
         bulkDeleteNlpRecord: function(event) {
             // bulk delete 
             this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( () => {
-                this.nlpRecords = this.nlpRecords.filter( item => !this.nlpCheckedList.ids.includes(item.id) )
-                this.nlpCheckedList.ids = []
+                this.nlpRecords = this.nlpRecords.filter( item => !this.nlpRecordsCheckedList.ids.includes(item.id) )
+                this.nlpRecordsCheckedList.ids = []
             })
             // next page event
             this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
