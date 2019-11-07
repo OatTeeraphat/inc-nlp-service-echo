@@ -24,7 +24,7 @@ const ifNotAuthenticated = (to, from, next) => {
         next()
         return
     }
-    next("/nlp")
+    next("/dashboard")
 }
 
 const ifAuthenticated = (to, from, next) => {
@@ -34,7 +34,7 @@ const ifAuthenticated = (to, from, next) => {
         return
     }
 
-    next('/dashboard')
+    next('/login')
 }
 
 const routes = [
@@ -46,6 +46,9 @@ const routes = [
     { path: '/logs', name: 'logs', component: nlpLogPresenter, beforeEnter: ifAuthenticated },
     { path: '/story', name: 'story', component: storyPresenter, beforeEnter: ifAuthenticated },
     { path: '/webchat', name: 'webchat', component: webChatPresenter, beforeEnter: ifAuthenticated },
+    // TODO: change to settingPresenter
+    { path: '/setting', name: 'setting', component: storyPresenter, beforeEnter: ifAuthenticated },
+
 ]
 
 const router = new VueRouter({ routes, mode: 'history' });
