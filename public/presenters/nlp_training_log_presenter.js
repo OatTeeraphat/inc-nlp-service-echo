@@ -88,6 +88,7 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
     `,
     data: function () {
         return {
+            isShowLoadingIndicator: false,
             page: 1,
             limit: 1,
             total: 1,
