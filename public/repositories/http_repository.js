@@ -38,11 +38,11 @@ class HttpRepository {
         delay(600)
     )
 
-    getNlpReplyStatisticByClientID = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
+    getNlpReplyCounterByClientID = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
         delay(600)
     )
 
-    getNlpReplyStatistic = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
+    getNlpReplyCounter = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
         delay(600)
     )
 

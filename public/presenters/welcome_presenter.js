@@ -23,7 +23,7 @@ var welcomePresenter = Vue.component('welcome-presenter', {
         }
     },
     mounted: function () {
-        this.$nlpReplyStatisticService.getNlpReplyStatistic().subscribe( it => {
+        this.$nlpReplyCounterService.getNlpReplyCounter().subscribe( it => {
             this.initialNlpCounter = this.initialNlpCounter + it.reply_count 
         })
     },
@@ -33,6 +33,6 @@ var welcomePresenter = Vue.component('welcome-presenter', {
         }
     },
     beforeDestroy: function () {
-        this.$nlpReplyStatisticService.disposable()
+        this.$nlpReplyCounterService.disposable()
     },
 })
