@@ -32,7 +32,7 @@ const ifAuthenticated = (to, from, next) => {
         return
     }
 
-    next('/login')
+    next('/dashboard')
 }
 
 const routes = [

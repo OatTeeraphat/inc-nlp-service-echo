@@ -267,7 +267,7 @@ th i{
     box-shadow: none;
 }
 
-.hover-success, .hover-danger{
+.hover-success, .hover-snger{
     position: relative;
     top: 0;
 }
@@ -501,6 +501,21 @@ input:checked ~ .checkmark {
 }
 
 .dashboard-usage > span{font-size: 0.5em;margin-left: 5px;color: #000;}
+.dashboard-summary{}
+.dashboard-summary h3.counter{
+    position: absolute;
+    z-index: 0;
+    top: 2rem;
+    font-size: 2em;
+}
+.dashboard-summary canvas{
+    position: relative;
+    z-index: 1;
+}
+.dashboard-summary h3 > span{
+    font-size: 0.5em;
+    margin-left: 5px;
+}
 
 /* Fallback for Edge
 -------------------------------------------------- */

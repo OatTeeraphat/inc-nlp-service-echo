@@ -90,7 +90,7 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 							</li>
 						</ul>
 				</div>
-				<div class="card">
+				<div class="card mb-5">
 						<div class="card-header">
 								<h5 class="card-title mb-0">
 										Model Stats
@@ -104,10 +104,10 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 						<ul class="list-group list-group-flush">
 								<li class="list-group-item p-1 ">
 										<ul class="nav nav-card" id="myTab" role="tablist">
-												<li class="nav-item" @click="toggle_chart.api = 'tabFirst'" >
+												<li class="nav-item" @click="toggle_chart.model = 'tabFirst'" >
 													<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Calls</a>
 												</li>
-												<li class="nav-item" @click="toggle_chart.api = 'tabSecond'" >
+												<li class="nav-item" @click="toggle_chart.model = 'tabSecond'" >
 													<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Average Request Time</a>
 												</li>
 											</ul>
@@ -122,21 +122,21 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 											<line-chart-api-usage 
 												:height="120" 
 												:redraw="true"
-												v-if=" toggle_chart.api == 'tabFirst' " 
+												v-if=" toggle_chart.model == 'tabFirst' " 
 												key="tabFirst"
 											>
 											</line-chart-api-usage>
 											<line-chart-api-usage 
 												:height="120" 
 												:redraw="true"
-												v-if=" toggle_chart.api == 'tabSecond' " 
+												v-if=" toggle_chart.model == 'tabSecond' " 
 												key="tabSecond"
 											>
 											</line-chart-api-usage>
 											<div class="row">
 												<div class="col">
-														<p class="graph-legend purple" v-if=" toggle_chart.api == 'tabFirst' " >Calls</p>
-														<p class="graph-legend purple" v-if=" toggle_chart.api == 'tabSecond' " >Average Request Time</p>
+														<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabFirst' " >Calls</p>
+														<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabSecond' " >Average Request Time</p>
 												</div>
 											</div>
 									</div>
@@ -162,7 +162,7 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 								</bubble-chart-intent>
 						</div>
 				</div>
-				<div class="card">
+				<div class="card mb-4">
 						<div class="card-header">
 								<h5 class="card-title mb-0">
 										Training Stats
@@ -176,10 +176,10 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 						<ul class="list-group list-group-flush">
 								<li class="list-group-item p-1 ">
 										<ul class="nav nav-card" id="myTab" role="tablist">
-												<li class="nav-item" @click="toggle_chart.api = 'tabFirst'" >
+												<li class="nav-item" @click="toggle_chart.trainig = 'tabFirst'" >
 													<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Summary</a>
 												</li>
-												<li class="nav-item" @click="toggle_chart.api = 'tabSecond'" >
+												<li class="nav-item" @click="toggle_chart.trainig = 'tabSecond'" >
 													<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Data Growth</a>
 												</li>
 											</ul>
@@ -190,24 +190,25 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 									mode="out-in"
 									enter-active-class="animated zoomIn faster"
 								>
-									<div class="chart-warpper">
+									<div class="chart-warpper dashboard-summary">
+											<h3 class="counter" v-if=" toggle_chart.trainig == 'tabFirst' " >1,453<span>Training Set</span></h3>
 											<stack-chart-training
-												:height="300" 
+												:height="100" 
 												:redraw="true"
-												v-if=" toggle_chart.api == 'tabFirst' " 
+												v-if=" toggle_chart.trainig == 'tabFirst' " 
 												key="tabFirst"
 											></stack-chart-training>
 											<line-chart-api-usage 
 												:height="120" 
 												:redraw="true"
-												v-if=" toggle_chart.api == 'tabSecond' " 
+												v-if=" toggle_chart.trainig == 'tabSecond' " 
 												key="tabSecond"
 											>
 											</line-chart-api-usage>
 											<div class="row">
 												<div class="col">
-														<p class="graph-legend purple" v-if=" toggle_chart.api == 'tabFirst' " >Calls</p>
-														<p class="graph-legend purple" v-if=" toggle_chart.api == 'tabSecond' " >Average Request Time</p>
+														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabFirst' " >Non Training Data</p>
+														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabSecond' " >Average Request Time</p>
 												</div>
 											</div>
 									</div>
@@ -222,7 +223,9 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 	data: function () {
 		return {
 			toggle_chart : {
-				api : "tabFirst"
+				api : "tabFirst",
+				model : "tabFirst",
+				trainig : "tabFirst"
 			},
 		}
 	},

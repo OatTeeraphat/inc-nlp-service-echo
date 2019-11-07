@@ -1,35 +1,54 @@
 Vue.component('stack-chart-training', {
-  extends: VueChartJs.HorizontalBar,
+	extends: VueChartJs.HorizontalBar,
+	
   beforeMount () {
-    this.addPlugin(horizonalLinePlugin)
+    //this.addPlugin(horizonalLinePlugin)
   },
   mounted () {
     this.renderChart({
-      datasets: [{
-					data: [17],
-					backgroundColor: "rgba(63,103,126,1)",
-					hoverBackgroundColor: "rgba(50,90,100,1)"
-			},{
-					data: [59],
-					backgroundColor: "rgba(63,143,126,1)",
-					hoverBackgroundColor: "rgba(63,143,126,1)"
-			},{
-					data: [72],
-					backgroundColor: "rgba(63,203,226,1)",
-					hoverBackgroundColor: "rgba(46,185,235,1)"
-			}]
-    }, {
-			plugins: {
-				datalabels: {
+      datasets: [
+			{	
+					label : 'GREETING',
+					data: [21],
+					backgroundColor: colorByStory.GREETING ,
+			},
+			{		
+					label : 'FAQ',
+					data: [39],
+					backgroundColor: colorByStory.FAQ,
+			},
+			{		
+					label : 'CHITCHAT',
+					data: [55],
+					backgroundColor: colorByStory.CHITCHAT,
+			},
+			{		
+					label : 'PRODUCT',
+					data: [85],
+					backgroundColor: colorByStory.PRODUCT,
+			},
+			{	
+					label : 'Non-Training',
+					data: [100],
+					backgroundColor: '#aaaaaa',
+			}
+		]}, {
+		plugins: {
+			datalabels: {
 					 display: false
 				}
-			},
-			tooltips: {
-					enabled: false
 			},
 			hover :{
 					animationDuration:0
 			},
+			layout: {
+        padding: {
+            left: -7.5,
+            right: 5,
+            top: 20,
+            bottom: -10
+        }
+    	},
 			scales: {
 					xAxes: [{
 						scaleLabel: {
@@ -40,11 +59,10 @@ Vue.component('stack-chart-training', {
 							drawBorder: false
 						},
 						ticks: {
-							beginAtZero: false,
-							maxTicksLimit : 7,
+							beginAtZero: true,
 							display: false,
 						},
-							stacked: false
+							stacked: true
 					}],
 					yAxes: [{
 							scaleLabel: {
@@ -54,18 +72,46 @@ Vue.component('stack-chart-training', {
 								display: false,
 								drawBorder: false
 							},
-							
 							ticks: {
-									fontFamily: "'Open Sans Bold', sans-serif",
-									fontSize:11
+								display: false
 							},
 							stacked: true
 					}]
 			},
 			legend:{
 					display:false
-			}	}
+			},
+			tooltips: {
+				mode: 'single',
+				position : 'average',
+				titleFontColor: "#888",
+				titleFontSize: 12,
+				bodyFontColor: "#673AB7",
+				bodyFontSize: 16,
+				bodyFontStyle: 'bold',
+				footerFontSize: 10,
+				footerFontStyle: 'bold',
+				footerFontColor: "#888",
+				footerSpacing : 2,
+				backgroundColor: "rgba(256,256,256,0.95)",
+				displayColors: false,
+				borderColor: "rgba(220, 220, 220, 0.9)",
+				borderWidth: 2,
+				callbacks: {
+					title: function (it, data) {
+						return data.datasets[it[0].datasetIndex].label
+					},
+					label: function (it) {
+						return it.xLabel + '.00 %'
+					},
+					footer: function (it, data) {
+						//console.log(it, data)
+						return it[0].x + ' Training Set'
+					}
+				}
+			}
+		}
 		)
-  }
+	},
 })
 
