@@ -5,6 +5,10 @@ class SweetAlertAjaxHelper {
         this.duration = 900
     }
 
+    isSwalCancelEvent(event) {
+        return event.cancel == true
+    }
+
     // readTransaction 
     readTransaction = (ajaxFunction) => {
         return ajaxFunction.pipe(

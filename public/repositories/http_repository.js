@@ -1,18 +1,23 @@
 class HttpRepository {
 
     constructor() {
+        // this.$cache = new SomeClass()
     }
+    
+    signIn = (username, password) => of({ username, password, token: "token"}).pipe(
+        delay(1600)
+    )
+
+    signOut = () => of()
 
     getNlpRecordsPagination = (keyword, intent, story, page) => ajax ({
         method: "GET", 
         url: getHttpHost() + `/v1/nlp/record/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
-        headers: { "Cache-Control": "max-age=30000" }
     })
 
     getAllStories = () => ajax({ 
         method: "GET", 
         url: getHttpHost() + '/v1/story',
-        headers: { "Cache-Control": "max-age=30000" }
     })
 
     deleteStoryByID = (id) => ajax({ 
@@ -28,10 +33,12 @@ class HttpRepository {
         delay(600)
     )
 
-    signIn = (username, password) => of({ username, password, token: "token"}).pipe(
-        delay(1600)
+    getNlpReplyStatisticByClientID = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
+        delay(600)
     )
 
-    signOut = () => of()
+    getNlpReplyStatistic = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
+        delay(600)
+    )
 
 }

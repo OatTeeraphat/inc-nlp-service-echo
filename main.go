@@ -67,7 +67,7 @@ func main() {
 	orm := datasources.SyncGORM(common0)
 
 	// Repositories
-	repo0 := repositories.NewNlpTrainingRecordRepository(orm)
+	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
 	repo3 := repositories.NewShopStoryRepository(orm)
 	repo4 := repositories.NewStoryRepository(orm)
@@ -79,6 +79,7 @@ func main() {
 	svc1 := services.NewStoryService(repo4)
 	svc2 := services.NewShopStoryService(repo5, repo6)
 	svc3 := services.NewShopService(repo6)
+	svc4 := services.NewNlpTrainingLogService(repo0)
 
 	// Controllers
 	c0 := controllers.NewNlpController(svc0)
@@ -86,6 +87,7 @@ func main() {
 	c3 := controllers.NewStoryController(svc1)
 	c4 := controllers.NewShopStoryController(svc2)
 	c5 := controllers.NewShopController(svc3)
+	c6 := controllers.NewNlpTrainingLogController(svc4)
 
 	// Static
 	e.Static("/", "public")
@@ -118,6 +120,8 @@ func main() {
 	e.DELETE("/v1/nlp/record", c0.DropNlpRecordByShopController)
 	e.GET("/v1/nlp/record/pagination", c0.ReadPaginationNlpRecordController)
 	e.GET("/v1/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
+	e.GET("/v1/nlp/log/pagination", c6.ReadPaginationNlpTrainingLogController)
+
 	e.GET("/v1/fb/webhook", c2.VerifyFBWebhookController)
 	e.POST("/v1/fb/webhook", c2.ReplyFBWebhookController)
 	e.Any("/v1/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)

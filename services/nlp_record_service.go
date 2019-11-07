@@ -15,7 +15,7 @@ import (
 
 // NlpRecordService NlpService
 type NlpRecordService struct {
-	nlpTrainingRecordRepository repositories.INlpRecordTrainingRepository
+	nlpTrainingRecordRepository repositories.INlpTrainingLogRepository
 	nlpRecordRepository         repositories.INlpRecordRepository
 	shopStoryRepository         repositories.IShopStoryRepository
 }
@@ -30,7 +30,7 @@ type INlpRecordService interface {
 }
 
 // NewNlpRecordService NewNlpService
-func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, nlpTrainingRecordRepository repositories.INlpRecordTrainingRepository, shopStoryRepository repositories.IShopStoryRepository) INlpRecordService {
+func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, nlpTrainingRecordRepository repositories.INlpTrainingLogRepository, shopStoryRepository repositories.IShopStoryRepository) INlpRecordService {
 	return &NlpRecordService{
 		nlpTrainingRecordRepository,
 		nlpRecordRepository,
@@ -153,7 +153,7 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 
 // SaveNlpTrainingSetsService SaveNlpTrainingSets
 func (svc NlpRecordService) SaveNlpTrainingSetsService(nlpResult *models.NlpReplyModel, shopID uint) {
-	var nlpTraningRecordDomain domains.NlpTrainingRecordDomain
+	var nlpTraningRecordDomain domains.NlpTrainingLogDomain
 	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
 	nlpTraningRecordDomain.Intent = nlpResult.Intent
 	nlpTraningRecordDomain.Distance = nlpResult.Distance

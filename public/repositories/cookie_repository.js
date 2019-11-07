@@ -1,6 +1,7 @@
 class CookieRepository {
     
     constructor(cookies) {
+        // by cookie-js
         this.cookies = cookies
     }
 

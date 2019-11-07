@@ -1,16 +1,15 @@
 
 class StoryService {
     
-    constructor(httpRepository,sweetAlertAjaxWrapper ) {
+    constructor(httpRepository,sweetAlertAjaxHelper ) {
         this.httpRepository = httpRepository
-        this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
+        this.sweetAlertAjaxHelper = sweetAlertAjaxHelper
         this.unsubscribe = new Subject()
     }
     
-    
     getStoryState() {
         let getAllStoriesEvent$ = this.httpRepository.getAllStories()
-        return this.sweetAlertAjaxWrapper.readTransaction(getAllStoriesEvent$).pipe(
+        return this.sweetAlertAjaxHelper.readTransaction(getAllStoriesEvent$).pipe(
             takeUntil(this.unsubscribe),
             map( json => new GetStoryModelAdapter().adapt(json.response) )
         )
@@ -18,8 +17,17 @@ class StoryService {
 
     deleteStoryByID(storyID) {  
         let deleteStoryByIDEvent$ = this.httpRepository.deleteStoryByID(storyID)
-        return this.sweetAlertAjaxWrapper.confirmTransaction(deleteStoryByIDEvent$).pipe(
-            takeUntil(this.unsubscribe)
+        return this.sweetAlertAjaxHelper.confirmTransaction(deleteStoryByIDEvent$).pipe(
+            takeUntil(this.unsubscribe),
+            switchMap( it => {
+                
+                if (this.sweetAlertAjaxHelper.isSwalCancelEvent(it)) {
+                    console.log("errors")
+                    return throwError("cancel transaction")
+                }
+
+                return of(it)
+            })
         )
     }
 

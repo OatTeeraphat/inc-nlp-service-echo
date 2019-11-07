@@ -21,14 +21,6 @@ var navPresenter = Vue.component('nav-component', {
 
 	</div>
     `,
-	data: function () {
-		return {
-		}
-	},
-	created: function () {
-	},
-	beforeDestroy: function () {
-	},
 	methods: {
 		signOut: function () {
 			this.$authService.signOut()

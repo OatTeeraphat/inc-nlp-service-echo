@@ -13,6 +13,7 @@ const authService = new AuthenticationService(repo0, helper1, repo4)
 const nlpRecordsService = new NlpRecordsService(repo0, helper1)
 const storyService = new StoryService(repo0, helper1)
 const webChatService = new WebChatService(repo2)
+const nlpReplyStatisticService = new NlpReplyStatisticService(repo0)
 
 const ifNotAuthenticated = (to, from, next) => {
     let isAuth = repo4.getCustomerSession() !== undefined
@@ -37,6 +38,7 @@ const ifAuthenticated = (to, from, next) => {
 const routes = [
     { path: '/', name: 'auth',  component: mainPresenter, beforeEnter: ifNotAuthenticated },
     { path: '/login', name: 'login',  component: mainPresenter, beforeEnter: ifNotAuthenticated },
+    { path: '/welcome', name: 'welcome',  component: welcomePresenter },
     { path: '/dashboard', name: 'dashboard', component: dashboardPresenter, beforeEnter: ifAuthenticated },
     { path: '/nlp', name: 'nlp', component: nlpRecordsPresenter, beforeEnter: ifAuthenticated },
     { path: '/logs', name: 'logs', component: nlpLogPresenter, beforeEnter: ifAuthenticated },
@@ -53,7 +55,8 @@ Vue.use({
         Vue.prototype.$authService = authService
         Vue.prototype.$nlpRecordsService = nlpRecordsService
         Vue.prototype.$storyService = storyService
-        Vue.prototype.$webChatService = webChatService
+        Vue.prototype.$webChatService = webChatService,
+        Vue.prototype.$nlpReplyStatisticService = nlpReplyStatisticService
     }
 })
 
