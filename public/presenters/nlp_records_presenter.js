@@ -235,16 +235,14 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             let keyword = event.target.value
 
             this.$nlpRecordsService.getNlpRecordsPaginationByKeyword(keyword, 1).subscribe( it => {
+
                 this.nlpRecordsByKeyword.push(...it.nlp_records)
             })
         }
     },
     computed: {
         searchKeywordComputed: function(e) {
-
             this.searchPage = 1
-            this.searchLimit = 1
-            this.searchTotal = 0
             this.nlpRecordsByKeyword = []
             this.nlpRecordsByKeywordCheckedList = { ids: [] }
 
