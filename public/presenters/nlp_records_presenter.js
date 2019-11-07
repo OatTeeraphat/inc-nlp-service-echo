@@ -101,9 +101,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                                     </button>
                                 </td>
                             </tr>
-                            <tr v-for="item in getNlpRecords">
+                            <tr v-for="item in nlpRecords">
                                 <th scope="row" class="col-1">
-                                    <input :value="item.id" v-model="listNlpRecordByIDsChecked.ids" type="checkbox">
+                                    <input :value="item.id" v-model="nlpCheckedList.ids" type="checkbox">
                                 </th>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
@@ -128,17 +128,22 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     `,
     data: function () {
         return {
-            page: 1,
+            // page: 1,
+            // listNlpRecordByIDsChecked: { ids: [] },
+            // getNlpRecords: [],
+            // searchNlpRecords: [],
             isShowLoadingIndicator: false,
-            listNlpRecordByIDsChecked: { ids: [] },
-            getNlpRecords: [],
-            searchNlpRecords: []
+            page: 1,
+            limit: 1,
+            total: 1,
+            nlpRecords: [],
+            nlpCheckedList: { ids: [] },
         }
     },
     mounted: function () {
         this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( 
             item => {
-                this.getNlpRecords.push(...item.nlp_records)
+                this.nlpRecords.push(...item.nlp_records)
                 this.isShowLoadingIndicator = false
                 this.page = this.page + 1
             },
@@ -157,23 +162,23 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             }
         },
         selectAllNlpRecord: function(event) {
-            this.listNlpRecordByIDsChecked.ids = []
-            this.getNlpRecords.forEach( select => { this.listNlpRecordByIDsChecked.ids.push(select.id) })
+            this.nlpCheckedList.ids = []
+            this.nlpRecords.forEach( select => { this.nlpCheckedList.ids.push(select.id) })
         },
         deselectAllNlpRecord: function(event) {
-            this.listNlpRecordByIDsChecked.ids = []
+            this.nlpCheckedList.ids = []
         },
         bulkDeleteNlpRecord: function(event) {
             // bulk delete 
             this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( () => {
-                this.getNlpRecords = this.getNlpRecords.filter( item => !this.listNlpRecordByIDsChecked.ids.includes(item.id) )
-                this.listNlpRecordByIDsChecked.ids = []
+                this.nlpRecords = this.nlpRecords.filter( item => !this.nlpCheckedList.ids.includes(item.id) )
+                this.nlpCheckedList.ids = []
             })
             // next page event
             this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
         },
         deleteNlpRecordByID: function (id) {
-            this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.getNlpRecords = this.getNlpRecords.filter( item => item.id !== id) )
+            this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.nlpRecords = this.nlpRecords.filter( item => item.id !== id) )
             
         }
     },

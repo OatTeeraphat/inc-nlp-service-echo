@@ -64,7 +64,7 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
                         <tbody>
                             <tr v-for="item in nlpLogs">
                                 <th scope="row" class="col-1">
-                                    <input :value="item.id" v-model="checkedList.ids" type="checkbox">
+                                    <input :value="item.id" v-model="nlpLogsCheckedList.ids" type="checkbox">
                                 </th>
                                 <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" readonly v-model="item.keyword"></td>
                                 <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
@@ -90,9 +90,9 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
         return {
             page: 1,
             limit: 1,
-            nlpLogs: [],
             total: 1,
-            checkedList: { ids: [] },
+            nlpLogs: [],
+            nlpLogsCheckedList: { ids: [] },
         }
     },
     mounted: function () {
@@ -103,7 +103,6 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
             this.nlpLogs.push(...it.nlp_logs)
         })
         this.$nlpTrainingLogService.nextNlpTrainingLogPaginationPage(1)
-        
     },
     beforeDestroy: function () {
     },
