@@ -174,32 +174,48 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	nlpRecordPaginationSearchModel.Page = page
 	nlpRecordPaginationSearchModel.Limit = "40"
 
-	nlpRecordsCount := svc.nlpRecordRepository.Count()
-
-	pageSizeFloat := float64(nlpRecordsCount) / 40
-
-	nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
-
 	pageInt, err := strconv.Atoi(page)
 
 	if err != nil {
 		log.Error(err)
 	}
 
-	log.Info(nlpRecordsCount)
-
-	// nlpRecordPaginationSearchModel.Total = string(nlpRecordsCount)
-
 	nlpRecordPaginationSearchModel.NlpRecords = []models.NlpRecords{}
 
-	for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 40) {
-		var nlpModels models.NlpRecords
-		nlpModels.ID = item.ID
-		nlpModels.Keyword = item.Keyword
-		nlpModels.Intent = item.Intent
-		nlpModels.StoryName = "mock_story_name"
+	log.Info(keyword)
 
-		nlpRecordPaginationSearchModel.NlpRecords = append(nlpRecordPaginationSearchModel.NlpRecords, nlpModels)
+	if keyword == "" {
+
+		nlpRecordsCount := svc.nlpRecordRepository.Count()
+		pageSizeFloat := float64(nlpRecordsCount) / 40
+		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
+
+		log.Info(nlpRecordsCount)
+
+		for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 40) {
+			var nlpModels models.NlpRecords
+			nlpModels.ID = item.ID
+			nlpModels.Keyword = item.Keyword
+			nlpModels.Intent = item.Intent
+			nlpModels.StoryName = "mock_story_name"
+
+			nlpRecordPaginationSearchModel.NlpRecords = append(nlpRecordPaginationSearchModel.NlpRecords, nlpModels)
+		}
+	} else {
+
+		nlpRecordsCount := svc.nlpRecordRepository.CountByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword))
+		pageSizeFloat := float64(nlpRecordsCount) / 40
+		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
+
+		for _, item := range svc.nlpRecordRepository.PaginationByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword), pageInt, 40) {
+			var nlpModels models.NlpRecords
+			nlpModels.ID = item.ID
+			nlpModels.Keyword = item.Keyword
+			nlpModels.Intent = item.Intent
+			nlpModels.StoryName = "mock_story_name"
+
+			nlpRecordPaginationSearchModel.NlpRecords = append(nlpRecordPaginationSearchModel.NlpRecords, nlpModels)
+		}
 	}
 
 	return nlpRecordPaginationSearchModel

@@ -140,8 +140,8 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( 
             item => {
                 this.nlpRecords.push(...item.nlp_records)
-                this.isShowLoadingIndicator = false
                 this.page = this.page + 1
+                this.isShowLoadingIndicator = false
             },
             error => {
                 this.isShowLoadingIndicator = false
