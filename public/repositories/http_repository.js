@@ -10,9 +10,19 @@ class HttpRepository {
 
     signOut = () => of()
 
-    getNlpRecordsPagination = (keyword, intent, story, page) => ajax ({
+    getNlpRecordsPagination = (page) => ajax ({
         method: "GET", 
-        url: getHttpHost() + `/v1/nlp/record/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
+        url: getHttpHost() + `/v1/nlp/record/pagination?page=${page}`, 
+    })
+
+    getNlpRecordsPaginationByKeyword = (keyword, page) => ajax ({
+        method: "GET", 
+        url: getHttpHost() + `/v1/nlp/record/pagination?keyword=${keyword}&page=${page}`, 
+    })
+
+    getNlpTrainingLogPagination = (keyword, intent, story, page) => ajax ({
+        method: "GET", 
+        url: getHttpHost() + `/v1/nlp/log/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
     })
 
     getAllStories = () => ajax({ 
@@ -33,11 +43,11 @@ class HttpRepository {
         delay(600)
     )
 
-    getNlpReplyStatisticByClientID = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
+    getNlpReplyCounterByClientID = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
         delay(600)
     )
 
-    getNlpReplyStatistic = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
+    getNlpReplyCounter = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
         delay(600)
     )
 

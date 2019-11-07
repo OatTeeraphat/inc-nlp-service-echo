@@ -10,9 +10,9 @@ type NlpTrainingLogPaginationSearchModel struct {
 
 // NlpTrainingLog NlpTrainingLog
 type NlpTrainingLog struct {
-	ID        uint   `json:"id"`
-	Keyword   string `json:"keyword"`
-	Intent    string `json:"intent"`
-	Distance  string `json:"distance"`
-	StoryName string `json:"story_name"`
+	ID        uint    `json:"id"`
+	Keyword   string  `json:"keyword"`
+	Intent    string  `json:"intent"`
+	Distance  float32 `json:"distance"`
+	StoryName string  `json:"story_name"`
 }

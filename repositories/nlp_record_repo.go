@@ -25,7 +25,9 @@ type INlpRecordRepository interface {
 	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
 	Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain
+	PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpRecordDomain
 	Count() int64
+	CountByKeywordMinhash(KeywordMinhash uint32) int64
 	Delete() *gorm.DB
 }
 
@@ -77,10 +79,24 @@ func (repo *NlpRecordRepository) Count() int64 {
 	return totalPage
 }
 
+// CountByKeywordMinhash CountByKeywordMinhash
+func (repo *NlpRecordRepository) CountByKeywordMinhash(KeywordMinhash uint32) int64 {
+	var totalPage int64
+	repo.Datasources.Table("nlp_records").Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Count(&totalPage)
+	return totalPage
+}
+
 // Pagination Pagination
 func (repo *NlpRecordRepository) Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
 	repo.Datasources.Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id asc").Find(&nlpRecordDomain)
+	return nlpRecordDomain
+}
+
+// PaginationByKeywordMinhash PaginationByKeywordMinhash
+func (repo *NlpRecordRepository) PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpRecordDomain {
+	var nlpRecordDomain []domains.NlpRecordDomain
+	repo.Datasources.Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id asc").Find(&nlpRecordDomain)
 	return nlpRecordDomain
 }
 

@@ -8,8 +8,15 @@ class NlpRecordsService {
         this.unsubscribe = new Subject()
     }
 
+    getNlpRecordsPaginationByKeyword = (keyword, page) => {
+        return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
+            takeUntil(this.unsubscribe),
+            map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
+        )
+    }
+
     getNlpRecordsPagination = (page) => {
-        return this.httpRepository.getNlpRecordsPagination("keyword", "intent", "story", page).pipe(
+        return this.httpRepository.getNlpRecordsPagination(page).pipe(
             takeUntil(this.unsubscribe),
             map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
         )
@@ -18,7 +25,7 @@ class NlpRecordsService {
     getNlpRecordsByInfiniteScrollSubject = () => {
         return this.infiniteHandler$$.pipe(
             takeUntil(this.unsubscribe),
-            debounceTime(200),
+            throttleTime(200),
             exhaustMap( ({ page }) => 
                 this.sweetAlertAjaxHelper.readTransaction( this.getNlpRecordsPagination(page) ) 
             ),
@@ -60,7 +67,7 @@ class NlpRecordsService {
     }
 
     disposable = () => {
-        this.unsubscribe.next()
+        this.unsubscribe.next(true)
         this.unsubscribe.complete()
     }
 }

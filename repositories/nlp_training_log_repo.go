@@ -31,7 +31,7 @@ func (repo *NlpTrainingLogRepository) Save(nlpTrainingRecordDomain *domains.NlpT
 // Count Count
 func (repo *NlpTrainingLogRepository) Count() int64 {
 	var totalPage int64
-	repo.Datasources.Table("nlp_records").Count(&totalPage)
+	repo.Datasources.Table("nlp_training_logs").Count(&totalPage)
 	return totalPage
 }
 
