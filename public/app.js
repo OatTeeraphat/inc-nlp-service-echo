@@ -13,7 +13,7 @@ const authService = new AuthenticationService(repo0, helper1, repo4)
 const storyService = new StoryService(repo0, helper1)
 const webChatService = new WebChatService(repo2)
 const nlpRecordsService = new NlpRecordsService(repo0, helper1)
-const nlpTrainingLogService = new NlpTrainingLogService(repo0)
+const nlpTrainingLogService = new NlpTrainingLogService(repo0, helper1)
 const nlpReplyCounterService = new NlpReplyCounterService(repo0)
 
 
