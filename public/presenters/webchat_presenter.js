@@ -71,7 +71,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                                             <code><p class="mb-0">hi <i class="fe fe-chevrons-right"></i> himom (98.27% of confidence)</p></code>
                                             <hr>
                                             <p class="mb-0"><strong>Performance Static</strong></p>
-                                            <code><p class="mb-0">found in 0.93μsec</code>
+                                            <code><p class="mb-0">found in 0.93μsec</p></code>
                                         </div>
                                     </div>
                                 </div>
