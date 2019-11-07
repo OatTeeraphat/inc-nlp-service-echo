@@ -7,29 +7,39 @@ Vue.component('line-chart-acc', {
 				{
 					label: "Accuracy",
 					pointRadius: 2,
-					pointBackgroundColor: "rgba(255,255,255,1)",
-					pointBorderWidth: 4,
+					pointBackgroundColor: "#673AB7",
+					pointBorderWidth: 2,
 					fill: false,
-					backgroundColor: "transparent",
+					backgroundColor: "#673AB7",
 					borderWidth: 2,
 					borderColor: "#673AB7",
+					lineTension: 0,
 					data: [82, 87, 80, 95, 91, 83, 87, 89, 85, 90]
 				},
 				{
 					label: "Batch Size",
 					fill: false,
 					pointRadius: 2,
-					pointBackgroundColor: "rgba(255,255,255,1)",
-					pointBorderWidth: 4,
-					backgroundColor: "transparent",
+					pointBackgroundColor: "#e83e8c",
+					pointBorderWidth: 2,
+					fill: false,
+					backgroundColor: "#e83e8c",
 					borderWidth: 2,
+					lineTension: 0,
 					borderColor: "#e83e8c",
 					data: [20, 40, 60, 90, 87, 91, 92, 95, 99, 100]
 				}
 			],
-		}, { 
+		}, 
+		{
+			plugins: {
+				datalabels: {
+					 display: false
+				}
+			},
 			responsive: true, 
 			maintainAspectRatio: true,
+			bezierCurve: false,
 			layout: {
 				padding: {
 					right: 10
@@ -42,15 +52,13 @@ Vue.component('line-chart-acc', {
 				xAxes: [
 					{	
 						scaleLabel: {
-							display: true,
-							labelString: 'Batch Size',
-							fontStyle: 'bold'
+							display: false,
 						},
 						gridLines: {
 							display: false,
 						},
 						ticks: {
-							beginAtZero: true,
+							beginAtZero: false,
 							maxTicksLimit : 7
 						}
 					}
@@ -58,35 +66,40 @@ Vue.component('line-chart-acc', {
 				yAxes: [
 					{	
 						scaleLabel: {
-							display: true,
-							labelString: 'Accuracy',
-							fontStyle: 'bold'
-
+							display: false,
 						},
 						ticks: {
 							beginAtZero: true,
-							maxTicksLimit: 7
+							maxTicksLimit: 4,
+							minTicksLimit: 2
 						}
 					}
 				]
 			},
 			tooltips: {
-				mode: 'label',
+				mode: 'single',
 				titleFontColor: "#888",
-				bodyFontColor: "#555",
 				titleFontSize: 12,
-				bodyFontSize: 14,
+				bodyFontColor: "#673AB7",
+				bodyFontSize: 16,
+				bodyFontStyle: 'bold',
+				footerFontSize: 10,
+				footerFontStyle: 'bold',
+				footerFontColor: "#888",
+				footerSpacing : 2,
 				backgroundColor: "rgba(256,256,256,0.95)",
 				displayColors: false,
 				borderColor: "rgba(220, 220, 220, 0.9)",
 				borderWidth: 2,
 				callbacks: {
-					title: function (it) {
-						return "Batch Size " + it[0].xLabel
+					title: function (it, data) {
+						return it[0].yLabel > 0 ? data.datasets[0].label : false
 					},
-					label: function (tooltipItem, data) {
-						let label = data.datasets[tooltipItem.datasetIndex].label
-						return label + " : " + Number(tooltipItem.yLabel);
+					label: function (it) {
+						return Number(it.yLabel);
+					},
+					footer: function (it, data) {
+						return data.datasets[0].data[it[0].index].date;
 					}
 				}
 			}

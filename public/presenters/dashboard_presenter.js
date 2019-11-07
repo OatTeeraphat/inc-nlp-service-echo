@@ -119,15 +119,15 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 									enter-active-class="animated zoomIn faster"
 								>
 									<div class="chart-warpper">
-											<line-chart-api-usage 
-												:height="120" 
+											<line-chart-acc
+												:height="200" 
 												:redraw="true"
 												v-if=" toggle_chart.model == 'tabFirst' " 
 												key="tabFirst"
 											>
-											</line-chart-api-usage>
+											</line-chart-acc>
 											<line-chart-api-usage 
-												:height="120" 
+												:height="200" 
 												:redraw="true"
 												v-if=" toggle_chart.model == 'tabSecond' " 
 												key="tabSecond"

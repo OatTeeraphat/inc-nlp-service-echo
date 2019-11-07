@@ -30,7 +30,8 @@ Vue.component('line-chart-api-usage', {
 					]
 				}
 			],
-		}, {
+		}, 
+		{
 			plugins: {
 				datalabels: {
 					 display: false

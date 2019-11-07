@@ -33,11 +33,11 @@ Vue.component('stack-chart-training', {
 					backgroundColor: '#aaaaaa',
 			}
 		]}, {
-		plugins: {
-			datalabels: {
-					 display: false
-				}
-			},
+			plugins: {
+				datalabels: {
+						display: false
+					}
+				},
 			hover :{
 					animationDuration:0
 			},
