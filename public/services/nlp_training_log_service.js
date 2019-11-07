@@ -10,7 +10,7 @@ class NlpTrainingLogService {
         return this.httpRepository.getNlpTrainingLogPagination("keyword", "intent", "story", page).pipe(
             takeUntil(this.unsubscribe),
             map( ({ response }) => { 
-                return new GetNlpTrainingLogPaginationAdapter().adapt(response) 
+                    return new GetNlpTrainingLogPaginationAdapter().adapt(response) 
             }),
         )
     }
@@ -34,6 +34,5 @@ class NlpTrainingLogService {
         this.unsubscribe.next()
         this.unsubscribe.complete()
     }
-
 
 }

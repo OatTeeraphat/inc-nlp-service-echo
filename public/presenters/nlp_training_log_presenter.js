@@ -97,7 +97,7 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
         }
     },
     mounted: function () {
-        this.$nlpTrainingLogService.getNlpTrainingLogPaginationByInfiniteScrollSubject().subscribe( it => {
+        this.subscription = this.$nlpTrainingLogService.getNlpTrainingLogPaginationByInfiniteScrollSubject().subscribe( it => {
             this.page = it.page
             this.total = it.total
             this.limit = it.limit
@@ -106,7 +106,7 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
         this.$nlpTrainingLogService.nextNlpTrainingLogPaginationPage(1)
     },
     beforeDestroy: function () {
-        this.$nlpTrainingLogService.disposable()
+        this.subscription.unsubscribe()
     },
     methods: {
     },
