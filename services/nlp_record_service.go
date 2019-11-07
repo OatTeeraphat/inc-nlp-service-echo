@@ -178,7 +178,7 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 
 	pageSizeFloat := float64(nlpRecordsCount) / 40
 
-	nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Floor(pageSizeFloat), 'f', 0, 64)
+	nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
 	pageInt, err := strconv.Atoi(page)
 

@@ -37,7 +37,7 @@ func (repo NlpTrainingLogService) ReadPaginationNlpRecordService(PageID string) 
 
 	pageSizeFloat := float64(nlpTrainingLogCount) / 40
 
-	nlpTrainingLogPaginationSearchModel.Total = strconv.FormatFloat(math.Floor(pageSizeFloat), 'f', 0, 64)
+	nlpTrainingLogPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
 	pageInt, err := strconv.Atoi(PageID)
 
