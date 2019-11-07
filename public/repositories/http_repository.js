@@ -15,6 +15,11 @@ class HttpRepository {
         url: getHttpHost() + `/v1/nlp/record/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
     })
 
+    getNlpTrainingLogPagination = (keyword, intent, story, page) => ajax ({
+        method: "GET", 
+        url: getHttpHost() + `/v1/nlp/log/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
+    })
+
     getAllStories = () => ajax({ 
         method: "GET", 
         url: getHttpHost() + '/v1/story',

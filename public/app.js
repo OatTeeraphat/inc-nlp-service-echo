@@ -14,6 +14,7 @@ const nlpRecordsService = new NlpRecordsService(repo0, helper1)
 const storyService = new StoryService(repo0, helper1)
 const webChatService = new WebChatService(repo2)
 const nlpReplyStatisticService = new NlpReplyStatisticService(repo0)
+const nlpTrainingLogService = new NlpTrainingLogService(repo0)
 
 const ifNotAuthenticated = (to, from, next) => {
     let isAuth = repo4.getCustomerSession() !== undefined
@@ -57,6 +58,7 @@ Vue.use({
         Vue.prototype.$storyService = storyService
         Vue.prototype.$webChatService = webChatService,
         Vue.prototype.$nlpReplyStatisticService = nlpReplyStatisticService
+        Vue.prototype.$nlpTrainingLogService = nlpTrainingLogService
     }
 })
 

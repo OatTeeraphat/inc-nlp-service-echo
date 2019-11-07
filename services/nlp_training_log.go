@@ -16,7 +16,7 @@ type NlpTrainingLogService struct {
 
 // INlpTrainingLogService INlpTrainingLogService
 type INlpTrainingLogService interface {
-	ReadPaginationNlpRecordService(PageID string) string
+	ReadPaginationNlpRecordService(PageID string) models.NlpTrainingLogPaginationSearchModel
 }
 
 // NewNlpTrainingLogService NewNlpTrainingLogService
@@ -27,7 +27,7 @@ func NewNlpTrainingLogService(repo1 repositories.INlpTrainingLogRepository) INlp
 }
 
 // ReadPaginationNlpRecordService ReadPaginationNlpRecordService
-func (repo NlpTrainingLogService) ReadPaginationNlpRecordService(PageID string) string {
+func (repo NlpTrainingLogService) ReadPaginationNlpRecordService(PageID string) models.NlpTrainingLogPaginationSearchModel {
 	var nlpTrainingLogPaginationSearchModel models.NlpTrainingLogPaginationSearchModel
 
 	nlpTrainingLogPaginationSearchModel.Page = PageID
@@ -55,10 +55,11 @@ func (repo NlpTrainingLogService) ReadPaginationNlpRecordService(PageID string) 
 		nlpModels.Keyword = item.Keyword
 		nlpModels.Intent = item.Intent
 		nlpModels.StoryName = "mock_story_name"
+		nlpModels.Distance = item.Distance
 
 		nlpTrainingLogPaginationSearchModel.NlpTrainingLog = append(nlpTrainingLogPaginationSearchModel.NlpTrainingLog, nlpModels)
 	}
 
 	// return nlpRecordPaginationSearchModel
-	return "OK"
+	return nlpTrainingLogPaginationSearchModel
 }
