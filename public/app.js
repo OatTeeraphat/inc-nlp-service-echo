@@ -24,7 +24,7 @@ const ifNotAuthenticated = (to, from, next) => {
         next()
         return
     }
-    next("/nlp")
+    next("/dashboard")
 }
 
 const ifAuthenticated = (to, from, next) => {
@@ -34,7 +34,7 @@ const ifAuthenticated = (to, from, next) => {
         return
     }
 
-    next('/dashboard')
+    next('/login')
 }
 
 const routes = [

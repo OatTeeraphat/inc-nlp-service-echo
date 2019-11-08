@@ -36,8 +36,15 @@
     <div id="app">
         <div class="container">
             <transition name="slide">
-                <router-view></router-views>
+
+                <!-- for cache component ( won't be call before destroy directly ) -->
+                <keep-alive v-if="$route.meta.keepAlive">
+                    <router-view></router-views>
+                </keep-alive>
+
+                <router-view v-else></router-view>
             </transition>
+            
         </div>
     </div>
 </body>
@@ -50,6 +57,7 @@
     <script src="adapters/https/get_nlp_records_pagination_adapter.js"></script>
     <script src="adapters/https/get_nlp_reply_counter_adapter.js"></script>
     <script src="adapters/https/get_nlp_training_log_pagination_adapter.js"></script>
+    <script src="adapters/https/get_customer_sign_in_adapter.js"></script>
 
     <!-- repositories -->
     <script src="repositories/http_repository.js" ></script>
