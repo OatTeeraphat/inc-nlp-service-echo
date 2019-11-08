@@ -14,18 +14,18 @@ class AuthenticationService {
             switchMap(
                 it => {
                     if (this.isEmptyUsernameOrPassword(it)) return throwError("username or password can not be empty")
+                    
                     if (this.isNotEmail(it.username)) return throwError("email invalid format")
 
                     return this.httpRepository.signIn(it.username, it.password).pipe(
                         map( it => {
-                            let {username, token, expired} = it
-                            // TODO: Change to real ajax call
-                            console.log(rememberMe)
+
+                            let model = new GetCustomerSignInAdapter().adapt(it)
 
                             if (rememberMe) {
-                                this.cookieRepository.setCustomerSession(token, 365)
+                                this.cookieRepository.setCustomerSession(model.token, 365)
                             } else {
-                                this.cookieRepository.setCustomerSession(token)
+                                this.cookieRepository.setCustomerSession(model.token)
                             }
                             
                             return empty()

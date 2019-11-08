@@ -41,7 +41,7 @@ var mainPresenter = Vue.component('main-presenter', {
             <div class="text-center">
                 <a class="btn btn-link mt-4 text-center" href="#" role="button">
                     <small class="text-white text-center mr-2">Term & Privacy Policy</small>
-                </a>
+                </a>w
                 <a class="btn btn-link mt-4 text-center" href="#" role="button">
                     <span class="text-white text-center">•</span>
                     <small class="text-white text-center ml-2">Instruction Manual</small>
@@ -60,6 +60,8 @@ var mainPresenter = Vue.component('main-presenter', {
         }
     },
     created: function() {
+        console.log("created")
+        // this.toggleBodyClass('addClass', 'bg-purple')
     },
     methods: {
         toggleBodyClass(addRemoveClass, className) {
@@ -77,7 +79,6 @@ var mainPresenter = Vue.component('main-presenter', {
                 it => {
                     this.isNotSignInLoading = true
                     this.$router.push('/dashboard')
-                    this.toggleBodyClass('removeClass', 'bg-purple');
                 },
                 error => {
                     this.flashMessage = error
@@ -87,9 +88,11 @@ var mainPresenter = Vue.component('main-presenter', {
         }
     },
     mounted() {
-        this.toggleBodyClass('addClass', 'bg-purple');
+        console.log("mounted")
+        this.toggleBodyClass('addClass', 'bg-purple')
     },
-    destroyed() {
-        this.toggleBodyClass('removeClass', 'bg-purple');
+    beforeDestroy() {
+        console.log("beforeDestroy")
+        this.toggleBodyClass('removeClass', 'bg-purple')
     }
 })
