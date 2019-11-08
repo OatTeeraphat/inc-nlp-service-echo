@@ -77,7 +77,7 @@ Vue.component('line-chart-api-usage', {
 				]
 			},
 			tooltips: {
-				mode: 'single',
+				mode: 'dataset',
 				titleFontColor: "#888",
 				titleFontSize: 12,
 				bodyFontColor: "#673AB7",

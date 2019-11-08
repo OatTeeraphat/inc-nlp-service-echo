@@ -46,6 +46,7 @@ const routes = [
     { path: '/logs', name: 'logs', component: nlpLogPresenter, beforeEnter: ifAuthenticated },
     { path: '/story', name: 'story', component: storyPresenter, beforeEnter: ifAuthenticated },
     { path: '/webchat', name: 'webchat', component: webChatPresenter, beforeEnter: ifAuthenticated },
+    { path: '/setting', name: 'setting', component: settingPresenter, beforeEnter: ifAuthenticated },
 ]
 
 const router = new VueRouter({ routes, mode: 'history' });

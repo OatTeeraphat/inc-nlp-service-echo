@@ -2,10 +2,10 @@ Vue.component('line-chart-acc', {
 	extends: VueChartJs.Line,
 	mounted() {
 		this.renderChart({
-			labels: ['10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+			labels: [['June', '1'], '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', ['June', '12']],
 			datasets: [
 				{
-					label: "Accuracy",
+					label: "Transaction",
 					pointRadius: 2,
 					pointBackgroundColor: "#673AB7",
 					pointBorderWidth: 2,
@@ -13,11 +13,10 @@ Vue.component('line-chart-acc', {
 					backgroundColor: "#673AB7",
 					borderWidth: 2,
 					borderColor: "#673AB7",
-					lineTension: 0,
-					data: [82, 87, 80, 95, 91, 83, 87, 89, 85, 90]
+					data: [0, 30, 89, 85, 87, 90, 80, 95, 91, 96, 90, 100]
 				},
 				{
-					label: "Batch Size",
+					label: "Training Set",
 					fill: false,
 					pointRadius: 2,
 					pointBackgroundColor: "#e83e8c",
@@ -25,9 +24,8 @@ Vue.component('line-chart-acc', {
 					fill: false,
 					backgroundColor: "#e83e8c",
 					borderWidth: 2,
-					lineTension: 0,
 					borderColor: "#e83e8c",
-					data: [20, 40, 60, 90, 87, 91, 92, 95, 99, 100]
+					data: [0, 12, 30, 45, 48, 62, 72, 90, 80, 85, 73, 90]
 				}
 			],
 		}, 
@@ -92,14 +90,19 @@ Vue.component('line-chart-acc', {
 				borderColor: "rgba(220, 220, 220, 0.9)",
 				borderWidth: 2,
 				callbacks: {
-					title: function (it, data) {
-						return it[0].yLabel > 0 ? data.datasets[0].label : false
+					title: function () {
+						return "Answer Ratio"
 					},
-					label: function (it) {
-						return Number(it.yLabel);
+					label: function (it, data) {
+						let transaction = data.datasets[0].data[it.index]
+						let answer = data.datasets[1].data[it.index]
+						let answer_rate =  parseFloat(answer/transaction * 100).toFixed(2);
+						return  !isNaN(answer_rate) ? answer_rate + "%" : "No Data"
 					},
 					footer: function (it, data) {
-						return data.datasets[0].data[it[0].index].date;
+						let transaction = data.datasets[0].data[it[0].index]
+						let answer = data.datasets[1].data[it[0].index]
+						return transaction > 0 ? 'Can Be Slove ' + answer + ' From ' + transaction : "Can't Be Slove"
 					}
 				}
 			}

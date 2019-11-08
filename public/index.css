@@ -80,14 +80,18 @@ th i{
 .graph-legend{position: relative;margin-left: 30px;margin-bottom: 0;margin-top: 15px;}
 
 .graph-legend:before{
- content: '';
- width: 1em;
- height: 1em;
- background: #6739b7;
- position: absolute;
- left: -22.5px;
- top: .225em;
- border-radius: 3px;
+    content: '';
+    width: 1em;
+    height: 1em;
+    background: #6739b7;
+    position: absolute;
+    left: -22.5px;
+    top: .225em;
+    border-radius: 3px;
+}
+
+.graph-legend.pink:before{
+    background: #e83e8c;
 }
 
 
@@ -502,19 +506,67 @@ input:checked ~ .checkmark {
 
 .dashboard-usage > span{font-size: 0.5em;margin-left: 5px;color: #000;}
 .dashboard-summary{}
-.dashboard-summary h3.counter{
+.chart-warpper h3.counter{
     position: absolute;
     z-index: 0;
     top: 2rem;
-    font-size: 2em;
 }
-.dashboard-summary canvas{
+.chart-warpper canvas{
     position: relative;
     z-index: 1;
 }
-.dashboard-summary h3 > span{
+.chart-warpper h3 > span{
     font-size: 0.5em;
-    margin-left: 5px;
+    margin-left: 0.33em;
+}
+.chart-warpper h3{
+    font-size: 2em;
+}
+
+.media{
+    font-size: 0.8em;
+    line-height: 1;
+    padding: 1em;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #dfdfdf;
+}
+.media:last-child{
+    border: none;
+    padding-bottom: 0;
+}
+.media h5{
+    margin-bottom: 5px;
+    padding-top: 5px;
+    font-size: 1rem;
+}
+.media h5 > span {
+    font-weight: 600;
+}
+.media p i{
+    position: relative;
+    top: 2px;
+}
+.media-icon{
+    font-size: 2em;
+    background: #f4f0f9;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #663ab7;
+}
+.media-icon.danger{
+    background: #fdeaeb;
+    color: #dc346a;
+}
+.media-icon.success{
+    background: #e7f4e9;
+    color: #28a745;
+}
+.media-icon.warning{
+    background: #ffb43b26;
+    color: #f79b07;
 }
 
 /* Fallback for Edge
