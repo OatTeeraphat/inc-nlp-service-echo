@@ -41,13 +41,13 @@ const routes = [
     { path: '/', name: 'auth',  component: mainPresenter, beforeEnter: ifNotAuthenticated },
     { path: '/login', name: 'login',  component: mainPresenter, beforeEnter: ifNotAuthenticated },
     { path: '/welcome', name: 'welcome',  component: welcomePresenter },
-    { path: '/dashboard', name: 'dashboard', component: dashboardPresenter, beforeEnter: ifAuthenticated },
-    { path: '/nlp', name: 'nlp', component: nlpRecordsPresenter, beforeEnter: ifAuthenticated },
-    { path: '/logs', name: 'logs', component: nlpLogPresenter, beforeEnter: ifAuthenticated },
-    { path: '/story', name: 'story', component: storyPresenter, beforeEnter: ifAuthenticated },
-    { path: '/webchat', name: 'webchat', component: webChatPresenter, beforeEnter: ifAuthenticated },
+    { path: '/dashboard', name: 'dashboard', component: dashboardPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/nlp', name: 'nlp', component: nlpRecordsPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/logs', name: 'logs', component: nlpLogPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/story', name: 'story', component: storyPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/webchat', name: 'webchat', component: webChatPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
     // TODO: change to settingPresenter
-    { path: '/setting', name: 'setting', component: storyPresenter, beforeEnter: ifAuthenticated },
+    { path: '/setting', name: 'setting', component: storyPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
 
 ]
 

@@ -36,9 +36,13 @@
     <div id="app">
         <div class="container">
             <transition name="slide">
-                <!-- <keep-alive> -->
-                <router-view></router-views>
-                <!-- </keep-alive> -->
+
+                <!-- for cache component ( won't be call before destroy directly ) -->
+                <keep-alive v-if="$route.meta.keepAlive">
+                    <router-view></router-views>
+                </keep-alive>
+
+                <router-view v-else></router-view>
             </transition>
             
         </div>
