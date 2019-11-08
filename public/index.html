@@ -36,8 +36,11 @@
     <div id="app">
         <div class="container">
             <transition name="slide">
-                <router-view></router-views>
+                <keep-alive>
+                    <router-view></router-views>
+                </keep-alive>
             </transition>
+            
         </div>
     </div>
 </body>

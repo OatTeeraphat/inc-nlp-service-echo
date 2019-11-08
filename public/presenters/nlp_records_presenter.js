@@ -251,5 +251,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     },
     beforeDestroy: function () {
         this.subscription.unsubscribe()
+        this.nlpRecords = []
+        this.nlpRecordsByKeyword = []
     },
 })
