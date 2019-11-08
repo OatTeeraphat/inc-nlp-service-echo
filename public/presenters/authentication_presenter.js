@@ -77,6 +77,7 @@ var mainPresenter = Vue.component('main-presenter', {
                 it => {
                     this.isNotSignInLoading = true
                     this.$router.push('/dashboard')
+                    this.toggleBodyClass('removeClass', 'bg-purple');
                 },
                 error => {
                     this.flashMessage = error
