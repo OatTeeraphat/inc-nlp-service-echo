@@ -23,9 +23,9 @@ class AuthenticationService {
                             let model = new GetCustomerSignInAdapter().adapt(it)
 
                             if (rememberMe) {
-                                this.cookieRepository.setCustomerSession(model.token, 365)
+                                this.cookieRepository.setCustomerSession(model.access_token, model.expires_in)
                             } else {
-                                this.cookieRepository.setCustomerSession(model.token)
+                                this.cookieRepository.setCustomerSession(model.access_token)
                             }
                             
                             return empty()
