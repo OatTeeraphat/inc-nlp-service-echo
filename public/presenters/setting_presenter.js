@@ -13,11 +13,60 @@ var settingPresenter = Vue.component('setting-presenter', {
             </div>
         </div>
         <div class="row">
-            <div class="col-9">
+            <div class="col-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                App Info
+                                <button type="button" class="btn btn-link" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
+                                    <small>
+                                        <i class="fe fe-info text-muted"></i>
+                                    </small>
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex pt-2 mb-3">
+                                <div class="row mx-1">
+                                    <div class="col-11">
+                                        <small class="text-muted">Yours App Name</small>
+                                        <h5 class="card-title text-bold mb-0">
+                                            <input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" value="Incommon Studio">
+                                        </h5>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="d-flex pt-2 mb-3">
+                                <div class="row mx-1">
+                                    <div class="col-11">
+                                        <small class="text-muted">Yours App ID</small>
+                                        <h5 class="card-title text-bold mb-0">
+                                            <input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" value="632861333807100">
+                                        </h5>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="d-flex pt-2 mb-3">
+                                <div class="row mx-1">
+                                    <div class="col-11">
+                                        <small class="text-muted">Yours App ID</small>
+                                        <h5 class="card-title text-bold mb-0">
+                                            <input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" value="632861333807100">
+                                        </h5>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-8">
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
-                            API
+                            App Info
                             <button type="button" class="btn btn-link" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
                                 <small>
                                     <i class="fe fe-info text-muted"></i>
@@ -26,28 +75,29 @@ var settingPresenter = Vue.component('setting-presenter', {
                         </h5>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex pt-2 justify-content-center">
-                            <div class="col-8">
-                                <div class="row">
-                                    <div class="col-9">
-                                        <small class="text-muted">Yours App Name</small>
-                                        <h5 class="card-title text-bold mb-0">
-                                            <input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" value="Incommon Studio">
-                                        </h5>
-                                    </div>
-                                    <div class="col-3">
-                                        
-                                    </div>
-                                </div>
+                        <div class="row mx-2">
+                            <div class="col">
+                                <small class="text-muted">Yours App Name</small>
+                                <h5 class="card-title text-bold mb-0">
+                                    <input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" value="Incommon Studio">
+                                </h5>
                                 <hr>
                             </div>
                         </div>
-                        <div class="d-flex">
+                        <div class="row mx-2">
+                            <div class="col">
+                                <small class="text-muted">App ID</small>
+                                <h5 class="card-title text-bold mb-0">
+                                    <input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" value="632861333807100">
+                                </h5>
+                                <hr>
+                            </div>
                             
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     </div> 
