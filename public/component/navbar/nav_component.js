@@ -15,7 +15,7 @@ var navPresenter = Vue.component('nav-component', {
 			<router-link class="nav-link" :to="{ path: '/nlp'}"> NLP SET </router-link>
 			<router-link class="nav-link" :to="{ path: '/logs'}"> NLP LOGS </router-link>
 			<router-link class="nav-link" :to="{ path: '/story'}"> STORY </router-link>
-			<router-link class="nav-link" :to="{ path: '/webchat'}"> DEBUGGER </router-link>
+			<router-link class="nav-link" :to="{ path: '/logging'}"> LOGGING </router-link>
 			<router-link class="nav-link" :to="{ path: '/setting'}"> SETTING </router-link>
 			<a class="nav-link" @click="signOut"> SIGN OUT </a>
 		</nav>

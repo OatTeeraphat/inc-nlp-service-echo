@@ -52,29 +52,7 @@ var webChatPresenter = Vue.component('web-chat-presenter', {
                         </div>
                         <div class="row">
                             <div class="col">
-                                <div class="warpper">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-9">
-                                                    <h2>hi <i class="fe fe-chevrons-right"></i> hello</h2>
-                                                </div>
-                                                <div class="col">
-                                                    <h4 class="mb-0 mt-2"><span class="badge badge-primary btn-purple px-2">NLP API</span></h4>
-                                                </div>
-                                            </div>
-                                            <p class="mb-2">98.887% of confidence</p>
-                                            <hr>
-                                            <p class="mb-0"><strong>Proximity : k=3</strong></p>
-                                            <code><p class="mb-0">hi <i class="fe fe-chevrons-right"></i> hello (98.887% of confidence)</p></code>
-                                            <code><p class="mb-0">hi <i class="fe fe-chevrons-right"></i> hello (98.887% of confidence)</p></code>
-                                            <code><p class="mb-0">hi <i class="fe fe-chevrons-right"></i> himom (98.27% of confidence)</p></code>
-                                            <hr>
-                                            <p class="mb-0"><strong>Performance Static</strong></p>
-                                            <code><p class="mb-0">found in 0.93μsec</p></code>
-                                        </div>
-                                    </div>
-                                </div>
+                                 
                             </div>
                         </div>
                     </div>

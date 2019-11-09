@@ -48,6 +48,7 @@ const routes = [
     { path: '/webchat', name: 'webchat', component: webChatPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
     // TODO: change to settingPresenter
     { path: '/setting', name: 'setting', component: settingPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/logging', name: 'logging', component: logsPresenter, beforeEnter: ifAuthenticated, meta: { keepAlive: true } },
 
 ]
 
