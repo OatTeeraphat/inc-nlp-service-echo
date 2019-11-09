@@ -3,8 +3,14 @@ class HttpRepository {
     constructor() {
         // this.$cache = new SomeClass()
     }
-    
-    signIn = (username, password) => of({ username, password, token: "token"}).pipe(
+    signIn = (username, password) => of({
+        "consumer_id": "fe62eca5-f4d3-468c-b628-1142214dbf87",
+        "username": "mock_chanasit",
+        "email": "mock_chanasit@gmail.com",
+        "access_token": "hOurGBmIfSlp6r2GBLwIf9zJNF9xusuL",
+        "refresh_token": "zK40mQb7KmROVc5jL7Ef1gbI7ewnqXsC",
+        "expires_in": 7776000
+    }).pipe(
         delay(1600)
     )
 
