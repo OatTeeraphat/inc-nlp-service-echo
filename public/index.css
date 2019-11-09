@@ -49,6 +49,8 @@ th i{
     left: -0.33em;
 }
 
+textarea[readonly]{background-color: #fff !important;font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;}
+
 .navbar-brand{
     max-width: 135px;
     margin: .33rem 0 .125rem;
@@ -528,7 +530,7 @@ input:checked ~ .checkmark {
     line-height: 1;
     padding: 1em;
     margin-bottom: 0.5em;
-    border-bottom: 1px solid #dfdfdf;
+    /* border-bottom: 1px solid #dfdfdf; */
 }
 .media:last-child{
     border: none;
@@ -567,6 +569,32 @@ input:checked ~ .checkmark {
 .media-icon.warning{
     background: #ffb43b26;
     color: #f79b07;
+}
+
+.media-body h3 > button{
+    font-size: 0.66em;
+    position: absolute;
+    right: 30px;
+    padding: 5px;
+}
+
+.media-body h3 > button:hover{
+    margin-top: 1px;
+    color: #663ab7;
+}
+
+.setting-row{position: relative;margin-bottom: 0.5rem;}
+.setting-action{position: absolute;right: 30px;top: calc(50% - 0.5rem);border-radius: 3px;}
+.setting-action button{padding: 10px;position: relative;top: 0;}
+
+.setting-action button:hover{background: #f4f0f9;color: #673ab7;top: 1px;}
+
+.setting-action button:hover i{
+    
+}
+
+.setting-action button i{
+
 }
 
 /* Fallback for Edge
@@ -642,4 +670,22 @@ input:checked ~ .checkmark {
     min-height: 50px;
     max-width: 50px;
     max-height: 50px;
+}
+
+
+.badge-setting{
+    font-size: 0.9em;
+    position: relative;
+    top: -1px;
+}
+
+.textarea-code{
+    color: #e83e8c!important;
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-size: 1.1em;
+    word-break: break-all;
+}
+
+.card-title-token{
+    font-size: 1.2rem !important;
 }
