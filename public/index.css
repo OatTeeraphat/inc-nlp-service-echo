@@ -101,6 +101,17 @@ textarea[readonly]{background-color: #fff !important;font-family: SFMono-Regular
     top: 2px;
 }
 
+.dropdown-toggle-no-arrow.dropdown-toggle::after{
+    content: "";
+    display: none;
+}
+
+.dropdown-item.active, .dropdown-item:active{background-color: #663ab7;}
+
+.dropdown-item:focus, .dropdown-item:hover{
+    outline: none;
+}
+
 @media (max-width: 991.98px) {
   .offcanvas-collapse {
     position: fixed;
