@@ -160,7 +160,60 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 								</bubble-chart-intent>
 						</div>
 				</div>
-				
+				<div class="card mb-4">
+						<div class="card-header">
+								<h5 class="card-title mb-0">
+										Training Stats
+										<button type="button" class="btn btn-link" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
+											<small>
+												<i class="fe fe-info text-muted"></i>
+											</small>
+										</button>
+								</h5>
+						</div>
+						<ul class="list-group list-group-flush">
+								<li class="list-group-item p-1 ">
+										<ul class="nav nav-card" id="myTab" role="tablist">
+												<li class="nav-item" @click="toggle_chart.trainig = 'tabFirst'" >
+													<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Summary</a>
+												</li>
+												<li class="nav-item" @click="toggle_chart.trainig = 'tabSecond'" >
+													<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Data Growth</a>
+												</li>
+											</ul>
+								</li>
+								<li class="list-group-item pt-5 pb-4 pr-4">
+								<transition
+									name="custom-classes-transition"
+									mode="out-in"
+									enter-active-class="animated zoomIn faster"
+								>
+									<div class="chart-warpper dashboard-summary">
+											<h3 class="counter" v-if=" toggle_chart.trainig == 'tabFirst' " >1,453<span>Training Set</span></h3>
+											<stack-chart-training
+												:height="100" 
+												:redraw="true"
+												v-if=" toggle_chart.trainig == 'tabFirst' " 
+												key="tabFirst"
+											></stack-chart-training>
+											<line-chart-api-usage 
+												:height="120" 
+												:redraw="true"
+												v-if=" toggle_chart.trainig == 'tabSecond' " 
+												key="tabSecond"
+											>
+											</line-chart-api-usage>
+											<div class="row">
+												<div class="col">
+														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabFirst' " >Non Training Data</p>
+														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabSecond' " >Average Request Time</p>
+												</div>
+											</div>
+									</div>
+								</transition>
+								</li>
+							</ul>
+				</div>
 				<div class="card mb-4">
 						<div class="card-header">
 								<h5 class="card-title mb-0">
