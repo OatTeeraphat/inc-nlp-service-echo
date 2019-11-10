@@ -17,7 +17,7 @@ var logsPresenter = Vue.component('logs-presenter', {
                         </div>
                     </div>
                 </div>
-                <div class="row my-3">
+                <div class="row my-3 d-none">
                     <div class="col-12 col-md-9">
                         <div class="">
                             <div class="btn-group mr-1">
@@ -48,15 +48,23 @@ var logsPresenter = Vue.component('logs-presenter', {
                     <div class="col-12 col-md-3 text-right">
                     </div>
                 </div>
-                <div class="card card-webchat mb-3">
+                <div class="card card-webchat mb-3 mt-3 border-0">
                     <div class="card-body p-4 pb-0">
                         <code class="highlighter-rouge d-block">
                             <span class="text-muted">{{ this.getCurrentTime() }} : <br></span>hi
                         </code>
                     </div>
+                    <div class="card-footer px-4 pb-0 border-1">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" checked>
+                            <label class="form-check-label">
+                                Autoscroll with output
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>  
     </div>
     </div> 
     `,

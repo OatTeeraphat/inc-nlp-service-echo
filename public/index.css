@@ -96,6 +96,10 @@ textarea[readonly]{background-color: #fff !important;font-family: SFMono-Regular
     background: #e83e8c;
 }
 
+.form-check-label{
+    position: relative;
+    top: 2px;
+}
 
 @media (max-width: 991.98px) {
   .offcanvas-collapse {
@@ -382,7 +386,8 @@ input:checked ~ .checkmark {
     height: 60vh;
     padding: .75rem 1.25rem;
     margin-bottom: 0;
-    background-color: rgba(0,0,0,.03);
+    background-color: #343a40;
+    border-radius: 3px 3px 0 0;
 }
 
 .card-body h2 > i {
@@ -698,4 +703,9 @@ input:checked ~ .checkmark {
     position: absolute;
     top: 25%;
     right: 0;
+}
+
+.card-webchat .card-footer{
+    border: 1px solid #dee2e6;
+    border-top: 0;
 }
