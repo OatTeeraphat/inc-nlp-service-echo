@@ -1,4 +1,6 @@
 // sweet alert observable wrapper
+// this project can be support icon : success, error, warning and non assign icon
+
 class SweetAlertAjaxHelper {
 
     constructor() {
@@ -25,7 +27,7 @@ class SweetAlertAjaxHelper {
     }
     // confirmTransaction is cancel return { cancel: true } **
     confirmTransaction = (ajaxFunction) => {
-        return from( swal("confirm transaction", { buttons: { cancel: true, ok: true } }) ).pipe(
+        return from( swal("confirm transaction", { buttons: { ok: true, cancle: true } }) ).pipe(
             switchMap( it => {
                 if (it) {
                     return ajaxFunction
