@@ -41,8 +41,8 @@
      left: -0.33em;
 }
  textarea[readonly]{
-    background-color: #fff !important;
-    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+     background-color: #fff !important;
+     font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
  .navbar-brand{
      max-width: 135px;
@@ -67,10 +67,10 @@
      padding-top: 150px;
 }
  .graph-legend{
-    position: relative;
-    margin-left: 30px;
-    margin-bottom: 0;
-    margin-top: 15px;
+     position: relative;
+     margin-left: 30px;
+     margin-bottom: 0;
+     margin-top: 15px;
 }
  .graph-legend:before{
      content: '';
@@ -94,7 +94,7 @@
      display: none;
 }
  .dropdown-item.active, .dropdown-item:active{
-    background-color: #663ab7;
+     background-color: #663ab7;
 }
  .dropdown-item:focus, .dropdown-item:hover{
      outline: none;
@@ -151,7 +151,7 @@
      color: #673AB7;
 }
  .nav-card > .nav-item > a.active{
-    position: relative;
+     position: relative;
 }
  .nav-card > .nav-item > a.active:before{
      content:'';
@@ -215,7 +215,7 @@
      padding: 8px 0px 10px;
 }
  .tr-input > td > input{
-    line-height: 1.66;
+     line-height: 1.66;
 }
  .tr-input th, .tr-input td{
      background: #ffc10712;
@@ -238,18 +238,18 @@
     }
 }
  .tr-dropdown{
-    width: 100%;
+     width: 100%;
 }
  .tr-dropdown select {
-    width: 100%;
-    text-align: left;
-    font-size: 1em;
-    padding: 0;
-    height: 1.75rem;
-    border: none;
-    position: relative;
-    left: -.5rem;
-    background: transparent;
+     width: 100%;
+     text-align: left;
+     font-size: 1em;
+     padding: 0;
+     height: 1.75rem;
+     border: none;
+     position: relative;
+     left: -.5rem;
+     background: transparent;
 }
  .tr-dropdown button:after{
      position: absolute;
@@ -315,8 +315,8 @@
      top: 2px;
 }
  .btn .fe-info.text-muted{
-    font-size: 1em;
-    top: -1px;
+     font-size: 1em;
+     top: -1px;
 }
  .btn-purple{
      background-color: #663ab7;
@@ -373,7 +373,7 @@
      margin-bottom: 45px;
 }
  .login-logo img{
-    display: flex;
+     display: flex;
 }
  .btn-card-webchat{
      top: -2px;
@@ -459,9 +459,9 @@
      color: #777;
 }
  .dashboard-usage > span{
-    font-size: 0.5em;
-    margin-left: 5px;
-    color: #000;
+     font-size: 0.5em;
+     margin-left: 5px;
+     color: #000;
 }
  .dashboard-summary{
 }
@@ -538,24 +538,24 @@
      color: #663ab7;
 }
  .setting-row{
-    position: relative;
-    margin-bottom: 0.5rem;
+     position: relative;
+     margin-bottom: 0.5rem;
 }
  .setting-action{
-    position: absolute;
-    right: 30px;
-    top: calc(50% - 0.5rem);
-    border-radius: 3px;
+     position: absolute;
+     right: 30px;
+     top: calc(50% - 0.5rem);
+     border-radius: 3px;
 }
  .setting-action button{
-    padding: 10px;
-    position: relative;
-    top: 0;
+     padding: 10px;
+     position: relative;
+     top: 0;
 }
  .setting-action button:hover{
-    background: #f4f0f9;
-    color: #673ab7;
-    top: 1px;
+     background: #f4f0f9;
+     color: #673ab7;
+     top: 1px;
 }
  .setting-desc{
      line-height: 1.33em;
@@ -566,11 +566,11 @@
      background: #f5f5f5;
 }
  .from-search input.setting-input{
-    font-size: 1.2em;
-    position: relative;
-    top: 7.5px;
-    padding: 0 60px 7.5px 0 !important;
-    width: calc(100% - 60px);
+     font-size: 1.2em;
+     position: relative;
+     top: 7.5px;
+     padding: 0 60px 7.5px 0 !important;
+     width: calc(100% - 60px);
 }
 /* Fallback for Edge -------------------------------------------------- */
  @supports (-ms-ime-align: auto) {
@@ -661,97 +661,105 @@
      border-top: 0;
 }
 
-.swal-modal{
-    width: 400px;
-    padding: 10px;
+/* Sweet Alert Style */
+
+ .swal-modal{
+     width: 400px;
+     padding: 10px;
 }
-.swal-text{
-    text-transform: capitalize;
-    color: #000;
-    font-size: 18px;
+ .swal-text{
+     text-transform: capitalize;
+     color: #000;
+     font-size: 18px;
 }
-.swal-modal:not(.swal-icon) .swal-text{font-size: 18px;}
-.swal-modal:not(.swal-icon) .swal-text:first-child{margin-top: 30px;font-weight: 600;font-size: 22px;}
-.swal-footer{
-    display: flex;
+ .swal-modal:not(.swal-icon) .swal-text{
+     font-size: 18px;
 }
-.swal-button{
-    width: 100%;
-    background: #fff;
-    transition: all 0.2s ease;
-    font-size: 18px;
-    text-transform: uppercase;
+ .swal-modal:not(.swal-icon) .swal-text:first-child{
+     margin-top: 30px;
+    font-weight: 600;
+    font-size: 22px;
 }
-.swal-icon--success__line{
-    background-color: #673ab7;
+ .swal-footer{
+     display: flex;
 }
-.swal-icon--success__ring{
-    border-color: rgba(103, 58, 183, 0.7);
+ .swal-button{
+     width: 100%;
+     background: #fff;
+     transition: all 0.2s ease;
+     font-size: 18px;
+     text-transform: uppercase;
 }
-.swal-icon--success ~ .swal-footer .swal-button, .swal-button--ok{
-    background-color: #673ab7;
+ .swal-icon--success__line{
+     background-color: #673ab7;
 }
-.swal-button:not([disabled]):hover, .swal-button--ok:hover{
-    background: #58339c;
+ .swal-icon--success__ring{
+     border-color: rgba(103, 58, 183, 0.7);
 }
-.swal-button:focus{
-    box-shadow: none;
+ .swal-icon--success ~ .swal-footer .swal-button, .swal-button--ok{
+     background-color: #673ab7;
 }
-.swal-button:active{
-    box-shadow: 0 0 0 3px rgba(102, 58, 183, 0.25);
+ .swal-button:not([disabled]):hover, .swal-button--ok:hover{
+     background: #58339c;
 }
-.swal-button-container{
-    width: 98%;
+ .swal-button:focus{
+     box-shadow: none;
 }
-.swal-icon--error{
-    border-color : rgba(220, 53, 69, 0.7);
-    border-width: 5px;
+ .swal-button:active{
+     box-shadow: 0 0 0 3px rgba(102, 58, 183, 0.25);
 }
-.swal-icon--error__line{
-    background-color: #dc3545;
-    height: 7px;
-    top: 36px;
+ .swal-button-container{
+     width: 98%;
 }
-.swal-icon--error__ring{
-    border-color : rgba(220, 53, 69, 0.7);
+ .swal-icon--error{
+     border-color : rgba(220, 53, 69, 0.7);
+     border-width: 5px;
 }
-.swal-icon--error ~ .swal-footer .swal-button{
-    background: #dc3545;
+ .swal-icon--error__line{
+     background-color: #dc3545;
+     height: 7px;
+     top: 36px;
 }
-.swal-icon--error ~ .swal-footer .swal-button:hover{
-    background: #bd2e3c;
+ .swal-icon--error__ring{
+     border-color : rgba(220, 53, 69, 0.7);
 }
-.swal-icon--error ~ .swal-footer .swal-button:active{
-    background: 0 0 0 3px rgba(220, 53, 69, 0.25);
+ .swal-icon--error ~ .swal-footer .swal-button{
+     background: #dc3545;
 }
-.swal-icon--warning ~ .swal-footer .swal-button{
-    background: #ffb507;
+ .swal-icon--error ~ .swal-footer .swal-button:hover{
+     background: #bd2e3c;
 }
-.swal-icon--warning ~ .swal-footer .swal-button:not([disabled]).swal-button:hover{
-    background: #ff9d02;
+ .swal-icon--error ~ .swal-footer .swal-button:active{
+     background: 0 0 0 3px rgba(220, 53, 69, 0.25);
 }
-.swal-icon--warning ~ .swal-footer .swal-button--confirm:focus{
-    background: #ffb507;
+ .swal-icon--warning ~ .swal-footer .swal-button{
+     background: #ffb507;
 }
-.swal-icon--warning ~ .swal-footer .swal-button--confirm:active{
-    box-shadow: 0 0 0 3px rgba(255, 181, 7, 0.5);
+ .swal-icon--warning ~ .swal-footer .swal-button:not([disabled]).swal-button:hover{
+     background: #ff9d02;
 }
-.swal-icon--warning__body, .swal-icon--warning__dot{
-    background-color: #ffb507;
+ .swal-icon--warning ~ .swal-footer .swal-button--confirm:focus{
+     background: #ffb507;
 }
-.swal-icon--warning{
-    border-color: #ffb507;
+ .swal-icon--warning ~ .swal-footer .swal-button--confirm:active{
+     box-shadow: 0 0 0 3px rgba(255, 181, 7, 0.5);
 }
-.swal-button.swal-button--cancel{
-    color: #555;
-    background-color: #cdd1d6 !important;
+ .swal-icon--warning__body, .swal-icon--warning__dot{
+     background-color: #ffb507;
 }
-.swal-button:not([disabled]).swal-button--cancel:hover{
-    background: #c7cbce !important;
+ .swal-icon--warning{
+     border-color: #ffb507;
 }
-.swal-button--cancel:focus{
-    background: #c0c7ce !important;
+ .swal-button.swal-button--cancel{
+     color: #555;
+     background-color: #cdd1d6 !important;
 }
-.swal-button--cancel:active{
-    box-shadow: 0 0 0 3px rgba(173, 181, 189, 0.4) !important;
+ .swal-button:not([disabled]).swal-button--cancel:hover{
+     background: #c7cbce !important;
+}
+ .swal-button--cancel:focus{
+     background: #c0c7ce !important;
+}
+ .swal-button--cancel:active{
+     box-shadow: 0 0 0 3px rgba(173, 181, 189, 0.4) !important;
 }

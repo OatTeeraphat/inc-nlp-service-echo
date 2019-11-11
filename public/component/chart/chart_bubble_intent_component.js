@@ -25,7 +25,7 @@ Vue.component('bubble-chart-intent', {
                   r: 80,
                   intent : "สวัสดีจ้า",
                   calls : "1,938",
-                  story : "GREETING"
+                  story_name : "GREETING"
                 },
                 {
                   x: 90,
@@ -33,7 +33,7 @@ Vue.component('bubble-chart-intent', {
                   r: 45,
                   intent : "หิวมั้ย",
                   calls : "1,038",
-                  story : "GREETING"
+                  story_name : "GREETING"
                 },
                 {
                   x: 5,
@@ -41,7 +41,7 @@ Vue.component('bubble-chart-intent', {
                   r: 3,
                   intent : "สบายดีรึป่าว",
                   calls : "7",
-                  story : "GREETING"
+                  story_name : "GREETING"
                 },
                 {
                   x: 65,
@@ -49,7 +49,7 @@ Vue.component('bubble-chart-intent', {
                   r: 3,
                   intent : "มีคนมั้ย",
                   calls : "7",
-                  story : "GREETING"
+                  story_name : "GREETING"
                 },
                 {
                   x: 10,
@@ -57,7 +57,7 @@ Vue.component('bubble-chart-intent', {
                   r: 12,
                   intent : "Hello Dog",
                   calls : "32",
-                  story : "GREETING"
+                  story_name : "GREETING"
                 },
               ]
             },
@@ -74,7 +74,7 @@ Vue.component('bubble-chart-intent', {
                   r: 60,
                   intent : "กินข้าวยัง",
                   calls : "1,438",
-                  story : "CHITCHAT"
+                  story_name : "CHITCHAT"
                 },
                 {
                   x: 50,
@@ -82,7 +82,7 @@ Vue.component('bubble-chart-intent', {
                   r: 40,
                   intent : "ชื่อรัยอ่ะ",
                   calls : "913",
-                  story : "CHITCHAT"
+                  story_name : "CHITCHAT"
                 },
                 {
                   x: 20,
@@ -90,7 +90,7 @@ Vue.component('bubble-chart-intent', {
                   r: 25,
                   intent : "รักน่ะเด็กดื้อ",
                   calls : "412",
-                  story : "CHITCHAT"
+                  story_name : "CHITCHAT"
                 },
                 {
                   x: 92,
@@ -98,7 +98,7 @@ Vue.component('bubble-chart-intent', {
                   r: 5,
                   intent : "ดีจังตังอยู่ครบ",
                   calls : "12",
-                  story : "CHITCHAT"
+                  story_name : "CHITCHAT"
                 }
               ]
             },
@@ -115,7 +115,7 @@ Vue.component('bubble-chart-intent', {
                   r: 20,
                   intent : "ถามใรตอบได้",
                   calls : "112",
-                  story : "FAQ"
+                  story_name : "FAQ"
                 },
                 {
                   x: 45,
@@ -123,7 +123,7 @@ Vue.component('bubble-chart-intent', {
                   r: 15,
                   intent : "จัดส่งอย่างไร",
                   calls : "42",
-                  story : "FAQ"
+                  story_name : "FAQ"
                 },
                 {
                   x: 40,
@@ -131,7 +131,7 @@ Vue.component('bubble-chart-intent', {
                   r: 10,
                   intent : "จัดส่งที่ไหน",
                   calls : "12",
-                  story : "FAQ"
+                  story_name : "FAQ"
                 }
               ]
             },
@@ -146,7 +146,7 @@ Vue.component('bubble-chart-intent', {
                   r: 20,
                   intent : "อยากดูของ",
                   calls : "95",
-                  story : "PRODUCT"
+                  story_name : "PRODUCT"
                 },
                 {
                   x: 30,
@@ -154,7 +154,7 @@ Vue.component('bubble-chart-intent', {
                   r: 15,
                   intent : "มีรัยขาย",
                   calls : "42",
-                  story : "PRODUCT"
+                  story_name : "PRODUCT"
                 },
                 {
                   x: 90,
@@ -162,7 +162,7 @@ Vue.component('bubble-chart-intent', {
                   r: 5,
                   intent : "ของหมดแล้วต้องสั่งนะ",
                   calls : "12",
-                  story : "PRODUCT"
+                  story_name : "PRODUCT"
                 }
               ]
             }
@@ -181,7 +181,7 @@ Vue.component('bubble-chart-intent', {
 						},
 						color: function(context) {
               var value = context.dataset.data[context.dataIndex];
-							return value.r < 30 ? colorByStory[value.story]  : 'white';
+							return value.r < 30 ? colorByStory[value.story_name]  : 'white';
             },
 						font: {
               weight: 'bold',

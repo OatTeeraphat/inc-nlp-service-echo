@@ -58,6 +58,9 @@
     <script src="adapters/https/get_nlp_reply_counter_adapter.js"></script>
     <script src="adapters/https/get_nlp_training_log_pagination_adapter.js"></script>
     <script src="adapters/https/get_customer_sign_in_adapter.js"></script>
+    <script src="adapters/chart/get_chart_intent_ratio_adapter.js"></script>
+    <script src="adapters/chart/get_chart_intent_ranking_adapter.js"></script>
+    
 
     <!-- repositories -->
     <script src="repositories/http_repository.js" ></script>
@@ -81,8 +84,8 @@
     <!-- component -->
     <script src="component/navbar/nav_component.js"></script>
     <script src="component/filp-card/nlp_flip_card_counter_component.js"></script>
-    <script src="component/chart/chart_acc_validation_component.js"></script>
-    <script src="component/chart/chart_loss_validation_component.js"></script>
+    <script src="component/chart/chart_model_accuracy_component.js"></script>
+    <script src="component/chart/chart_training_growth_component.js"></script>
     <script src="component/chart/chart_usage_api_component.js"></script>
     <script src="component/chart/chart_usage_average_time_component.js"></script>
     <script src="component/chart/chart_bubble_intent_component.js"></script>
@@ -109,7 +112,7 @@
         gtag('js', new Date());
         gtag('config', 'UA-149130032-2');
         
-        //swal('resolve', { icon: "success", buttons: { cancel: true, submit: true } }) 
+        //swal('resolve', { icon: "warning", buttons: { cancel: true, submit: true } }) 
         //swal('resolve', { buttons: { cancel: true, ok: true } }) 
 
     </script>

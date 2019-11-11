@@ -27,7 +27,7 @@ class SweetAlertAjaxHelper {
     }
     // confirmTransaction is cancel return { cancel: true } **
     confirmTransaction = (ajaxFunction) => {
-        return from( swal("confirm transaction", { buttons: { ok: true, cancle: true } }) ).pipe(
+        return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancle: true } }) ).pipe(
             switchMap( it => {
                 if (it) {
                     return ajaxFunction

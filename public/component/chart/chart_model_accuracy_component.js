@@ -16,7 +16,7 @@ Vue.component('line-chart-acc', {
 					data: [0, 30, 89, 85, 87, 90, 80, 95, 91, 96, 90, 100]
 				},
 				{
-					label: "Training Set",
+					label: "Can Be Slove",
 					fill: false,
 					pointRadius: 2,
 					pointBackgroundColor: "#e83e8c",

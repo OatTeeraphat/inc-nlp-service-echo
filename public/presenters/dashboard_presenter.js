@@ -196,13 +196,13 @@ var dashboardPresenter = Vue.component('dashboard-presenter', {
 												v-if=" toggle_chart.trainig == 'tabFirst' " 
 												key="tabFirst"
 											></stack-chart-training>
-											<line-chart-api-usage 
+											<line-chart-training-growth
 												:height="120" 
 												:redraw="true"
 												v-if=" toggle_chart.trainig == 'tabSecond' " 
 												key="tabSecond"
 											>
-											</line-chart-api-usage>
+											</line-chart-training-growth>
 											<div class="row">
 												<div class="col">
 														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabFirst' " >Non Training Data</p>
