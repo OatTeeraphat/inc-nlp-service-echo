@@ -1,9 +1,10 @@
 // nlp records service
 class NlpRecordsService {
 
-    constructor(httpRepository,sweetAlertAjaxHelper ) {
+    constructor(httpRepository, sweetAlertAjaxHelper, localStorageRepository ) {
         this.sweetAlertAjaxHelper = sweetAlertAjaxHelper
         this.httpRepository = httpRepository
+        this.localStorageRepository = localStorageRepository
         this.infiniteHandler$$ = new Subject()
         this.unsubscribe = new Subject()
     }
@@ -11,7 +12,15 @@ class NlpRecordsService {
     getNlpRecordsPaginationByKeyword = (keyword, page) => {
         return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
             takeUntil(this.unsubscribe),
-            map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
+            map( ({ response }) => {
+
+                if ( keyword !== "" ) {
+                    this.localStorageRepository.setRecentlyNlpRecordSearch(keyword)
+                }
+
+                return new GetNlpRecordsPagination().adapt(response)
+
+            }),
         )
     }
 
@@ -64,6 +73,11 @@ class NlpRecordsService {
 
     nextPageNlpRecordsByInfiniteScroll = (page) => {
         this.infiniteHandler$$.next({page: page})
+    }
+
+    getRecentlyNlpRecordHistory = () => {
+        let domain =  this.localStorageRepository.getRecentlyNlpRecordSearch()
+        return of(domain)
     }
 
     disposable = () => {

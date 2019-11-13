@@ -186,7 +186,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             searchLimit: 1,
             searchTotal: 0,
             nlpRecordsByKeyword: [],
-            nlpRecordsByKeywordCheckedList: { ids: [] }
+            nlpRecordsByKeywordCheckedList: { ids: [] },
+
+            searchRecently: {}
         }
     },
     mounted: function () {
@@ -201,6 +203,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             }
         )
         this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
+        // this.getNlpRecordByKeywordHistory()
     },
     methods: {
         infiniteHandler: function (event) {
@@ -219,8 +222,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         },
         bulkDeleteNlpRecord: function(event) {
             // bulk delete 
-            this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.listNlpRecordByIDsChecked.ids).subscribe( () => {
+            this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.nlpRecordsCheckedList.ids).subscribe( () => {
                 this.nlpRecords = this.nlpRecords.filter( item => !this.nlpRecordsCheckedList.ids.includes(item.id) )
+                console.log(this.nlpRecordsCheckedList)
                 this.nlpRecordsCheckedList.ids = []
             })
             // next page event
@@ -237,6 +241,11 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             this.$nlpRecordsService.getNlpRecordsPaginationByKeyword(keyword, 1).subscribe( it => {
 
                 this.nlpRecordsByKeyword.push(...it.nlp_records)
+            })
+        },
+        getNlpRecordByKeywordHistory: function() {
+            this.$nlpRecordsService.getRecentlyNlpRecordHistory().subscribe( it => {
+                this.searchRecently = it
             })
         }
     },
