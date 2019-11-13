@@ -128,7 +128,7 @@ func main() {
 	// e.GET("/v1/fb/webhook/socket.io", websockets.NewWebSocket)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
+	e.Logger.Fatal(e.StartTLS(":"+common0.EchoPort, "tls/cert.pem", "tls/key.pem"))
 	defer e.Close()
 	defer orm.Close()
 }
