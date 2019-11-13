@@ -19,7 +19,8 @@ class SweetAlertAjaxHelper {
                     swal({ text: e.message, icon: "error", timer: this.duration })
                 }
                 if ( e instanceof AjaxError ) {
-                    swal({ text: e.response.message, icon: "error", timer: this.duration })
+                    // swal({ text: e.response.message, icon: "error", timer: this.duration })
+                    swal({ text: "Please check your Internet connection.", icon: "error", timer: this.duration })
                 }
                 return throwError(e)
             }),
