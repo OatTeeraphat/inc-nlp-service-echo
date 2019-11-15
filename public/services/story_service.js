@@ -9,27 +9,13 @@ class StoryService {
     }
 
     getStoryState() {
-        let getAllStoriesEvent$ = this.httpRepository.getAllStories()
 
         return this.httpRepository.getAllStories().pipe(
             takeUntil(this.unsubscribe),
             switchMap( ({ response }) => {
                 return of(new GetStoryModelAdapter().adapt(response))
             }),
-            catchError( e => {
-
-                if (e.status == 401) {
-                    swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
-                    this.cookieRepository.removeCustomerSession()
-                    this.vueRouter.push('/')
-                }
-
-                if (e.status == 500) {
-                    swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
-                }
-
-                return throwError(e)
-            })
+            vueCatchError(this.cookieRepository, this.vueRouter),
         )
 
     }
@@ -49,21 +35,7 @@ class StoryService {
             map( next => {
                 swal("resolve", {icon: "success", timer: this.duration}) 
             }),
-            catchError( e  => {
-
-                if (e.status == 401) {
-                    this.cookieRepository.removeCustomerSession()
-                    this.vueRouter.push('/')
-                    swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
-                }
-
-                if (e.status == 500) {
-                    swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
-                }
-
-                return throwError(e)
-                
-            }),
+            vueCatchError(this.cookieRepository, this.vueRouter),
             finalize(() =>  { console.log("complete") })
         )
     }

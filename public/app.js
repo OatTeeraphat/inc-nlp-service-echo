@@ -1,15 +1,12 @@
-const cookieRepo = new CookieRepository(Cookies)
-// helpers initialize
-// const swalHelp = new SweetAlertAjaxHelper()
 
 // repositories initialize
+const cookieRepo = new CookieRepository(Cookies)
 const httpRepo = new HttpRepository()
 const cacheRepo = new CacheStorageRepository()
 const socketRepo = new SocketRepository()
 const localStorageRepo = new LocalStorageRepository()
 
 class AuthGuard {
-
     constructor(CookieRepository) {
         this.cookieRepository = CookieRepository
     }
@@ -30,10 +27,8 @@ class AuthGuard {
             next()
             return
         }
-    
         next('/login')
     }
-
 }
 
 const authGuard = new AuthGuard(cookieRepo)
@@ -47,7 +42,6 @@ const routes = [
     { path: '/logs', name: 'logs', component: nlpLogPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
     { path: '/story', name: 'story', component: storyPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
     { path: '/webchat', name: 'webchat', component: webChatPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    // TODO: change to settingPresenter
     { path: '/setting', name: 'setting', component: settingPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
     { path: '/logging', name: 'logging', component: logsPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
 ]

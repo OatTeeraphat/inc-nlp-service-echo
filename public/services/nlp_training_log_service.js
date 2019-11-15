@@ -21,19 +21,7 @@ class NlpTrainingLogService {
             takeUntil(this.unsubscribe),
             throttleTime(200),
             exhaustMap( ({ page }) => this.getNlpTrainingLogPagination(page) ),
-            catchError( e => {
-                if (e.status == 401) {
-                    this.cookieRepository.removeCustomerSession()
-                    this.vueRouter.push('/')
-                    swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
-                }
-
-                if (e.status == 500) {
-                    swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
-                }
-
-                return throwError(e)
-            })
+            vueCatchError(this.cookieRepository, this.vueRouter),
         )
     }
 

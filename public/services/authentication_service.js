@@ -33,13 +33,7 @@ class AuthenticationService {
                     )
                 }
             ),
-            catchError(e => {
-                console.error(e)
-
-                if ( e instanceof AjaxError )return throwError(e)
-                
-                return throwError(e)
-            })
+            vueCatchError(this.cookieRepository, this.vueRouter),
         )
     }
 
