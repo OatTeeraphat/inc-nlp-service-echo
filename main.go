@@ -61,6 +61,7 @@ func main() {
 		middleware.Logger(),
 		middleware.Recover(),
 		middleware.RequestID(),
+		middleware.Gzip(),
 	)
 
 	// sync GORM
@@ -103,39 +104,38 @@ func main() {
 	q.GET("/*", echoSwagger.WrapHandler)
 
 	// Routes
-	e.GET("/v1/story", c3.ReadAllStoryRecordController)
-	e.POST("/v1/story", c3.NewStoryRecordController)
-	e.DELETE("/v1/story", c3.DeleteStoryByIDController)
+	v1 := e.Group("/v1")
 
-	e.GET("/v1/shop", c5.ReadShopByIDController)
-	// e.POST("/v1/shop", c5.ReadShopByIDController)
-	// e.DELETE("/v1/shop", c5.ReadShopByIDController)
+	v1.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			// Extract the credentials from HTTP request header and perform a security
+			// check
 
-	e.POST("/v1/shop/story", c4.CreateShopStoryController)
-	// e.GET("/v1/shop/story", c4.CreateShopStoryController)
-	// e.DELETE("/v1/shop/story", c4.CreateShopStoryController)
+			// For invalid credentials
+			// return echo.NewHTTPError(http.StatusUnauthorized, "Please provide valid credentials")
 
-	e.POST("/v1/nlp/record", c0.CreateNlpRecordByShopController)
-	e.POST("/v1/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)
-	e.DELETE("/v1/nlp/record", c0.DropNlpRecordByShopController)
-	e.GET("/v1/nlp/record/pagination", c0.ReadPaginationNlpRecordController)
-	e.GET("/v1/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
-	e.GET("/v1/nlp/log/pagination", c6.ReadPaginationNlpTrainingLogController)
+			// For valid credentials call next
+			return next(c)
+		}
+	})
 
-	e.GET("/v1/fb/webhook", c2.VerifyFBWebhookController)
-	e.POST("/v1/fb/webhook", c2.ReplyFBWebhookController)
-	e.Any("/v1/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)
-	// e.GET("/v1/fb/webhook/socket.io", websockets.NewWebSocket)
+	v1.GET("/story", c3.ReadAllStoryRecordController)
+	v1.POST("/story", c3.NewStoryRecordController)
+	v1.DELETE("/story", c3.DeleteStoryByIDController)
+	v1.GET("/shop", c5.ReadShopByIDController)
+	v1.POST("/shop/story", c4.CreateShopStoryController)
+	v1.POST("/nlp/record", c0.CreateNlpRecordByShopController)
+	v1.POST("/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)
+	v1.DELETE("/nlp/record", c0.DropNlpRecordByShopController)
+	v1.GET("/nlp/record/pagination", c0.ReadPaginationNlpRecordController)
+	v1.GET("/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
+	v1.GET("/nlp/log/pagination", c6.ReadPaginationNlpTrainingLogController)
+	v1.GET("/fb/webhook", c2.VerifyFBWebhookController)
+	v1.POST("/fb/webhook", c2.ReplyFBWebhookController)
+	v1.Any("/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)
 
 	// Start server
-
-	if common0.Env != "development" {
-		// heroku server
-		e.Logger.Fatal(e.Start(":" + common0.EchoPort))
-	} else {
-		// The TextFormatter is default, you don't actually have to do this.
-		e.Logger.Fatal(e.StartTLS(":"+common0.EchoPort, "tls/cert.pem", "tls/key.pem"))
-	}
+	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
 
 	defer e.Close()
 	defer orm.Close()

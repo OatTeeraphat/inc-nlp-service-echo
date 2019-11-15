@@ -31,7 +31,6 @@ var navPresenter = Vue.component('nav-component', {
 	methods: {
 		signOut: function () {
 			this.$authService.signOut()
-			this.$router.replace("/")
 		} 
 	},
 })

@@ -1,10 +1,10 @@
 // authentication service
 class AuthenticationService {
 
-    constructor( httpRepository, sweetAlertAjaxWrapper, cookieRepository) {
+    constructor( httpRepository, vueRouter, cookieRepository) {
         this.httpRepository = httpRepository
         this.cookieRepository = cookieRepository
-        this.sweetAlertAjaxWrapper = sweetAlertAjaxWrapper
+        this.vueRouter = vueRouter
     }
 
     // ล้อกอินจ้า
@@ -28,7 +28,7 @@ class AuthenticationService {
                                 this.cookieRepository.setCustomerSession(model.access_token)
                             }
                             
-                            return empty()
+                            return this.vueRouter.push('/dashboard')
                         })
                     )
                 }
@@ -36,8 +36,7 @@ class AuthenticationService {
             catchError(e => {
                 console.error(e)
 
-                if ( e instanceof AjaxError ) { return throwError(e)
-                }
+                if ( e instanceof AjaxError )return throwError(e)
                 
                 return throwError(e)
             })
@@ -60,7 +59,10 @@ class AuthenticationService {
     }
 
     signOut = () => {
-        return this.cookieRepository.removeCustomerSession()
+
+        this.cookieRepository.removeCustomerSession()
+
+        return this.vueRouter.replace("/")
     }
     
 }

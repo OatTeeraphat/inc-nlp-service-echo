@@ -12,6 +12,7 @@ type FillChatMiddleware struct {
 type IFillChatMiddleware interface {
 	HTTPErrorMiddleware(err error, c echo.Context)
 	StaffAuthMiddleware(username, password string, c echo.Context) (bool, error)
+	CustomerAuthMiddleware(err error, c echo.Context)
 }
 
 // NewFillChatMiddleware NewFillChatMiddleware
@@ -39,4 +40,10 @@ func (*FillChatMiddleware) StaffAuthMiddleware(username, password string, c echo
 		return true, nil
 	}
 	return false, nil
+}
+
+// CustomerAuthMiddleware CustomerAuthMiddleware
+func (*FillChatMiddleware) CustomerAuthMiddleware(err error, c echo.Context) {
+
+	c.Logger().Info("hello")
 }

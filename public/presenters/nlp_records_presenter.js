@@ -221,7 +221,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             this.nlpRecordsCheckedList.ids = []
         },
         bulkDeleteNlpRecord: function(event) {
-            // bulk delete 
+            // bulk delete
             this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.nlpRecordsCheckedList.ids).subscribe( () => {
                 this.nlpRecords = this.nlpRecords.filter( item => !this.nlpRecordsCheckedList.ids.includes(item.id) )
                 console.log(this.nlpRecordsCheckedList)

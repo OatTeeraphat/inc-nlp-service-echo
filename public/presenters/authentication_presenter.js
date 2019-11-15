@@ -78,7 +78,6 @@ var mainPresenter = Vue.component('main-presenter', {
             this.$authService.signIn(this.username, this.password, this.rememberMe).subscribe(
                 it => {
                     this.isNotSignInLoading = true
-                    this.$router.push('/dashboard')
                 },
                 error => {
                     this.flashMessage = error
