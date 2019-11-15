@@ -49,13 +49,59 @@ const routes = [
 // vue Router
 const vueRouter = new VueRouter({ routes, mode: 'history' });
 
+class VueErrorHandler {
+    constructor(cookieRepo, vueRouter) {
+        this.vueRouter = vueRouter
+        this.cookieRepo = cookieRepo
+    }
+
+    catchError = () => catchError( e => {    
+        // console.error("vueCatchError ", e)
+
+        // this.cookieRepo.removeCustomerSession()
+
+        // swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
+
+        // this.vueRouter.push('/')
+        // return 
+    
+        if ( e instanceof AjaxError ) {
+    
+            if (e.status == 401) {
+                this.cookieRepo.removeCustomerSession()
+
+                swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
+
+                this.vueRouter.push('/')
+                return throwError(e)
+            }
+        
+        
+            if (e.status == 403) {
+                console.error("403")
+            }
+        
+        
+            if (e.status == 500) {
+                swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
+                return throwError(e)
+            }
+        }
+    
+        return throwError(e)
+    })
+    
+}
+
+const vueErrorHandler = new VueErrorHandler(cookieRepo, vueRouter)
+
 // service initialize
-const authService = new AuthenticationService(httpRepo, vueRouter, cookieRepo)
-const storyService = new StoryService(httpRepo, vueRouter, cookieRepo)
-const webChatService = new WebChatService(socketRepo)
-const nlpRecordsService = new NlpRecordsService(httpRepo, vueRouter, localStorageRepo, cookieRepo)
-const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, cookieRepo)
-const nlpReplyCounterService = new NlpReplyCounterService(httpRepo)
+const authService = new AuthenticationService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
+const storyService = new StoryService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
+const webChatService = new WebChatService(socketRepo, vueErrorHandler)
+const nlpRecordsService = new NlpRecordsService(httpRepo, vueRouter, localStorageRepo, cookieRepo, vueErrorHandler)
+const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
+const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options

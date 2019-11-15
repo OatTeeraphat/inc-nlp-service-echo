@@ -1,8 +1,9 @@
 
 class StoryService {
     
-    constructor( httpRepository, vueRouter, cookieRepository) {
+    constructor( httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.vueRouter = vueRouter
+        this.vueErrorHandler = vueErrorHandler
         this.httpRepository = httpRepository
         this.cookieRepository = cookieRepository
         this.unsubscribe = new Subject()
@@ -15,27 +16,23 @@ class StoryService {
             switchMap( ({ response }) => {
                 return of(new GetStoryModelAdapter().adapt(response))
             }),
-            vueCatchError(this.cookieRepository, this.vueRouter),
+            this.vueErrorHandler.catchError()
         )
-
     }
 
     deleteStoryByID(storyID) {
 
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
-            switchMap( SWAL_CONFIRM => {
-                console.debug(SWAL_CONFIRM)
+            switchMap( yes => {
 
-                if (SWAL_CONFIRM) return this.httpRepository.deleteStoryByID(storyID)
+                if (yes) return this.httpRepository.deleteStoryByID(storyID)
 
-                const SWAL_CANCEL = false
-
-                return throwError("SWAL_CANCEL")
+                return throwError("no")
             }),
             map( next => {
                 swal("resolve", {icon: "success", timer: this.duration}) 
             }),
-            vueCatchError(this.cookieRepository, this.vueRouter),
+            this.vueErrorHandler.catchError(),
             finalize(() =>  { console.log("complete") })
         )
     }

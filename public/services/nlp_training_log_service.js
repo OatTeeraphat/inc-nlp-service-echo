@@ -1,8 +1,10 @@
 class NlpTrainingLogService {
-    constructor(httpRepository, vueRouter, cookieRepository) {
+    
+    constructor(httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.httpRepository = httpRepository
-        this.vueRouter = vueRouter
         this.cookieRepository = cookieRepository
+        this.vueRouter = vueRouter
+        this.vueErrorHandler = vueErrorHandler
         this.unsubscribe = new Subject()
         this.infiniteHandler$$ = new Subject()
     }
@@ -21,7 +23,7 @@ class NlpTrainingLogService {
             takeUntil(this.unsubscribe),
             throttleTime(200),
             exhaustMap( ({ page }) => this.getNlpTrainingLogPagination(page) ),
-            vueCatchError(this.cookieRepository, this.vueRouter),
+            this.vueErrorHandler.catchError()
         )
     }
 

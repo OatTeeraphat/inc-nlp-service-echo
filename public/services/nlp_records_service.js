@@ -1,8 +1,9 @@
 // nlp records service
 class NlpRecordsService {
 
-    constructor( httpRepository, vueRouter, localStorageRepository, cookieRepository ) {
+    constructor( httpRepository, vueRouter, localStorageRepository, cookieRepository, vueErrorHandler) {
         this.vueRouter = vueRouter
+        this.vueErrorHandler =vueErrorHandler
         this.httpRepository = httpRepository
         this.localStorageRepository = localStorageRepository
         this.cookieRepository = cookieRepository
@@ -37,7 +38,7 @@ class NlpRecordsService {
             takeUntil(this.unsubscribe),
             throttleTime(200),
             exhaustMap( ({ page }) =>  this.getNlpRecordsPagination(page) ),
-            vueCatchError(this.cookieRepository, this.vueRouter),
+            this.vueErrorHandler.catchError()
         )
     }
 
@@ -57,7 +58,7 @@ class NlpRecordsService {
             map( next => {
                 swal("resolve", {icon: "success", timer: this.duration}) 
             }),
-            vueCatchError(this.cookieRepository, this.vueRouter)
+            this.vueErrorHandler.catchError()
         )
     }
 
@@ -75,9 +76,9 @@ class NlpRecordsService {
             map( it => {
                 swal('resolve', {icon: "success", timer: this.duration}) 
 
-                return of(it) 
+                return of(it)
             }),
-            vueCatchError(this.cookieRepository, this.vueRouter)
+            this.vueErrorHandler.catchError()
         )
     }
 

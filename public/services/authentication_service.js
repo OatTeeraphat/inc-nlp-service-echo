@@ -1,10 +1,11 @@
 // authentication service
 class AuthenticationService {
 
-    constructor( httpRepository, vueRouter, cookieRepository) {
+    constructor( httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.httpRepository = httpRepository
         this.cookieRepository = cookieRepository
         this.vueRouter = vueRouter
+        this.vueErrorHandler = vueErrorHandler
     }
 
     // ล้อกอินจ้า
@@ -33,7 +34,7 @@ class AuthenticationService {
                     )
                 }
             ),
-            vueCatchError(this.cookieRepository, this.vueRouter),
+            this.vueErrorHandler.catchError(),
         )
     }
 
