@@ -56,14 +56,6 @@ class VueErrorHandler {
     }
 
     catchError = () => catchError( e => {    
-        // console.error("vueCatchError ", e)
-
-        // this.cookieRepo.removeClientSession()
-
-        // swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
-
-        // this.vueRouter.push('/')
-        // return 
     
         if ( e instanceof AjaxError ) {
     
@@ -74,25 +66,24 @@ class VueErrorHandler {
                 this.cookieRepo.removeClientSession()
 
                 this.vueRouter.push('/')
-                
-                return throwError(e)
             }
         
         
             else if (e.status == 403) {
                 console.error("403")
             }
-        
+            
             else if (e.status == 500) {
                 swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
-                return throwError(e)
+            }
+
+            else if (e.status > 304) {
+                swal({ text: "ยังไม่ได้ดัก", icon: "error", timer: 1600 })
             }
             
             else {
                 swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
-                return throwError(e)
             }
-
         }
     
         return throwError(e)
