@@ -238,10 +238,8 @@ func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
 func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []string) string {
 
 	var idsForDelete []uint
-	// var uintIDs []uint
 
 	for _, id := range ids {
-		// var domain domains.NlpRecordDomain
 
 		u64, err := strconv.ParseUint(id, 10, 32)
 
