@@ -69,7 +69,7 @@ class NlpRecordsService {
             switchMap( yes => {
                 const SWAL_CONFIRM = yes
 
-                if (SWAL_CONFIRM) return this.httpRepository.bulkDeleteNlpRecordsByIDs(id)
+                if (SWAL_CONFIRM) return this.httpRepository.deleteNlpRecordByID(id)
 
                 return throwError("SWAL_CANCEL")
             }),

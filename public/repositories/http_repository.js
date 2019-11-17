@@ -38,16 +38,17 @@ class HttpRepository {
 
     deleteStoryByID = (id) => ajax({ 
         method: "DELETE", 
-        url: getHttpHost() + '/v1/story?id=' + id 
+        url: getHttpHost() + `/v1/story?id=${id}` 
     })
 
     bulkDeleteNlpRecordsByIDs = (ids) => of(ids).pipe(
         delay(600)
     )
 
-    deleteNlpRecordByID = (id) => of(id).pipe(
-        delay(600)
-    )
+    deleteNlpRecordByID = (id) => ajax({
+        method: "DELETE",
+        url: getHttpHost() + `/v1/nlp/record?id=${id}`
+    })
 
     getNlpReplyCounterByClientID = () => of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
         delay(600)

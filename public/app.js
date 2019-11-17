@@ -79,14 +79,20 @@ class VueErrorHandler {
             }
         
         
-            if (e.status == 403) {
+            else if (e.status == 403) {
                 console.error("403")
             }
         
-            if (e.status == 500) {
+            else if (e.status == 500) {
                 swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
                 return throwError(e)
             }
+            
+            else {
+                swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
+                return throwError(e)
+            }
+
         }
     
         return throwError(e)

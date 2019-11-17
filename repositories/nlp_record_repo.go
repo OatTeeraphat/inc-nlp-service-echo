@@ -29,6 +29,7 @@ type INlpRecordRepository interface {
 	Count() int64
 	CountByKeywordMinhash(KeywordMinhash uint32) int64
 	Delete() *gorm.DB
+	DeleteNlpRecordByID(id uint) *gorm.DB
 }
 
 // NewNlpRecordRepository new nlp record instance
@@ -98,6 +99,13 @@ func (repo *NlpRecordRepository) PaginationByKeywordMinhash(KeywordMinhash uint3
 	var nlpRecordDomain []domains.NlpRecordDomain
 	repo.Datasources.Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id asc").Find(&nlpRecordDomain)
 	return nlpRecordDomain
+}
+
+// DeleteNlpRecordByID DeleteNlpRecordByID
+func (repo *NlpRecordRepository) DeleteNlpRecordByID(id uint) *gorm.DB {
+	domain := &domains.NlpRecordDomain{}
+	domain.ID = id
+	return repo.Datasources.Unscoped().Delete(domain)
 }
 
 // BulkInsert multiple records at once

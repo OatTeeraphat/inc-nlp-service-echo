@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"inc-nlp-service-echo/domains"
 	"inc-nlp-service-echo/models"
 	"inc-nlp-service-echo/nlps"
@@ -27,6 +28,7 @@ type INlpRecordService interface {
 	ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) models.NlpRecordPaginationSearchModel
 	ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel
 	CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string
+	RemoveNlpRecordByID(id string) string
 }
 
 // NewNlpRecordService NewNlpService
@@ -219,4 +221,17 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	}
 
 	return nlpRecordPaginationSearchModel
+}
+
+func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
+
+	u64, err := strconv.ParseUint(id, 10, 32)
+	if err != nil {
+		fmt.Println(err)
+	}
+	nlpRecordID := uint(u64)
+
+	svc.nlpRecordRepository.DeleteNlpRecordByID(nlpRecordID)
+
+	return "OK"
 }
