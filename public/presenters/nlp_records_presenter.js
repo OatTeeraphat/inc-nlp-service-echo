@@ -204,6 +204,7 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                 this.isShowLoadingIndicator = false
             },
             error => {
+                console.error(error)
                 this.isShowLoadingIndicator = false
             }
         )
