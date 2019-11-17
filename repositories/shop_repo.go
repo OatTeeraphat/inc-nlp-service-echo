@@ -1,14 +1,13 @@
 package repositories
 
 import (
+	"inc-nlp-service-echo/datasources"
 	"inc-nlp-service-echo/domains"
-
-	"github.com/jinzhu/gorm"
 )
 
 // ShopRepository shop repository
 type ShopRepository struct {
-	Datasources *gorm.DB
+	*datasources.FillChatGORM
 }
 
 // IShopRepository shop repository interface
@@ -17,13 +16,13 @@ type IShopRepository interface {
 }
 
 // NewShopRepository shop repository
-func NewShopRepository(data *gorm.DB) IShopRepository {
+func NewShopRepository(data *datasources.FillChatGORM) IShopRepository {
 	return &ShopRepository{data}
 }
 
 // FindByID FindByID
 func (repo ShopRepository) FindByID(ID uint) domains.ShopDomain {
 	var shopDomain domains.ShopDomain
-	repo.Datasources.First(&shopDomain, ID)
+	repo.DB.First(&shopDomain, ID)
 	return shopDomain
 }

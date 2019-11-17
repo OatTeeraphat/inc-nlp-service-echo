@@ -65,7 +65,7 @@ func main() {
 	)
 
 	// sync GORM
-	orm := datasources.SyncGORM(common0)
+	orm := datasources.NewFillChatGORM(common0)
 
 	// Repositories
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
@@ -139,5 +139,5 @@ func main() {
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
 
 	defer e.Close()
-	defer orm.Close()
+	defer orm.DB.Close()
 }

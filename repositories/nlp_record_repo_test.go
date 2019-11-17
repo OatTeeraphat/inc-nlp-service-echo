@@ -1,6 +1,7 @@
 package repositories_test
 
 import (
+	"inc-nlp-service-echo/commons"
 	"inc-nlp-service-echo/datasources"
 	"inc-nlp-service-echo/domains"
 	"inc-nlp-service-echo/repositories"
@@ -13,28 +14,30 @@ import (
 func TestDatasource(t *testing.T) {
 	convey.Convey("Subject: NewNlpRecordRepository testcase", t, func() {
 
-		orm := datasources.FakeSyncGORM()
+		var mock *commons.FillChatSelectENV
+
+		orm := datasources.NewFillChatGORM(mock)
 
 		convey.Convey("Save 2 NlpRecordDomains", func() {
 			nlpRecordRepo := repositories.NewNlpRecordRepository(orm)
 			var nlpRecordDomain domains.NlpRecordDomain
-			nlpRecordDomain.ShopID = 1
+			// nlpRecordDomain.ShopID = 1
 			nlpRecordDomain.Keyword = "mock_keyword"
 			nlpRecordDomain.KeywordMinhash = 1
 			nlpRecordDomain.Intent = "mock_intent"
 			nlpRecordRepo.Save(&nlpRecordDomain)
 			convey.So(nlpRecordDomain.ID, convey.ShouldEqual, 1)
-			convey.So(nlpRecordDomain.ShopID, convey.ShouldEqual, 1)
+			// convey.So(nlpRecordDomain.ShopID, convey.ShouldEqual, 1)
 			convey.So(nlpRecordDomain.Keyword, convey.ShouldEqual, "mock_keyword")
 
 			var nlpRecordDomain2 domains.NlpRecordDomain
-			nlpRecordDomain2.ShopID = 2
+			// nlpRecordDomain2.ShopID = 2
 			nlpRecordDomain2.Keyword = "mock_keyword"
 			nlpRecordDomain2.KeywordMinhash = 2
 			nlpRecordDomain2.Intent = "mock_intent"
 			nlpRecordRepo.Save(&nlpRecordDomain2)
 			convey.So(nlpRecordDomain2.ID, convey.ShouldEqual, 2)
-			convey.So(nlpRecordDomain2.ShopID, convey.ShouldEqual, 2)
+			// convey.So(nlpRecordDomain2.ShopID, convey.ShouldEqual, 2)
 			convey.So(nlpRecordDomain2.Keyword, convey.ShouldEqual, "mock_keyword")
 		})
 
@@ -42,7 +45,7 @@ func TestDatasource(t *testing.T) {
 			nlpRecordRepo := repositories.NewNlpRecordRepository(orm)
 
 			var nlpRecordDomain domains.NlpRecordDomain
-			nlpRecordDomain.ShopID = 1
+			// nlpRecordDomain.ShopID = 1
 			nlpRecordDomain.Keyword = "mock_keyword"
 			nlpRecordDomain.KeywordMinhash = 1
 			nlpRecordDomain.Intent = "mock_intent"
@@ -50,7 +53,7 @@ func TestDatasource(t *testing.T) {
 			nlpRecordRepo.Save(&nlpRecordDomain)
 
 			convey.So(nlpRecordDomain.ID, convey.ShouldEqual, 1)
-			convey.So(nlpRecordDomain.ShopID, convey.ShouldEqual, 1)
+			// convey.So(nlpRecordDomain.ShopID, convey.ShouldEqual, 1)
 			convey.So(nlpRecordDomain.Keyword, convey.ShouldEqual, "mock_keyword")
 		})
 
@@ -59,7 +62,7 @@ func TestDatasource(t *testing.T) {
 
 			for i := 1; i <= 10; i++ {
 				var nlpRecordDomain domains.NlpRecordDomain
-				nlpRecordDomain.ShopID = uint(i)
+				// nlpRecordDomain.ShopID = uint(i)
 				nlpRecordDomain.Keyword = "mock_keyword" + strconv.Itoa(i)
 				nlpRecordDomain.KeywordMinhash = uint32(i)
 				nlpRecordDomain.Intent = "mock_intent" + strconv.Itoa(i)
@@ -93,6 +96,6 @@ func TestDatasource(t *testing.T) {
 			// convey.So(resultByKeywordMinhash[0].Keyword, convey.ShouldEqual, "mock_keyword1")
 		})
 
-		orm.DropTableIfExists(&domains.NlpRecordDomain{})
+		orm.DB.DropTableIfExists(&domains.NlpRecordDomain{})
 	})
 }

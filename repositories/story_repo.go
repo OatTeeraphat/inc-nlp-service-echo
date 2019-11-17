@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"inc-nlp-service-echo/datasources"
 	"inc-nlp-service-echo/domains"
 
 	"github.com/jinzhu/gorm"
@@ -8,7 +9,7 @@ import (
 
 // StoryRepository shop story mapping
 type StoryRepository struct {
-	Datasources *gorm.DB
+	*datasources.FillChatGORM
 }
 
 // IStoryRepository story desc interface
@@ -20,26 +21,26 @@ type IStoryRepository interface {
 }
 
 // NewStoryRepository story desc instance
-func NewStoryRepository(data *gorm.DB) IStoryRepository {
+func NewStoryRepository(data *datasources.FillChatGORM) IStoryRepository {
 	return &StoryRepository{data}
 }
 
 // Save find similar shop ids
 func (repo *StoryRepository) Save(storyDomain *domains.StoryDomain) {
-	repo.Datasources.Create(&storyDomain)
+	repo.DB.Create(&storyDomain)
 }
 
 // FindAll find similar shop ids
 func (repo *StoryRepository) FindAll() []domains.StoryDomain {
 	var storyDomain []domains.StoryDomain
-	repo.Datasources.Where(&domains.StoryDomain{}).Find(&storyDomain)
+	repo.DB.Where(&domains.StoryDomain{}).Find(&storyDomain)
 	return storyDomain
 }
 
 // FindByName find similar shop ids
 func (repo *StoryRepository) FindByName(storyName string) domains.StoryDomain {
 	var storyDomain domains.StoryDomain
-	repo.Datasources.Where(&domains.StoryDomain{Name: storyName}).Find(&storyDomain)
+	repo.DB.Where(&domains.StoryDomain{Name: storyName}).Find(&storyDomain)
 	return storyDomain
 }
 
@@ -47,5 +48,5 @@ func (repo *StoryRepository) FindByName(storyName string) domains.StoryDomain {
 func (repo *StoryRepository) DeleteByID(ID uint) *gorm.DB {
 	var storyDomain domains.StoryDomain
 	storyDomain.ID = ID
-	return repo.Datasources.Unscoped().Delete(&storyDomain)
+	return repo.DB.Unscoped().Delete(&storyDomain)
 }

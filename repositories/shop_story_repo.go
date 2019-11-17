@@ -1,14 +1,13 @@
 package repositories
 
 import (
+	"inc-nlp-service-echo/datasources"
 	"inc-nlp-service-echo/domains"
-
-	"github.com/jinzhu/gorm"
 )
 
 // ShopStoryRepository shop story mapping
 type ShopStoryRepository struct {
-	Datasources *gorm.DB
+	*datasources.FillChatGORM
 }
 
 // IShopStoryRepository shop story mapping interface
@@ -18,18 +17,18 @@ type IShopStoryRepository interface {
 }
 
 // NewShopStoryRepository shop story mapping instance
-func NewShopStoryRepository(data *gorm.DB) IShopStoryRepository {
+func NewShopStoryRepository(data *datasources.FillChatGORM) IShopStoryRepository {
 	return &ShopStoryRepository{data}
 }
 
 // Save find similar shop ids
 func (repo *ShopStoryRepository) Save(shopStoryDomain *domains.ShopStoryDomain) {
-	repo.Datasources.Create(&shopStoryDomain)
+	repo.DB.Create(&shopStoryDomain)
 }
 
 // FindByShopID find similar shop ids
 func (repo *ShopStoryRepository) FindByShopID(shopID uint32) []domains.ShopStoryDomain {
 	var shopStoryDomain []domains.ShopStoryDomain
-	repo.Datasources.Where(&domains.ShopStoryDomain{StoryID: shopID}).Find(&shopStoryDomain)
+	repo.DB.Where(&domains.ShopStoryDomain{StoryID: shopID}).Find(&shopStoryDomain)
 	return shopStoryDomain
 }
