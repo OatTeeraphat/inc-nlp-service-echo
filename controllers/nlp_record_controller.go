@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"inc-nlp-service-echo/models"
 	"inc-nlp-service-echo/services"
 	"net/http"
@@ -140,8 +141,10 @@ func (con *NlpController) DeleteNlpRecordByIDController(e echo.Context) error {
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [delete]
 func (con *NlpController) BulkDeleteNlpRecordByIDsController(e echo.Context) error {
-	ids := new([]string)
+	ids := new([]uint)
 	e.Bind(&ids)
+
+	fmt.Print(*ids)
 
 	response := con.NlpService.BulkDeleteNlpRecordByIDs(*ids)
 

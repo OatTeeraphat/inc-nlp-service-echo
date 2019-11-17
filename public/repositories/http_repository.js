@@ -38,11 +38,14 @@ class HttpRepository {
         })
     }
 
-    // END_POINT: ############# TODO ###############
+    // END_POINT: /v1/nlp/record/bulk
     bulkDeleteNlpRecordsByIDs(ids) {
-        return of(ids).pipe(
-            delay(600)
-        )
+        return ajax({
+            method: "DELETE", 
+            url: getHttpHost() + `/v1/nlp/record/bulk`,
+            headers: { "Content-Type": "application/json" },
+            body: ids
+        })
     }
 
     // END_POINT: /v1/nlp/record?id=

@@ -29,7 +29,7 @@ type INlpRecordService interface {
 	ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel
 	CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string
 	RemoveNlpRecordByID(id string) string
-	BulkDeleteNlpRecordByIDs(ids []string) string
+	BulkDeleteNlpRecordByIDs(ids []uint) string
 }
 
 // NewNlpRecordService NewNlpService
@@ -189,8 +189,6 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 		pageSizeFloat := float64(nlpRecordsCount) / 500
 		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
-		log.Info(nlpRecordsCount)
-
 		for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 500) {
 			var nlpModels models.NlpRecords
 			nlpModels.ID = item.ID
@@ -235,21 +233,21 @@ func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
 }
 
 // BulkDeleteNlpRecordByIDs BulkDeleteNlpRecordByIDs
-func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []string) string {
+func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []uint) string {
 
 	var idsForDelete []uint
 
 	for _, id := range ids {
 
-		u64, err := strconv.ParseUint(id, 10, 32)
+		// u64, err := strconv.ParseUint(id, 10, 32)
 
-		if err != nil {
-			fmt.Println(err)
-		}
+		// if err != nil {
+		// 	fmt.Println(err)
+		// }
 
 		// domain.ID = uint(u64)
 
-		idsForDelete = append(idsForDelete, uint(u64))
+		idsForDelete = append(idsForDelete, id)
 	}
 
 	go svc.nlpRecordRepository.BulkDeleteNlpRecordsByIDs(idsForDelete)

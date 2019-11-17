@@ -47,26 +47,6 @@ func NewFillChatGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 	}
 }
 
-// BulkDeleteByIDs BulkDeleteByIDs
-func (gorm FillChatGORM) BulkDeleteByIDs(idList []string) ([]*interface{}, error) {
-	var rs []*interface{}
-
-	placeHolders := []string{}
-	args := []interface{}{}
-	for _, id := range idList {
-		placeHolders = append(placeHolders, "?")
-		args = append(args, id)
-	}
-
-	sql := `select id, field1, field2 from record_t where id in(%s)`
-	sql = fmt.Sprintf(sql, strings.Join(placeHolders, ","))
-
-	if err := gorm.DB.Raw(sql, args...).Scan(&rs).Error; err != nil {
-		return nil, err
-	}
-	return rs, nil
-}
-
 // BulkInsert multiple records at once
 // [objects]        Must be a slice of struct
 // [chunkSize]      Number of records to insert at once.
