@@ -94,7 +94,7 @@ func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) str
 		})
 	}
 
-	go svc.nlpRecordRepository.BulkInsertNlpRecords(nlpRecord, 10000)
+	go svc.nlpRecordRepository.BulkInsertNlpRecords(nlpRecord, 7000)
 
 	return "OK"
 }

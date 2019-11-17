@@ -47,6 +47,11 @@ func NewFillChatGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 	}
 }
 
+// BulkDelete BulkDelete
+func (gorm FillChatGORM) BulkDelete() {
+
+}
+
 // BulkInsert multiple records at once
 // [objects]        Must be a slice of struct
 // [chunkSize]      Number of records to insert at once.

@@ -67,6 +67,8 @@ func main() {
 	// sync GORM
 	orm := datasources.NewFillChatGORM(common0)
 
+	orm.DB.LogMode(true)
+
 	// Repositories
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
