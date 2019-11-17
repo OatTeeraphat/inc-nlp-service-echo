@@ -223,6 +223,7 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	return nlpRecordPaginationSearchModel
 }
 
+// RemoveNlpRecordByID RemoveNlpRecordByID
 func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
 
 	u64, err := strconv.ParseUint(id, 10, 32)

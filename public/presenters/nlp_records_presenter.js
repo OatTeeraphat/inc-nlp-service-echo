@@ -192,6 +192,9 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
         }
     },
     mounted: function () {
+        this.$nlpRecordsService.getRecentlyNlpRecordHistory().subscribe( it => {
+            this.searchRecently = it
+        })
         this.subscription = this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( 
             item => {
                 this.page = this.page + 1
@@ -205,7 +208,6 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             }
         )
         this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
-        // this.getNlpRecordByKeywordHistory()
     },
     methods: {
         infiniteHandler: function (event) {
@@ -236,18 +238,8 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
             this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.nlpRecords = this.nlpRecords.filter( item => item.id !== id) )
         },
         searchNlpRecordByKeyword: function(event)  {
-            console.log(event.target.value)
-
-            let keyword = event.target.value
-
-            this.$nlpRecordsService.getNlpRecordsPaginationByKeyword(keyword, 1).subscribe( it => {
-
+            this.$nlpRecordsService.getNlpRecordsPaginationByKeyword(event.target.value, 1).subscribe( it => {
                 this.nlpRecordsByKeyword.push(...it.nlp_records)
-            })
-        },
-        getNlpRecordByKeywordHistory: function() {
-            this.$nlpRecordsService.getRecentlyNlpRecordHistory().subscribe( it => {
-                this.searchRecently = it
             })
         }
     },
