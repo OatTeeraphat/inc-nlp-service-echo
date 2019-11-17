@@ -38,7 +38,7 @@ class NlpRecordsService {
             takeUntil(this.unsubscribe),
             throttleTime(200),
             exhaustMap( ({ page }) =>  this.getNlpRecordsPagination(page) ),
-            this.vueErrorHandler.catchError()
+            this.vueErrorHandler.catchError(),
         )
     }
 
