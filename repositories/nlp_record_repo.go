@@ -71,7 +71,7 @@ func (repo *NlpRecordRepository) Delete() *gorm.DB {
 // Count Count
 func (repo *NlpRecordRepository) Count() int64 {
 	var totalPage int64
-	repo.DB.Where(&domains.NlpRecordDomain{}).Count(&totalPage)
+	repo.DB.Table("nlp_records").Where(&domains.NlpRecordDomain{}).Count(&totalPage)
 	return totalPage
 }
 
