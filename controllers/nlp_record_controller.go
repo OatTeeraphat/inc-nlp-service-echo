@@ -146,7 +146,11 @@ func (con *NlpController) BulkDeleteNlpRecordByIDsController(e echo.Context) err
 
 	fmt.Print(*ids)
 
-	response := con.NlpService.BulkDeleteNlpRecordByIDs(*ids)
+	response, error := con.NlpService.BulkDeleteNlpRecordByIDs(*ids)
+
+	if error != nil {
+		return e.String(http.StatusUnprocessableEntity, response)
+	}
 
 	return e.String(http.StatusOK, response)
 }
