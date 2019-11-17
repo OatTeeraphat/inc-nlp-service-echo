@@ -94,11 +94,7 @@ func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) str
 		})
 	}
 
-	err := svc.nlpRecordRepository.BulkCreateNlpRecords(nlpRecord, 3000)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+	go svc.nlpRecordRepository.BulkInsertNlpRecords(nlpRecord, 10000)
 
 	return "OK"
 }
@@ -233,6 +229,24 @@ func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
 	nlpRecordID := uint(u64)
 
 	svc.nlpRecordRepository.DeleteNlpRecordByID(nlpRecordID)
+
+	return "OK"
+}
+
+// BulkDeleteNlpRecordByIDs BulkDeleteNlpRecordByIDs
+func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []string) string {
+
+	// for item, index := id {
+	// 	u64, err := strconv.ParseUint(id, 10, 32)
+	// 	if err != nil {
+	// 		fmt.Println(err)
+	// 	}
+	// 	nlpRecordID := uint(u64)
+
+	// 	log.Info(item)
+	// }
+
+	// svc.nlpRecordRepository.DeleteNlpRecordByID(nlpRecordID)
 
 	return "OK"
 }

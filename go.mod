@@ -12,6 +12,7 @@ require (
 	github.com/go-openapi/jsonreference v0.19.3 // indirect
 	github.com/go-openapi/spec v0.19.3 // indirect
 	github.com/google/go-cmp v0.3.0 // indirect
+	github.com/google/martian v2.1.0+incompatible
 	github.com/gorilla/websocket v1.4.1
 	github.com/jinzhu/gorm v1.9.10
 	github.com/labstack/echo v3.3.10+incompatible // indirect

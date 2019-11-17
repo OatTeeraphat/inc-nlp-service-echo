@@ -20,7 +20,7 @@ type NlpRecordRepository struct {
 // INlpRecordRepository nlp query appearance interface
 type INlpRecordRepository interface {
 	Save(nlpRecordDomain *domains.NlpRecordDomain)
-	BulkCreateNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error
+	BulkInsertNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error
 	FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain
 	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
@@ -63,8 +63,8 @@ func (repo *NlpRecordRepository) FindByKeywordMinhash(keywordMinhash uint32) []d
 	return nlpRecordDomain
 }
 
-// BulkCreateNlpRecords BulkCreateNlpRecords
-func (repo *NlpRecordRepository) BulkCreateNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error {
+// BulkInsertNlpRecords BulkInsertNlpRecords
+func (repo *NlpRecordRepository) BulkInsertNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error {
 	return BulkInsert(repo.Datasources, nlpRecordDomain, bulkCount)
 }
 
