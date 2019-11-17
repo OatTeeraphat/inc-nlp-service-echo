@@ -177,14 +177,14 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
 
             page: 1,
             limit: 1,
-            total: 0,
+            total: 1,
             nlpRecords: [],
             nlpRecordsCheckedList: { ids: [] },
             
             searchKeyword: "",
             searchPage: 1,
             searchLimit: 1,
-            searchTotal: 0,
+            searchTotal: 1,
             nlpRecordsByKeyword: [],
             nlpRecordsByKeywordCheckedList: { ids: [] },
 
@@ -194,8 +194,10 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
     mounted: function () {
         this.subscription = this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( 
             item => {
-                this.nlpRecords.push(...item.nlp_records)
                 this.page = this.page + 1
+                this.total = item.total
+                this.limit = item.limit
+                this.nlpRecords.push(...item.nlp_records)
                 this.isShowLoadingIndicator = false
             },
             error => {
