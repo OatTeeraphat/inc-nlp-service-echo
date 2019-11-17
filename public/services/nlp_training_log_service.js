@@ -12,8 +12,8 @@ class NlpTrainingLogService {
     getNlpTrainingLogPagination = (page) => {
         return this.httpRepository.getNlpTrainingLogPagination("keyword", "intent", "story", page).pipe(
             takeUntil(this.unsubscribe),
-            map( ({ response }) => { 
-                    return new GetNlpTrainingLogPaginationAdapter().adapt(response) 
+            map( ({ response }) => {
+                return new GetNlpTrainingLogPaginationAdapter().adapt(response) 
             }),
         )
     }
