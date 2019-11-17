@@ -47,9 +47,10 @@ func NewFillChatGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 	}
 }
 
-// BulkDelete BulkDelete
-func (gorm FillChatGORM) BulkDelete() {
+// BulkDeleteByIDs BulkDeleteByIDs
+func (gorm FillChatGORM) BulkDeleteByIDs() error {
 
+	return nil
 }
 
 // BulkInsert multiple records at once
