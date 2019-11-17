@@ -21,12 +21,12 @@ class AuthenticationService {
                     return this.httpRepository.signIn(it.username, it.password).pipe(
                         map( it => {
 
-                            let model = new GetCustomerSignInAdapter().adapt(it)
+                            let model = new GetClientSignInAdapter().adapt(it)
 
                             if (rememberMe) {
-                                this.cookieRepository.setCustomerSession(model.access_token, model.expires_in)
+                                this.cookieRepository.setClientSession(model.access_token, model.expires_in)
                             } else {
-                                this.cookieRepository.setCustomerSession(model.access_token)
+                                this.cookieRepository.setClientSession(model.access_token)
                             }
                             
                             return this.vueRouter.push('/dashboard')
@@ -39,7 +39,7 @@ class AuthenticationService {
     }
 
     isAuthentication = () => {
-        return this.cookieRepository.getCustomerSession() !== undefined
+        return this.cookieRepository.getClientSession() !== undefined
     }
 
     // เช็ค email format
@@ -55,7 +55,7 @@ class AuthenticationService {
 
     signOut = () => {
 
-        this.cookieRepository.removeCustomerSession()
+        this.cookieRepository.removeClientSession()
 
         return this.vueRouter.replace("/")
     }

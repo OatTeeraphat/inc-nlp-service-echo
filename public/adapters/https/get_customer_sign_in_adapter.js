@@ -1,4 +1,4 @@
-class GetCustomerSignInAdapter {
+class GetClientSignInAdapter {
     adapt(model) {
 
         return {

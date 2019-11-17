@@ -5,15 +5,15 @@ class CookieRepository {
         this.cookies = cookies
     }
 
-    setCustomerSession(value, duration = 7) {
-        return this.cookies.set("x-customer-session", value, { expires: duration })
+    setClientSession(value, duration = 7) {
+        return this.cookies.set("x-client-session", value, { expires: duration })
     }
 
-    removeCustomerSession() {
-        return this.cookies.remove("x-customer-session")
+    removeClientSession() {
+        return this.cookies.remove("x-client-session")
     }
 
-    getCustomerSession() {
-        return this.cookies.get("x-customer-session")
+    getClientSession() {
+        return this.cookies.get("x-client-session")
     }
 }

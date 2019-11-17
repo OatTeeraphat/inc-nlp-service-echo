@@ -76,7 +76,7 @@ const vueCatchError = (cookieRepo, vueRouter) => catchError( e => {
     if ( e instanceof AjaxError ) {
 
         if (e.status == 401) {
-            cookieRepo.removeCustomerSession()
+            cookieRepo.removeClientSession()
             swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
             vueRouter.push('/')
             return throwError(e)

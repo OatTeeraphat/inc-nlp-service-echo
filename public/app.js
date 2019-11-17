@@ -12,7 +12,7 @@ class AuthGuard {
     }
 
     ifNotAuthenticated = (to, from, next) => {
-        let isAuth = this.cookieRepository.getCustomerSession() !== undefined
+        let isAuth = this.cookieRepository.getClientSession() !== undefined
     
         if (!isAuth) {
             next()
@@ -22,7 +22,7 @@ class AuthGuard {
     }
     
     ifAuthenticated = (to, from, next) => {
-        let isAuth = this.cookieRepository.getCustomerSession() !== undefined
+        let isAuth = this.cookieRepository.getClientSession() !== undefined
         if (isAuth) {
             next()
             return
@@ -30,7 +30,6 @@ class AuthGuard {
         next('/login')
     }
 }
-
 const authGuard = new AuthGuard(cookieRepo)
 
 const routes = [
@@ -50,6 +49,7 @@ const routes = [
 const vueRouter = new VueRouter({ routes, mode: 'history' });
 
 class VueErrorHandler {
+  
     constructor(cookieRepo, vueRouter) {
         this.vueRouter = vueRouter
         this.cookieRepo = cookieRepo
@@ -58,7 +58,7 @@ class VueErrorHandler {
     catchError = () => catchError( e => {    
         // console.error("vueCatchError ", e)
 
-        // this.cookieRepo.removeCustomerSession()
+        // this.cookieRepo.removeClientSession()
 
         // swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
 
@@ -68,11 +68,13 @@ class VueErrorHandler {
         if ( e instanceof AjaxError ) {
     
             if (e.status == 401) {
-                this.cookieRepo.removeCustomerSession()
 
                 swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
+                
+                this.cookieRepo.removeClientSession()
 
                 this.vueRouter.push('/')
+                
                 return throwError(e)
             }
         
@@ -80,7 +82,6 @@ class VueErrorHandler {
             if (e.status == 403) {
                 console.error("403")
             }
-        
         
             if (e.status == 500) {
                 swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
@@ -92,7 +93,6 @@ class VueErrorHandler {
     })
     
 }
-
 const vueErrorHandler = new VueErrorHandler(cookieRepo, vueRouter)
 
 // service initialize
@@ -106,7 +106,6 @@ const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHand
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
     install (Vue, options = {}) {   
-        // Add $surname instance property directly to Vue components
         Vue.prototype.$authService = authService
         Vue.prototype.$storyService = storyService
         Vue.prototype.$webChatService = webChatService,
