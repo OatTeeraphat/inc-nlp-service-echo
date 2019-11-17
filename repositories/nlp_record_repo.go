@@ -16,6 +16,7 @@ type NlpRecordRepository struct {
 type INlpRecordRepository interface {
 	Save(nlpRecordDomain *domains.NlpRecordDomain)
 	BulkInsertNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error
+	BulkDeleteNlpRecordsByIDs(nlpRecordDomain []uint) *gorm.DB
 	FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain
 	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
@@ -40,7 +41,7 @@ func (repo *NlpRecordRepository) Save(nlpRecordDomain *domains.NlpRecordDomain) 
 // FindByKeyword find similar keyword group
 func (repo *NlpRecordRepository) FindByKeyword(keyword string) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Where(&domains.NlpRecordDomain{Keyword: keyword}).Find(&nlpRecordDomain)
+	repo.DB.Where("keyword = ?", keyword).Find(&nlpRecordDomain)
 	return nlpRecordDomain
 }
 
@@ -54,13 +55,18 @@ func (repo *NlpRecordRepository) FindByKeywordMinhashAndStoryID(keywordMinhash u
 // FindByKeywordMinhash find similar keyword group
 func (repo *NlpRecordRepository) FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Find(&nlpRecordDomain, &domains.NlpRecordDomain{KeywordMinhash: keywordMinhash})
+	repo.DB.Where("keyword_minhash = ?", keywordMinhash).Find(&nlpRecordDomain)
 	return nlpRecordDomain
 }
 
 // BulkInsertNlpRecords BulkInsertNlpRecords
 func (repo *NlpRecordRepository) BulkInsertNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error {
 	return repo.BulkInsert(nlpRecordDomain, bulkCount)
+}
+
+// BulkDeleteNlpRecordsByIDs BulkDeleteNlpRecordsByIDs
+func (repo *NlpRecordRepository) BulkDeleteNlpRecordsByIDs(ids []uint) *gorm.DB {
+	return repo.DB.Unscoped().Where(ids).Delete(&domains.NlpRecordDomain{})
 }
 
 // Delete Delete
@@ -71,14 +77,14 @@ func (repo *NlpRecordRepository) Delete() *gorm.DB {
 // Count Count
 func (repo *NlpRecordRepository) Count() int64 {
 	var totalPage int64
-	repo.DB.Table("nlp_records").Where(&domains.NlpRecordDomain{}).Count(&totalPage)
+	repo.DB.Model(&domains.NlpRecordDomain{}).Where(&domains.NlpRecordDomain{}).Count(&totalPage)
 	return totalPage
 }
 
 // CountByKeywordMinhash CountByKeywordMinhash
 func (repo *NlpRecordRepository) CountByKeywordMinhash(KeywordMinhash uint32) int64 {
 	var totalPage int64
-	repo.DB.Table("nlp_records").Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Count(&totalPage)
+	repo.DB.Model(&domains.NlpRecordDomain{}).Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Count(&totalPage)
 	return totalPage
 }
 

@@ -29,6 +29,7 @@ type INlpRecordService interface {
 	ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel
 	CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string
 	RemoveNlpRecordByID(id string) string
+	BulkDeleteNlpRecordByIDs(ids []string) string
 }
 
 // NewNlpRecordService NewNlpService
@@ -236,17 +237,24 @@ func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
 // BulkDeleteNlpRecordByIDs BulkDeleteNlpRecordByIDs
 func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []string) string {
 
-	// for item, index := id {
-	// 	u64, err := strconv.ParseUint(id, 10, 32)
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	nlpRecordID := uint(u64)
+	var idsForDelete []uint
+	// var uintIDs []uint
 
-	// 	log.Info(item)
-	// }
+	for _, id := range ids {
+		// var domain domains.NlpRecordDomain
 
-	// svc.nlpRecordRepository.DeleteNlpRecordByID(nlpRecordID)
+		u64, err := strconv.ParseUint(id, 10, 32)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// domain.ID = uint(u64)
+
+		idsForDelete = append(idsForDelete, uint(u64))
+	}
+
+	go svc.nlpRecordRepository.BulkDeleteNlpRecordsByIDs(idsForDelete)
 
 	return "OK"
 }

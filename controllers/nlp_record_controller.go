@@ -22,6 +22,7 @@ type INlpController interface {
 	UploadXlsxNlpRecordByShopController(e echo.Context) error
 	DropNlpRecordByShopController(e echo.Context) error
 	DeleteNlpRecordByIDController(e echo.Context) error
+	BulkDeleteNlpRecordByIDsController(e echo.Context) error
 }
 
 // NewNlpController new nlp controller instace
@@ -128,5 +129,21 @@ func (con *NlpController) DropNlpRecordByShopController(e echo.Context) error {
 func (con *NlpController) DeleteNlpRecordByIDController(e echo.Context) error {
 	id := e.QueryParam("id")
 	response := con.NlpService.RemoveNlpRecordByID(id)
+	return e.String(http.StatusOK, response)
+}
+
+// BulkDeleteNlpRecordByIDsController delete nlp record by shop
+// @Summary batch delete nlp record by id
+// @Tags 	client
+// @Accept  text/html
+// @Produce text/html
+// @Success 200 {string} string "OK"
+// @Router /v1/nlp/record [delete]
+func (con *NlpController) BulkDeleteNlpRecordByIDsController(e echo.Context) error {
+	ids := new([]string)
+	e.Bind(&ids)
+
+	response := con.NlpService.BulkDeleteNlpRecordByIDs(*ids)
+
 	return e.String(http.StatusOK, response)
 }
