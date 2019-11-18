@@ -7,11 +7,12 @@ class NlpRecordsService {
         this.httpRepository = httpRepository
         this.localStorageRepository = localStorageRepository
         this.cookieRepository = cookieRepository
-        this.infiniteHandler$$ = new Subject()
+        this.$infiniteHandler = new BehaviorSubject({ page: 1 })
+        this.$searchNlpRecordByKeyword = new Subject()
         this.unsubscribe = new Subject()
     }
 
-    getNlpRecordsPaginationByKeyword = (keyword, page) => {
+    getNlpRecordsPaginationByKeyword(keyword, page) {
         return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
             takeUntil(this.unsubscribe),
             map( ({ response }) => {
@@ -19,22 +20,30 @@ class NlpRecordsService {
                 if ( keyword !== "" ) {
                     this.localStorageRepository.setRecentlyNlpRecordSearch(keyword)
                 }
-
                 return new GetNlpRecordsPagination().adapt(response)
-
             }),
         )
     }
 
-    getNlpRecordsPagination = (page) => {
+    searchNlpRecordsPaginationByKeywordSubject() {
+        
+        return this.$searchNlpRecordByKeyword.pipe(
+            takeUntil(this.unsubscribe),
+            throttleTime(200),
+            switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
+        )
+    }
+
+    getNlpRecordsPagination(page) {
         return this.httpRepository.getNlpRecordsPagination(page).pipe(
             takeUntil(this.unsubscribe),
             map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
         )
     }
 
-    getNlpRecordsByInfiniteScrollSubject = () => {
-        return this.infiniteHandler$$.pipe(
+    getNlpRecordsByInfiniteScrollSubject() {
+        console.log(this.$infiniteHandler.getValue())
+        return this.$infiniteHandler.pipe(
             takeUntil(this.unsubscribe),
             throttleTime(200),
             exhaustMap( ({ page }) =>  this.getNlpRecordsPagination(page) ),
@@ -42,7 +51,7 @@ class NlpRecordsService {
         )
     }
 
-    bulkDeleteNlpRecordsByIDs = (ids) => {
+    bulkDeleteNlpRecordsByIDs(ids) {
         
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
             takeUntil(this.unsubscribe),
@@ -62,8 +71,7 @@ class NlpRecordsService {
         )
     }
 
-    deleteNlpRecordByID = (id) => {        
-
+    deleteNlpRecordByID(id) {        
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
             takeUntil(this.unsubscribe),
             switchMap( yes => {
@@ -82,16 +90,25 @@ class NlpRecordsService {
         )
     }
 
-    nextPageNlpRecordsByInfiniteScroll = (page) => {
-        this.infiniteHandler$$.next({page: page})
+    nextPageNlpRecordsByInfiniteScroll(page) {
+        this.$infiniteHandler.next({
+            page: page
+        })
     }
 
-    getRecentlyNlpRecordHistory = () => {
+    nextSearchNlpRecordByKeyword(keyword, page) {
+        this.$searchNlpRecordByKeyword.next({
+            keyword: keyword, 
+            page: page
+        })
+    }
+
+    getRecentlyNlpRecordHistory() {
         let domain =  this.localStorageRepository.getRecentlyNlpRecordSearch()
         return of(domain)
     }
 
-    disposable = () => {
+    disposable() {
         this.unsubscribe.next(true)
         this.unsubscribe.complete()
     }
