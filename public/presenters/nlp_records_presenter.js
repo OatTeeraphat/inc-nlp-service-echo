@@ -231,9 +231,14 @@ var nlpRecordsPresenter = Vue.component('nlp-presenter', {
                 this.nlpRecords = this.nlpRecords.filter( item => !this.nlpRecordsCheckedList.ids.includes(item.id) )
                 console.log(this.nlpRecordsCheckedList)
                 this.nlpRecordsCheckedList.ids = []
+
+                // next page event
+                if (this.nlpRecords.length == 0) {
+                    this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
+                }
+                // 
             })
-            // next page event
-            this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
+            
         },
         deleteNlpRecordByID: function (id) {
             this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.nlpRecords = this.nlpRecords.filter( item => item.id !== id) )
