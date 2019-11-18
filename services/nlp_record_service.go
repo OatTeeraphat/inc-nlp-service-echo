@@ -171,7 +171,7 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	var nlpRecordPaginationSearchModel models.NlpRecordPaginationSearchModel
 
 	nlpRecordPaginationSearchModel.Page = page
-	nlpRecordPaginationSearchModel.Limit = "300"
+	nlpRecordPaginationSearchModel.Limit = "50"
 
 	pageInt, err := strconv.Atoi(page)
 
@@ -186,10 +186,10 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	if keyword == "" {
 
 		nlpRecordsCount := svc.nlpRecordRepository.Count()
-		pageSizeFloat := float64(nlpRecordsCount) / 300
+		pageSizeFloat := float64(nlpRecordsCount) / 50
 		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
-		for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 300) {
+		for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 50) {
 			var nlpModels models.NlpRecords
 			nlpModels.ID = item.ID
 			nlpModels.Keyword = item.Keyword
@@ -201,10 +201,10 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	} else {
 
 		nlpRecordsCount := svc.nlpRecordRepository.CountByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword))
-		pageSizeFloat := float64(nlpRecordsCount) / 300
+		pageSizeFloat := float64(nlpRecordsCount) / 50
 		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
-		for _, item := range svc.nlpRecordRepository.PaginationByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword), pageInt, 300) {
+		for _, item := range svc.nlpRecordRepository.PaginationByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword), pageInt, 50) {
 			var nlpModels models.NlpRecords
 			nlpModels.ID = item.ID
 			nlpModels.Keyword = item.Keyword
