@@ -102,6 +102,7 @@ const webChatService = new WebChatService(socketRepo, vueErrorHandler)
 const nlpRecordsService = new NlpRecordsService(httpRepo, vueRouter, localStorageRepo, cookieRepo, vueErrorHandler)
 const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
+const settingService = new SettingService(httpRepo, vueErrorHandler)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
@@ -113,6 +114,7 @@ Vue.use({
         Vue.prototype.$nlpRecordsService = nlpRecordsService
         Vue.prototype.$nlpTrainingLogService = nlpTrainingLogService
         Vue.prototype.$nlpReplyCounterService = nlpReplyCounterService
+        Vue.prototype.$settingService = settingService
     }
 })
 

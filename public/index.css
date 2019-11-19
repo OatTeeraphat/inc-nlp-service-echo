@@ -273,6 +273,12 @@
  .hover-danger:hover, .hover-danger:focus{
      color: #dc3545;
 }
+ .input-adjust.btn-group{
+	position: absolute;
+	top: 0.375em;
+	left: 1.75em;
+}
+ .input-adjust.btn-group button{padding: .125em .25em;}
  .input-group-plaintext{
 }
  .input-group-plaintext .input-group-prepend span{
@@ -289,6 +295,20 @@
  .input-group-plaintext .form-control:focus{
      box-shadow: none;
      border-bottom: 2px solid #663ab7;
+}
+.input-nostyle{
+    padding: 0;
+    height: 1.4em;
+    line-height: 1em;
+    font-weight: 600;
+}
+.input-nostyle.input-2digit{
+    width: 2em;
+}
+.input-2digit-sign{
+    position: absolute;
+    bottom: 0.25em;
+    left: 1.875em;
 }
  .from-search{
      position: relative;
@@ -532,6 +552,7 @@
      position: absolute;
      right: 30px;
      padding: 5px;
+     top: 1em;
 }
  .media-body h3 > button:hover{
      margin-top: 1px;
@@ -572,6 +593,7 @@
      padding: 0 60px 7.5px 0 !important;
      width: calc(100% - 60px);
 }
+
 /* Fallback for Edge -------------------------------------------------- */
  @supports (-ms-ime-align: auto) {
      .form-label-group > label {
@@ -653,7 +675,7 @@
  .btn-link.btn-edit{
      font-size: 18px;
      position: absolute;
-     top: 25%;
+     top: 30%;
      right: 0;
 }
  .card-webchat .card-footer{
