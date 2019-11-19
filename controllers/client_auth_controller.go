@@ -30,22 +30,10 @@ func (svc ClientAuthController) ClientLoginController(e echo.Context) error {
 	username := e.FormValue("username")
 	password := e.FormValue("password")
 
-	// Throws unauthorized error
-	if username != "kai.chr160@gmail.com" || password != "inc1!" {
+	// TODO: check to read data
+	if username != "admin@incommonstudio.com" || password != "inc12490!" {
 		return echo.ErrUnauthorized
 	}
-
-	// Create token
-	// token := jwt.New(jwt.SigningMethodHS256)
-
-	// // Set claims
-	// claims := token.Claims.(jwt.MapClaims)
-	// claims["name"] = "Jon Snow"
-	// claims["admin"] = true
-	// claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	// // Generate encoded token and send it as response.
-	// t, err := token.SignedString([]byte("secret"))
 
 	expired := time.Now().Add(time.Hour * 72).Unix()
 

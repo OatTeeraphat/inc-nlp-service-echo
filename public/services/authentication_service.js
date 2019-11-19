@@ -19,12 +19,12 @@ class AuthenticationService {
                     if (this.isNotEmail(it.username)) return throwError("email invalid format")
 
                     return this.httpRepository.signIn(it.username, it.password).pipe(
-                        map( it => {
+                        map( ({ response }) => {
 
-                            let model = new GetClientSignInAdapter().adapt(it)
+                            let model = new GetClientSignInAdapter().adapt(response)
 
                             if (rememberMe) {
-                                this.cookieRepository.setClientSession(model.access_token, model.expires_in)
+                                this.cookieRepository.setClientSession(model.access_token, model.expired_date)
                             } else {
                                 this.cookieRepository.setClientSession(model.access_token)
                             }

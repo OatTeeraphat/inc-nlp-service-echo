@@ -1,7 +1,6 @@
-
 // repositories initialize
 const cookieRepo = new CookieRepository(Cookies)
-const httpRepo = new HttpRepository()
+const httpRepo = new HttpRepository(cookieRepo)
 const cacheRepo = new CacheStorageRepository()
 const socketRepo = new SocketRepository()
 const localStorageRepo = new LocalStorageRepository()
@@ -56,20 +55,18 @@ class VueErrorHandler {
     }
 
     catchError = () => catchError( e => {    
-    
         if ( e instanceof AjaxError ) {
-    
             if (e.status == 401) {
-
                 swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
-                
-                this.cookieRepo.removeClientSession()
-
-                this.vueRouter.push('/')
+                if ( this.vueRouter.history.current.path !== "/login" ) {
+                    this.vueRouter.replace('/login')
+                }
             }
         
         
             else if (e.status == 403) {
+                swal({ text: "ไม่สามารถทำรายการต่อไปได้", icon: "error", timer: 1600 })
+                this.cookieRepo.removeClientSession()
                 console.error("403")
             }
             

@@ -64,10 +64,9 @@ func main() {
 		middleware.Gzip(),
 	)
 
-	// ################# sync GORM 📦 #################
+	// ################# Sync GORM 📦 #################
 	orm := datasources.NewFillChatGORM(common0)
-
-	// orm.DB.LogMode(true)
+	orm.DB.LogMode(false)
 
 	// ################# Repositories 🏦 #################
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
