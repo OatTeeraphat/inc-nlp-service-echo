@@ -25,8 +25,8 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
                                     Bulk Action
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Select All</a>
-                                    <a class="dropdown-item" href="#">Trained Select</a>
+                                    <button @click="selectAllNlpTrainingLog" class="dropdown-item">Select All</button>
+                                    <button @click="deselectAllNlpTrainingLog" class="dropdown-item">Deselect All</button>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item text-danger" href="#">Delete All</a>
                                 </div>
@@ -109,5 +109,25 @@ var nlpLogPresenter = Vue.component('nlp-log-presenter', {
         this.subscription.unsubscribe()
     },
     methods: {
+        selectAllNlpTrainingLog: function(event) {
+            this.nlpLogsCheckedList.ids = []
+            this.nlpLogs.forEach( select => { this.nlpLogsCheckedList.ids.push(select.id) })
+        },
+        deselectAllNlpTrainingLog: function(event) {
+            this.nlpLogsCheckedList.ids = []
+        },
+        bulkDeleteNlpTrainingLog: function(event) {
+            // bulk delete
+            // this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.nlpRecordsCheckedList.ids).subscribe( () => {
+            //     this.nlpRecords = this.nlpRecords.filter( item => !this.nlpRecordsCheckedList.ids.includes(item.id) )
+            //     console.log(this.nlpRecordsCheckedList)
+            //     this.nlpRecordsCheckedList.ids = []
+            // })
+            // next page event
+            // this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
+        },
+        deleteNlpTrainingLogByID: function (id) {
+            // this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.nlpRecords = this.nlpRecords.filter( item => item.id !== id) )
+        },
     },
 })

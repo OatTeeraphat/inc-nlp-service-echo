@@ -7,14 +7,16 @@ require (
 	github.com/agnivade/levenshtein v1.0.2
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/aryahadii/ngram v0.0.0-20170825131822-84d2901a89b2
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dgryski/go-metro v0.0.0-20180109044635-280f6062b5bc
 	github.com/dgryski/go-spooky v0.0.0-20170606183049-ed3d087f40e2
 	github.com/go-openapi/jsonreference v0.19.3 // indirect
 	github.com/go-openapi/spec v0.19.3 // indirect
 	github.com/google/go-cmp v0.3.0 // indirect
+	github.com/google/martian v2.1.0+incompatible
 	github.com/gorilla/websocket v1.4.1
 	github.com/jinzhu/gorm v1.9.10
-	github.com/labstack/echo v3.3.10+incompatible // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.1.10
 	github.com/labstack/gommon v0.3.0
 	github.com/mailru/easyjson v0.7.0 // indirect

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"inc-nlp-service-echo/domains"
 	"inc-nlp-service-echo/models"
 	"inc-nlp-service-echo/nlps"
@@ -27,6 +28,8 @@ type INlpRecordService interface {
 	ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) models.NlpRecordPaginationSearchModel
 	ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel
 	CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string
+	RemoveNlpRecordByID(id string) string
+	BulkDeleteNlpRecordByIDs(ids []uint) (string, error)
 }
 
 // NewNlpRecordService NewNlpService
@@ -92,11 +95,7 @@ func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) str
 		})
 	}
 
-	err := svc.nlpRecordRepository.BulkCreateNlpRecords(nlpRecord, 3000)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+	go svc.nlpRecordRepository.BulkInsertNlpRecords(nlpRecord, 7000)
 
 	return "OK"
 }
@@ -172,7 +171,7 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	var nlpRecordPaginationSearchModel models.NlpRecordPaginationSearchModel
 
 	nlpRecordPaginationSearchModel.Page = page
-	nlpRecordPaginationSearchModel.Limit = "40"
+	nlpRecordPaginationSearchModel.Limit = "50"
 
 	pageInt, err := strconv.Atoi(page)
 
@@ -187,12 +186,10 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	if keyword == "" {
 
 		nlpRecordsCount := svc.nlpRecordRepository.Count()
-		pageSizeFloat := float64(nlpRecordsCount) / 40
+		pageSizeFloat := float64(nlpRecordsCount) / 50
 		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
-		log.Info(nlpRecordsCount)
-
-		for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 40) {
+		for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 50) {
 			var nlpModels models.NlpRecords
 			nlpModels.ID = item.ID
 			nlpModels.Keyword = item.Keyword
@@ -204,10 +201,10 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	} else {
 
 		nlpRecordsCount := svc.nlpRecordRepository.CountByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword))
-		pageSizeFloat := float64(nlpRecordsCount) / 40
+		pageSizeFloat := float64(nlpRecordsCount) / 50
 		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
-		for _, item := range svc.nlpRecordRepository.PaginationByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword), pageInt, 40) {
+		for _, item := range svc.nlpRecordRepository.PaginationByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword), pageInt, 50) {
 			var nlpModels models.NlpRecords
 			nlpModels.ID = item.ID
 			nlpModels.Keyword = item.Keyword
@@ -219,4 +216,32 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 	}
 
 	return nlpRecordPaginationSearchModel
+}
+
+// RemoveNlpRecordByID RemoveNlpRecordByID
+func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
+
+	u64, err := strconv.ParseUint(id, 10, 32)
+	if err != nil {
+		fmt.Println(err)
+	}
+	nlpRecordID := uint(u64)
+
+	svc.nlpRecordRepository.DeleteNlpRecordByID(nlpRecordID)
+
+	return "OK"
+}
+
+// BulkDeleteNlpRecordByIDs BulkDeleteNlpRecordByIDs
+func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []uint) (string, error) {
+
+	var idsForDelete []uint
+
+	for _, id := range ids {
+		idsForDelete = append(idsForDelete, id)
+	}
+
+	go svc.nlpRecordRepository.BulkDeleteNlpRecordsByIDs(idsForDelete)
+
+	return "OK", nil
 }

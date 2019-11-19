@@ -1,13 +1,13 @@
-class GetCustomerSignInAdapter {
+class GetClientSignInAdapter {
     adapt(model) {
 
         return {
-            consumer_id: model.consumer_id,
-            username: model.username,
+            client_id: model.client_id,
+            client_secret: model.client_secret,
             email: model.email,
             access_token: model.access_token,
-            refresh_token: model.refresh_token,
-            expires_in: model.expires_in,
+            // refresh_token: model.refresh_token,
+            expires_in: model.expired_date,
 
         }
     }
