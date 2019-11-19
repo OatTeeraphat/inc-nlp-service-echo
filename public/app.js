@@ -54,7 +54,8 @@ class VueErrorHandler {
         this.cookieRepo = cookieRepo
     }
 
-    catchError = () => catchError( e => {    
+    catchError = () => catchError( e => {
+
         if ( e instanceof AjaxError ) {
             if (e.status == 401) {
                 swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
@@ -62,7 +63,6 @@ class VueErrorHandler {
                     this.vueRouter.replace('/login')
                 }
             }
-        
         
             else if (e.status == 403) {
                 swal({ text: "ไม่สามารถทำรายการต่อไปได้", icon: "error", timer: 1600 })
@@ -75,11 +75,11 @@ class VueErrorHandler {
             }
 
             else if (e.status > 304) {
-                swal({ text: "ยังไม่ได้ดัก", icon: "error", timer: 1600 })
+                swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
             }
             
             else {
-                swal({ text: "เซิฟเวอร์ผิดพลาด", icon: "error", timer: 1600 })
+                swal({ text: "ยังไม่ได้ดัก", icon: "error", timer: 1600 })
             }
         }
     
