@@ -94,13 +94,13 @@ var storyPage = Vue.component('story-page', {
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr v-for="item in stories">
+                                    <tr v-for="item in $storyPresenter.view.stories">
                                         <th scope="row" class="col-1">
                                             <input type="checkbox">
                                         </th>
                                         <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Story Name" v-model="item.name"></td>
                                         <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description" v-model="item.desc"></td>
-                                        <td class="col-2 text-center" @click="deleteStoryByID(item.id)" >
+                                        <td class="col-2 text-center" @click="$storyPresenter.deleteStoryByID(item.id)" >
                                             <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
                                                 <i class="fe fe-delete"></i>
                                             </button>
@@ -141,13 +141,13 @@ var storyPage = Vue.component('story-page', {
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr v-for="item in intents">
+                                    <tr v-for="item in $storyPresenter.view.intents">
                                         <th scope="row" class="col-1">
                                             <input type="checkbox">
                                         </th>
                                         <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intents" v-model="item.intent"></td>
                                         <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description" v-model="item.desc"></td>
-                                        <td class="col-2 text-center" @click="deleteStoryByID(item.id)" >
+                                        <td class="col-2 text-center" @click="$storyPresenter.deleteStoryByID(item.id)" >
                                             <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
                                                 <i class="fe fe-delete"></i>
                                             </button>
@@ -163,33 +163,12 @@ var storyPage = Vue.component('story-page', {
     </div>
     `,
     data: function () {
-        return {
-            stories: [],
-            intents: [
-                { id: 1, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 2, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 3, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 4, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 5, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 6, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 7, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' }
-            ]
-        }
+        return this.$storyPresenter.view
     },
     mounted: function () {
-        this.$storyService.getStoryState().subscribe(it => { 
-            this.stories.push(...it) 
-        })
-    },
-    
-    methods: {
-        deleteStoryByID: function(id) {
-            this.$storyService.deleteStoryByID(id).subscribe( () =>  {
-                this.stories = this.stories.filter( item => item.id !== id ) 
-            })
-        }
+        this.$storyPresenter.getInitialState()
     },
     beforeDestroy: function () {
-        this.$storyService.disposable()
+        this.$storyPresenter.disposal()
     },
 })
