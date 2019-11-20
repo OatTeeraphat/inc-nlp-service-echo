@@ -13,18 +13,11 @@ import (
 	// docs folder to server swagger
 	_ "inc-nlp-service-echo/docs"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	log "github.com/sirupsen/logrus"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
-
-type jwtCustomClaims struct {
-	Name  string `json:"name"`
-	Admin bool   `json:"admin"`
-	jwt.StandardClaims
-}
 
 // @title Swagger Example API
 // @version 1.0
@@ -110,7 +103,6 @@ func main() {
 	q.GET("/*", echoSwagger.WrapHandler)
 
 	// ################# Non Restrict ENDPOINT 🦴 #################
-
 	v0 := e.Group("/v1")
 	v0.POST("/login", c7.ClientLoginController)
 
@@ -119,7 +111,6 @@ func main() {
 	v0.Any("/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)
 
 	// ################# Restrict ENDPOINT With JWT 🔑 #################
-
 	v1 := e.Group("/v1")
 	v1.Use(middleware.JWTWithConfig(jwtConfig))
 
