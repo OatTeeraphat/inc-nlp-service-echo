@@ -29,7 +29,7 @@ class AuthenticationService {
                                 this.cookieRepository.setClientSession(model.access_token)
                             }
                             
-                            return this.vueRouter.push('/dashboard')
+                            return this.vueRouter.replace('/dashboard')
                         })
                     )
                 }

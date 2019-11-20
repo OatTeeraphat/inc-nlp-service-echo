@@ -12,7 +12,7 @@ var logsPage = Vue.component('logs-page', {
                     </div>
                     <div class="col-12 col-md-3 text-right">
                         <div class="from-search">
-                            <input @change="searchNlpRecordByKeyword" v-model="searchKeyword" type="text" class="form-control-plaintext p-0 mt-2" placeholder="Search Here">
+                            <input type="text" class="form-control-plaintext p-0 mt-2" placeholder="Search Here">
                             <i class="fe fe-search"></i>
                         </div>
                     </div>
@@ -25,11 +25,10 @@ var logsPage = Vue.component('logs-page', {
                                     Bulk Action
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button @click="selectAllNlpRecord" class="dropdown-item">Select All</button>
-                                    <button @click="deselectAllNlpRecord" class="dropdown-item">Deselect All</button>
-                                    <!-- <button @click="" class="dropdown-item">Save All</button> -->
+                                    <button class="dropdown-item">Select All</button>
+                                    <button class="dropdown-item">Deselect All</button>
                                     <div class="dropdown-divider"></div>
-                                    <button @click="bulkDeleteNlpRecord" class="dropdown-item text-danger">Delete All</button>
+                                    <button class="dropdown-item text-danger">Delete All</button>
                                 </div>
                             </div>
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">

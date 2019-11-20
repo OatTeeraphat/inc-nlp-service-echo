@@ -1,3 +1,4 @@
+(async () => console.log("#########") )()
 // repositories initialize
 const cookieRepo = new CookieRepository(Cookies)
 const httpRepo = new HttpRepository(cookieRepo)
@@ -32,16 +33,16 @@ class AuthGuard {
 const authGuard = new AuthGuard(cookieRepo)
 
 const routes = [
-    { path: '/', name: 'auth',  component: mainPage, beforeEnter: authGuard.ifNotAuthenticated },
-    { path: '/login', name: 'login',  component: mainPage, beforeEnter: authGuard.ifNotAuthenticated },
+    { path: '/', name: 'auth',  component: mainPage , beforeEnter: authGuard.ifNotAuthenticated },
+    { path: '/login', name: 'login',  component: mainPage , beforeEnter: authGuard.ifNotAuthenticated },
     { path: '/welcome', name: 'welcome',  component: welcomePage },
-    { path: '/dashboard', name: 'dashboard', component: dashboardPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/dashboard', name: 'dashboard', component: dashboardPage, beforeEnter: authGuard.ifAuthenticated },
     { path: '/nlp', name: 'nlp', component: nlpRecordsPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/logs', name: 'logs', component: nlpTrainingLogPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/story', name: 'story', component: storyPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/webchat', name: 'webchat', component: webChatPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/setting', name: 'setting', component: settingPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/logging', name: 'logging', component: logsPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/logs', name: 'logs', component: nlpTrainingLogPage , beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/story', name: 'story', component: storyPage , beforeEnter: authGuard.ifAuthenticated },
+    { path: '/webchat', name: 'webchat', component: webChatPage, beforeEnter: authGuard.ifAuthenticated },
+    { path: '/setting', name: 'setting', component: settingPage, beforeEnter: authGuard.ifAuthenticated },
+    { path: '/logging', name: 'logging', component: logsPage , beforeEnter: authGuard.ifAuthenticated },
 ]
 
 // vue Router
@@ -106,22 +107,20 @@ const authPresenter = new AuthenticationPresenter(authService)
 const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)
 const storyPresenter = new StoryPresenter(storyService)
 const nlpTrainingLogPresenter = new NlpTrainingLogPresenter(nlpTrainingLogService)
+const nlpRecordPresenter = new NlpRecordPresenter(nlpRecordsService)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
-    install (Vue, options = {}) {
+    install (Vue) {
 
         Vue.prototype.$authPresenter = authPresenter
         Vue.prototype.$welcomePresenter = welcomePresenter
         Vue.prototype.$storyPresenter = storyPresenter
         Vue.prototype.$nlpTrainingLogPresenter = nlpTrainingLogPresenter
+        Vue.prototype.$nlpRecordPresenter = nlpRecordPresenter
 
-        // Vue.prototype.$authService = authService
-        // Vue.prototype.$nlpReplyCounterService = nlpReplyCounterService
-        Vue.prototype.$storyService = storyService
+        // TODO: 
         Vue.prototype.$webChatService = webChatService,
-        Vue.prototype.$nlpRecordsService = nlpRecordsService
-        Vue.prototype.$nlpTrainingLogService = nlpTrainingLogService
         Vue.prototype.$settingService = settingService
     }
 })

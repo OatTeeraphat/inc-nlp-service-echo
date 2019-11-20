@@ -29,7 +29,7 @@ class NlpRecordsService {
         
         return this.$searchNlpRecordByKeyword.pipe(
             takeUntil(this.unsubscribe),
-            throttleTime(200),
+            throttleTime(300),
             switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
         )
     }
@@ -42,7 +42,7 @@ class NlpRecordsService {
     }
 
     getNlpRecordsByInfiniteScrollSubject() {
-        console.log(this.$infiniteHandler.getValue())
+        // console.log(this.$infiniteHandler.getValue())
         return this.$infiniteHandler.pipe(
             takeUntil(this.unsubscribe),
             throttleTime(200),
@@ -83,7 +83,6 @@ class NlpRecordsService {
             }),
             map( it => {
                 swal('resolve', {icon: "success", timer: this.duration}) 
-
                 return of(it)
             }),
             this.vueErrorHandler.catchError()

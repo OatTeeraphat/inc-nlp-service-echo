@@ -48,6 +48,8 @@ class NlpTrainingLogPresenter {
     disposal() {
         // this.nlpTrainingLogService.disposable()
         this.nlpTrainingLogInfiniteScrollSubscription.unsubscribe()
+        this.view.nlpLogs = [],
+        this.view.nlpLogsCheckedList = { ids: [] }
     }
     
 }

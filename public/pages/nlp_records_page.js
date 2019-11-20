@@ -12,7 +12,7 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                     </div>
                     <div class="col-12 col-md-3 text-right">
                         <div class="from-search">
-                            <input v-on:input="searchNlpRecordByKeyword" v-model="searchKeyword" type="text" class="form-control-plaintext p-0 mt-2" placeholder="Search Here">
+                            <input v-on:input="$nlpRecordPresenter.searchNlpRecordByKeyword($event)" v-model="$nlpRecordPresenter.view.searchKeyword" type="text" class="form-control-plaintext p-0 mt-2" placeholder="Search Here">
                             <i class="fe fe-search"></i>
                         </div>
                     </div>
@@ -25,11 +25,11 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                     Bulk Action
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button @click="selectAllNlpRecord" class="dropdown-item">Select All</button>
-                                    <button @click="deselectAllNlpRecord" class="dropdown-item">Deselect All</button>
+                                    <button @click="$nlpRecordPresenter.selectAllNlpRecord($event)" class="dropdown-item">Select All</button>
+                                    <button @click="$nlpRecordPresenter.deselectAllNlpRecord($event)" class="dropdown-item">Deselect All</button>
                                     <!-- <button @click="" class="dropdown-item">Save All</button> -->
                                     <div class="dropdown-divider"></div>
-                                    <button @click="bulkDeleteNlpRecord" class="dropdown-item text-danger">Delete All</button>
+                                    <button @click="$nlpRecordPresenter.bulkDeleteNlpRecord($event)" class="dropdown-item text-danger">Delete All</button>
                                 </div>
                             </div>
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -73,7 +73,7 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                             </tr>
                         </thead>
 
-                        <tbody v-if="searchKeywordComputed === '' " @scroll="infiniteHandler">
+                        <tbody v-if="searchNlpRecordByKeywordComputed === '' " @scroll="$nlpRecordPresenter.getMoreNlpRecordByInfiniteScroll($event)">
                             <tr class="tr-add">
                                 <td colspan="5" class="col-12"><strong class="mx-3"><i class="fe fe-plus-circle mr-1"></i> Add Row</strong></td>
                             </tr>
@@ -102,15 +102,15 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                     </button>
                                 </td>
                             </tr>
-                            <tr v-for="item in nlpRecords">
+                            <tr v-for="item in $nlpRecordPresenter.view.nlpRecords">
                                 <th scope="row" class="col-1">
-                                    <input :value="item.id" v-model="nlpRecordsCheckedList.ids" type="checkbox">
+                                    <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
                                 </th>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                                 <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                                 <td class="col-1 text-center">
-                                    <button @click="deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
+                                    <button @click="$nlpRecordPresenter.deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
                                         <i class="fe fe-delete"></i>
                                     </button>
                                 </td>
@@ -146,22 +146,22 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                         </button>
                                     </td>
                                 </tr>
-                                <tr v-for="item in nlpRecordsByKeyword">
+                                <tr v-for="item in $nlpRecordPresenter.view.nlpRecordsByKeyword">
                                     <th scope="row" class="col-1">
-                                        <input :value="item.id" v-model="nlpRecordsByKeywordCheckedList.ids" type="checkbox">
+                                        <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsByKeywordCheckedList.ids" type="checkbox">
                                     </th>
                                     <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                                     <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                                     <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                                     <td class="col-1 text-center">
-                                        <button @click="deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
+                                        <button @click="$nlpRecordPresenter.deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
                                             <i class="fe fe-delete"></i>
                                         </button>
                                     </td>
                                 </tr>
                         </tbody>
                     </table>
-                    <div class="row" v-show="isShowLoadingIndicator">
+                    <div class="row" v-show="$nlpRecordPresenter.view.isShowLoadingIndicator">
                         <div class="col-12 dot-flashing-center">
                             <div class="dot-flashing"></div>
                         </div>
@@ -172,99 +172,15 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
     </div>
     `,
     data: function () {
-        return {
-            isShowLoadingIndicator: false,
-
-            page: 1,
-            limit: 1,
-            total: 1,
-            nlpRecords: [],
-            nlpRecordsCheckedList: { ids: [] },
-            
-            searchKeyword: "",
-            searchPage: 1,
-            searchLimit: 1,
-            searchTotal: 1,
-            nlpRecordsByKeyword: [],
-            nlpRecordsByKeywordCheckedList: { ids: [] },
-
-            searchRecently: {}
-        }
+        return this.$nlpRecordPresenter.view
     },
     mounted: function () {
-        this.getInitialState()
-    },
-    methods: {
-        getInitialState: function() {
-            this.getNlpRecordsByInfiniteScrollSubscription = this.$nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
-                this.page = this.page + 1
-                this.total = item.total
-                this.limit = item.limit
-                this.nlpRecords.push(...item.nlp_records)
-                this.isShowLoadingIndicator = false
-            }, 
-            error => {
-                console.error(error)
-                this.isShowLoadingIndicator = false
-            }
-        )
-        this.nlpRecordsServiceSubscription = this.$nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {
-            this.nlpRecordsByKeyword.push(...it.nlp_records)
-        })
-        },
-        infiniteHandler: function (event) {
-            let {scrollTop, clientHeight, scrollHeight } = event.srcElement
-            if (scrollTop + clientHeight >= scrollHeight / 1.2) {
-                this.isShowLoadingIndicator = true
-                this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
-            }
-        },
-        selectAllNlpRecord: function(event) {
-            this.nlpRecordsCheckedList.ids = []
-            this.nlpRecords.forEach( select => { this.nlpRecordsCheckedList.ids.push(select.id) })
-        },
-        deselectAllNlpRecord: function(event) {
-            this.nlpRecordsCheckedList.ids = []
-        },
-        bulkDeleteNlpRecord: function(event) {
-            // bulk delete
-            this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.nlpRecordsCheckedList.ids).subscribe( () => {
-                this.nlpRecords = this.nlpRecords.filter( item => !this.nlpRecordsCheckedList.ids.includes(item.id) )
-
-                console.log(this.nlpRecordsCheckedList)
-                this.nlpRecordsCheckedList.ids = []
-
-                // next page event
-                if (this.nlpRecords.length == 0) {
-                    this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
-                }
-            })
-            
-        },
-        deleteNlpRecordByID: function(id) {
-            this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.nlpRecords = this.nlpRecords.filter( item => item.id !== id) )
-        },
-        searchNlpRecordByKeyword: function(event)  {
-            this.$nlpRecordsService.nextSearchNlpRecordByKeyword(event.target.value, 1)
-        }
+        this.$nlpRecordPresenter.getInitialState()
     },
     computed: {
-        searchKeywordComputed: function(e) {
-            this.searchPage = 1
-            this.nlpRecordsByKeyword = []
-            this.nlpRecordsByKeywordCheckedList = { ids: [] }
-
-            return this.searchKeyword
-        }
+        searchNlpRecordByKeywordComputed: function(e) {  return this.$nlpRecordPresenter.searchNlpRecordByKeywordComputed() }
     },
     beforeDestroy: function () {
-        this.getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
-        this.nlpRecordsServiceSubscription.unsubscribe()
-
-        // set page index to 1
-        this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(1)
-        
-        this.nlpRecords = []
-        this.nlpRecordsByKeyword = []
+        this.$nlpRecordPresenter.disposal()
     },
 })
