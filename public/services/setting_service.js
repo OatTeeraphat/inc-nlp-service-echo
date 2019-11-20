@@ -50,6 +50,15 @@ class SettingService {
 		this.setClient$$.next({})
 	}
 
+	editAppInfo() {
+		this.setClient$$.pipe(
+			delay(200),
+			switchMap(({ event }) => {
+				return of(event)
+			})
+		)
+	}
+
 
 	
 
