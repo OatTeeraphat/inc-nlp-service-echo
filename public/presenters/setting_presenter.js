@@ -21,11 +21,22 @@ var settingPresenter = Vue.component('setting-presenter', {
                                 <div class="media align-item-center">
                                     <div class="media-icon align-self-start mr-3 rounded"><i class="fe fe-cpu"></i></div>
                                     <div class="media-body">
-                                        <h3 class="card-title mb-0">
-                                            <strong>Incommon Studio</strong>
-                                            <button class="btn btn-link">
+                                        <h3 class="card-title mb-0" v-bind:class="{ 'd-none' : is_edit.app_info }" >
+                                            <strong>
+                                                <input type="text" v-model="app_info.name" readonly="readonly" class="form-control-plaintext input-nostyle">
+                                            </strong>
+                                            <button class="btn btn-link" @click="onEditAppInfo()">
                                                 <i class="fe fe-edit"></i> 
                                                 <small><strong>Edit</strong></small>
+                                            </button>
+                                        </h3>
+                                        <h3 class="card-title mb-0" v-bind:class="{ 'd-none' : !is_edit.app_info }">
+                                            <strong>
+                                                <input type="text" v-model="app_info.name" ref="info"  class="form-control-plaintext input-nostyle">
+                                            </strong>
+                                            <button class="btn btn-link" @click="onSaveAppInfo()">
+                                                <i class="fe fe-save"></i> 
+                                                <small><strong>Save</strong></small>
                                             </button>
                                         </h3>
                                         <p class="text-muted mb-0">Your App Name</p>
@@ -169,9 +180,23 @@ var settingPresenter = Vue.component('setting-presenter', {
                                         </h5>
                                         <p class="text-muted mb-2 mt-2">You can decide how precisely your nlp.</p>
                                         <h1 class="text-purple mb-2 mt-2 position-relative" >
-                                            <strong>20</strong>
-                                            <small>%</small>
-                                            <button class="btn btn-link btn-edit"><i class="fe fe-edit"></i> <small><strong>Edit</strong></small></button>
+                                            <span v-bind:class="{ 'd-none': !is_edit.confidence }" >
+                                                <strong>
+                                                    <input type="text" class="form-control-plaintext input-nostyle input-2digit" readonly v-model="confidence">
+                                                </strong>
+                                                <div class="btn-group input-adjust btn-group-sm" role="group" aria-label="Basic example">
+                                                    <button @click="onAdjustConfidence(1)" type="button" class="btn btn-secondary"><i class="fe fe-chevron-up"></i></button>
+                                                    <button @click="onAdjustConfidence(-1)" type="button" class="btn btn-dark"><i class="fe fe-chevron-down"></i></button>
+                                                </div>
+                                                <button class="btn btn-link btn-edit text-success" @click="onSaveConfidence()" ><i class="fe fe-save"></i> <small><strong>Save</strong></small></button>
+                                            </span>
+                                            <span v-bind:class="{ 'd-none': is_edit.confidence }">
+                                                <strong>
+                                                    <input type="text" class="form-control-plaintext input-nostyle input-2digit text-purple" readonly  v-model="confidence">
+                                                </strong>
+                                                <small class="input-2digit-sign">%</small>
+                                                <button class="btn btn-link btn-edit" @click="onEditConfidence()" ><i class="fe fe-edit"></i> <small><strong>Edit</strong></small></button>
+                                            </span>
                                         </h1>
                                         <p class="text-muted mb-2 mt-2 setting-desc">System analyses its accuracy and response a result with the most match score than confidence score.</p>
                                     </div>
@@ -186,8 +211,8 @@ var settingPresenter = Vue.component('setting-presenter', {
                                         </h5>
                                         <p class="text-muted mt-2 mb-0">Natural Language is accessible via our REST API.</p>
                                         <div class="from-search pr-0">
-                                            <input type="text" placeholder="Sentence, To Be Analyze" class="form-control-plaintext p-0 mt-4 setting-input">
-                                            <button class="btn btn-link btn-edit"><i class="fe fe-box"></i> <small><strong>GO</strong></small></button>
+                                            <input type="text" v-model="keyword_input" placeholder="Sentence, To Be Analyze" class="form-control-plaintext p-0 mt-4 setting-input" >
+                                            <button class="btn btn-link btn-edit" @click="onSendNlpKeyword()" ><i class="fe fe-box"></i> <small><strong>GO</strong></small></button>
                                         </div>
                                         <div class="warpper mt-4">
                                             <div class="card setting-warpper">
@@ -222,25 +247,77 @@ var settingPresenter = Vue.component('setting-presenter', {
     `,
     data: function () {
         return {
-            keyword_input: "",  
+            keyword_input: "",
             chat_logs: [],
+            is_edit : {
+                confidence : false,
+                app_info : false
+            },
+            confidence: 0,
+            app_info : {}
         }
     },
     mounted: function () {
+
         this.$webChatService.getFillChatNlpReplyModelWS().subscribe( item => {
             console.log(item)
-            this.chat_logs.push( new GetNlpChatLogsAdapter().adapt(item))
+            this.chat_logs.push( new GetNlpChatLogsAdapter().adapt(item) )
         })
+
+        this.$settingService.getNlpConfidenceByClientId().subscribe(item => {
+            this.confidence = item.confidence
+        })
+
+        this.$settingService.getAppInfoByClientId().subscribe(item => {
+            this.app_info = item
+        })
+
+        this.$settingService.setNlpConfidenceByClientID().subscribe()
+        this.$settingService.setAppInfoByClientId().subscribe()
+        // this.$settingService.editAppInfo().subscribe()
+
         this.getCurrentTime()
+        
     },
     beforeDestroy: function () {
         this.$webChatService.disposable()
     },
     methods: {
+        
+        onSaveConfidence: function () {
+            this.$settingService.nextNlpConfidenceByClientId()
+            this.is_edit.confidence = false
+        },
+
+        onEditConfidence: function () {
+            this.is_edit.confidence = true
+        },
+
+        onAdjustConfidence: function (adjust) {
+            let newAdjust = this.confidence + parseInt(adjust)
+            if (newAdjust > 0 && newAdjust < 99){
+                this.confidence = newAdjust
+            }
+        },
+
+        onSaveAppInfo: function () {
+            this.$settingService.nextAppInfoByClientId(this.app_info)
+            this.is_edit.app_info = false
+        },
+
+        onEditAppInfo: function () {
+            
+            let toggleDelay = of({}).pipe(delay(200))
+            toggleDelay.subscribe(() => this.$refs.info.focus())
+
+            this.is_edit.app_info = true
+        },
+
         onSendNlpKeyword: function () {
             this.$webChatService.nextNlpKeyword(this.keyword_input)
             this.keyword_input = ""
         },
+
         getCurrentTime: function() {
             var d = new Date()
             return d.toISOString()

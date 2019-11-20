@@ -144,4 +144,22 @@ class HttpRepository {
         )
     }
 
+    getNlpConfidenceByClientID = () => of({ confidence: Math.floor(Math.random() * 90 + 10) }).pipe(
+        delay(600)
+    )
+
+    getAppInfoByClientId = () => of({
+        id: "632861333807100",
+        status : 1,
+        name: "Inccommon Studio",
+        owner: "Chanasit.B",
+        plan: "unlimited"
+    }).pipe(
+        delay(600)
+    )
+
+    setAppInfoByClientId = (app_info) => of({}).pipe(
+        delay(600)
+    )
+
 }
