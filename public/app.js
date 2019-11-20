@@ -98,15 +98,21 @@ const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, coo
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 const settingService = new SettingService(httpRepo, vueErrorHandler)
 
+const authPresenter = new AuthenticationPresenter(authService)
+const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)
+
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
-    install (Vue, options = {}) {   
-        Vue.prototype.$authService = authService
+    install (Vue, options = {}) {
+        Vue.prototype.$authPresenter = authPresenter
+        Vue.prototype.$welcomePresenter = welcomePresenter
+
+        // Vue.prototype.$authService = authService
+        // Vue.prototype.$nlpReplyCounterService = nlpReplyCounterService
         Vue.prototype.$storyService = storyService
         Vue.prototype.$webChatService = webChatService,
         Vue.prototype.$nlpRecordsService = nlpRecordsService
         Vue.prototype.$nlpTrainingLogService = nlpTrainingLogService
-        Vue.prototype.$nlpReplyCounterService = nlpReplyCounterService
         Vue.prototype.$settingService = settingService
     }
 })

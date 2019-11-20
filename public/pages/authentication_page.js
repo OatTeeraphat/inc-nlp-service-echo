@@ -5,25 +5,23 @@ var mainPage = Vue.component('main-page', {
             <div class="row justify-content-center login-logo">
                 <img class="visible" src="assets/logo-white.png" alt="">
             </div>
-            <form @submit.prevent="signIn" class="form-signin">
+            <form @submit.prevent="$authPresenter.clientSignIn()" class="form-signin">
                 
-                <div class="linear-activity" v-bind:class="{ invisible: isNotSignInLoading }">
+                <div class="linear-activity" v-bind:class="{ invisible: $authPresenter.view.isNotSignInLoading }">
                     <div class="indeterminate"></div>
                 </div>
                 <div class="text-center mb-4">
                     <h1 class="h5 mb-3 font-weight-normal">Log in to your account</h1>
                     <p></p>
                 </div>
-
-                <label class="invalid-feedback">{{ this.flashMessage }}</label>
-                <div class="form-label-group">
-                    
-                    <input v-model="username" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                
+                <div class="form-label-group">                    
+                    <input v-model="$authPresenter.view.username" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                     <label for="inputEmail">Email address</label>
                 </div>
 
                 <div class="form-label-group">
-                    <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    <input v-model="$authPresenter.view.password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                     <label for="inputPassword">Password</label>
                 </div>
 
@@ -51,47 +49,15 @@ var mainPage = Vue.component('main-page', {
     </div>
     `,
     data: function () {
-        return {
-            isNotSignInLoading: true,
-            flashMessage: "",
-            username: "",
-            password: "",
-            rememberMe: false,
-        }
-    },
-    created: function() {
-        console.log("created")
-        // this.toggleBodyClass('addClass', 'bg-purple')
-    },
-    methods: {
-        toggleBodyClass(addRemoveClass, className) {
-            const el = document.body;
-
-            if (addRemoveClass === 'addClass') {
-                el.classList.add(className);
-            } else {
-                el.classList.remove(className);
-            }
-        },
-        signIn() {
-            this.isNotSignInLoading = false
-            this.$authService.signIn(this.username, this.password, this.rememberMe).subscribe(
-                it => {
-                    this.isNotSignInLoading = true
-                },
-                error => {
-                    this.flashMessage = error
-                    this.isNotSignInLoading = true
-                }
-            )
-        }
+        return this.$authPresenter.view
     },
     mounted() {
+        console.log(this.$authPresenter.view)
         console.log("mounted")
-        this.toggleBodyClass('addClass', 'bg-purple')
+        this.$authPresenter.toggleBackGround('addClass', 'bg-purple')
     },
     beforeDestroy() {
         console.log("beforeDestroy")
-        this.toggleBodyClass('removeClass', 'bg-purple')
+        this.$authPresenter.toggleBackGround('removeClass', 'bg-purple')
     }
 })

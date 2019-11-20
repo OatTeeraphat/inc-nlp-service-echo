@@ -11,7 +11,7 @@ var navPresenter = Vue.component('nav-component', {
 				<div class="dropdown-menu dropdown-menu-right animated faster bounceIn">
 					<router-link class="dropdown-item" href="#" :to="{ path: '/setting'}">SETTING</router-link>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" @click="signOut">SIGN OUT</a>
+					<a class="dropdown-item" @click="$authPresenter.clientSignOut()">SIGN OUT</a>
 				</div>
 			</div>
 		</nav>
@@ -28,9 +28,4 @@ var navPresenter = Vue.component('nav-component', {
 
 	</div>
     `,
-	methods: {
-		signOut: function () {
-			this.$authService.signOut()
-		} 
-	},
 })
