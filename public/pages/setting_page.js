@@ -1,4 +1,4 @@
-var settingPresenter = Vue.component('setting-presenter', {    
+var settingPage = Vue.component('setting-page', {    
     template: `
 	<div class="warp">
 		<nav-component></nav-component>

@@ -1,4 +1,4 @@
-var mainPresenter = Vue.component('main-presenter', {    
+var mainPage = Vue.component('main-page', {    
     template: `
     <div class="login-warp">
         <div class="justify-content-center">

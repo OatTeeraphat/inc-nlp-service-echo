@@ -1,4 +1,4 @@
-var welcomePresenter = Vue.component('welcome-presenter', {
+var welcomePage = Vue.component('welcome-page', {
     template: `
     <div class="container">
 

@@ -1,4 +1,4 @@
-var logsPresenter = Vue.component('logs-presenter', {    
+var logsPage = Vue.component('logs-page', {    
     template: `
 	<div class="warp">
 		<nav-component></nav-component>

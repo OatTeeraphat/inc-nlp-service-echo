@@ -1,4 +1,4 @@
-var nlpRecordsPresenter = Vue.component('nlp-presenter', {    
+var nlpRecordsPage = Vue.component('nlp-record-page', {    
     template: `
     <div class="warp" >
         <nav-component></nav-component>

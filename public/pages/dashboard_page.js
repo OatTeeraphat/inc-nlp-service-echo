@@ -1,4 +1,4 @@
-var dashboardPresenter = Vue.component('dashboard-presenter', {
+var dashboardPage = Vue.component('dashboard-page', {
 	template: `
 	<div class="warp">
 		<nav-component></nav-component>

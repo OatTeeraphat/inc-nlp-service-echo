@@ -1,4 +1,4 @@
-var webChatPresenter = Vue.component('web-chat-presenter', {    
+var webChatPage = Vue.component('web-chat-page', {    
     template: `
 	<div class="warp">
 		<nav-component></nav-component>

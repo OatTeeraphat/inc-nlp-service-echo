@@ -32,16 +32,16 @@ class AuthGuard {
 const authGuard = new AuthGuard(cookieRepo)
 
 const routes = [
-    { path: '/', name: 'auth',  component: mainPresenter, beforeEnter: authGuard.ifNotAuthenticated },
-    { path: '/login', name: 'login',  component: mainPresenter, beforeEnter: authGuard.ifNotAuthenticated },
-    { path: '/welcome', name: 'welcome',  component: welcomePresenter },
-    { path: '/dashboard', name: 'dashboard', component: dashboardPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/nlp', name: 'nlp', component: nlpRecordsPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/logs', name: 'logs', component: nlpLogPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/story', name: 'story', component: storyPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/webchat', name: 'webchat', component: webChatPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/setting', name: 'setting', component: settingPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/logging', name: 'logging', component: logsPresenter, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/', name: 'auth',  component: mainPage, beforeEnter: authGuard.ifNotAuthenticated },
+    { path: '/login', name: 'login',  component: mainPage, beforeEnter: authGuard.ifNotAuthenticated },
+    { path: '/welcome', name: 'welcome',  component: welcomePage },
+    { path: '/dashboard', name: 'dashboard', component: dashboardPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/nlp', name: 'nlp', component: nlpRecordsPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/logs', name: 'logs', component: nlpTrainingLogPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/story', name: 'story', component: storyPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/webchat', name: 'webchat', component: webChatPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/setting', name: 'setting', component: settingPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/logging', name: 'logging', component: logsPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
 ]
 
 // vue Router
