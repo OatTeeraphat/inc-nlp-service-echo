@@ -52,12 +52,9 @@ var mainPage = Vue.component('main-page', {
         return this.$authPresenter.view
     },
     mounted() {
-        console.log(this.$authPresenter.view)
-        console.log("mounted")
         this.$authPresenter.toggleBackGround('addClass', 'bg-purple')
     },
     beforeDestroy() {
-        console.log("beforeDestroy")
         this.$authPresenter.toggleBackGround('removeClass', 'bg-purple')
     }
 })

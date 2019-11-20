@@ -98,14 +98,17 @@ const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, coo
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 const settingService = new SettingService(httpRepo, vueErrorHandler)
 
+
 const authPresenter = new AuthenticationPresenter(authService)
 const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)
+const storyPresenter = new StoryPresenter(storyService)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
     install (Vue, options = {}) {
         Vue.prototype.$authPresenter = authPresenter
         Vue.prototype.$welcomePresenter = welcomePresenter
+        Vue.prototype.$storyPresenter = storyPresenter
 
         // Vue.prototype.$authService = authService
         // Vue.prototype.$nlpReplyCounterService = nlpReplyCounterService
