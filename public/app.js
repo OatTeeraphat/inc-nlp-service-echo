@@ -119,7 +119,7 @@ Vue.use({
         Vue.prototype.$nlpTrainingLogPresenter = nlpTrainingLogPresenter
         Vue.prototype.$nlpRecordPresenter = nlpRecordPresenter
 
-        // TODO: 
+        // TODO:  inject presenter instead of service
         Vue.prototype.$webChatService = webChatService,
         Vue.prototype.$settingService = settingService
     }
