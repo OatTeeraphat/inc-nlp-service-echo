@@ -25,10 +25,10 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
                                     Bulk Action
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button @click="selectAllNlpTrainingLog" class="dropdown-item">Select All</button>
-                                    <button @click="deselectAllNlpTrainingLog" class="dropdown-item">Deselect All</button>
+                                    <button @click="$nlpTrainingLogPresenter.selectAllNlpTrainingLog()" class="dropdown-item">Select All</button>
+                                    <button @click="$nlpTrainingLogPresenter.deselectAllNlpTrainingLog()" class="dropdown-item">Deselect All</button>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-danger" href="#">Delete All</a>
+                                    <button @click="$nlpTrainingLogPresenter.bulkDeleteNlpTrainingLog()" class="dropdown-item text-danger">Delete All</button>
                                 </div>
                             </div>
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -62,9 +62,9 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in nlpLogs">
+                            <tr v-for="item in $nlpTrainingLogPresenter.view.nlpLogs">
                                 <th scope="row" class="col-1">
-                                    <input :value="item.id" v-model="nlpLogsCheckedList.ids" type="checkbox">
+                                    <input :value="item.id" v-model="$nlpTrainingLogPresenter.view.nlpLogsCheckedList.ids" type="checkbox">
                                 </th>
                                 <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" readonly v-model="item.keyword"></td>
                                 <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
@@ -74,8 +74,8 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
                                     <button type="button" class="btn btn-link btn-table hover-success" title="Cancle">
                                         <i class="fe fe-plus-circle"></i>
                                     </button>
-                                    <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
-                                        <i class="fe fe-delete"></i>
+                                    <button @click="$nlpTrainingLogPresenter.deleteNlpTrainingLogByID(item.id)" type="button"class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
+                                    <i class="fe fe-delete"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -87,47 +87,12 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
     </div>
     `,
     data: function () {
-        return {
-            isShowLoadingIndicator: false,
-            page: 1,
-            limit: 1,
-            total: 1,
-            nlpLogs: [],
-            nlpLogsCheckedList: { ids: [] },
-        }
+        return this.$nlpTrainingLogPresenter.view
     },
     mounted: function () {
-        this.subscription = this.$nlpTrainingLogService.getNlpTrainingLogPaginationByInfiniteScrollSubject().subscribe( it => {
-            this.page = it.page
-            this.total = it.total
-            this.limit = it.limit
-            this.nlpLogs.push(...it.nlp_logs)
-        })
-        this.$nlpTrainingLogService.nextNlpTrainingLogPaginationPage(1)
+        this.$nlpTrainingLogPresenter.getInitialState()
     },
     beforeDestroy: function () {
-        this.subscription.unsubscribe()
-    },
-    methods: {
-        selectAllNlpTrainingLog: function(event) {
-            this.nlpLogsCheckedList.ids = []
-            this.nlpLogs.forEach( select => { this.nlpLogsCheckedList.ids.push(select.id) })
-        },
-        deselectAllNlpTrainingLog: function(event) {
-            this.nlpLogsCheckedList.ids = []
-        },
-        bulkDeleteNlpTrainingLog: function(event) {
-            // bulk delete
-            // this.$nlpRecordsService.bulkDeleteNlpRecordsByIDs(this.nlpRecordsCheckedList.ids).subscribe( () => {
-            //     this.nlpRecords = this.nlpRecords.filter( item => !this.nlpRecordsCheckedList.ids.includes(item.id) )
-            //     console.log(this.nlpRecordsCheckedList)
-            //     this.nlpRecordsCheckedList.ids = []
-            // })
-            // next page event
-            // this.$nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.page)
-        },
-        deleteNlpTrainingLogByID: function (id) {
-            // this.$nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  this.nlpRecords = this.nlpRecords.filter( item => item.id !== id) )
-        },
-    },
+        this.$nlpTrainingLogPresenter.disposal()
+    }
 })

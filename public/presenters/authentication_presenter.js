@@ -11,7 +11,6 @@ class AuthenticationPresenter {
 
     clientSignIn() {
         this.view.isNotSignInLoading = false
-
         return this.authenticationService
             .signIn(this.view.username, this.view.password, this.view.rememberMe)
             .subscribe(

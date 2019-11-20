@@ -22,6 +22,7 @@ class StoryPresenter {
     }
 
     deleteStoryByID (id) {
+        console.log(id)
         return this.storyService.deleteStoryByID(id).subscribe( () =>  {
             this.view.stories = this.view.stories.filter( item => item.id !== id ) 
         })
@@ -29,5 +30,9 @@ class StoryPresenter {
 
     disposal() {
         this.storyService.disposable()
+        this.view = {
+            stories: [],
+            intents: []
+        }
     }
 }

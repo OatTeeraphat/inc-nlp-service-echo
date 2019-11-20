@@ -87,6 +87,8 @@ class VueErrorHandler {
     })
     
 }
+
+// error handle initialize
 const vueErrorHandler = new VueErrorHandler(cookieRepo, vueRouter)
 
 // service initialize
@@ -99,16 +101,20 @@ const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHand
 const settingService = new SettingService(httpRepo, vueErrorHandler)
 
 
+// presenter initialize
 const authPresenter = new AuthenticationPresenter(authService)
 const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)
 const storyPresenter = new StoryPresenter(storyService)
+const nlpTrainingLogPresenter = new NlpTrainingLogPresenter(nlpTrainingLogService)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
     install (Vue, options = {}) {
+
         Vue.prototype.$authPresenter = authPresenter
         Vue.prototype.$welcomePresenter = welcomePresenter
         Vue.prototype.$storyPresenter = storyPresenter
+        Vue.prototype.$nlpTrainingLogPresenter = nlpTrainingLogPresenter
 
         // Vue.prototype.$authService = authService
         // Vue.prototype.$nlpReplyCounterService = nlpReplyCounterService

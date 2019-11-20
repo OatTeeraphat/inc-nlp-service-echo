@@ -28,7 +28,6 @@ class NlpTrainingLogService {
     }
 
     bulkDeleteNlpTrainingLogsByIDs = (ids) => {
-        
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
             takeUntil(this.unsubscribe),
             switchMap( SWAL_CONFIRM => {
@@ -71,8 +70,10 @@ class NlpTrainingLogService {
         this.infiniteHandler$$.next({ page: pageID })
     }
     
-
     disposable = () => {
+        // this.infiniteHandler$$.next()
+        // this.infiniteHandler$$.complete()
+        
         this.unsubscribe.next()
         this.unsubscribe.complete()
     }
