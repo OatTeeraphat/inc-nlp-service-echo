@@ -1,10 +1,14 @@
+class WelcomeViewModel {
+    constructor() {
+        this.isFlip = false
+        this.type = "BY_FILL_FEEL"
+        this.initialNlpCounter = 0
+    }
+}
+
 class WelcomePresenter {
     constructor(nlpReplyCounterService) {
-        this.view = {
-            isFlip: false,
-            type: "BY_FILL_FEEL",
-            initialNlpCounter: 0,
-        }
+        this.view = new WelcomeViewModel()
         this.nlpReplyCounterService = nlpReplyCounterService
     }
 

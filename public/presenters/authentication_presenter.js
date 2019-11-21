@@ -1,11 +1,15 @@
+class AuthenticationViewModel {
+    constructor() {
+        this.isNotSignInLoading =  true
+        this.username =  "admin@incommonstudio.com"
+        this.password =  "inc12490!"
+        this.rememberMe =  false
+    }
+}
+
 class AuthenticationPresenter {
     constructor(authenticationService) {
-        this.view = {
-            isNotSignInLoading: true,
-            username: "admin@incommonstudio.com",
-            password: "inc12490!",
-            rememberMe: false,
-        }
+        this.view = new AuthenticationViewModel()
         this.authenticationService = authenticationService
     }
 
@@ -14,8 +18,8 @@ class AuthenticationPresenter {
         return this.authenticationService
             .signIn(this.view.username, this.view.password, this.view.rememberMe)
             .subscribe(
-                next => { this.view.isNotSignInLoading = true },
-                error => { this.view.isNotSignInLoading = true },
+                () => { this.view.isNotSignInLoading = true },
+                () => { this.view.isNotSignInLoading = true },
                 () => { console.info("complete login") }
             )
     }

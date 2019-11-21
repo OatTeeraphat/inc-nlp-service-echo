@@ -1,17 +1,21 @@
+class StoryViewModel {
+    constructor() {
+        this.stories = []
+        this.intents = [
+            { id: 1, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
+            { id: 2, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
+            { id: 3, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
+            { id: 4, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
+            { id: 5, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
+            { id: 6, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
+            { id: 7, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' }
+        ]
+    }
+}
+
 class StoryPresenter {
     constructor(storyService) {
-        this.view = {
-            stories: [],
-            intents: [
-                { id: 1, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 2, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 3, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 4, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 5, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 6, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-                { id: 7, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' }
-            ]
-        }
+        this.view = new StoryViewModel()
         this.storyService = storyService
     }
 

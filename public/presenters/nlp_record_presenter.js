@@ -1,23 +1,25 @@
+class NlpRecordViewModel {
+    constructor(){
+        // default value
+        this.isShowLoadingIndicator = false
+        this.page = 1
+        this.limit = 1
+        this.total = 1
+        this.nlpRecords = []
+        this.nlpRecordsCheckedList = { ids: [] }
+        this.searchKeyword = ""
+        this.searchPage = 1
+        this.searchLimit = 1
+        this.searchTotal = 1
+        this.nlpRecordsByKeyword = []
+        this.nlpRecordsByKeywordCheckedList = { ids: [] }
+        this.searchRecently = {}
+    }
+}
+
 class NlpRecordPresenter {
     constructor(nlpRecordsService) {
-        this.view = {
-            isShowLoadingIndicator: false,
-
-            page: 1,
-            limit: 1,
-            total: 1,
-            nlpRecords: [],
-            nlpRecordsCheckedList: { ids: [] },
-            
-            searchKeyword: "",
-            searchPage: 1,
-            searchLimit: 1,
-            searchTotal: 1,
-            nlpRecordsByKeyword: [],
-            nlpRecordsByKeywordCheckedList: { ids: [] },
-
-            searchRecently: {}
-        }
+        this.view = new NlpRecordViewModel()
         this.nlpRecordsService = nlpRecordsService
         this.searchNlpRecordsServiceSubscription = null
         this.getNlpRecordsByInfiniteScrollSubscription = null
