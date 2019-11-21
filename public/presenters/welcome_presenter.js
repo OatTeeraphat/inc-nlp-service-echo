@@ -13,16 +13,12 @@ class WelcomePresenter {
     }
 
     getInitialState() {
-        return this.nlpReplyCounterService.getNlpReplyCounter().subscribe( it => {
+        this.nlpReplyCounterService.getNlpReplyCounter().subscribe( it => {
             this.view.initialNlpCounter = this.view.initialNlpCounter + it.reply_count 
         })
     }
 
     nlpCounterDigitSpliter() { 
         return (""+ this.view.initialNlpCounter ).split("") 
-    }
-
-    disposal() { 
-        this.nlpReplyCounterService.disposable() 
     }
 }

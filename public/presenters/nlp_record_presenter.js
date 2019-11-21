@@ -21,12 +21,12 @@ class NlpRecordPresenter {
     constructor(nlpRecordsService) {
         this.view = new NlpRecordViewModel()
         this.nlpRecordsService = nlpRecordsService
-        this.searchNlpRecordsServiceSubscription = null
-        this.getNlpRecordsByInfiniteScrollSubscription = null
+        this.$searchNlpRecordsServiceSubscription = null
+        this.$getNlpRecordsByInfiniteScrollSubscription = null
     }
 
     getInitialState() {
-        this.getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
+        this.$getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             this.view.page = this.view.page + 1
             this.view.total = item.total
             this.view.limit = item.limit
@@ -37,7 +37,7 @@ class NlpRecordPresenter {
             console.error(error)
             this.view.isShowLoadingIndicator = false
         })
-        this.searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {
+        this.$searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {
             this.view.nlpRecordsByKeyword.push(...it.nlp_records)
         })
     }
@@ -97,8 +97,8 @@ class NlpRecordPresenter {
 
     disposal() {
 
-        this.searchNlpRecordsServiceSubscription.unsubscribe()
-        this.getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
+        this.$searchNlpRecordsServiceSubscription.unsubscribe()
+        this.$getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
 
         // set page index to 1
         this.view.page = 1

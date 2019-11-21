@@ -1,4 +1,4 @@
-(async () => console.log("#########") )()
+(async () => console.log(`######### FillChat #########`) )()
 // repositories initialize
 const cookieRepo = new CookieRepository(Cookies)
 const httpRepo = new HttpRepository(cookieRepo)

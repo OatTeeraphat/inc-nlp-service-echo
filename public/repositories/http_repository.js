@@ -9,7 +9,7 @@ class HttpRepository {
     }
     
     // END_POINT: /v1/login
-    signIn(username, password) {
+    clientSignIn(username, password) {
         return ajax({
             method: "POST",
             url: `${getHttpHost()}/v1/login`,

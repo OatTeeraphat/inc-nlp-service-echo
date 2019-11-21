@@ -1,3 +1,11 @@
+class ClientSignInRequest {
+    constructor(username, password, rememberMe) {
+        this.username = username
+        this.password = password
+        this.rememberMe = rememberMe
+    }
+}
+
 // authentication service
 class AuthenticationService {
 
@@ -6,11 +14,12 @@ class AuthenticationService {
         this.cookieRepository = cookieRepository
         this.vueRouter = vueRouter
         this.vueErrorHandler = vueErrorHandler
+        
+        this.clientSignInSubject = new Subject()
     }
 
-    // ล้อกอินจ้า
-    signIn = (username, password, rememberMe) => {
-        return of({ username, password }).pipe(
+    clientSignInObservable() {
+        return this.clientSignInSubject.pipe(
             debounceTime(300),
             switchMap(
                 it => {
@@ -18,12 +27,14 @@ class AuthenticationService {
                     
                     if (this.isNotEmail(it.username)) return throwError("email invalid format")
 
-                    return this.httpRepository.signIn(it.username, it.password).pipe(
+                    return this.httpRepository.clientSignIn(it.username, it.password).pipe(
                         map( ({ response }) => {
+
+                            // console.log(response)
 
                             let model = new GetClientSignInAdapter().adapt(response)
 
-                            if (rememberMe) {
+                            if (it.rememberMe) {
                                 this.cookieRepository.setClientSession(model.access_token, model.expired_date)
                             } else {
                                 this.cookieRepository.setClientSession(model.access_token)
@@ -38,8 +49,9 @@ class AuthenticationService {
         )
     }
 
-    isAuthentication = () => {
-        return this.cookieRepository.getClientSession() !== undefined
+    // ล้อกอินจ้า
+    newClientSignInEvent(username, password, rememberMe) {
+        return this.clientSignInSubject.next( new ClientSignInRequest(username, password, rememberMe) )
     }
 
     // เช็ค email format
@@ -53,10 +65,8 @@ class AuthenticationService {
         return username == "" || password == ""
     }
 
-    signOut = () => {
-
+    clientSignOut = () => {
         this.cookieRepository.removeClientSession()
-
         return this.vueRouter.replace("/")
     }
     

@@ -3,7 +3,7 @@ class AuthenticationViewModel {
         this.isNotSignInLoading =  true
         this.username =  "admin@incommonstudio.com"
         this.password =  "inc12490!"
-        this.rememberMe =  false
+        this.rememberMe =  true
     }
 }
 
@@ -11,12 +11,12 @@ class AuthenticationPresenter {
     constructor(authenticationService) {
         this.view = new AuthenticationViewModel()
         this.authenticationService = authenticationService
+        this.$clientSignInSubscription = null
     }
 
-    clientSignIn() {
-        this.view.isNotSignInLoading = false
-        return this.authenticationService
-            .signIn(this.view.username, this.view.password, this.view.rememberMe)
+    getInitialState() {
+        this.$clientSignInSubscription = this.authenticationService
+            .clientSignInObservable()
             .subscribe(
                 () => { this.view.isNotSignInLoading = true },
                 () => { this.view.isNotSignInLoading = true },
@@ -24,8 +24,17 @@ class AuthenticationPresenter {
             )
     }
 
+    clientSignIn() {
+        this.view.isNotSignInLoading = false
+        this.authenticationService.newClientSignInEvent(
+            this.view.username, 
+            this.view.password, 
+            this.view.rememberMe
+        )
+    }
+
     clientSignOut() {
-        this.authenticationService.signOut()
+        this.authenticationService.clientSignOut()
     }
 
     toggleBackGround(addRemoveClass, className) {
@@ -36,5 +45,9 @@ class AuthenticationPresenter {
         } else {
             el.classList.remove(className);
         }
+    }
+
+    disposal() {
+        this.$clientSignInSubscription.unsubscribe()
     }
 }

@@ -14,12 +14,12 @@ class NlpTrainingLogPresenter {
         this.view = new NlpTrainingLogViewModel()
         this.nlpTrainingLogService = nlpTrainingLogService
         
-        this.nlpTrainingLogInfiniteScrollSubscription = null
+        this.$nlpTrainingLogInfiniteScrollSubscription = null
     }
 
     // getInitialInstance
     getInitialState(){
-        this.nlpTrainingLogInfiniteScrollSubscription = this.nlpTrainingLogService.getNlpTrainingLogPaginationByInfiniteScrollSubject().subscribe( it => {
+        this.$nlpTrainingLogInfiniteScrollSubscription = this.nlpTrainingLogService.getNlpTrainingLogPaginationByInfiniteScrollSubject().subscribe( it => {
             this.view.page = it.page
             this.view.total = it.total
             this.view.limit = it.limit
@@ -51,9 +51,8 @@ class NlpTrainingLogPresenter {
 
     disposal() {
         // this.nlpTrainingLogService.disposable()
-        this.nlpTrainingLogInfiniteScrollSubscription.unsubscribe()
-        this.view.nlpLogs = [],
-        this.view.nlpLogsCheckedList = { ids: [] }
+        this.$nlpTrainingLogInfiniteScrollSubscription.unsubscribe()
+        this.view = new NlpTrainingLogViewModel()
     }
     
 }
