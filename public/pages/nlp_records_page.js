@@ -41,7 +41,7 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                         <strong>Upload Training Set</strong>
                                         <div class="custom-file mt-2 mb-1">
                                             <label class="custom-file-label" for="customFile">Choose file</label>
-                                            <input type="file" class="custom-file-input" id="customFile">
+                                            <input class="custom-file-input" type="file" id="file" ref="file" v-on:change="handleFileUpload()">
                                         </div>
                                         <small class="text-muted">XLSX file max size 20 mb</small>
                                     </div>
@@ -172,7 +172,10 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
     </div>
     `,
     data: function () {
-        return this.$nlpRecordPresenter.view
+        return {
+            view: this.$nlpRecordPresenter.view,
+            file: null
+        }
     },
     mounted: function () {
         this.$nlpRecordPresenter.getInitialState()
@@ -183,4 +186,33 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
     beforeDestroy: function () {
         this.$nlpRecordPresenter.disposal()
     },
+    methods: {
+        handleFileUpload: function() {
+            this.file = this.$refs.file.files[0];
+            console.log(this.file)
+            console.log(this.file.type)
+
+            if ( this.file.type !== 'text/javascript' ) {
+                console.error("not xlsx")
+            }
+            
+            let formData = new FormData();
+
+            formData.append('xlsx', this.file);
+
+            console.log(formData)
+
+            ajax({
+                formData,
+                method: "POST",
+                url: "http://localhost:9000/v1/nlp/record/upload.xlsx",
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNTc0NTQyNjc2LCJuYW1lIjoiSm9uIFNub3cifQ.Xtg1ZBTOWXpO0G3idf8dC7Nnyuhr8loih9WfTCZJPdk'
+                }
+            }).subscribe(
+                it => { console.log(it) }
+            )
+        }
+    }
 })
