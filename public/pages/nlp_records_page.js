@@ -186,28 +186,29 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
     beforeDestroy: function () {
         this.$nlpRecordPresenter.disposal()
     },
-    methods: {
+    methods: {  
         handleFileUpload: function() {
+            console.log("###### handleFileUpload #####")
             this.file = this.$refs.file.files[0];
             console.log(this.file)
             console.log(this.file.type)
 
-            if ( this.file.type !== 'text/javascript' ) {
+            if ( this.file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ) {
                 console.error("not xlsx")
+                return
             }
-            
-            let formData = new FormData();
+            console.log(this.file.name)
 
-            formData.append('xlsx', this.file);
+            let formData = new FormData()
 
-            console.log(formData)
+            formData.append('xlsx', new Blob([this.file], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })  );
 
-            ajax({
-                formData,
+            return ajax({
+                body: formData,
                 method: "POST",
                 url: "http://localhost:9000/v1/nlp/record/upload.xlsx",
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': `multipart/form-data`,
                     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNTc0NTQyNjc2LCJuYW1lIjoiSm9uIFNub3cifQ.Xtg1ZBTOWXpO0G3idf8dC7Nnyuhr8loih9WfTCZJPdk'
                 }
             }).subscribe(

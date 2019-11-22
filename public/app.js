@@ -101,7 +101,6 @@ const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, coo
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 const settingService = new SettingService(httpRepo, vueErrorHandler)
 
-
 // presenter initialize
 const authPresenter = new AuthenticationPresenter(authService)
 const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)

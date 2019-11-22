@@ -8,7 +8,6 @@ import (
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/labstack/echo/v4"
-	log "github.com/sirupsen/logrus"
 )
 
 // NlpController nlp rest api controller
@@ -96,7 +95,6 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 	// shopID := e.QueryParam("shop_id")
 	// sheetName := e.QueryParam("sheet_name")
 	file, _, _ := e.Request().FormFile("xlsx")
-	log.Info(file)
 	result, _ := excelize.OpenReader(file)
 	sheetMap := result.GetSheetMap()
 	sheetName := sheetMap[1]

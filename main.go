@@ -8,6 +8,7 @@ import (
 	"inc-nlp-service-echo/security"
 	"inc-nlp-service-echo/services"
 	"inc-nlp-service-echo/websockets"
+	"net/http"
 	"os"
 
 	// docs folder to server swagger
@@ -38,11 +39,11 @@ func main() {
 	common0 := commons.NewFillChatSelectENV()
 	common1 := commons.NewFillChatMiddleware()
 
-	if common0.Env != "development" {
-		log.SetFormatter(&log.JSONFormatter{})
-	} else {
-		log.SetFormatter(&log.TextFormatter{})
-	}
+	// if common0.Env != "development" {
+	// 	log.SetFormatter(&log.JSONFormatter{})
+	// } else {
+	log.SetFormatter(&log.TextFormatter{})
+	// }
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
 
@@ -88,6 +89,10 @@ func main() {
 	c5 := controllers.NewShopController(svc3)
 	c6 := controllers.NewNlpTrainingLogController(svc4)
 	c7 := controllers.NewClientAuthController(secure0)
+
+	e.GET("/health_check", func(c echo.Context) error {
+		return c.String(http.StatusOK, "OK")
+	})
 
 	// ################# Static 🕸 #################
 	e.Static("/", "public")
