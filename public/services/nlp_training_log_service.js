@@ -59,7 +59,6 @@ class NlpTrainingLogService {
             }),
             map( it => {
                 swal('resolve', {icon: "success", timer: this.duration}) 
-
                 return of(it)
             }),
             this.vueErrorHandler.catchError()
