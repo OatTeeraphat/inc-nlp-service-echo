@@ -103,10 +103,14 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 	log.Debug("########################## XLSX file DEBUG ##########################", file)
 
 	if err != nil {
-		return e.String(http.StatusBadRequest, "INVALID")
+		log.Error(err)
+		// return e.String(http.StatusBadRequest, "INVALID")
 	}
 
 	result, _ := excelize.OpenReader(file)
+
+	log.Debug(result)
+
 	sheetMap := result.GetSheetMap()
 	sheetName := sheetMap[1]
 	xlsxSheet := result.GetRows(sheetName)
