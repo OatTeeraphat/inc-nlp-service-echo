@@ -55,7 +55,7 @@ func main() {
 		middleware.Logger(),
 		middleware.Recover(),
 		middleware.RequestID(),
-		middleware.Gzip(),
+		// middleware.Gzip(),
 	)
 
 	// ################# Sync GORM 📦 #################

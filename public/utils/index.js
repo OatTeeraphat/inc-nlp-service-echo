@@ -10,6 +10,7 @@ const {
     takeWhile, 
     takeUntil, 
     map, 
+    merge,
     pipe, 
     take, 
     skip, 
