@@ -1,4 +1,4 @@
-(async () => console.log("#########") )()
+(async () => console.log(`######### FillChat #########`) )()
 // repositories initialize
 const cookieRepo = new CookieRepository(Cookies)
 const httpRepo = new HttpRepository(cookieRepo)
@@ -101,7 +101,6 @@ const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, coo
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 const settingService = new SettingService(httpRepo, vueErrorHandler)
 
-
 // presenter initialize
 const authPresenter = new AuthenticationPresenter(authService)
 const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)
@@ -119,7 +118,7 @@ Vue.use({
         Vue.prototype.$nlpTrainingLogPresenter = nlpTrainingLogPresenter
         Vue.prototype.$nlpRecordPresenter = nlpRecordPresenter
 
-        // TODO: 
+        // TODO:  inject presenter instead of service
         Vue.prototype.$webChatService = webChatService,
         Vue.prototype.$settingService = settingService
     }

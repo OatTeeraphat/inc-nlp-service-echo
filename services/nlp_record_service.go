@@ -95,7 +95,17 @@ func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) str
 		})
 	}
 
-	go svc.nlpRecordRepository.BulkInsertNlpRecords(nlpRecord, 7000)
+	var ret error
+
+	log.Error("before upload")
+
+	go func() {
+		ret = svc.nlpRecordRepository.BulkInsertNlpRecords(nlpRecord, 7000)
+	}()
+
+	if ret != nil {
+		log.Error("error up load nlp record")
+	}
 
 	return "OK"
 }

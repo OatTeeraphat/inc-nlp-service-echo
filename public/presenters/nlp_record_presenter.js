@@ -1,30 +1,32 @@
+class NlpRecordViewModel {
+    constructor(){
+        // default value
+        this.isShowLoadingIndicator = false
+        this.page = 1
+        this.limit = 1
+        this.total = 1
+        this.nlpRecords = []
+        this.nlpRecordsCheckedList = { ids: [] }
+        this.searchKeyword = ""
+        this.searchPage = 1
+        this.searchLimit = 1
+        this.searchTotal = 1
+        this.nlpRecordsByKeyword = []
+        this.nlpRecordsByKeywordCheckedList = { ids: [] }
+        this.searchRecently = {}
+    }
+}
+
 class NlpRecordPresenter {
     constructor(nlpRecordsService) {
-        this.view = {
-            isShowLoadingIndicator: false,
-
-            page: 1,
-            limit: 1,
-            total: 1,
-            nlpRecords: [],
-            nlpRecordsCheckedList: { ids: [] },
-            
-            searchKeyword: "",
-            searchPage: 1,
-            searchLimit: 1,
-            searchTotal: 1,
-            nlpRecordsByKeyword: [],
-            nlpRecordsByKeywordCheckedList: { ids: [] },
-
-            searchRecently: {}
-        }
+        this.view = new NlpRecordViewModel()
         this.nlpRecordsService = nlpRecordsService
-        this.searchNlpRecordsServiceSubscription = null
-        this.getNlpRecordsByInfiniteScrollSubscription = null
+        this.$searchNlpRecordsServiceSubscription = null
+        this.$getNlpRecordsByInfiniteScrollSubscription = null
     }
 
     getInitialState() {
-        this.getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
+        this.$getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             this.view.page = this.view.page + 1
             this.view.total = item.total
             this.view.limit = item.limit
@@ -35,7 +37,7 @@ class NlpRecordPresenter {
             console.error(error)
             this.view.isShowLoadingIndicator = false
         })
-        this.searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {
+        this.$searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {
             this.view.nlpRecordsByKeyword.push(...it.nlp_records)
         })
     }
@@ -95,8 +97,8 @@ class NlpRecordPresenter {
 
     disposal() {
 
-        this.searchNlpRecordsServiceSubscription.unsubscribe()
-        this.getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
+        this.$searchNlpRecordsServiceSubscription.unsubscribe()
+        this.$getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
 
         // set page index to 1
         this.view.page = 1

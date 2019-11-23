@@ -8,6 +8,7 @@ import (
 
 	"github.com/360EntSecGroup-Skylar/excelize"
 	"github.com/labstack/echo/v4"
+	log "github.com/sirupsen/logrus"
 )
 
 // NlpController nlp rest api controller
@@ -94,7 +95,17 @@ func (con *NlpController) ReadPaginationNlpRecordController(e echo.Context) erro
 func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) error {
 	// shopID := e.QueryParam("shop_id")
 	// sheetName := e.QueryParam("sheet_name")
-	file, _, _ := e.Request().FormFile("xlsx")
+
+	log.Debug(e.Request())
+
+	file, _, err := e.Request().FormFile("xlsx")
+
+	log.Debug("########################## XLSX file DEBUG ##########################", file)
+
+	if err != nil {
+		return e.String(http.StatusBadRequest, "INVALID")
+	}
+
 	result, _ := excelize.OpenReader(file)
 	sheetMap := result.GetSheetMap()
 	sheetName := sheetMap[1]

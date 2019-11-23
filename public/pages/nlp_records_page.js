@@ -39,11 +39,13 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                     </button>
                                     <div class="dropdown-menu dropdown-file" aria-labelledby="btnGroupDrop">
                                         <strong>Upload Training Set</strong>
-                                        <div class="custom-file mt-2 mb-1">
+                                        // TODO: ja
+                                        <form enctype="multipart/form-data" class="custom-file mt-2 mb-1">
                                             <label class="custom-file-label" for="customFile">Choose file</label>
-                                            <input type="file" class="custom-file-input" id="customFile">
-                                        </div>
+                                            <input class="custom-file-input" multiple name="xlsx[]" type="file" id="file" ref="file" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length">
+                                        </form>
                                         <small class="text-muted">XLSX file max size 20 mb</small>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="btn-group" role="group">
@@ -172,10 +174,16 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
     </div>
     `,
     data: function () {
-        return this.$nlpRecordPresenter.view
+        return {
+            view: this.$nlpRecordPresenter.view,
+            progressSubscriber: null
+        }
     },
     mounted: function () {
         this.$nlpRecordPresenter.getInitialState()
+
+        this.progressSubscriber = new Subject();
+
     },
     computed: {
         searchNlpRecordByKeywordComputed: function(e) {  return this.$nlpRecordPresenter.searchNlpRecordByKeywordComputed() }
@@ -183,4 +191,57 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
     beforeDestroy: function () {
         this.$nlpRecordPresenter.disposal()
     },
+    methods: {  
+        filesChange: function (fieldName, fileList) {
+            
+            // handle file changes
+            const formData = new FormData();
+
+            console.debug(`fileList.length: ${fileList.length}`)
+
+            if (!fileList.length) return;
+
+            // Array
+            // .from(Array(fileList.length).keys())
+            // .map(x => {
+
+            //     if ( fileList[x].type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ) {
+            //         console.error("not xlsx")
+            //         return
+            //     }
+
+            //     console.log(fileList[x])
+
+            //     formData.append('xlsx', fileList[x]);
+            // });
+
+            
+            // console.log(fileList[0])
+            
+            // const blob = new Blob(fileList[0], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            
+            formData.set('xlsx', { xlsx: fileList[0] });
+
+            
+
+            console.log(formData)
+
+            const request$ = ajax({
+                body: formData,
+                method: "POST",
+                url: "http://localhost:9000/v1/nlp/record/upload.xlsx",
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNTc0NTQyNjc2LCJuYW1lIjoiSm9uIFNub3cifQ.Xtg1ZBTOWXpO0G3idf8dC7Nnyuhr8loih9WfTCZJPdk'
+                },
+                progressSubscriber: this.progressSubscriber
+            })
+
+            this.progressSubscriber.pipe(
+                merge(request$),
+                map( e => ({ percentage: (e.loaded / e.total) * 100 }) )
+            ).subscribe(console.debug);
+
+        }
+    }
 })

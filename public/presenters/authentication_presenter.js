@@ -1,27 +1,40 @@
+class AuthenticationViewModel {
+    constructor() {
+        this.isNotSignInLoading =  true
+        this.username =  "admin@incommonstudio.com"
+        this.password =  "inc12490!"
+        this.rememberMe =  true
+    }
+}
+
 class AuthenticationPresenter {
     constructor(authenticationService) {
-        this.view = {
-            isNotSignInLoading: true,
-            username: "admin@incommonstudio.com",
-            password: "inc12490!",
-            rememberMe: false,
-        }
+        this.view = new AuthenticationViewModel()
         this.authenticationService = authenticationService
+        this.$clientSignInSubscription = null
     }
 
-    clientSignIn() {
-        this.view.isNotSignInLoading = false
-        return this.authenticationService
-            .signIn(this.view.username, this.view.password, this.view.rememberMe)
+    getInitialState() {
+        this.$clientSignInSubscription = this.authenticationService
+            .clientSignInObservable()
             .subscribe(
-                next => { this.view.isNotSignInLoading = true },
-                error => { this.view.isNotSignInLoading = true },
+                () => { this.view.isNotSignInLoading = true },
+                () => { this.view.isNotSignInLoading = true },
                 () => { console.info("complete login") }
             )
     }
 
+    clientSignIn() {
+        this.view.isNotSignInLoading = false
+        this.authenticationService.newClientSignInEvent(
+            this.view.username, 
+            this.view.password, 
+            this.view.rememberMe
+        )
+    }
+
     clientSignOut() {
-        this.authenticationService.signOut()
+        this.authenticationService.clientSignOut()
     }
 
     toggleBackGround(addRemoveClass, className) {
@@ -32,5 +45,9 @@ class AuthenticationPresenter {
         } else {
             el.classList.remove(className);
         }
+    }
+
+    disposal() {
+        this.$clientSignInSubscription.unsubscribe()
     }
 }
