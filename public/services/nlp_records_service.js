@@ -101,22 +101,21 @@ class NlpRecordsService {
     // ######################## NlpRecord XLSX UPLOADER ########################
     uploadXlSXNlpRecordSubject() {
         return this.$NlpRecordXLSXUploadSubject.pipe(
-            merge( ({ formData, progressBarSubscriber }) => {
-                return this.httpRepository.uploadXlSXNlpRecord(formData, progressBarSubscriber)
+            switchMap( ({ formData }) => {
+                return this.httpRepository.uploadXlSXNlpRecord(formData)
             }),
             this.vueErrorHandler.catchError()
         )
     }
 
 
-    nextUploadXLSXNlpRecord(fileList, progressBarSubscriber) {
+    nextUploadXLSXNlpRecord(fileList) {
         console.debug(fileList)
         console.debug(`fileList.length: ${fileList.length}`)
         let newNlpXlsxUpload = new FormData()
         newNlpXlsxUpload.append('xlsx', fileList[0], fileList[0].name);
         return this.$NlpRecordXLSXUploadSubject.next({ 
             formData: newNlpXlsxUpload,
-            progressBarSubscriber: this.progressBarSubscriber
         })
     }
     // ######################## NlpRecord XLSX UPLOADER ########################

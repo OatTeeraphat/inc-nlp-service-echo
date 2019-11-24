@@ -39,12 +39,13 @@ class NlpRecordPresenter {
             console.error(error)
             this.view.isShowLoadingIndicator = false
         })
+
         this.$searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {
             this.view.nlpRecordsByKeyword.push(...it.nlp_records)
         })
 
-        this.$uploadXlSXNlpRecordUnSubscription = this.nlpRecordsService.uploadXlSXNlpRecordSubject().subscribe( ({ originalEvent }) => {
-            console.log("upload percentage, ", originalEvent.loaded / originalEvent.total  * 100 )
+        this.$uploadXlSXNlpRecordUnSubscription = this.nlpRecordsService.uploadXlSXNlpRecordSubject().subscribe( it => {
+            console.log("upload percentage, ", it )
         })
     }
 

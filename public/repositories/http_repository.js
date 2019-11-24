@@ -61,7 +61,7 @@ class HttpRepository {
         })
     }
 
-    uploadXlSXNlpRecord(formData, $progressSubscriber) {
+    uploadXlSXNlpRecord(formData) {
         return ajax({
             method: "POST",
             url: `${this.BASE_API}/v1/nlp/record/upload.xlsx`,
@@ -70,7 +70,6 @@ class HttpRepository {
                 'Authorization': this._getAuthorizedBearer()
             },
             body: formData,
-            progressSubscriber: $progressSubscriber
         })
     }
 
