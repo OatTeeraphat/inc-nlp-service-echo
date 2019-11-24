@@ -54,41 +54,39 @@ class NlpRecordsService {
 
 
     bulkDeleteNlpRecordsByIDs(ids) { 
-        return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
-            switchMap( SWAL_CONFIRM => {
-                console.debug(SWAL_CONFIRM)
+        let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Delete NLP records" }, true)
+        return from( confirmModal).pipe(
+            switchMap( result => {
+                console.debug(result.value)
 
-                if (SWAL_CONFIRM) {
-
+                if (result.value) {
                     return this.httpRepository.bulkDeleteNlpRecordsByIDs(ids).pipe(
                         this.vueErrorHandler.catchHttpError(),
                     )
-                } 
+                }
 
-                const SWAL_CANCEL = false
-
-                return throwError(SWAL_CANCEL)
+                return throwError(false)
             }),
             map( next => {
-                swal("resolve", {icon: "success", timer: this.duration}) 
+                swal2('success', { text: "resolve", title: "Delete NLP records" })
             }),
         )
     }
-    deleteNlpRecordByID(id) {        
-        return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
-            switchMap( yes => {
-                const SWAL_CONFIRM = yes
+    deleteNlpRecordByID(id) {     
+        let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Delete NLP records" }, true)
+        return from( confirmModal ).pipe(
+            switchMap( result => {
 
-                if (SWAL_CONFIRM) {
+                if (result.value) {
                     return this.httpRepository.deleteNlpRecordByID(id).pipe(
                         this.vueErrorHandler.catchHttpError(),
                     )
                 } 
 
-                return throwError("SWAL_CANCEL")
+                return throwError(false)
             }),
             map( it => {
-                swal('resolve', {icon: "success", timer: this.duration}) 
+                swal2('success', { text: "resolve", title: "Delete NLP record" })
                 return of(it)
             })
         )

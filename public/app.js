@@ -6,7 +6,6 @@ const cacheRepo = new CacheStorageRepository()
 const socketRepo = new SocketRepository()
 const localStorageRepo = new LocalStorageRepository()
 
-
 const authGuard = new AuthGuard(cookieRepo)
 
 const routes = [
