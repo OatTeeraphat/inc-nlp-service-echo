@@ -9,9 +9,12 @@ class NlpRecordsService {
         this.cookieRepository = cookieRepository
         this.$infiniteHandler = new BehaviorSubject({ page: 1 })
         this.$searchNlpRecordByKeyword = new Subject()
+        this.$NlpRecordXLSXUploadSubject = new Subject()
+        this.$uploadXLSXNlpRecordProgressBar = new Subject()
         this.unsubscribe = new Subject()
     }
 
+    // #################################### NlpSearchByKeyword Pagination Service ####################################
     getNlpRecordsPaginationByKeyword(keyword, page) {
         return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
             takeUntil(this.unsubscribe),
@@ -24,23 +27,24 @@ class NlpRecordsService {
             }),
         )
     }
-
     searchNlpRecordsPaginationByKeywordSubject() {
-        
         return this.$searchNlpRecordByKeyword.pipe(
             takeUntil(this.unsubscribe),
             throttleTime(300),
             switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
         )
     }
+    // #################################### NlpSearchByKeyword Pagination Service ####################################
 
+
+
+    // ############################ NlpRecord InfiniteScroll Loading Service ############################
     getNlpRecordsPagination(page) {
         return this.httpRepository.getNlpRecordsPagination(page).pipe(
             takeUntil(this.unsubscribe),
             map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
         )
     }
-
     getNlpRecordsByInfiniteScrollSubject() {
         // console.log(this.$infiniteHandler.getValue())
         return this.$infiniteHandler.pipe(
@@ -50,9 +54,15 @@ class NlpRecordsService {
             this.vueErrorHandler.catchError(),
         )
     }
+    nextPageNlpRecordsByInfiniteScroll(page) {
+        this.$infiniteHandler.next({
+            page: page
+        })
+    }
+    // ############################ NlpRecord InfiniteScroll Loading Service ############################ 
 
-    bulkDeleteNlpRecordsByIDs(ids) {
-        
+
+    bulkDeleteNlpRecordsByIDs(ids) { 
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
             takeUntil(this.unsubscribe),
             switchMap( SWAL_CONFIRM => {
@@ -70,7 +80,6 @@ class NlpRecordsService {
             this.vueErrorHandler.catchError()
         )
     }
-
     deleteNlpRecordByID(id) {        
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
             takeUntil(this.unsubscribe),
@@ -89,11 +98,28 @@ class NlpRecordsService {
         )
     }
 
-    nextPageNlpRecordsByInfiniteScroll(page) {
-        this.$infiniteHandler.next({
-            page: page
+    // ######################## NlpRecord XLSX UPLOADER ########################
+    uploadXlSXNlpRecordSubject() {
+        return this.$NlpRecordXLSXUploadSubject.pipe(
+            switchMap( ({ formData }) => {
+                return this.httpRepository.uploadXlSXNlpRecord(formData)
+            }),
+            this.vueErrorHandler.catchError()
+        )
+    }
+
+
+    nextUploadXLSXNlpRecord(fileList) {
+        console.debug(fileList)
+        console.debug(`fileList.length: ${fileList.length}`)
+        let newNlpXlsxUpload = new FormData()
+        newNlpXlsxUpload.append('xlsx', fileList[0], fileList[0].name);
+        return this.$NlpRecordXLSXUploadSubject.next({ 
+            formData: newNlpXlsxUpload,
         })
     }
+    // ######################## NlpRecord XLSX UPLOADER ########################
+
 
     nextSearchNlpRecordByKeyword(keyword, page) {
         this.$searchNlpRecordByKeyword.next({

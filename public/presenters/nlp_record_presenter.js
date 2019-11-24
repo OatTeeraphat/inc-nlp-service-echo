@@ -14,6 +14,7 @@ class NlpRecordViewModel {
         this.nlpRecordsByKeyword = []
         this.nlpRecordsByKeywordCheckedList = { ids: [] }
         this.searchRecently = {}
+        this.uploadXlSXPercentage = 0
     }
 }
 
@@ -23,6 +24,7 @@ class NlpRecordPresenter {
         this.nlpRecordsService = nlpRecordsService
         this.$searchNlpRecordsServiceSubscription = null
         this.$getNlpRecordsByInfiniteScrollSubscription = null
+        this.$uploadXlSXNlpRecordUnSubscription = null
     }
 
     getInitialState() {
@@ -37,8 +39,13 @@ class NlpRecordPresenter {
             console.error(error)
             this.view.isShowLoadingIndicator = false
         })
+
         this.$searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {
             this.view.nlpRecordsByKeyword.push(...it.nlp_records)
+        })
+
+        this.$uploadXlSXNlpRecordUnSubscription = this.nlpRecordsService.uploadXlSXNlpRecordSubject().subscribe( it => {
+            console.log("upload percentage, ", it )
         })
     }
 
@@ -95,10 +102,15 @@ class NlpRecordPresenter {
         this.nlpRecordsService.nextSearchNlpRecordByKeyword(event.target.value, 1)
     }
 
+    uploadXlSXNlpRecord(fieldName, fileList) {
+        this.nlpRecordsService.nextUploadXLSXNlpRecord(fileList)
+    }
+
     disposal() {
 
         this.$searchNlpRecordsServiceSubscription.unsubscribe()
         this.$getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
+        this.$uploadXlSXNlpRecordUnSubscription.unsubscribe()
 
         // set page index to 1
         this.view.page = 1

@@ -100,7 +100,7 @@ func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) str
 	log.Error("before upload")
 
 	go func() {
-		ret = svc.nlpRecordRepository.BulkInsertNlpRecords(nlpRecord, 7000)
+		ret = svc.nlpRecordRepository.BulkInsertNlpRecords(nlpRecord, 200)
 	}()
 
 	if ret != nil {
