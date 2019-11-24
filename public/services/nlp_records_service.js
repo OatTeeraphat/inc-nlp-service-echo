@@ -11,13 +11,11 @@ class NlpRecordsService {
         this.$searchNlpRecordByKeyword = new Subject()
         this.$NlpRecordXLSXUploadSubject = new Subject()
         this.$uploadXLSXNlpRecordProgressBar = new Subject()
-        this.unsubscribe = new Subject()
     }
 
     // #################################### NlpSearchByKeyword Pagination Service ####################################
     getNlpRecordsPaginationByKeyword(keyword, page) {
         return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
-            takeUntil(this.unsubscribe),
             map( ({ response }) => {
 
                 if ( keyword !== "" ) {
@@ -29,7 +27,6 @@ class NlpRecordsService {
     }
     searchNlpRecordsPaginationByKeywordSubject() {
         return this.$searchNlpRecordByKeyword.pipe(
-            takeUntil(this.unsubscribe),
             throttleTime(300),
             switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
         )
@@ -41,14 +38,12 @@ class NlpRecordsService {
     // ############################ NlpRecord InfiniteScroll Loading Service ############################
     getNlpRecordsPagination(page) {
         return this.httpRepository.getNlpRecordsPagination(page).pipe(
-            takeUntil(this.unsubscribe),
             map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
         )
     }
     getNlpRecordsByInfiniteScrollSubject() {
         // console.log(this.$infiniteHandler.getValue())
         return this.$infiniteHandler.pipe(
-            takeUntil(this.unsubscribe),
             throttleTime(200),
             exhaustMap( ({ page }) =>  this.getNlpRecordsPagination(page) ),
             this.vueErrorHandler.catchError(),
@@ -64,7 +59,6 @@ class NlpRecordsService {
 
     bulkDeleteNlpRecordsByIDs(ids) { 
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
-            takeUntil(this.unsubscribe),
             switchMap( SWAL_CONFIRM => {
                 console.debug(SWAL_CONFIRM)
 
@@ -82,7 +76,6 @@ class NlpRecordsService {
     }
     deleteNlpRecordByID(id) {        
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
-            takeUntil(this.unsubscribe),
             switchMap( yes => {
                 const SWAL_CONFIRM = yes
 
@@ -131,10 +124,5 @@ class NlpRecordsService {
     getRecentlyNlpRecordHistory() {
         let domain =  this.localStorageRepository.getRecentlyNlpRecordSearch()
         return of(domain)
-    }
-
-    disposable() {
-        this.unsubscribe.next(true)
-        this.unsubscribe.complete()
     }
 }
