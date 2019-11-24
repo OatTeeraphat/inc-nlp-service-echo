@@ -18,12 +18,13 @@ class SettingService {
 	setNlpConfidenceByClientID() {
 		return this.setConfidence$$.pipe(
 			switchMap(({ confidence }) => {
-				return this.httpRepository.setNlpConfidenceByClientID(confidence)
+				return this.httpRepository.setNlpConfidenceByClientID(confidence).pipe(
+					this.vueErrorHandler.catchHttpError()
+				)
 			}),
 			map(next => {
 				swal("resolve", { icon: "success", timer: this.duration })
 			}),
-			this.vueErrorHandler.catchError()
 		)
 	}
 
@@ -39,12 +40,13 @@ class SettingService {
 	setAppInfoByClientId() {
 		return this.setClient$$.pipe(
 			switchMap(({ info }) => {
-				return this.httpRepository.setAppInfoByClientId(info)
+				return this.httpRepository.setAppInfoByClientId(info).pipe(
+					this.vueErrorHandler.catchHttpError()
+				)
 			}),
 			map(next => {
 				swal("resolve", { icon: "success", timer: this.duration })
 			}),
-			this.vueErrorHandler.catchError()
 		)
 	}
 
@@ -62,20 +64,23 @@ class SettingService {
 	}
 
 	getAppCredentialByAppId(app_id) {
-		return this.httpRepository.getAppCredentialByAppId(app_id)
+		return this.httpRepository.getAppCredentialByAppId(app_id).pipe(
+			this.vueErrorHandler.catchHttpError()
+		)
 	}
 
 
 	setRevokeAppSecret(){
 		return this.setAppSecret$$.pipe(
 			switchMap( () => {
-				return this.httpRepository.revokeSecretByAppId()
+				return this.httpRepository.revokeSecretByAppId().pipe(
+					this.vueErrorHandler.catchHttpError()
+				)
 			}),
 			map(next => {
 				swal("resolve", { icon: "success", timer: this.duration })
 				return next
 			}),
-			this.vueErrorHandler.catchError()
 		)
 	}
 
@@ -88,13 +93,14 @@ class SettingService {
 	setRevokeAppToken() {
 		return this.setAppToken$$.pipe(
 			switchMap(() => {
-				return this.httpRepository.revokeAccessTokenByAppId()
+				return this.httpRepository.revokeAccessTokenByAppId().pipe(
+					this.vueErrorHandler.catchHttpError()
+				)
 			}),
 			map(next => {
 				swal("resolve", { icon: "success", timer: this.duration })
 				return next
 			}),
-			this.vueErrorHandler.catchError()
 		)
 	}
 

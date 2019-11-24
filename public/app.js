@@ -55,7 +55,7 @@ class VueErrorHandler {
         this.cookieRepo = cookieRepo
     }
 
-    catchError = () => catchError( e => {
+    catchHttpError = () => catchError( e => {
 
         if ( e instanceof AjaxError ) {
             if (e.status == 401) {
@@ -84,8 +84,8 @@ class VueErrorHandler {
                 swal({ text: "ยังไม่ได้ดัก", icon: "error", timer: 1600 })
             }
         }
-    
-        return throwError(e)
+        console.error("catchHttpError", e)
+        return of(e)
     })
     
 }

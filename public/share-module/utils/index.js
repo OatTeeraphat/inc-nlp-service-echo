@@ -25,7 +25,8 @@ const {
     catchError, 
     finalize, 
     filter, 
-    repeat
+    repeat,
+    retry
 } = rxjs.operators
 
 const { 
