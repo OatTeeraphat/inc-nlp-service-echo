@@ -166,9 +166,9 @@ var storyPage = Vue.component('story-page', {
         return this.$storyPresenter.view
     },
     mounted: function () {
-        this.$storyPresenter.getInitialState()
+        this.$storyPresenter.onMounted()
     },
     beforeDestroy: function () {
-        this.$storyPresenter.disposal()
+        this.$storyPresenter.beforeDestroy()
     },
 })

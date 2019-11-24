@@ -39,7 +39,6 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                     </button>
                                     <div class="dropdown-menu dropdown-file" aria-labelledby="btnGroupDrop">
                                         <strong>Upload Training Set</strong>
-                                        // TODO: ja
                                         <form enctype="multipart/form-data" class="custom-file mt-2 mb-1">
                                             <label class="custom-file-label" for="customFile">Choose file</label>
                                             <input class="custom-file-input" name="xlsx" type="file" id="file" ref="file" @change="$nlpRecordPresenter.uploadXlSXNlpRecord($event.target.name, $event.target.files); fileCount = $event.target.files.length">
@@ -155,15 +154,16 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
         }
     },
     mounted: function () {
-        this.$nlpRecordPresenter.getInitialState()
+        this.$nlpRecordPresenter.onMounted()
     },
     computed: {
         searchNlpRecordByKeywordComputed: function(e) {  return this.$nlpRecordPresenter.searchNlpRecordByKeywordComputed() }
     },
     beforeDestroy: function () {
-        this.$nlpRecordPresenter.disposal()
+        this.$nlpRecordPresenter.beforeDestroy()
     },
     methods: {
+        // TODO: make update nlp record event
         onChangeText: function ($event) {
             console.log($event)
         }

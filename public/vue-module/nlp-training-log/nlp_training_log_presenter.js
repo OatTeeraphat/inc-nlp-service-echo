@@ -18,7 +18,7 @@ class NlpTrainingLogPresenter {
     }
 
     // getInitialInstance
-    getInitialState(){
+    onMounted(){
         this.$nlpTrainingLogInfiniteScrollSubscription = this.nlpTrainingLogService.getNlpTrainingLogPaginationByInfiniteScrollSubject().subscribe( it => {
             this.view.page = it.page
             this.view.total = it.total
@@ -49,7 +49,7 @@ class NlpTrainingLogPresenter {
         this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id) 
     }
 
-    disposal() {
+    beforeDestroy() {
         // this.nlpTrainingLogService.disposable()
         this.$nlpTrainingLogInfiniteScrollSubscription.unsubscribe()
         this.view = new NlpTrainingLogViewModel()

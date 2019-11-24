@@ -19,7 +19,7 @@ class StoryPresenter {
         this.storyService = storyService
     }
 
-    getInitialState() {
+    onMounted() {
         this.storyService.getStoryState().subscribe(it => { 
             this.view.stories.push(...it) 
         })
@@ -31,7 +31,7 @@ class StoryPresenter {
         })
     }
 
-    disposal() {
+    beforeDestroy() {
         this.view = new StoryViewModel()
     }
 }

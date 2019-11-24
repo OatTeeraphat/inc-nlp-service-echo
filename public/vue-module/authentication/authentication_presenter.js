@@ -14,7 +14,7 @@ class AuthenticationPresenter {
         this.$clientSignInSubscription = null
     }
 
-    getInitialState() {
+    onMounted = () => {
         console.log("getInitialState")
         this.$clientSignInSubscription = this.authenticationService
             .clientSignInObservable()
@@ -47,7 +47,7 @@ class AuthenticationPresenter {
         }
     }
 
-    disposal() {
+    beforeDestroy() {
         this.$clientSignInSubscription.unsubscribe()
     }
 }

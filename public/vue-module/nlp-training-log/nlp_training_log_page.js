@@ -97,9 +97,9 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
         return this.$nlpTrainingLogPresenter.view
     },
     mounted: function () {
-        this.$nlpTrainingLogPresenter.getInitialState()
+        this.$nlpTrainingLogPresenter.onMounted()
     },
     beforeDestroy: function () {
-        this.$nlpTrainingLogPresenter.disposal()
+        this.$nlpTrainingLogPresenter.beforeDestroy()
     }
 })
