@@ -42,7 +42,7 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                         // TODO: ja
                                         <form enctype="multipart/form-data" class="custom-file mt-2 mb-1">
                                             <label class="custom-file-label" for="customFile">Choose file</label>
-                                            <input class="custom-file-input" name="xlsx" type="file" id="file" ref="file" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length">
+                                            <input class="custom-file-input" name="xlsx" type="file" id="file" ref="file" @change="$nlpRecordPresenter.uploadXlSXNlpRecord($event.target.name, $event.target.files); fileCount = $event.target.files.length">
                                         </form>
                                         <small class="text-muted">XLSX file max size 20 mb</small>
                                         </form>
@@ -175,76 +175,16 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
     `,
     data: function () {
         return {
-            view: this.$nlpRecordPresenter.view,
-            progressSubscriber: null,
-            file: null
+            view: this.$nlpRecordPresenter.view
         }
     },
     mounted: function () {
         this.$nlpRecordPresenter.getInitialState()
-
-        this.progressSubscriber = new Subject();
-
     },
     computed: {
         searchNlpRecordByKeywordComputed: function(e) {  return this.$nlpRecordPresenter.searchNlpRecordByKeywordComputed() }
     },
     beforeDestroy: function () {
         this.$nlpRecordPresenter.disposal()
-    },
-    methods: {
-        filesChange: function (fieldName, fileList) {
-            
-            // handle file changes
-            const formData = new FormData();
-
-            console.log(fileList[0])
-
-            console.debug(`fileList.length: ${fileList.length}`)
-
-            if (!fileList.length) return;
-
-            // Array
-            // .from(Array(fileList.length).keys())
-            // .map(x => {
-
-            //     if ( fileList[x].type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ) {
-            //         console.error("not xlsx")
-            //         return
-            //     }
-
-            //     console.log(fileList[x])
-
-            //     formData.append('xlsx', fileList[x]);
-            // });
-
-            
-            // console.log(fileList[0])
-            
-            // const blob = new Blob([fileList[0]], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            
-            formData.append('xlsx', fileList[0], fileList[0].name);
-            formData.append('story_id', 'mock');
-
-            
-            // console.log(formData)
-
-            const request$ = ajax({
-                method: "POST",
-                url: "http://localhost:9000/v1/nlp/record/upload.xlsx",
-                headers: {
-                    // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryLcTweZ2GeXVdMSMa',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNTc0ODA0OTkyLCJuYW1lIjoiSm9uIFNub3cifQ.GeS2BvwcH3kTiC59JmKKa-Uf1BptA9Q155nBOavFUIY'
-                },
-                body: formData,
-                progressSubscriber: this.progressSubscriber
-            })
-
-            this.progressSubscriber.pipe(
-                merge(request$),
-                map( e => ({ percentage: (e.loaded / e.total) * 100 }) )
-            ).subscribe(console.debug);
-
-        }
     }
 })

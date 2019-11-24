@@ -60,6 +60,7 @@ class VueErrorHandler {
         if ( e instanceof AjaxError ) {
             if (e.status == 401) {
                 swal({ text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน", icon: "error", timer: 1600 })
+                this.cookieRepo.removeClientSession()
                 if ( this.vueRouter.history.current.path !== "/login" ) {
                     this.vueRouter.replace('/login')
                 }

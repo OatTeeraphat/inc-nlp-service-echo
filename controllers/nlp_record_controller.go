@@ -108,13 +108,9 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 	}
 
 	result, _ := excelize.OpenReader(file)
-
-	log.Debug(result)
-
 	sheetMap := result.GetSheetMap()
 	sheetName := sheetMap[1]
 	xlsxSheet := result.GetRows(sheetName)
-	e.Logger().Debug(sheetMap)
 	response := con.NlpService.UploadXlsxNlpRecordService(xlsxSheet)
 
 	return e.String(http.StatusOK, response)

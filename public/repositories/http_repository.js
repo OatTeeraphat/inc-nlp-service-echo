@@ -2,6 +2,7 @@ class HttpRepository {
 
     constructor(cookieRepo) {
         this.cookieRepo = cookieRepo
+        this.BASE_API = getHttpHost()
     }
 
     _getAuthorizedBearer() {
@@ -12,7 +13,7 @@ class HttpRepository {
     clientSignIn(username, password) {
         return ajax({
             method: "POST",
-            url: `${getHttpHost()}/v1/login`,
+            url: `${this.BASE_API}/v1/login`,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: {
                 username: username,
@@ -40,7 +41,7 @@ class HttpRepository {
     getNlpRecordsPagination(page) {
         return ajax ({
             method: "GET", 
-            url: `${getHttpHost()}/v1/nlp/record/pagination?page=${page}`, 
+            url: `${this.BASE_API}/v1/nlp/record/pagination?page=${page}`, 
             headers: { 
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer() 
@@ -52,7 +53,7 @@ class HttpRepository {
     getNlpRecordsPaginationByKeyword(keyword, page) {
         return ajax ({
             method: "GET", 
-            url: `${getHttpHost()}/v1/nlp/record/pagination?keyword=${keyword}&page=${page}`,
+            url: `${this.BASE_API}/v1/nlp/record/pagination?keyword=${keyword}&page=${page}`,
             headers: { 
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer() 
@@ -60,11 +61,26 @@ class HttpRepository {
         })
     }
 
+    uploadXlSXNlpRecord(formData, $progressSubscriber) {
+        return ajax({
+            method: "POST",
+            url: `${this.BASE_API}/v1/nlp/record/upload.xlsx`,
+            headers: {
+                // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryLcTweZ2GeXVdMSMa',
+                'Authorization': this._getAuthorizedBearer()
+            },
+            body: formData,
+            progressSubscriber: $progressSubscriber
+        })
+    }
+
+
+
     // END_POINT: /v1/nlp/record/bulk
     bulkDeleteNlpRecordsByIDs(ids) {
         return ajax({
             method: "DELETE", 
-            url: `${getHttpHost()}/v1/nlp/record/bulk`,
+            url: `${this.BASE_API}/v1/nlp/record/bulk`,
             headers: { 
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer()
@@ -77,7 +93,7 @@ class HttpRepository {
     deleteNlpRecordByID(id) {
         return ajax({
             method: "DELETE",
-            url: `${getHttpHost()}/v1/nlp/record?id=${id}`,
+            url: `${this.BASE_API}/v1/nlp/record?id=${id}`,
             headers: { 
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer()
@@ -89,7 +105,7 @@ class HttpRepository {
     getAllStories() {
         return ajax({ 
             method: "GET", 
-            url: `${getHttpHost()}/v1/story`,
+            url: `${this.BASE_API}/v1/story`,
             headers: { 
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer() 
@@ -101,7 +117,7 @@ class HttpRepository {
     deleteStoryByID(id) {
         return ajax({ 
             method: "DELETE", 
-            url: `${getHttpHost()}/v1/story?id=${id}`,
+            url: `${this.BASE_API}/v1/story?id=${id}`,
             headers: { 
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer() 
@@ -125,7 +141,7 @@ class HttpRepository {
     getNlpTrainingLogPagination (keyword, intent, story, page) {
         return ajax ({
             method: "GET", 
-            url: `${getHttpHost()}/v1/nlp/log/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
+            url: `${this.BASE_API}/v1/nlp/log/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
             headers: { "Authorization": this._getAuthorizedBearer() }
         })
     }
