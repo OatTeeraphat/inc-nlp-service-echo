@@ -82,22 +82,6 @@
     <script src="repositories/cookie_repository.js"></script>
 
 
-    <!-- services -->
-    <script src="services/authentication_service.js"></script>
-    <script src="services/webchat_service.js" ></script>
-    <script src="services/story_service.js" ></script>
-    <script src="services/nlp_records_service.js"></script>
-    <script src="services/nlp_training_log_service.js"></script>
-    <script src="services/nlp_reply_counter_service.js"></script>
-    <script src="services/setting_service.js"></script>
-
-    <script src="presenters/authentication_presenter.js"></script>
-    <script src="presenters/welcome_presenter.js"></script>
-    <script src="presenters/story_presenter.js"></script>
-    <script src="presenters/nlp_training_log_presenter.js"></script>
-    <script src="presenters/nlp_record_presenter.js"></script>
-    
-
     <!-- component -->
     <script src="component/navbar/nav_component.js"></script>
     <script src="component/filp-card/nlp_flip_card_counter_component.js"></script>
@@ -107,17 +91,47 @@
     <script src="component/chart/chart_usage_average_time_component.js"></script>
     <script src="component/chart/chart_bubble_intent_component.js"></script>
     <script src="component/chart/chart_stack_training_component.js"></script>
-    
-    <!-- pages -->
-    <script src="pages/welcome_page.js"></script>
-    <script src="pages/authentication_page.js"></script>
-    <script src="pages/dashboard_page.js"></script>
-    <script src="pages/nlp_training_log_page.js"></script>
-    <script src="pages/nlp_records_page.js"></script>
-    <script src="pages/story_page.js"></script>
-    <script src="pages/webchat_page.js"></script>
-    <script src="pages/setting_page.js"></script>
-    <script src="pages/logs_page.js"></script>
+
+
+    <!-- authen -->
+    <script src="module/authentication/authentication_service.js"></script>
+    <script src="module/authentication/authentication_presenter.js"></script>
+    <script src="module/authentication/authentication_page.js"></script>
+
+    <!-- dashboard -->
+    <script src="module/dashboard/dashboard_page.js"></script>
+
+    <!-- logs -->
+    <script src="module/logs/logs_page.js"></script>
+
+    <!-- nlp record -->
+    <script src="module/nlprecord/nlp_records_service.js"></script>
+    <script src="module/nlprecord/nlp_record_presenter.js"></script>
+    <script src="module/nlprecord/nlp_records_page.js"></script>
+
+    <!-- nlp training log -->
+    <script src="module/nlptraininglog/nlp_training_log_service.js"></script>
+    <script src="module/nlptraininglog/nlp_training_log_presenter.js"></script>
+    <script src="module/nlptraininglog/nlp_training_log_page.js"></script>
+
+    <!-- setting -->
+    <script src="module/setting/setting_service.js"></script>
+    <script src="module/setting/setting_page.js"></script>
+
+    <!-- story -->
+    <script src="module/story/story_service.js"></script>
+    <script src="module/story/story_presenter.js"></script>
+    <script src="module/story/story_page.js"></script>
+
+    <!-- webchat -->
+    <script src="module/webchat/webchat_service.js"></script>
+    <script src="module/webchat/webchat_page.js"></script>
+
+
+    <!-- welcome -->
+    <script src="module/welcome/nlp_reply_counter_service.js"></script>
+    <script src="module/welcome/welcome_presenter.js"></script>
+    <script src="module/welcome/welcome_page.js"></script>
 
 
     <script async type="module" src="app.js">
