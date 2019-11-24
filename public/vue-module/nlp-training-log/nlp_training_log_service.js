@@ -15,6 +15,7 @@ class NlpTrainingLogService {
             map( ({ response }) => {
                 return new GetNlpTrainingLogPaginationAdapter().adapt(response) 
             }),
+            this.vueErrorHandler.catchHttpError(),
         )
     }
     
@@ -23,7 +24,6 @@ class NlpTrainingLogService {
             takeUntil(this.unsubscribe),
             throttleTime(200),
             exhaustMap( ({ page }) => this.getNlpTrainingLogPagination(page) ),
-            this.vueErrorHandler.catchError()
         )
     }
 
@@ -33,7 +33,11 @@ class NlpTrainingLogService {
             switchMap( SWAL_CONFIRM => {
                 console.debug(SWAL_CONFIRM)
 
-                if (SWAL_CONFIRM) return this.httpRepository.bulkDeleteNlpTrainingLogsByIDs(ids)
+                if (SWAL_CONFIRM) {
+                    return this.httpRepository.bulkDeleteNlpTrainingLogsByIDs(ids).pipe(
+                        this.vueErrorHandler.catchHttpError(),
+                    )
+                } 
 
                 const SWAL_CANCEL = false
 
@@ -42,7 +46,6 @@ class NlpTrainingLogService {
             map( next => {
                 swal("resolve", {icon: "success", timer: this.duration}) 
             }),
-            this.vueErrorHandler.catchError()
         )
     }
 
@@ -53,7 +56,11 @@ class NlpTrainingLogService {
             switchMap( yes => {
                 const SWAL_CONFIRM = yes
 
-                if (SWAL_CONFIRM) return this.httpRepository.deleteNlpTrainingLogByID(id)
+                if (SWAL_CONFIRM) {
+                    return this.httpRepository.deleteNlpTrainingLogByID(id).pipe(
+                        this.vueErrorHandler.catchHttpError(),
+                    )
+                }
 
                 return throwError("SWAL_CANCEL")
             }),
@@ -61,7 +68,6 @@ class NlpTrainingLogService {
                 swal('resolve', {icon: "success", timer: this.duration}) 
                 return of(it)
             }),
-            this.vueErrorHandler.catchError()
         )
     }
 

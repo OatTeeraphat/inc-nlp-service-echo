@@ -13,7 +13,6 @@ class NlpRecordsService {
         this.$uploadXLSXNlpRecordProgressBar = new Subject()
     }
 
-    // #################################### NlpSearchByKeyword Pagination Service ####################################
     getNlpRecordsPaginationByKeyword(keyword, page) {
         return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
             map( ({ response }) => {
@@ -23,6 +22,7 @@ class NlpRecordsService {
                 }
                 return new GetNlpRecordsPagination().adapt(response)
             }),
+            this.vueErrorHandler.catchHttpError(),
         )
     }
     searchNlpRecordsPaginationByKeywordSubject() {
@@ -31,14 +31,12 @@ class NlpRecordsService {
             switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
         )
     }
-    // #################################### NlpSearchByKeyword Pagination Service ####################################
 
 
-
-    // ############################ NlpRecord InfiniteScroll Loading Service ############################
     getNlpRecordsPagination(page) {
         return this.httpRepository.getNlpRecordsPagination(page).pipe(
             map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
+            this.vueErrorHandler.catchHttpError(),
         )
     }
     getNlpRecordsByInfiniteScrollSubject() {
@@ -46,7 +44,6 @@ class NlpRecordsService {
         return this.$infiniteHandler.pipe(
             throttleTime(200),
             exhaustMap( ({ page }) =>  this.getNlpRecordsPagination(page) ),
-            this.vueErrorHandler.catchError(),
         )
     }
     nextPageNlpRecordsByInfiniteScroll(page) {
@@ -54,7 +51,6 @@ class NlpRecordsService {
             page: page
         })
     }
-    // ############################ NlpRecord InfiniteScroll Loading Service ############################ 
 
 
     bulkDeleteNlpRecordsByIDs(ids) { 
@@ -62,7 +58,12 @@ class NlpRecordsService {
             switchMap( SWAL_CONFIRM => {
                 console.debug(SWAL_CONFIRM)
 
-                if (SWAL_CONFIRM) return this.httpRepository.bulkDeleteNlpRecordsByIDs(ids)
+                if (SWAL_CONFIRM) {
+
+                    return this.httpRepository.bulkDeleteNlpRecordsByIDs(ids).pipe(
+                        this.vueErrorHandler.catchHttpError(),
+                    )
+                } 
 
                 const SWAL_CANCEL = false
 
@@ -71,7 +72,6 @@ class NlpRecordsService {
             map( next => {
                 swal("resolve", {icon: "success", timer: this.duration}) 
             }),
-            this.vueErrorHandler.catchError()
         )
     }
     deleteNlpRecordByID(id) {        
@@ -79,25 +79,28 @@ class NlpRecordsService {
             switchMap( yes => {
                 const SWAL_CONFIRM = yes
 
-                if (SWAL_CONFIRM) return this.httpRepository.deleteNlpRecordByID(id)
+                if (SWAL_CONFIRM) {
+                    return this.httpRepository.deleteNlpRecordByID(id).pipe(
+                        this.vueErrorHandler.catchHttpError(),
+                    )
+                } 
 
                 return throwError("SWAL_CANCEL")
             }),
             map( it => {
                 swal('resolve', {icon: "success", timer: this.duration}) 
                 return of(it)
-            }),
-            this.vueErrorHandler.catchError()
+            })
         )
     }
 
-    // ######################## NlpRecord XLSX UPLOADER ########################
     uploadXlSXNlpRecordSubject() {
         return this.$NlpRecordXLSXUploadSubject.pipe(
             switchMap( ({ formData }) => {
-                return this.httpRepository.uploadXlSXNlpRecord(formData)
+                return this.httpRepository.uploadXlSXNlpRecord(formData).pipe(
+                    this.vueErrorHandler.catchHttpError(),
+                )
             }),
-            this.vueErrorHandler.catchError()
         )
     }
 
@@ -111,7 +114,6 @@ class NlpRecordsService {
             formData: newNlpXlsxUpload,
         })
     }
-    // ######################## NlpRecord XLSX UPLOADER ########################
 
 
     nextSearchNlpRecordByKeyword(keyword, page) {

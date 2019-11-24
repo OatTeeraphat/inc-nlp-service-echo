@@ -18,12 +18,13 @@ class SettingService {
 	setNlpConfidenceByClientID() {
 		return this.setConfidence$$.pipe(
 			switchMap(({ confidence }) => {
-				return this.httpRepository.setNlpConfidenceByClientID(confidence)
+				return this.httpRepository.setNlpConfidenceByClientID(confidence).pipe(
+					this.vueErrorHandler.catchHttpError()
+				)
 			}),
 			map(next => {
 				swal2("success", { title: 'Save Confidence', toast: true })
 			}),
-			this.vueErrorHandler.catchError()
 		)
 	}
 
@@ -39,12 +40,13 @@ class SettingService {
 	setAppInfoByClientId() {
 		return this.setClient$$.pipe(
 			switchMap(({ info }) => {
-				return this.httpRepository.setAppInfoByClientId(info)
+				return this.httpRepository.setAppInfoByClientId(info).pipe(
+					this.vueErrorHandler.catchHttpError()
+				)
 			}),
 			map(next => {
 				swal2("success", { title: 'Save App Info', toast: true })
 			}),
-			this.vueErrorHandler.catchError()
 		)
 	}
 
@@ -62,7 +64,9 @@ class SettingService {
 	}
 
 	getAppCredentialByAppId(app_id) {
-		return this.httpRepository.getAppCredentialByAppId(app_id)
+		return this.httpRepository.getAppCredentialByAppId(app_id).pipe(
+			this.vueErrorHandler.catchHttpError()
+		)
 	}
 
 
@@ -71,7 +75,9 @@ class SettingService {
 		return from( alertBox )
 			.pipe(
 				switchMap( it => {
-				if ( it.value ) return this.httpRepository.revokeSecretByAppId()
+				if ( it.value ) return this.httpRepository.revokeSecretByAppId().pipe(
+					this.vueErrorHandler.catchHttpError()
+				)
 					return of()
 				}),
 				map(next => {
@@ -86,7 +92,9 @@ class SettingService {
 		return from( alertBox )
 			.pipe(
 				switchMap(it => {
-				if (it.value) return this.httpRepository.revokeAccessTokenByAppId()
+				if (it.value) return this.httpRepository.revokeAccessTokenByAppId().pipe(
+					this.vueErrorHandler.catchHttpError()
+				)
 					return of()
 				}),
 				map(next => {

@@ -16,7 +16,7 @@ class StoryService {
             switchMap( ({ response }) => {
                 return of(new GetStoryModelAdapter().adapt(response))
             }),
-            this.vueErrorHandler.catchError()
+            this.vueErrorHandler.catchHttpError(),
         )
     }
 
@@ -25,14 +25,17 @@ class StoryService {
         return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
             switchMap( yes => {
 
-                if (yes) return this.httpRepository.deleteStoryByID(storyID)
+                if (yes) {
+                    return this.httpRepository.deleteStoryByID(storyID).pipe(
+                        this.vueErrorHandler.catchHttpError(),
+                    )
+                }
 
                 return throwError("no")
             }),
             map( next => {
                 swal("resolve", {icon: "success", timer: this.duration}) 
             }),
-            this.vueErrorHandler.catchError(),
             finalize(() =>  { console.log("complete") })
         )
     }

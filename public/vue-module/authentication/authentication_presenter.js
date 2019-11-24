@@ -2,7 +2,7 @@ class AuthenticationViewModel {
     constructor() {
         this.isNotSignInLoading =  true
         this.username =  "admin@incommonstudio.com"
-        this.password =  "inc12490!"
+        this.password =  "inc12490"
         this.rememberMe =  true
     }
 }
@@ -15,13 +15,13 @@ class AuthenticationPresenter {
     }
 
     getInitialState() {
+        console.log("getInitialState")
         this.$clientSignInSubscription = this.authenticationService
             .clientSignInObservable()
             .subscribe(
-                () => { this.view.isNotSignInLoading = true },
-                () => { this.view.isNotSignInLoading = true },
-                () => { console.info("complete login") }
+                next => { this.view.isNotSignInLoading = true }
             )
+
     }
 
     clientSignIn() {

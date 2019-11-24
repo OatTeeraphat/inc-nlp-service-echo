@@ -14,7 +14,6 @@ class AuthenticationService {
         this.cookieRepository = cookieRepository
         this.vueRouter = vueRouter
         this.vueErrorHandler = vueErrorHandler
-        
         this.clientSignInSubject = new Subject()
     }
 
@@ -30,8 +29,6 @@ class AuthenticationService {
                     return this.httpRepository.clientSignIn(it.username, it.password).pipe(
                         map( ({ response }) => {
 
-                            // console.log(response)
-
                             let model = new GetClientSignInAdapter().adapt(response)
 
                             if (it.rememberMe) {
@@ -39,13 +36,12 @@ class AuthenticationService {
                             } else {
                                 this.cookieRepository.setClientSession(model.access_token)
                             }
-                            
                             return this.vueRouter.replace('/dashboard')
-                        })
+                        }),
+                        this.vueErrorHandler.catchHttpError(),
                     )
-                }
-            ),
-            this.vueErrorHandler.catchError(),
+                },
+            )
         )
     }
 
