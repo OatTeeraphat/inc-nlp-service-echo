@@ -550,9 +550,9 @@
  .media-body h3 > button{
      font-size: 0.66em;
      position: absolute;
-     right: 30px;
+     right: 0px;
      padding: 5px;
-     top: 1em;
+     top: 5px;
 }
  .media-body h3 > button:hover{
      margin-top: 1px;
@@ -643,6 +643,53 @@
     }
 }
 /* ----------- ----------- */
+/* Preload indeterminate for IE -------------------------------------------------- */
+ .linear-preload {
+     overflow: hidden;
+     width: 60%;
+     height: 1em;
+     background-color: #f7f7f7;
+     position: absolute;
+     top: 0.33em;
+     left: 0;
+     border-radius: 1em;
+     max-height: 23px;
+}
+ .indeterminate-preload {
+     position: relative;
+     width: 100%;
+     height: 100%;
+}
+ .indeterminate-preload:before {
+     content: '';
+     position: absolute;
+     height: 100%;
+     background: linear-gradient(90deg, rgba(247,247,247,1) 0%, rgba(227,227,227,1) 50%, rgba(247,247,247,1) 100%);
+     animation: indeterminate_first 1.5s infinite ease-out;
+}
+ .indeterminate-preload:after {
+     content: '';
+     position: absolute;
+     height: 100%;
+     background-color: #4FC3F7;
+     animation: indeterminate_second 1.5s infinite ease-in;
+}
+ @keyframes indeterminate_first-preload {
+     0% {
+         left: -100%;
+         width: 100%;
+    }
+     100% {
+         left: 100%;
+         width: 10%;
+    }
+}
+h3 .linear-preload{
+    height: 0.6em;
+    width: 60%;
+    top: 0.375em;
+}
+/* ----------- ----------- */
  .digit-box {
      display: flex;
      justify-content: center;
@@ -672,6 +719,12 @@
  .card-title-token{
      font-size: 1.2rem !important;
 }
+ .card-title{
+     position: relative;
+ }
+ h6.card-title{
+     min-height: 1.45em;
+ }
  .btn-link.btn-edit{
      font-size: 18px;
      position: absolute;

@@ -107,6 +107,7 @@ const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)
 const storyPresenter = new StoryPresenter(storyService)
 const nlpTrainingLogPresenter = new NlpTrainingLogPresenter(nlpTrainingLogService)
 const nlpRecordPresenter = new NlpRecordPresenter(nlpRecordsService)
+const settingPresenter = new SettingPresenter(settingService, webChatService)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
@@ -117,10 +118,11 @@ Vue.use({
         Vue.prototype.$storyPresenter = storyPresenter
         Vue.prototype.$nlpTrainingLogPresenter = nlpTrainingLogPresenter
         Vue.prototype.$nlpRecordPresenter = nlpRecordPresenter
+        Vue.prototype.$settingPresenter = settingPresenter
 
         // TODO:  inject presenter instead of service
-        Vue.prototype.$webChatService = webChatService,
-        Vue.prototype.$settingService = settingService
+        Vue.prototype.$webChatService = webChatService
+            
     }
 })
 

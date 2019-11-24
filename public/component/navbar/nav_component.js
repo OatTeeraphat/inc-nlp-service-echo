@@ -3,7 +3,7 @@ var navPresenter = Vue.component('nav-component', {
 	<div class="fixed-top navbar-warpper bg-light">
 	
 		<nav class="navbar navbar-expand-lg navbar-dark container justify-content-between">
-			<a class="navbar-brand mr-auto mr-lg-0 invisible" href="#"><img src="assets/logo-black.png" alt=""></a>
+			<a class="navbar-brand mr-auto mr-lg-0 visible" href="#"><img src="assets/logo-black.png" alt=""></a>
 			<div class="btn-group">
 				<button type="button" class="btn btn-link dropdown-toggle dropdown-toggle-no-arrow" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="fe fe-menu"></i>
@@ -19,7 +19,7 @@ var navPresenter = Vue.component('nav-component', {
 		<nav class="nav nav-underline nav-sub container bg-light">
 			<!-- <router-link class="nav-link active" to="/" exact> HOME </router-link> -->
 			<router-link class="nav-link active" :to="{ path: '/dashboard'}" exact> DASHBOARD </router-link>
-			<router-link class="nav-link" :to="{ path: '/nlp'}"> SET </router-link>
+			<router-link class="nav-link" :to="{ path: '/nlp'}"> TRAINIG SET </router-link>
 			<router-link class="nav-link" :to="{ path: '/logs'}"> LOGS </router-link>
 			<router-link class="nav-link" :to="{ path: '/story'}"> STORY </router-link>
 			<router-link class="nav-link" :to="{ path: '/logging'}"> LOGGING </router-link>
