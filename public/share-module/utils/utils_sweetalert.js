@@ -1,4 +1,4 @@
-const swals = function (type, props, confirm=false) {
+const swal2 = function (type, props, confirm=false) {
 	
 
 	if (props.toast){
