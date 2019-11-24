@@ -77,6 +77,7 @@ class NlpRecordPresenter {
 
             // next page event
             if (this.view.nlpRecords.length == 0) {
+                this.view.page = 1
                 this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.view.page)
             }
         })
