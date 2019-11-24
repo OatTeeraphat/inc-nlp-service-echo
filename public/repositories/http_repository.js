@@ -49,6 +49,17 @@ class HttpRepository {
         })
     }
 
+    getNlpRecordsByKeyword(keyword) {
+        return ajax({
+            method: "GET",
+            url: `${getHttpHost()}/v1/nlp/record/reply?keyword=${keyword}`,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": this._getAuthorizedBearer()
+            }
+        })
+    }
+
     // END_POINT: /v1/nlp/record/pagination?keyword=&page=
     getNlpRecordsPaginationByKeyword(keyword, page) {
         return ajax ({
@@ -60,6 +71,7 @@ class HttpRepository {
             }
         })
     }
+    
 
     uploadXlSXNlpRecord(formData) {
         return ajax({
@@ -163,6 +175,10 @@ class HttpRepository {
         delay(600)
     )
 
+    setNlpConfidenceByClientID = () => of({}).pipe(
+        delay(600)
+    )
+
     getAppInfoByClientId = () => of({
         id: "632861333807100",
         status : 1,
@@ -177,4 +193,23 @@ class HttpRepository {
         delay(600)
     )
 
-}
+    getAppCredentialByAppId = () => of({
+        access_token: 'token ' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
+        client_secret: 'secret ' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
+    }).pipe(
+        delay(600)
+    )
+
+    revokeAccessTokenByAppId = () => of({
+        access_token : 'token re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
+    }).pipe(
+        delay(600)
+    )
+
+    revokeSecretByAppId = () => of({
+        client_secret : 'secret re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+    }).pipe(
+        delay(600)
+    )
+
+}   

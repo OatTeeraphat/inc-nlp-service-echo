@@ -4,7 +4,10 @@ class SettingService {
 		this.httpRepository = httpRepository
 		this.vueErrorHandler = vueErrorHandler
 		this.setConfidence$$ = new Subject()
-		this.setClient$$ = new Subject
+		this.setClient$$ = new Subject()
+		this.setAppSecret$$ = new Subject()
+		this.setAppToken$$ = new Subject()
+
 		
 	}
 
@@ -45,7 +48,6 @@ class SettingService {
 		)
 	}
 
-
 	nextAppInfoByClientId(){
 		this.setClient$$.next({})
 	}
@@ -59,9 +61,50 @@ class SettingService {
 		)
 	}
 
+	getAppCredentialByAppId(app_id) {
+		return this.httpRepository.getAppCredentialByAppId(app_id)
+	}
+
+
+	setRevokeAppSecret(){
+		return this.setAppSecret$$.pipe(
+			switchMap( () => {
+				return this.httpRepository.revokeSecretByAppId()
+			}),
+			map(next => {
+				swal("resolve", { icon: "success", timer: this.duration })
+				return next
+			}),
+			this.vueErrorHandler.catchError()
+		)
+	}
 
 	
+	nextRevokeAppSecret() {
+		return this.setAppSecret$$.next({})
+	}
 
 
+	setRevokeAppToken() {
+		return this.setAppToken$$.pipe(
+			switchMap(() => {
+				return this.httpRepository.revokeAccessTokenByAppId()
+			}),
+			map(next => {
+				swal("resolve", { icon: "success", timer: this.duration })
+				return next
+			}),
+			this.vueErrorHandler.catchError()
+		)
+	}
 
+	nextRevokeAppToken() {
+		return this.setAppToken$$.next({})
+	}
+
+
+	getNlpDebugResult(keyword){
+		return this.httpRepository.getNlpRecordsByKeyword(keyword)
+	}
 }
+

@@ -19,8 +19,8 @@ var navPresenter = Vue.component('nav-component', {
 		<nav class="nav nav-underline nav-sub container bg-light">
 			<!-- <router-link class="nav-link active" to="/" exact> HOME </router-link> -->
 			<router-link class="nav-link active" :to="{ path: '/dashboard'}" exact> DASHBOARD </router-link>
-			<router-link class="nav-link" :to="{ path: '/nlp'}"> NLP SET </router-link>
-			<router-link class="nav-link" :to="{ path: '/logs'}"> NLP LOGS </router-link>
+			<router-link class="nav-link" :to="{ path: '/nlp'}"> TRAINIG SET </router-link>
+			<router-link class="nav-link" :to="{ path: '/logs'}"> LOGS </router-link>
 			<router-link class="nav-link" :to="{ path: '/story'}"> STORY </router-link>
 			<router-link class="nav-link" :to="{ path: '/logging'}"> LOGGING </router-link>
 			<router-link class="nav-link" :to="{ path: '/setting'}"> SETTING </router-link>
