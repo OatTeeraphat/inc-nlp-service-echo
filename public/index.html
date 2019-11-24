@@ -59,67 +59,78 @@
     <script src="https://cdn.jsdelivr.net/npm/patternomaly@1.3.0/dist/patternomaly.min.js"></script>
     
     <!-- utilizer -->
-    <script src="utils/index.js"></script>
-    <script src="utils/utils_bootstrap.js"></script>
+    <script src="share-module/utils/index.js"></script>
+    <script src="share-module/utils/utils_bootstrap.js"></script>
 
-    <!-- adapter -->
-    <script src="adapters/https/get_story_adapter.js"></script>
-    <script src="adapters/https/get_nlp_reply_adapter.js"></script>
-    <script src="adapters/https/get_nlp_records_pagination_adapter.js"></script>
-    <script src="adapters/https/get_nlp_reply_counter_adapter.js"></script>
-    <script src="adapters/https/get_nlp_training_log_pagination_adapter.js"></script>
-    <script src="adapters/https/get_customer_sign_in_adapter.js"></script>
-    <script src="adapters/chart/get_chart_intent_ratio_adapter.js"></script>
-    <script src="adapters/chart/get_chart_intent_ranking_adapter.js"></script>
-
-    <script src="adapters/localstorage/recently_nlp_record_search_adapter.js"></script>
 
     <!-- repositories -->
-    <script src="repositories/http_repository.js" ></script>
-    <script src="repositories/socket_repository.js" ></script>
-    <script src="repositories/cache_storage_repository.js"></script>
-    <script src="repositories/local_storage_repository.js"></script>
-    <script src="repositories/cookie_repository.js"></script>
+    <script src="share-module/repositories/http_repository.js" ></script>
+    <script src="share-module/repositories/socket_repository.js" ></script>
+    <script src="share-module/repositories/cache_storage_repository.js"></script>
+    <script src="share-module/repositories/local_storage_repository.js"></script>
+    <script src="share-module/repositories/cookie_repository.js"></script>
 
-
-    <!-- services -->
-    <script src="services/authentication_service.js"></script>
-    <script src="services/webchat_service.js" ></script>
-    <script src="services/story_service.js" ></script>
-    <script src="services/nlp_records_service.js"></script>
-    <script src="services/nlp_training_log_service.js"></script>
-    <script src="services/nlp_reply_counter_service.js"></script>
-    <script src="services/setting_service.js"></script>
-
-    <script src="presenters/authentication_presenter.js"></script>
-    <script src="presenters/welcome_presenter.js"></script>
-    <script src="presenters/story_presenter.js"></script>
-    <script src="presenters/nlp_training_log_presenter.js"></script>
-    <script src="presenters/nlp_record_presenter.js"></script>
-    <script src="presenters/setting_presenter.js"></script>
-    
-    
 
     <!-- component -->
-    <script src="component/navbar/nav_component.js"></script>
-    <script src="component/filp-card/nlp_flip_card_counter_component.js"></script>
-    <script src="component/chart/chart_model_accuracy_component.js"></script>
-    <script src="component/chart/chart_training_growth_component.js"></script>
-    <script src="component/chart/chart_usage_api_component.js"></script>
-    <script src="component/chart/chart_usage_average_time_component.js"></script>
-    <script src="component/chart/chart_bubble_intent_component.js"></script>
-    <script src="component/chart/chart_stack_training_component.js"></script>
-    
-    <!-- pages -->
-    <script src="pages/welcome_page.js"></script>
-    <script src="pages/authentication_page.js"></script>
-    <script src="pages/dashboard_page.js"></script>
-    <script src="pages/nlp_training_log_page.js"></script>
-    <script src="pages/nlp_records_page.js"></script>
-    <script src="pages/story_page.js"></script>
-    <script src="pages/webchat_page.js"></script>
-    <script src="pages/setting_page.js"></script>
-    <script src="pages/logs_page.js"></script>
+    <script src="vue-custom-module/navbar/nav_component.js"></script>
+    <script src="vue-custom-module/filp-card/nlp_flip_card_counter_component.js"></script>
+    <script src="vue-custom-module/chart/chart_model_accuracy_component.js"></script>
+    <script src="vue-custom-module/chart/chart_training_growth_component.js"></script>
+    <script src="vue-custom-module/chart/chart_usage_api_component.js"></script>
+    <script src="vue-custom-module/chart/chart_usage_average_time_component.js"></script>
+    <script src="vue-custom-module/chart/chart_bubble_intent_component.js"></script>
+    <script src="vue-custom-module/chart/chart_stack_training_component.js"></script>
+
+    <!-- authen -->
+    <script src="vue-module/authentication/get_client_sign_in_adapter.js"></script>
+    <script src="vue-module/authentication/authentication_service.js"></script>
+    <script src="vue-module/authentication/authentication_presenter.js"></script>
+    <script src="vue-module/authentication/authentication_page.js"></script>
+
+    <!-- dashboard -->
+    <script src="vue-module/dashboard/get_chart_intent_growth.js"></script>
+    <script src="vue-module/dashboard/get_chart_intent_ranking_adapter.js"></script>
+    <script src="vue-module/dashboard/get_chart_intent_ratio_adapter.js"></script>
+    <script src="vue-module/dashboard/get_chart_model_accuracy.js"></script>
+    <script src="vue-module/dashboard/dashboard_page.js"></script>
+
+    <!-- logs -->
+    <script src="vue-module/logs/logs_page.js"></script>
+
+    <!-- nlp record -->
+    <script src="vue-module/nlp-record/get_nlp_records_pagination_adapter.js"></script>
+    <script src="vue-module/nlp-record/nlp_records_service.js"></script>
+    <script src="vue-module/nlp-record/nlp_record_presenter.js"></script>
+    <script src="vue-module/nlp-record/nlp_records_page.js"></script>
+
+    <!-- nlp training log -->
+    <script src="vue-module/nlp-training-log/get_nlp_training_log_pagination_adapter.js"></script>
+    <script src="vue-module/nlp-training-log/nlp_training_log_service.js"></script>
+    <script src="vue-module/nlp-training-log/nlp_training_log_presenter.js"></script>
+    <script src="vue-module/nlp-training-log/nlp_training_log_page.js"></script>
+
+    <!-- setting -->
+    <script src="vue-module/setting/get_nlp_reply_adapter.js"></script>
+    <script src="vue-module/setting/setting_service.js"></script>
+    <script src="vue-module/setting/setting_presenter.js"></script>
+    <script src="vue-module/setting/setting_page.js"></script>
+
+    <!-- story -->
+    <script src="vue-module/story/get_story_adapter.js"></script>
+    <script src="vue-module/story/story_service.js"></script>
+    <script src="vue-module/story/story_presenter.js"></script>
+    <script src="vue-module/story/story_page.js"></script>
+
+    <!-- webchat -->
+    <script src="vue-module/webchat/webchat_service.js"></script>
+    <script src="vue-module/webchat/webchat_page.js"></script>
+
+
+    <!-- welcome -->
+    <script src="vue-module/welcome/get_nlp_reply_counter_adapter.js"></script>
+    <script src="vue-module/welcome/nlp_reply_counter_service.js"></script>
+    <script src="vue-module/welcome/welcome_presenter.js"></script>
+    <script src="vue-module/welcome/welcome_page.js"></script>
 
 
     <script async type="module" src="app.js">

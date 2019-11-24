@@ -138,7 +138,7 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 			Intent:   "DEFAULT_MESSAGE",
 			Distance: 999,
 		}
-		svc.SaveNlpTrainingSetsService(&nlpReplyModel, 1)
+		svc.saveNlpTrainingSetsService(&nlpReplyModel, 1)
 		return nlpReplyModel
 	}
 
@@ -155,13 +155,13 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE"}).Info(nlpResult)
 
 	if nlpResult.Distance != 0 {
-		svc.SaveNlpTrainingSetsService(&nlpResult, 1)
+		go svc.saveNlpTrainingSetsService(&nlpResult, 1)
 	}
 	return nlpResult
 }
 
-// SaveNlpTrainingSetsService SaveNlpTrainingSets
-func (svc NlpRecordService) SaveNlpTrainingSetsService(nlpResult *models.NlpReplyModel, shopID uint) {
+// saveNlpTrainingSetsService saveNlpTrainingSetsService
+func (svc NlpRecordService) saveNlpTrainingSetsService(nlpResult *models.NlpReplyModel, shopID uint) {
 	var nlpTraningRecordDomain domains.NlpTrainingLogDomain
 	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
 	nlpTraningRecordDomain.Intent = nlpResult.Intent
