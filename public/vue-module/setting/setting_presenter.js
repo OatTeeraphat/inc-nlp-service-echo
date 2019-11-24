@@ -6,7 +6,7 @@ class SettingViewModel {
 		this.app_info = {}
 		this.app_secret = ""
 		this.app_token = ""
-		this.debug = { keyword: "", result : {} }
+		this.debug = { keyword : "", loading : false }
 	}
 }
 
@@ -35,15 +35,6 @@ class SettingPresenter {
 			this.view.app_secret = item.client_secret
 			this.view.app_token = item.access_token
 		})
-
-		this.settingService.setRevokeAppSecret().subscribe(item => {
-			this.view.app_secret = item.client_secret
-		})
-
-		this.settingService.setRevokeAppToken().subscribe(item => {
-			this.view.app_token = item.access_token
-		})
-
 
 		this.settingService.setNlpConfidenceByClientID().subscribe()
 		this.settingService.setAppInfoByClientId().subscribe()
@@ -77,18 +68,24 @@ class SettingPresenter {
 	}
 
 	onSendNlpKeyword() {
+		this.view.debug.loading = true
 		let nlpResult = this.settingService.getNlpDebugResult(this.view.debug.keyword)
 		nlpResult.subscribe(item => {
-			this.view.debug.result = new GetNlpReplyAdapter().adapt(item.response);
+			this.view.debug.result = new GetNlpReplyAdapter().adapt(item.response)
+			this.view.debug.loading = false
 		})
 	}
 
 	onRevokeAppSecret() {
-		this.settingService.nextRevokeAppSecret()
+		this.settingService.setRevokeAppSecret().subscribe(item => {
+			this.view.app_secret = item.client_secret
+		})
 	}
 
 	onRevokeAppToken () {
-		this.settingService.nextRevokeAppToken()
+		this.settingService.setRevokeAppToken().subscribe(item => {
+			this.view.app_token = item.access_token
+		})
 	}
 
 	getCurrentTime() {

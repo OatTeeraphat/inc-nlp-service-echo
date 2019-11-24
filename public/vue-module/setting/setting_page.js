@@ -234,9 +234,9 @@ var settingPage = Vue.component('setting-page', {
                                             <button class="btn btn-link btn-edit" @click="$settingPresenter.onSendNlpKeyword()" ><i class="fe fe-box"></i> <small><strong>GO</strong></small></button>
                                         </div>
                                         <div class="warpper mt-4">
-                                            <div class="card setting-warpper" v-if="debug.result.keyword">
-                                                <div class="card-body debugger-body" >
-                                                    <div class="div">
+                                            <div class="card setting-warpper" >
+                                                <div class="card-body debugger-body" v-if="debug.loading || debug.result" >
+                                                    <div class="div mb-2" v-if="!debug.loading">
                                                         <div class="row">
                                                             <div class="col-9">
                                                                 <h4 class="mb-2 pt-0"><span class="badge badge-success">{{ debug.result.intent }}</span></h4>
@@ -247,7 +247,11 @@ var settingPage = Vue.component('setting-page', {
                                                         <p class="mb-2"><strong>Performance Static</strong></p>
                                                         <code><p class="mb-0">found in 0.93μsec</p></code>
                                                     </div>
-                                                    
+                                                    <div class="div w-100" v-if="debug.loading">
+                                                        <div class="col-12 dot-flashing-center">
+                                                            <div class="dot-flashing"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

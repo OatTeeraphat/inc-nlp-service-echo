@@ -21,7 +21,7 @@ class SettingService {
 				return this.httpRepository.setNlpConfidenceByClientID(confidence)
 			}),
 			map(next => {
-				swal("resolve", { icon: "success", timer: this.duration })
+				swals("success", { title: 'Save Confidence', toast: true })
 			}),
 			this.vueErrorHandler.catchError()
 		)
@@ -42,7 +42,7 @@ class SettingService {
 				return this.httpRepository.setAppInfoByClientId(info)
 			}),
 			map(next => {
-				swal("resolve", { icon: "success", timer: this.duration })
+				swals("success", { title: 'Save App Info', toast: true })
 			}),
 			this.vueErrorHandler.catchError()
 		)
@@ -67,36 +67,35 @@ class SettingService {
 
 
 	setRevokeAppSecret(){
-		return this.setAppSecret$$.pipe(
-			switchMap( () => {
-				return this.httpRepository.revokeSecretByAppId()
-			}),
-			map(next => {
-				swal("resolve", { icon: "success", timer: this.duration })
-				return next
-			}),
-			this.vueErrorHandler.catchError()
-		)
-	}
+		let alertBox = swals("warning", { title: "Revoke App Secret?", html: 'your old app secret will be depecate <br> New secret can be used now.' }, true);
+		return from( alertBox )
+			.pipe(
+				switchMap( it => {
+				if ( it.value ) return this.httpRepository.revokeSecretByAppId()
+					return of()
+				}),
+				map(next => {
+					swals("success", { title: 'Revoke App Secret', toast: true })
+				}),
+			)
 
-	
-	nextRevokeAppSecret() {
-		return this.setAppSecret$$.next({})
 	}
-
 
 	setRevokeAppToken() {
-		return this.setAppToken$$.pipe(
-			switchMap(() => {
-				return this.httpRepository.revokeAccessTokenByAppId()
-			}),
-			map(next => {
-				swal("resolve", { icon: "success", timer: this.duration })
-				return next
-			}),
-			this.vueErrorHandler.catchError()
-		)
+		let alertBox = swals("warning", { title: "Revoke Access Token?", html: 'your old app access token will be depecate <br> New token can be used after confirm.' }, true);
+		return from( alertBox )
+			.pipe(
+				switchMap(it => {
+				if (it.value) return this.httpRepository.revokeAccessTokenByAppId()
+					return of()
+				}),
+				map(next => {
+					swals("success", { title: 'Revoke Access Token', toast: true })
+				}),
+			)
+
 	}
+
 
 	nextRevokeAppToken() {
 		return this.setAppToken$$.next({})
