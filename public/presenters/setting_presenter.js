@@ -79,7 +79,7 @@ class SettingPresenter {
 	onSendNlpKeyword() {
 		let nlpResult = this.settingService.getNlpDebugResult(this.view.debug.keyword)
 		nlpResult.subscribe(item => {
-			this.view.debug.result = item.response;
+			this.view.debug.result = new GetNlpReplyAdapter().adapt(item.response);
 		})
 	}
 

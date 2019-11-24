@@ -51,7 +51,7 @@ var settingPage = Vue.component('setting-page', {
                             <div class="col-6">
                                 <div class="media align-item-center">
                                     <div class="media-body">
-                                        <p class="text-muted mb-2 mt-1">Your App Id</p>
+                                        <p class="text-muted mb-2 mt-1">Your Client Id</p>
                                         <h6 class="card-title mb-0">
                                             <strong>{{app_info.id}}</strong>
                                             <div class="linear-preload" v-bind:class="{ invisible: app_info.id }">
@@ -234,26 +234,20 @@ var settingPage = Vue.component('setting-page', {
                                             <button class="btn btn-link btn-edit" @click="$settingPresenter.onSendNlpKeyword()" ><i class="fe fe-box"></i> <small><strong>GO</strong></small></button>
                                         </div>
                                         <div class="warpper mt-4">
-                                            <div class="card setting-warpper">
-                                                <div class="card-body" >
-                                                    <div class="div" v-if="debug.result.keyword" >
+                                            <div class="card setting-warpper" v-if="debug.result.keyword">
+                                                <div class="card-body debugger-body" >
+                                                    <div class="div">
                                                         <div class="row">
                                                             <div class="col-9">
-                                                                <h2>{{ debug.result.keyword }} <i class="fe fe-chevrons-right"></i> {{ debug.result.intent }}</h2>
+                                                                <h4 class="mb-2 pt-0"><span class="badge badge-success">{{ debug.result.intent }}</span></h4>
                                                             </div>
                                                         </div>
-                                                        <p class="mb-2">{{ debug.result.distance }}% of confidence</p>
+                                                        <pre class="my-2">{{ debug.result }}</pre>
                                                         <hr>
                                                         <p class="mb-2"><strong>Performance Static</strong></p>
                                                         <code><p class="mb-0">found in 0.93μsec</p></code>
                                                     </div>
-                                                    <div class="div" v-if="!debug.keyword">
-                                                        <div class="row">
-                                                            <div class="col-9">
-                                                                <p class="mb-2">...</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>

@@ -593,6 +593,15 @@
      padding: 0 60px 7.5px 0 !important;
      width: calc(100% - 60px);
 }
+ .debugger-body{}
+ .debugger-body pre{
+    overflow: hidden;
+    font-size: 1.125em;
+    line-height: 1.2em;
+}
+ .debugger-body p{
+    font-size: 1.1em;
+}
 
 /* Fallback for Edge -------------------------------------------------- */
  @supports (-ms-ime-align: auto) {
