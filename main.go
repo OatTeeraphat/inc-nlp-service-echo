@@ -1,15 +1,27 @@
 package main
 
 import (
-	"inc-nlp-service-echo/commons"
-	"inc-nlp-service-echo/controllers"
-	"inc-nlp-service-echo/datasources"
-	"inc-nlp-service-echo/nlp/controller"
-	"inc-nlp-service-echo/nlp/service"
-	"inc-nlp-service-echo/repositories"
-	"inc-nlp-service-echo/security"
-	"inc-nlp-service-echo/services"
-	"inc-nlp-service-echo/websockets"
+	"inc-nlp-service-echo/business_module/datasources"
+	"inc-nlp-service-echo/common_module/commons"
+
+	nlpController "inc-nlp-service-echo/core_module/nlp/controller"
+	nlpService "inc-nlp-service-echo/core_module/nlp/service"
+
+	storyController "inc-nlp-service-echo/core_module/story/controller"
+	storyService "inc-nlp-service-echo/core_module/story/service"
+
+	shopStoryController "inc-nlp-service-echo/core_module/categorize/controller"
+	shopStoryService "inc-nlp-service-echo/core_module/categorize/service"
+
+	shopController "inc-nlp-service-echo/core_module/shop/controller"
+	shopService "inc-nlp-service-echo/core_module/shop/service"
+
+	authController "inc-nlp-service-echo/core_module/authentication/controller"
+	facebookController "inc-nlp-service-echo/core_module/facebook/controller"
+
+	"inc-nlp-service-echo/auth_module/security"
+	"inc-nlp-service-echo/business_module/repositories"
+	"inc-nlp-service-echo/common_module/websockets"
 	"net/http"
 	"os"
 
@@ -73,24 +85,25 @@ func main() {
 	repo6 := repositories.NewShopRepository(orm)
 
 	// ################# Services 💰 #################
-	svc0 := service.NewNlpRecordService(repo1, repo0, repo3)
-	svc1 := services.NewStoryService(repo4)
-	svc2 := services.NewShopStoryService(repo5, repo6)
-	svc3 := services.NewShopService(repo6)
-	svc4 := service.NewNlpTrainingLogService(repo0)
+	svc0 := nlpService.NewNlpRecordService(repo1, repo0, repo3)
+	svc4 := nlpService.NewNlpTrainingLogService(repo0)
+	svc1 := storyService.NewStoryService(repo4)
+	svc3 := shopService.NewShopService(repo6)
+	svc2 := shopStoryService.NewShopStoryService(repo5, repo6)
 
 	// ################# Security 🔑 #################
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
 
 	// ################# Controllers 🎮 #################
-	c0 := controller.NewNlpController(svc0)
-	c2 := controllers.NewFBWebhookController(svc0, *ws.Upgrader)
-	c3 := controllers.NewStoryController(svc1)
-	c4 := controllers.NewShopStoryController(svc2)
-	c5 := controllers.NewShopController(svc3)
-	c6 := controller.NewNlpTrainingLogController(svc4)
-	c7 := controllers.NewClientAuthController(secure0)
+	c0 := nlpController.NewNlpController(svc0)
+	c6 := nlpController.NewNlpTrainingLogController(svc4)
+	c3 := storyController.NewStoryController(svc1)
+	c5 := shopController.NewShopController(svc3)
+	c4 := shopStoryController.NewShopStoryController(svc2)
+
+	c2 := facebookController.NewFBWebhookController(svc0, *ws.Upgrader)
+	c7 := authController.NewClientAuthController(secure0)
 
 	e.GET("/health_check", func(c echo.Context) error {
 		return c.String(http.StatusOK, "OK")
