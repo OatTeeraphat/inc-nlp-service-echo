@@ -84,7 +84,7 @@ class SettingService {
 					return of({})
 				}),
 				map(next => {
-					swal2( ALERT.TOAST, { title: 'Change App Secret', icon: "success" })
+					swal2(ALERT.TOAST, { title: 'Change App Secret', icon: "success" })
 					return next
 				}),
 			)
@@ -101,7 +101,7 @@ class SettingService {
 					return of()
 				}),
 				map(next => {
-					swal2(ALERT.TOAST, { title: 'Revoke Access Token', toast: true })
+					swal2(ALERT.TOAST, { title: 'Revoke Access Token', icon: "success" })
 					return next
 				}),
 			)

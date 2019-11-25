@@ -38,7 +38,7 @@ const swal2 = function (type, props, confirm=false) {
 			popup.confirmButtonText = "submit"
 			break;
 		case ALERT.TOAST :
-			swal = swal.mixin({
+			let TOAST = swal.mixin({
 				toast: true, // toast is mini alert
 				position: 'bottom-end',
 				showConfirmButton: false,
@@ -49,6 +49,13 @@ const swal2 = function (type, props, confirm=false) {
 				}
 			})
 			props.icon ? popup.customClass.container = props.icon : true
+			return TOAST.fire({
+				...props,
+				...popup,
+			}).then((result) => {
+				console.log(result)
+				return result
+			})
 			break;
 		default :
 			popup.icon = "success"
