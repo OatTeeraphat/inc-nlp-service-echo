@@ -1,4 +1,4 @@
-var welcomePage = Vue.component('welcome-page', {
+export default Vue.component('welcome-page', {
     template: `
     <div class="container">
         <div class="row justify-content-center">
@@ -12,12 +12,12 @@ var welcomePage = Vue.component('welcome-page', {
         return this.$welcomePresenter.view
     },
     mounted: function () {
-        this.$welcomePresenter.getInitialState()
+        this.$welcomePresenter.onMounted()
     },
     computed: {
         nlpCounterDigitSpliter: function () { return this.$welcomePresenter.nlpCounterDigitSpliter() }
     },
     beforeDestroy: function () {
-        this.$welcomePresenter.disposal()
+        this.$welcomePresenter.beforeDestroy()
     },
 })

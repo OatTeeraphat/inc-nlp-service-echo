@@ -1,4 +1,4 @@
-class GetChartIntentRatioAdapter {
+export class GetChartIntentRatioAdapter {
     adapt(models) {
 
         let item = {

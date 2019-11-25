@@ -1,4 +1,4 @@
-class GetChartIntentRankingAdapter {
+export class GetChartIntentRankingAdapter {
     adapt(models) {
 
         let item = {

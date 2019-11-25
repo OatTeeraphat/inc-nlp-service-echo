@@ -1,4 +1,4 @@
-class LocalStorageRepository {
+export class LocalStorageRepository {
     constructor() {}
 
     getRecentlyNlpRecordSearch() {

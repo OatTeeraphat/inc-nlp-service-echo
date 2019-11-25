@@ -1,4 +1,4 @@
-var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {    
+export default Vue.component('nlp-training-log-page', {    
     template: `
     <div class="warp" >
         <nav-component></nav-component>
@@ -12,6 +12,7 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
                     </div>
                     <div class="col-12 col-md-3 text-right">
                         <div class="from-search">
+                            <!-- // TODO: search by minhash -->
                             <input type="text" class="form-control-plaintext p-0 mt-2" placeholder="Search Here">
                             <i class="fe fe-search"></i>
                         </div>
@@ -25,9 +26,14 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
                                     Bulk Action
                                 </button>
                                 <div class="dropdown-menu">
+                                    <!-- // TODO: select all -->
                                     <button @click="$nlpTrainingLogPresenter.selectAllNlpTrainingLog()" class="dropdown-item">Select All</button>
+
+                                    <!-- // TODO: deselect all -->
                                     <button @click="$nlpTrainingLogPresenter.deselectAllNlpTrainingLog()" class="dropdown-item">Deselect All</button>
                                     <div class="dropdown-divider"></div>
+
+                                    <!-- // TODO: bulk delete all selected -->
                                     <button @click="$nlpTrainingLogPresenter.bulkDeleteNlpTrainingLog()" class="dropdown-item text-danger">Delete All</button>
                                 </div>
                             </div>
@@ -74,6 +80,7 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
                                     <button type="button" class="btn btn-link btn-table hover-success" title="Cancle">
                                         <i class="fe fe-plus-circle"></i>
                                     </button>
+                                    <!-- // TODO: delete one by ID -->
                                     <button @click="$nlpTrainingLogPresenter.deleteNlpTrainingLogByID(item.id)" type="button"class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
                                     <i class="fe fe-delete"></i>
                                     </button>
@@ -84,15 +91,15 @@ var nlpTrainingLogPage = Vue.component('nlp-training-log-page', {
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
     `,
     data: function () {
         return this.$nlpTrainingLogPresenter.view
     },
     mounted: function () {
-        this.$nlpTrainingLogPresenter.getInitialState()
+        this.$nlpTrainingLogPresenter.onMounted()
     },
     beforeDestroy: function () {
-        this.$nlpTrainingLogPresenter.disposal()
+        this.$nlpTrainingLogPresenter.beforeDestroy()
     }
 })

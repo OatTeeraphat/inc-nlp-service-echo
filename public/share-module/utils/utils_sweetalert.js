@@ -32,7 +32,5 @@ const swal2 = function (type, props, confirm=false) {
 		console.log(result)
 		return result
 	})
-
-	
 }
 

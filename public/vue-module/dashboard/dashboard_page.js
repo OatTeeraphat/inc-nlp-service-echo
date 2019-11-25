@@ -1,4 +1,4 @@
-var dashboardPage = Vue.component('dashboard-page', {
+export default Vue.component('dashboard-page', {
 	template: `
 	<div class="warp">
 		<nav-component></nav-component>
@@ -263,7 +263,7 @@ var dashboardPage = Vue.component('dashboard-page', {
 			</div>
 		</div>
 	</div>
-    `,
+	`,
 	data: function () {
 		return {
 			toggle_chart : {

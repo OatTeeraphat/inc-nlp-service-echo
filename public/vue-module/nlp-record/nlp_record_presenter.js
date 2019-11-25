@@ -18,7 +18,7 @@ class NlpRecordViewModel {
     }
 }
 
-class NlpRecordPresenter {
+export class NlpRecordPresenter {
     constructor(nlpRecordsService) {
         this.view = new NlpRecordViewModel()
         this.nlpRecordsService = nlpRecordsService
@@ -27,7 +27,7 @@ class NlpRecordPresenter {
         this.$uploadXlSXNlpRecordUnSubscription = null
     }
 
-    getInitialState() {
+    onMounted() {
         this.$getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
             this.view.page = this.view.page + 1
             this.view.total = item.total
@@ -50,7 +50,6 @@ class NlpRecordPresenter {
     }
 
     getMoreNlpRecordByInfiniteScroll( event ) {
-        // console.log(this.view.isShowLoadingIndicator)
         let {scrollTop, clientHeight, scrollHeight } = event.srcElement
         if (scrollTop + clientHeight >= scrollHeight / 1.2) {
             this.view.isShowLoadingIndicator = true
@@ -77,6 +76,7 @@ class NlpRecordPresenter {
 
             // next page event
             if (this.view.nlpRecords.length == 0) {
+                this.view.page = 1
                 this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(this.view.page)
             }
         })
@@ -106,7 +106,7 @@ class NlpRecordPresenter {
         this.nlpRecordsService.nextUploadXLSXNlpRecord(fileList)
     }
 
-    disposal() {
+    beforeDestroy() {
 
         this.$searchNlpRecordsServiceSubscription.unsubscribe()
         this.$getNlpRecordsByInfiniteScrollSubscription.unsubscribe()

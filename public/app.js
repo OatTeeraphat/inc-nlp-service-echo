@@ -1,11 +1,53 @@
 (async () => console.log(`######### FillChat #########`) )()
+import { CookieRepository } from './share-module/repositories/cookie_repository.js'
+import { HttpRepository } from './share-module/repositories/http_repository.js'
+import { SocketRepository } from './share-module/repositories/socket_repository.js'
+import { LocalStorageRepository } from './share-module/repositories/local_storage_repository.js'
+import { CacheStorageRepository } from './share-module/repositories/cache_storage_repository.js'
+import { AuthGuard } from './share-module/security/vue_auth_guard.js'
+import { VueErrorHandler } from './share-module/middleware/vue_error_handle.js'
+
+// Auth module
+import { AuthenticationService } from './vue-module/authentication/authentication_service.js'
+import { AuthenticationPresenter } from './vue-module/authentication/authentication_presenter.js'
+import mainPage from './vue-module/authentication/authentication_page.js'
+
+// NLP training record module
+import { NlpRecordsService } from './vue-module/nlp-record/nlp_records_service.js'
+import { NlpRecordPresenter } from './vue-module/nlp-record/nlp_record_presenter.js'
+import { NlpTrainingLogService } from './vue-module/nlp-training-log/nlp_training_log_service.js'
+import { NlpTrainingLogPresenter } from './vue-module/nlp-training-log/nlp_training_log_presenter.js'
+import { StoryService } from './vue-module/story/story_service.js'
+import { StoryPresenter } from './vue-module/story/story_presenter.js'
+import { WebChatService } from './vue-module/webchat/webchat_service.js'
+import { NlpReplyCounterService } from './vue-module/welcome/nlp_reply_counter_service.js'
+import { WelcomePresenter } from './vue-module/welcome/welcome_presenter.js'
+
+import nlpRecordPage from './vue-module/nlp-record/nlp_records_page.js'
+import nlpTrainingLog from './vue-module/nlp-training-log/nlp_training_log_page.js'
+import storyPage from './vue-module/story/story_page.js'
+import welcomePage from './vue-module/welcome/welcome_page.js'
+import dashboardPage from './vue-module/dashboard/dashboard_page.js'
+import webChatPage from './vue-module/webchat/webchat_page.js'
+import accessLogPage from './vue-module/logs/logs_page.js'
+
+// TODO: Setting Module
+
+
+import './vue-custom-module/navbar/nav_component.js'
+import './vue-custom-module/chart/chart_bubble_intent_component.js'
+import './vue-custom-module/chart/chart_model_accuracy_component.js'
+import './vue-custom-module/chart/chart_stack_training_component.js'
+import './vue-custom-module/chart/chart_training_growth_component.js'
+import './vue-custom-module/chart/chart_usage_api_component.js'
+import './vue-custom-module/chart/chart_usage_average_time_component.js'
+
 // repositories initialize
 const cookieRepo = new CookieRepository(Cookies)
 const httpRepo = new HttpRepository(cookieRepo)
 const cacheRepo = new CacheStorageRepository()
 const socketRepo = new SocketRepository()
 const localStorageRepo = new LocalStorageRepository()
-
 
 const authGuard = new AuthGuard(cookieRepo)
 
@@ -14,12 +56,12 @@ const routes = [
     { path: '/login', name: 'login',  component: mainPage , beforeEnter: authGuard.ifNotAuthenticated },
     { path: '/welcome', name: 'welcome',  component: welcomePage },
     { path: '/dashboard', name: 'dashboard', component: dashboardPage, beforeEnter: authGuard.ifAuthenticated },
-    { path: '/nlp', name: 'nlp', component: nlpRecordsPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
-    { path: '/logs', name: 'logs', component: nlpTrainingLogPage , beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/nlp', name: 'nlp', component: nlpRecordPage, beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
+    { path: '/logs', name: 'logs', component: nlpTrainingLog , beforeEnter: authGuard.ifAuthenticated, meta: { keepAlive: true } },
     { path: '/story', name: 'story', component: storyPage , beforeEnter: authGuard.ifAuthenticated },
     { path: '/webchat', name: 'webchat', component: webChatPage, beforeEnter: authGuard.ifAuthenticated },
     { path: '/setting', name: 'setting', component: settingPage, beforeEnter: authGuard.ifAuthenticated },
-    { path: '/logging', name: 'logging', component: logsPage , beforeEnter: authGuard.ifAuthenticated },
+    { path: '/logging', name: 'logging', component: accessLogPage , beforeEnter: authGuard.ifAuthenticated },
 ]
 
 // vue Router
@@ -66,5 +108,8 @@ Vue.use(VueRouter)
 
 new Vue({
     el: '#app',
-    router: vueRouter
+    router: vueRouter,
+    component: {
+        // navComponent
+    }
 })

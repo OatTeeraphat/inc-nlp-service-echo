@@ -1,3 +1,3 @@
-class CacheStorageRepository {
+export class CacheStorageRepository {
     constructor() {}
 }

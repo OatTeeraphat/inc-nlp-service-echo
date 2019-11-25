@@ -1,4 +1,4 @@
-class GetClientSignInAdapter {
+export class GetClientSignInAdapter {
     adapt(model) {
 
         return {

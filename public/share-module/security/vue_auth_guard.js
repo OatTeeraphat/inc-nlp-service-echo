@@ -1,4 +1,4 @@
-class AuthGuard {
+export class AuthGuard {
     constructor(CookieRepository) {
         this.cookieRepository = CookieRepository
     }

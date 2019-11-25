@@ -1,17 +1,17 @@
-class NlpTrainingLogService {
+import { GetNlpTrainingLogPaginationAdapter } from './get_nlp_training_log_pagination_adapter.js'
+
+export class NlpTrainingLogService {
     
     constructor(httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.httpRepository = httpRepository
         this.cookieRepository = cookieRepository
         this.vueRouter = vueRouter
         this.vueErrorHandler = vueErrorHandler
-        this.unsubscribe = new Subject()
         this.infiniteHandler$$ = new Subject()
     }
 
     getNlpTrainingLogPagination = (page) => {
         return this.httpRepository.getNlpTrainingLogPagination("keyword", "intent", "story", page).pipe(
-            takeUntil(this.unsubscribe),
             map( ({ response }) => {
                 return new GetNlpTrainingLogPaginationAdapter().adapt(response) 
             }),
@@ -21,66 +21,53 @@ class NlpTrainingLogService {
     
     getNlpTrainingLogPaginationByInfiniteScrollSubject = () => {
         return this.infiniteHandler$$.pipe(
-            takeUntil(this.unsubscribe),
             throttleTime(200),
             exhaustMap( ({ page }) => this.getNlpTrainingLogPagination(page) ),
         )
     }
 
     bulkDeleteNlpTrainingLogsByIDs = (ids) => {
-        return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
-            takeUntil(this.unsubscribe),
-            switchMap( SWAL_CONFIRM => {
-                console.debug(SWAL_CONFIRM)
+        let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Delete NLP training record" }, true)
+        return from( confirmModal ).pipe(
+            switchMap( result => {
+                console.debug(result)
 
-                if (SWAL_CONFIRM) {
+                if (result.value) {
                     return this.httpRepository.bulkDeleteNlpTrainingLogsByIDs(ids).pipe(
                         this.vueErrorHandler.catchHttpError(),
                     )
                 } 
 
-                const SWAL_CANCEL = false
-
-                return throwError(SWAL_CANCEL)
+                return throwError(false)
             }),
             map( next => {
-                swal("resolve", {icon: "success", timer: this.duration}) 
+                swal2('success', { text: "resolve", title: "Delete NLP training log" })
+                return next
             }),
         )
     }
 
     deleteNlpTrainingLogByID = (id) => {        
-
-        return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
-            takeUntil(this.unsubscribe),
-            switchMap( yes => {
-                const SWAL_CONFIRM = yes
-
-                if (SWAL_CONFIRM) {
+        let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Delete NLP training record" }, true)
+        return from( confirmModal ).pipe(
+            switchMap( result => {
+                console.debug(result)
+                if (result.value) {
                     return this.httpRepository.deleteNlpTrainingLogByID(id).pipe(
                         this.vueErrorHandler.catchHttpError(),
                     )
                 }
-
-                return throwError("SWAL_CANCEL")
+                return throwError(false)
             }),
             map( it => {
-                swal('resolve', {icon: "success", timer: this.duration}) 
-                return of(it)
+                swal2('success', { text: "resolve", title: "Delete NLP training log" })
+                return it
             }),
         )
     }
 
     nextNlpTrainingLogPaginationPage = (pageID) => {
         this.infiniteHandler$$.next({ page: pageID })
-    }
-    
-    disposable = () => {
-        // this.infiniteHandler$$.next()
-        // this.infiniteHandler$$.complete()
-        
-        this.unsubscribe.next()
-        this.unsubscribe.complete()
     }
 
 }

@@ -1,5 +1,6 @@
+import { GetStoryModelAdapter } from './get_story_adapter.js'
 
-class StoryService {
+export class StoryService {
     
     constructor( httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.vueRouter = vueRouter
@@ -21,20 +22,20 @@ class StoryService {
     }
 
     deleteStoryByID(storyID) {
+        let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Delete Story" }, true)
+        return from( confirmModal ).pipe(
+            switchMap( result => {
 
-        return from( swal("confirm transaction", { icon: "warning", buttons: { ok: true, cancel: true } }) ).pipe(
-            switchMap( yes => {
-
-                if (yes) {
+                if (result.value) {
                     return this.httpRepository.deleteStoryByID(storyID).pipe(
                         this.vueErrorHandler.catchHttpError(),
                     )
                 }
 
-                return throwError("no")
+                return throwError(false)
             }),
             map( next => {
-                swal("resolve", {icon: "success", timer: this.duration}) 
+                swal2('success', { text: "resolve", title: "Delete Story" })
             }),
             finalize(() =>  { console.log("complete") })
         )

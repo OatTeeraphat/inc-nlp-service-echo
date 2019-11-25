@@ -1,4 +1,4 @@
-var storyPage = Vue.component('story-page', {    
+export default Vue.component('story-page', {    
     template: `
     <div class="warp">
         <nav-component></nav-component>
@@ -166,9 +166,9 @@ var storyPage = Vue.component('story-page', {
         return this.$storyPresenter.view
     },
     mounted: function () {
-        this.$storyPresenter.getInitialState()
+        this.$storyPresenter.onMounted()
     },
     beforeDestroy: function () {
-        this.$storyPresenter.disposal()
+        this.$storyPresenter.beforeDestroy()
     },
 })

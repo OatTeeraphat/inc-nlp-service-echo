@@ -1,4 +1,4 @@
-var nlpFlipCardCounterComponent = Vue.component('nlp-flip-card-counter-component', {
+export default Vue.component('nlp-flip-card-counter-component', {
     template: `
     `,
     props: ["initialNlpCounter", "type"]

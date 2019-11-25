@@ -1,4 +1,4 @@
-class CookieRepository {
+export class CookieRepository {
     
     constructor(cookies) {
         // by cookie-js

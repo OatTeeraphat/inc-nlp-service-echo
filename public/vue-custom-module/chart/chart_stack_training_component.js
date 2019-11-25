@@ -1,4 +1,11 @@
-Vue.component('stack-chart-training', {
+const colorByStory = {
+	GREETING  : "#673AB7",
+	CHITCHAT  : "#e83e8c",
+	FAQ       : "#224367",
+	PRODUCT   : "#ffb43b",
+}
+
+export default Vue.component('stack-chart-training', {
 	extends: VueChartJs.HorizontalBar,
 	
   beforeMount () {

@@ -1,4 +1,4 @@
-Vue.component('line-chart-average-time-usage', {
+export default Vue.component('line-chart-average-time-usage', {
 	extends: VueChartJs.Line,
 	mounted() {
 		this.renderChart({

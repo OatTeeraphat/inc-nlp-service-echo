@@ -1,4 +1,4 @@
-var nlpRecordsPage = Vue.component('nlp-record-page', {    
+export default Vue.component('nlp-record-page', {    
     template: `
     <div class="warp" >
         <nav-component></nav-component>
@@ -39,7 +39,6 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                     </button>
                                     <div class="dropdown-menu dropdown-file" aria-labelledby="btnGroupDrop">
                                         <strong>Upload Training Set</strong>
-                                        // TODO: ja
                                         <form enctype="multipart/form-data" class="custom-file mt-2 mb-1">
                                             <label class="custom-file-label" for="customFile">Choose file</label>
                                             <input class="custom-file-input" name="xlsx" type="file" id="file" ref="file" @change="$nlpRecordPresenter.uploadXlSXNlpRecord($event.target.name, $event.target.files); fileCount = $event.target.files.length">
@@ -85,6 +84,7 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                         <i class="fe fe-x text-danger "></i>
                                     </button>
                                 </th>
+                                <!-- // TODO: add one new keyword, intent, story -->
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence Here"></td>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here"></td>
                                 <td class="col-2">
@@ -99,6 +99,7 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                     </div>
                                 </td>
                                 <td class="col-1 text-center">
+                                    <!-- // TODO: update one keyword, intent, story -->
                                     <button type="button" class="btn btn-link btn-table hover-success" title="Add Row">
                                         <i class="fe fe-plus-circle"></i>
                                     </button>
@@ -108,6 +109,24 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                 <th scope="row" class="col-1">
                                     <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
                                 </th>
+                                <!-- // TODO: update one keyword, intent, story -->
+                                <td class="col-4"><input @change="onChangeText($event)" type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
+                                <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
+                                <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
+                                <td class="col-1 text-center"> 
+                                    <button @click="$nlpRecordPresenter.deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
+                                        <i class="fe fe-delete"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tbody v-else>
+                            <tr v-for="item in $nlpRecordPresenter.view.nlpRecordsByKeyword">
+                                <th scope="row" class="col-1">
+                                    <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsByKeywordCheckedList.ids" type="checkbox">
+                                </th>
+                                <!-- // TODO: update one keyword, intent, story -->
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                                 <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
@@ -117,50 +136,6 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
                                     </button>
                                 </td>
                             </tr>
-                        </tbody>
-
-                        <tbody v-else>
-                            <tr class="tr-add">
-                                    <td colspan="5" class="col-12"><strong class="mx-3"><i class="fe fe-plus-circle mr-1"></i> Add Row</strong></td>
-                                </tr>
-                                <tr class="tr-input">
-                                    <th scope="row" class="col-1">
-                                        <button type="button" class="btn btn-table btn-link hover-danger" title="Cancle">
-                                            <i class="fe fe-x text-danger "></i>
-                                        </button>
-                                    </th>
-                                    <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence Here"></td>
-                                    <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here"></td>
-                                    <td class="col-2">
-                                        <div class="form-group tr-dropdown mb-0">
-                                            <select class="form-control form-control-sm" id="exampleFormControlSelect1" required>
-                                                <option value="" disabled selected hidden>Story Here</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td class="col-1 text-center">
-                                        <button type="button" class="btn btn-link btn-table hover-success" title="Add Row">
-                                            <i class="fe fe-plus-circle"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr v-for="item in $nlpRecordPresenter.view.nlpRecordsByKeyword">
-                                    <th scope="row" class="col-1">
-                                        <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsByKeywordCheckedList.ids" type="checkbox">
-                                    </th>
-                                    <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
-                                    <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
-                                    <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
-                                    <td class="col-1 text-center">
-                                        <button @click="$nlpRecordPresenter.deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
-                                            <i class="fe fe-delete"></i>
-                                        </button>
-                                    </td>
-                                </tr>
                         </tbody>
                     </table>
                     <div class="row" v-show="$nlpRecordPresenter.view.isShowLoadingIndicator">
@@ -179,12 +154,18 @@ var nlpRecordsPage = Vue.component('nlp-record-page', {
         }
     },
     mounted: function () {
-        this.$nlpRecordPresenter.getInitialState()
+        this.$nlpRecordPresenter.onMounted()
     },
     computed: {
         searchNlpRecordByKeywordComputed: function(e) {  return this.$nlpRecordPresenter.searchNlpRecordByKeywordComputed() }
     },
     beforeDestroy: function () {
-        this.$nlpRecordPresenter.disposal()
+        this.$nlpRecordPresenter.beforeDestroy()
+    },
+    methods: {
+        // TODO: make update nlp record event
+        onChangeText: function ($event) {
+            console.log($event)
+        }
     }
 })
