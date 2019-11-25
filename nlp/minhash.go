@@ -1,4 +1,4 @@
-package nlps
+package nlp
 
 import "math"
 

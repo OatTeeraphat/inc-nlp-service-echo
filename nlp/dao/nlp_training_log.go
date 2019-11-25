@@ -1,4 +1,4 @@
-package models
+package dao
 
 // NlpTrainingLogPaginationSearchModel NlpRecordPaginationSearchModel
 type NlpTrainingLogPaginationSearchModel struct {

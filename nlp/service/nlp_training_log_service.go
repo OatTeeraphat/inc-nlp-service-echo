@@ -1,7 +1,7 @@
-package services
+package service
 
 import (
-	"inc-nlp-service-echo/models"
+	"inc-nlp-service-echo/nlp/dao"
 	"inc-nlp-service-echo/repositories"
 	"math"
 	"strconv"
@@ -16,7 +16,7 @@ type NlpTrainingLogService struct {
 
 // INlpTrainingLogService INlpTrainingLogService
 type INlpTrainingLogService interface {
-	ReadPaginationNlpRecordService(PageID string) models.NlpTrainingLogPaginationSearchModel
+	ReadPaginationNlpRecordService(PageID string) dao.NlpTrainingLogPaginationSearchModel
 }
 
 // NewNlpTrainingLogService NewNlpTrainingLogService
@@ -27,8 +27,8 @@ func NewNlpTrainingLogService(repo1 repositories.INlpTrainingLogRepository) INlp
 }
 
 // ReadPaginationNlpRecordService ReadPaginationNlpRecordService
-func (repo NlpTrainingLogService) ReadPaginationNlpRecordService(PageID string) models.NlpTrainingLogPaginationSearchModel {
-	var nlpTrainingLogPaginationSearchModel models.NlpTrainingLogPaginationSearchModel
+func (repo NlpTrainingLogService) ReadPaginationNlpRecordService(PageID string) dao.NlpTrainingLogPaginationSearchModel {
+	var nlpTrainingLogPaginationSearchModel dao.NlpTrainingLogPaginationSearchModel
 
 	nlpTrainingLogPaginationSearchModel.Page = PageID
 	nlpTrainingLogPaginationSearchModel.Limit = "40"
@@ -50,7 +50,7 @@ func (repo NlpTrainingLogService) ReadPaginationNlpRecordService(PageID string) 
 	// nlpRecordPaginationSearchModel.NlpRecords = []models.NlpRecords{}
 
 	for _, item := range repo.nlpTrainingLogRepository.Pagination(pageInt, 40) {
-		var nlpModels models.NlpTrainingLog
+		var nlpModels dao.NlpTrainingLog
 		nlpModels.ID = item.ID
 		nlpModels.Keyword = item.Keyword
 		nlpModels.Intent = item.Intent

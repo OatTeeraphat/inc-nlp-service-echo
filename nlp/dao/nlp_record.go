@@ -1,4 +1,4 @@
-package models
+package dao
 
 // CreateNlpRecordModel CreateNLPModel
 type CreateNlpRecordModel struct {

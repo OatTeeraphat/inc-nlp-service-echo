@@ -1,9 +1,9 @@
-package controllers
+package controller
 
 import (
 	"fmt"
-	"inc-nlp-service-echo/models"
-	"inc-nlp-service-echo/services"
+	"inc-nlp-service-echo/nlp/dao"
+	"inc-nlp-service-echo/nlp/service"
 	"net/http"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
@@ -13,7 +13,7 @@ import (
 
 // NlpController nlp rest api controller
 type NlpController struct {
-	NlpService services.INlpRecordService
+	NlpService service.INlpRecordService
 }
 
 // INlpController nlp rest api interface
@@ -29,7 +29,7 @@ type INlpController interface {
 }
 
 // NewNlpController new nlp controller instace
-func NewNlpController(nlpRecordService services.INlpRecordService) INlpController {
+func NewNlpController(nlpRecordService service.INlpRecordService) INlpController {
 	return &NlpController{nlpRecordService}
 }
 
@@ -60,7 +60,7 @@ func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) erro
 func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error {
 	// shopID := e.QueryParam("shop_id")
 
-	createNlpRecordModel := new([]models.CreateNlpRecordModel)
+	createNlpRecordModel := new([]dao.CreateNlpRecordModel)
 	e.Bind(&createNlpRecordModel)
 
 	response := con.NlpService.CreateNlpRecordService(*createNlpRecordModel)

@@ -1,17 +1,17 @@
-package services
+package service
 
 import (
 	"fmt"
 	"inc-nlp-service-echo/domains"
-	"inc-nlp-service-echo/models"
-	"inc-nlp-service-echo/nlps"
+	"inc-nlp-service-echo/nlp"
+	"inc-nlp-service-echo/nlp/dao"
 	"inc-nlp-service-echo/repositories"
 	"inc-nlp-service-echo/utils"
 	"math"
 	"strconv"
 	"strings"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/labstack/gommon/log"
 )
 
 // NlpRecordService NlpService
@@ -25,9 +25,9 @@ type NlpRecordService struct {
 type INlpRecordService interface {
 	UploadXlsxNlpRecordService(xlsxSheet [][]string) string
 	DropNlpReplyByShopService() string
-	ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) models.NlpRecordPaginationSearchModel
-	ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel
-	CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string
+	ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) dao.NlpRecordPaginationSearchModel
+	ReadNlpReplyModelService(keyword string, shopID string) dao.NlpReplyModel
+	CreateNlpRecordService(createNlpModel []dao.CreateNlpRecordModel) string
 	RemoveNlpRecordByID(id string) string
 	BulkDeleteNlpRecordByIDs(ids []uint) (string, error)
 	UpdateNlpRecordByIDAndClientID(id string) string
@@ -43,10 +43,10 @@ func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, 
 }
 
 // CreateNlpRecordService GetNlpModelReply
-func (svc NlpRecordService) CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string {
+func (svc NlpRecordService) CreateNlpRecordService(createNlpModel []dao.CreateNlpRecordModel) string {
 
 	for _, item := range createNlpModel {
-		hashValue := nlps.GenerateKeywordMinhash(item.Keyword)
+		hashValue := nlp.GenerateKeywordMinhash(item.Keyword)
 
 		var nlpRecordDomain domains.NlpRecordDomain
 		nlpRecordDomain.Keyword = item.Keyword
@@ -91,7 +91,7 @@ func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) str
 		nlpRecord = append(nlpRecord, domains.NlpRecordDomain{
 			Keyword:        keyword,
 			Intent:         intent,
-			KeywordMinhash: nlps.GenerateKeywordMinhash(keyword),
+			KeywordMinhash: nlp.GenerateKeywordMinhash(keyword),
 			StoryID:        utils.NewRandomIDBetween(1, 3),
 		})
 	}
@@ -112,8 +112,8 @@ func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) str
 }
 
 // ReadNlpReplyModelService ReadNlpReplyModel
-func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID string) models.NlpReplyModel {
-	var nlpReplyModel []models.NlpReplyModel
+func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID string) dao.NlpReplyModel {
+	var nlpReplyModel []dao.NlpReplyModel
 	var listStoryIDsInShopFound []uint32
 	var keywordMinhash uint32
 
@@ -121,7 +121,7 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 		log.Fatal("no keyword")
 	}
 
-	keywordMinhash = nlps.GenerateKeywordMinhash(keyword)
+	keywordMinhash = nlp.GenerateKeywordMinhash(keyword)
 
 	shopStoryDomainFoundByShopID := svc.shopStoryRepository.FindByShopID(1)
 
@@ -134,7 +134,7 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 
 	if len(nlpFindByKeyword) == 0 {
 		// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info("no module")
-		nlpReplyModel := models.NlpReplyModel{
+		nlpReplyModel := dao.NlpReplyModel{
 			Keyword:  keyword,
 			Intent:   "DEFAULT_MESSAGE",
 			Distance: 999,
@@ -144,7 +144,7 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 	}
 
 	for _, item := range nlpFindByKeyword {
-		eachNlpModel := models.NlpReplyModel{Keyword: item.Keyword, Intent: item.Intent, StoryID: item.StoryID}
+		eachNlpModel := dao.NlpReplyModel{Keyword: item.Keyword, Intent: item.Intent, StoryID: item.StoryID}
 		eachNlpModel.Keyword = item.Keyword
 		eachNlpModel.Intent = item.Intent
 		eachNlpModel.StoryID = item.StoryID
@@ -152,7 +152,7 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 	}
 
 	// log.WithFields(log.Fields{"step": 1, "module": "NLP_MODULE"}).Info(nlpReplyModel)
-	nlpResult := nlps.FindMinDistanceFromNlpModels(nlpReplyModel, keyword)
+	nlpResult := nlp.FindMinDistanceFromNlpModels(nlpReplyModel, keyword)
 	// log.WithFields(log.Fields{"step": 4, "module": "NLP_MODULE"}).Info(nlpResult)
 
 	if nlpResult.Distance != 0 {
@@ -162,7 +162,7 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 }
 
 // saveNlpTrainingSetsService saveNlpTrainingSetsService
-func (svc NlpRecordService) saveNlpTrainingSetsService(nlpResult *models.NlpReplyModel, shopID uint) {
+func (svc NlpRecordService) saveNlpTrainingSetsService(nlpResult *dao.NlpReplyModel, shopID uint) {
 	var nlpTraningRecordDomain domains.NlpTrainingLogDomain
 	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
 	nlpTraningRecordDomain.Intent = nlpResult.Intent
@@ -178,8 +178,8 @@ func (svc NlpRecordService) DropNlpReplyByShopService() string {
 }
 
 // ReadPaginationNlpRecordService ReadPaginationNlpRecordService
-func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) models.NlpRecordPaginationSearchModel {
-	var nlpRecordPaginationSearchModel models.NlpRecordPaginationSearchModel
+func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) dao.NlpRecordPaginationSearchModel {
+	var nlpRecordPaginationSearchModel dao.NlpRecordPaginationSearchModel
 
 	nlpRecordPaginationSearchModel.Page = page
 	nlpRecordPaginationSearchModel.Limit = "50"
@@ -190,7 +190,7 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 		log.Error(err)
 	}
 
-	nlpRecordPaginationSearchModel.NlpRecords = []models.NlpRecords{}
+	nlpRecordPaginationSearchModel.NlpRecords = []dao.NlpRecords{}
 
 	log.Info(keyword)
 
@@ -201,7 +201,7 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
 		for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 50) {
-			var nlpModels models.NlpRecords
+			var nlpModels dao.NlpRecords
 			nlpModels.ID = item.ID
 			nlpModels.Keyword = item.Keyword
 			nlpModels.Intent = item.Intent
@@ -211,12 +211,12 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 		}
 	} else {
 
-		nlpRecordsCount := svc.nlpRecordRepository.CountByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword))
+		nlpRecordsCount := svc.nlpRecordRepository.CountByKeywordMinhash(nlp.GenerateKeywordMinhash(keyword))
 		pageSizeFloat := float64(nlpRecordsCount) / 50
 		nlpRecordPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
 
-		for _, item := range svc.nlpRecordRepository.PaginationByKeywordMinhash(nlps.GenerateKeywordMinhash(keyword), pageInt, 50) {
-			var nlpModels models.NlpRecords
+		for _, item := range svc.nlpRecordRepository.PaginationByKeywordMinhash(nlp.GenerateKeywordMinhash(keyword), pageInt, 50) {
+			var nlpModels dao.NlpRecords
 			nlpModels.ID = item.ID
 			nlpModels.Keyword = item.Keyword
 			nlpModels.Intent = item.Intent

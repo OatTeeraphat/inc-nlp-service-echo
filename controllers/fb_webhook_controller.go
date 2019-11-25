@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"inc-nlp-service-echo/models"
-	"inc-nlp-service-echo/services"
+	"inc-nlp-service-echo/nlp/service"
 	"io/ioutil"
 	"net/http"
 
@@ -15,7 +15,7 @@ import (
 
 // FBWebhookController FBWebhookController
 type FBWebhookController struct {
-	NlpService        services.INlpRecordService
+	NlpService        service.INlpRecordService
 	WebSocketUpgrader websocket.Upgrader
 }
 
@@ -27,7 +27,7 @@ type IFBWebhookController interface {
 }
 
 // NewFBWebhookController NewFBWebhookController
-func NewFBWebhookController(nlpRecordService services.INlpRecordService, ws websocket.Upgrader) IFBWebhookController {
+func NewFBWebhookController(nlpRecordService service.INlpRecordService, ws websocket.Upgrader) IFBWebhookController {
 	return &FBWebhookController{nlpRecordService, ws}
 }
 
