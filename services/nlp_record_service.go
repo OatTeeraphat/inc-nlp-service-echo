@@ -30,6 +30,7 @@ type INlpRecordService interface {
 	CreateNlpRecordService(createNlpModel []models.CreateNlpRecordModel) string
 	RemoveNlpRecordByID(id string) string
 	BulkDeleteNlpRecordByIDs(ids []uint) (string, error)
+	UpdateNlpRecordByIDAndClientID(id string) string
 }
 
 // NewNlpRecordService NewNlpService
@@ -254,4 +255,11 @@ func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []uint) (string, error)
 	go svc.nlpRecordRepository.BulkDeleteNlpRecordsByIDs(idsForDelete)
 
 	return "OK", nil
+}
+
+// UpdateNlpRecordByIDAndClientID UpdateNlpRecordByIDAndClientID
+func (svc NlpRecordService) UpdateNlpRecordByIDAndClientID(id string) string {
+	log.Debug(id)
+
+	return "OK"
 }

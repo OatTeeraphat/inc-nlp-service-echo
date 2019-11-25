@@ -25,6 +25,7 @@ type INlpController interface {
 	DropNlpRecordByShopController(e echo.Context) error
 	DeleteNlpRecordByIDController(e echo.Context) error
 	BulkDeleteNlpRecordByIDsController(e echo.Context) error
+	UpdateNlpRecordByIDController(e echo.Context) error
 }
 
 // NewNlpController new nlp controller instace
@@ -163,5 +164,12 @@ func (con *NlpController) BulkDeleteNlpRecordByIDsController(e echo.Context) err
 		return e.String(http.StatusUnprocessableEntity, response)
 	}
 
+	return e.String(http.StatusOK, response)
+}
+
+// UpdateNlpRecordByIDAndClientID update nlp record by id and ClientID
+func (con *NlpController) UpdateNlpRecordByIDController(e echo.Context) error {
+	id := e.QueryParam("id")
+	response := con.NlpService.UpdateNlpRecordByIDAndClientID(id)
 	return e.String(http.StatusOK, response)
 }
