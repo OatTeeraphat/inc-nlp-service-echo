@@ -95,7 +95,10 @@ func main() {
 	})
 
 	// ################# Static 🕸 #################
-	e.Static("/", "public")
+	// e.Static("/", "public")
+
+	// e.File("/", "public/index.html")
+
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root:   "public",
 		Browse: true,
