@@ -753,19 +753,19 @@ h3 .linear-preload{
 
 /* Sweet Alert Style */
 
- .swal-modal{
-     width: 400px;
-     padding: 10px;
+ .swal2-modal{
+     width: 450px !important;
+     padding: 20px !important;
 }
- .swal-text{
+ .swal2-text{
      text-transform: capitalize;
      color: #000;
      font-size: 18px;
 }
- .swal-modal:not(.swal-icon) .swal-text{
+ .swal2-modal:not(.swal-icon) .swal2-text{
      font-size: 18px;
 }
- .swal-modal:not(.swal-icon) .swal-text:first-child{
+ .swal2-modal:not(.swal-icon) .swal2-text:first-child{
      margin-top: 30px;
     font-weight: 600;
     font-size: 22px;
@@ -773,21 +773,28 @@ h3 .linear-preload{
  .swal-footer{
      display: flex;
 }
- .swal-button{
+ .swal2-actions{
+     flex-wrap: nowrap !important;
+ }
+ .swal2-container .swal2-actions > button{
      width: 100%;
-     background: #fff;
+     background: #9E9E9E;
      transition: all 0.2s ease;
      font-size: 18px;
      text-transform: uppercase;
 }
- .swal-icon--success__line{
-     background-color: #673ab7;
+ .swal2-container .swal2-actions > .swal2-confirm{
+     background: #673ab7;
 }
- .swal-icon--success__ring{
-     border-color: rgba(103, 58, 183, 0.7);
+ .swal2-icon.swal2-success{
+     background-color: #fff !important;
+     color: #673ab7 !important;
 }
- .swal-icon--success ~ .swal-footer .swal-button, .swal-button--ok{
-     background-color: #673ab7;
+ .swal2-icon.swal2-success .swal2-success-ring{
+     border-color: rgba(103, 58, 183, 0.7) !important;
+}
+ .swal2-icon.swal2-success [class^=swal2-success-line]{
+     background-color: #673ab7 !important;
 }
  .swal-button:not([disabled]):hover, .swal-button--ok:hover{
      background: #58339c;

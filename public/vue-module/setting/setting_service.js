@@ -75,16 +75,19 @@ class SettingService {
 		return from( alertBox )
 			.pipe(
 				switchMap( it => {
-				if ( it.value ) return this.httpRepository.revokeSecretByAppId().pipe(
-					this.vueErrorHandler.catchHttpError()
-				)
-					return of()
+					console.log(it)
+					if ( it.value ) {
+						return this.httpRepository.revokeSecretByAppId().pipe(
+							this.vueErrorHandler.catchHttpError()
+						)
+					}
+					return of({})
 				}),
 				map(next => {
 					swal2("success", { title: 'Revoke App Secret', toast: true })
+					return next
 				}),
 			)
-
 	}
 
 	setRevokeAppToken() {
@@ -99,6 +102,7 @@ class SettingService {
 				}),
 				map(next => {
 					swal2("success", { title: 'Revoke Access Token', toast: true })
+					return next
 				}),
 			)
 

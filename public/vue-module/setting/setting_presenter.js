@@ -78,6 +78,7 @@ class SettingPresenter {
 
 	onRevokeAppSecret() {
 		this.settingService.setRevokeAppSecret().subscribe(item => {
+			console.log("####", item)
 			this.view.app_secret = item.client_secret
 		})
 	}
