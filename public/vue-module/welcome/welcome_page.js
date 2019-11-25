@@ -1,4 +1,4 @@
-var welcomePage = Vue.component('welcome-page', {
+export default Vue.component('welcome-page', {
     template: `
     <div class="container">
         <div class="row justify-content-center">

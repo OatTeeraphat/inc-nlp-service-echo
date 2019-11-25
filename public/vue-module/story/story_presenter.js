@@ -13,7 +13,7 @@ class StoryViewModel {
     }
 }
 
-class StoryPresenter {
+export class StoryPresenter {
     constructor(storyService) {
         this.view = new StoryViewModel()
         this.storyService = storyService

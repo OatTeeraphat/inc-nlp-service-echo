@@ -18,7 +18,7 @@ class NlpRecordViewModel {
     }
 }
 
-class NlpRecordPresenter {
+export class NlpRecordPresenter {
     constructor(nlpRecordsService) {
         this.view = new NlpRecordViewModel()
         this.nlpRecordsService = nlpRecordsService

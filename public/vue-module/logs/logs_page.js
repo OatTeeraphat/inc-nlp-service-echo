@@ -1,4 +1,4 @@
-var logsPage = Vue.component('logs-page', {    
+export default Vue.component('logs-page', {    
     template: `
 	<div class="warp">
 		<nav-component></nav-component>

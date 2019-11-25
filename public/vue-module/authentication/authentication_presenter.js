@@ -7,7 +7,7 @@ class AuthenticationViewModel {
     }
 }
 
-class AuthenticationPresenter {
+export class AuthenticationPresenter {
     constructor(authenticationService) {
         this.view = new AuthenticationViewModel()
         this.authenticationService = authenticationService
@@ -48,6 +48,8 @@ class AuthenticationPresenter {
     }
 
     beforeDestroy() {
+        this.view.username = ""
+        this.view.password = ""
         this.$clientSignInSubscription.unsubscribe()
     }
 }

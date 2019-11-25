@@ -1,5 +1,6 @@
+import { GetStoryModelAdapter } from './get_story_adapter.js'
 
-class StoryService {
+export class StoryService {
     
     constructor( httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.vueRouter = vueRouter

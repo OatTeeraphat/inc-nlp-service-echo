@@ -1,4 +1,6 @@
-class NlpTrainingLogService {
+import { GetNlpTrainingLogPaginationAdapter } from './get_nlp_training_log_pagination_adapter.js'
+
+export class NlpTrainingLogService {
     
     constructor(httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.httpRepository = httpRepository

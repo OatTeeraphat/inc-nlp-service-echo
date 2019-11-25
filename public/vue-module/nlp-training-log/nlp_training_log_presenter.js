@@ -9,7 +9,7 @@ class NlpTrainingLogViewModel {
     }
 }
 
-class NlpTrainingLogPresenter {
+export class NlpTrainingLogPresenter {
     constructor(nlpTrainingLogService) {
         this.view = new NlpTrainingLogViewModel()
         this.nlpTrainingLogService = nlpTrainingLogService

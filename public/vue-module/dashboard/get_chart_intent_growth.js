@@ -7,7 +7,7 @@
 
 */
 
-class GetChartIntentGrowth {
+export class GetChartIntentGrowth {
   adapt(models) {
 
     let item =  {

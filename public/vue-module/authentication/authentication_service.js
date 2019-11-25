@@ -1,3 +1,5 @@
+import { GetClientSignInAdapter } from './get_client_sign_in_adapter.js'
+
 class ClientSignInRequest {
     constructor(username, password, rememberMe) {
         this.username = username
@@ -7,7 +9,7 @@ class ClientSignInRequest {
 }
 
 // authentication service
-class AuthenticationService {
+export class AuthenticationService {
 
     constructor( httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.httpRepository = httpRepository

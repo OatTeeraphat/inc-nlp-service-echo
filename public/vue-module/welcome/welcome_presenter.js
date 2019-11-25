@@ -6,7 +6,7 @@ class WelcomeViewModel {
     }
 }
 
-class WelcomePresenter {
+export class WelcomePresenter {
 
     constructor(nlpReplyCounterService) {
         this.view = new WelcomeViewModel()

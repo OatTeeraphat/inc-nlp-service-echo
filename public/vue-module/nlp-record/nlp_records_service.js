@@ -1,5 +1,7 @@
+import { GetNlpRecordsPagination } from './get_nlp_records_pagination_adapter.js'
+
 // nlp records service
-class NlpRecordsService {
+export class NlpRecordsService {
 
     constructor( httpRepository, vueRouter, localStorageRepository, cookieRepository, vueErrorHandler) {
         this.vueRouter = vueRouter

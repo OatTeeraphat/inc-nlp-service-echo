@@ -1,4 +1,4 @@
-class WebChatService {
+export class WebChatService {
     
     constructor( socketRepo ) {
         this.socketRepo = socketRepo

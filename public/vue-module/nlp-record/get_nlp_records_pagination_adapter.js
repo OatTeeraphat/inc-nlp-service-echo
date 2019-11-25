@@ -1,4 +1,4 @@
-class GetNlpRecordsPagination {
+export class GetNlpRecordsPagination {
     adapt(models) {
 
         let item = {

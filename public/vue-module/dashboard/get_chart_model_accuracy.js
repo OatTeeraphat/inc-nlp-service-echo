@@ -4,7 +4,7 @@
   datasets : array of amount_of_slove by type(Transaction|Slove)
 */
 
-class GetChartModelAccuracyAdapter {
+export class GetChartModelAccuracyAdapter {
   adapt(models) {
 
       let item = {

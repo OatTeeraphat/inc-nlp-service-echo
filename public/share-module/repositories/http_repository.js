@@ -1,4 +1,4 @@
-class HttpRepository {
+export class HttpRepository {
 
     constructor(cookieRepo) {
         this.cookieRepo = cookieRepo

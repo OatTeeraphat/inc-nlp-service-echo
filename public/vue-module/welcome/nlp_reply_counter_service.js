@@ -1,4 +1,4 @@
-class NlpReplyCounterService {
+export class NlpReplyCounterService {
     constructor(httpRepository) {
         this.httpRepository = httpRepository
     }

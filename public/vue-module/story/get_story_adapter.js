@@ -1,4 +1,4 @@
-class GetStoryModelAdapter extends Array {
+export class GetStoryModelAdapter extends Array {
 
     adapt(models) {
 

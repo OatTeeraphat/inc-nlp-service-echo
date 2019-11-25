@@ -1,4 +1,4 @@
-class GetNlpTrainingLogPaginationAdapter {
+export class GetNlpTrainingLogPaginationAdapter {
     adapt(models) {
         
         let item = {

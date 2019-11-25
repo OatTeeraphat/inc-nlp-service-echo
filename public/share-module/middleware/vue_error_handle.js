@@ -1,4 +1,4 @@
-class VueErrorHandler {
+export class VueErrorHandler {
   
     constructor(cookieRepo, vueRouter) {
         this.vueRouter = vueRouter
