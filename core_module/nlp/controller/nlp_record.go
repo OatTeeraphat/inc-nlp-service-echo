@@ -2,8 +2,8 @@ package controller
 
 import (
 	"fmt"
+	"inc-nlp-service-echo/core_module/nlp"
 	"inc-nlp-service-echo/core_module/nlp/dao"
-	"inc-nlp-service-echo/core_module/nlp/service"
 	"net/http"
 
 	"github.com/360EntSecGroup-Skylar/excelize"
@@ -13,23 +13,11 @@ import (
 
 // NlpController nlp rest api controller
 type NlpController struct {
-	NlpService service.INlpRecordService
-}
-
-// INlpController nlp rest api interface
-type INlpController interface {
-	ReadNlpReplyModelByShopController(e echo.Context) error
-	ReadPaginationNlpRecordController(e echo.Context) error
-	CreateNlpRecordByShopController(e echo.Context) error
-	UploadXlsxNlpRecordByShopController(e echo.Context) error
-	DropNlpRecordByShopController(e echo.Context) error
-	DeleteNlpRecordByIDController(e echo.Context) error
-	BulkDeleteNlpRecordByIDsController(e echo.Context) error
-	UpdateNlpRecordByIDController(e echo.Context) error
+	NlpService nlp.INlpRecordService
 }
 
 // NewNlpController new nlp controller instace
-func NewNlpController(nlpRecordService service.INlpRecordService) INlpController {
+func NewNlpController(nlpRecordService nlp.INlpRecordService) nlp.INlpController {
 	return &NlpController{nlpRecordService}
 }
 

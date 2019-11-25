@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"inc-nlp-service-echo/core_module/nlp/service"
+	"inc-nlp-service-echo/core_module/nlp"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -9,18 +9,11 @@ import (
 
 // NlpTrainingLogController nlp training log rest api controller
 type NlpTrainingLogController struct {
-	NlpTrainingLogService service.INlpTrainingLogService
-}
-
-// INlpTrainingLogController nlp rest api interface
-type INlpTrainingLogController interface {
-	// ReadNlpReplyModelByShopController(e echo.Context) error
-	ReadPaginationNlpTrainingLogController(e echo.Context) error
-	// DropNlpRecordByShopController(e echo.Context) error
+	NlpTrainingLogService nlp.INlpTrainingLogService
 }
 
 // NewNlpTrainingLogController NewNlpTrainingLogController
-func NewNlpTrainingLogController(svc0 service.INlpTrainingLogService) INlpTrainingLogController {
+func NewNlpTrainingLogController(svc0 nlp.INlpTrainingLogService) nlp.INlpTrainingLogController {
 	return &NlpTrainingLogController{
 		NlpTrainingLogService: svc0,
 	}

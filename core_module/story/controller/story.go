@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"inc-nlp-service-echo/core_module/story"
 	"inc-nlp-service-echo/core_module/story/dao"
-	"inc-nlp-service-echo/core_module/story/service"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -10,18 +10,11 @@ import (
 
 // StoryController story rest api controller
 type StoryController struct {
-	StoryService service.IStoryService
-}
-
-// IStoryController story rest api interface
-type IStoryController interface {
-	ReadAllStoryRecordController(e echo.Context) error
-	NewStoryRecordController(e echo.Context) error
-	DeleteStoryByIDController(e echo.Context) error
+	StoryService story.IStoryService
 }
 
 // NewStoryController new story controller instace
-func NewStoryController(svc0 service.IStoryService) IStoryController {
+func NewStoryController(svc0 story.IStoryService) story.IStoryController {
 	return &StoryController{svc0}
 }
 

@@ -1,6 +1,7 @@
-package nlp
+package distance
 
 import (
+	"inc-nlp-service-echo/computing_module/hashing"
 	"inc-nlp-service-echo/core_module/nlp/dao"
 	"math"
 
@@ -10,10 +11,12 @@ import (
 	"github.com/dgryski/go-spooky"
 )
 
+// Distance Distance
+type Distance struct{}
+
 const (
 	// InitialInfinityPositiveValue InitialInfinityPositiveValue
 	InitialInfinityPositiveValue = 0
-
 	// InitialMinimumIndex InitialMinimumIndex
 	InitialMinimumIndex = 0
 )
@@ -25,12 +28,12 @@ func MHash(b []byte) uint64 { return metro.Hash64(b, 0) }
 func GenerateKeywordMinhash(keyword string) uint32 {
 
 	result, _ := ngram.Get(keyword, 2)
-	minWise := NewMinWise(spooky.Hash64, MHash, 10)
+	minWise := hashing.NewMinWise(spooky.Hash64, MHash, 10)
 	for _, s := range result {
 		minWise.Push([]byte(s))
 	}
 
-	return uint32(minWise.minimums[0])
+	return uint32(minWise.Minimums[0])
 }
 
 // FindMinDistanceFromNlpModels find minimum distance from nlp model

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/business_module/repositories"
+	"inc-nlp-service-echo/core_module/categorize"
 	"strconv"
 
 	"github.com/labstack/gommon/log"
@@ -15,13 +16,8 @@ type ShopStoryService struct {
 	ShopRepo      repositories.IShopRepository
 }
 
-// IShopStoryService IShopStoryService
-type IShopStoryService interface {
-	CreateShopStoryService(shopID string, storyIDs []string) string
-}
-
 // NewShopStoryService NewShopStoryService
-func NewShopStoryService(repo0 repositories.IShopStoryRepository, repo1 repositories.IShopRepository) IShopStoryService {
+func NewShopStoryService(repo0 repositories.IShopStoryRepository, repo1 repositories.IShopRepository) categorize.IShopStoryService {
 	return &ShopStoryService{
 		repo0,
 		repo1,

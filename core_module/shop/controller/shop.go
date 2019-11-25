@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"inc-nlp-service-echo/core_module/shop/service"
+	"inc-nlp-service-echo/core_module/shop"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -9,16 +9,11 @@ import (
 
 // ShopController shop rest api controller
 type ShopController struct {
-	ShopService service.IShopService
-}
-
-// IShopController shop rest api interface
-type IShopController interface {
-	ReadShopByIDController(e echo.Context) error
+	ShopService shop.IShopService
 }
 
 // NewShopController new shop controller instace
-func NewShopController(svc0 service.IShopService) IShopController {
+func NewShopController(svc0 shop.IShopService) shop.IShopController {
 	return &ShopController{svc0}
 }
 

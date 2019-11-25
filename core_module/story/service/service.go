@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/business_module/repositories"
+	"inc-nlp-service-echo/core_module/story"
 	"inc-nlp-service-echo/core_module/story/dao"
 	"strconv"
 )
@@ -13,15 +14,8 @@ type StoryService struct {
 	storyRepo repositories.IStoryRepository
 }
 
-// IStoryService INlpService
-type IStoryService interface {
-	ReadAllStoryRecordService() []dao.StoryModel
-	NewStoryRecordService(newStoryModel dao.NewStoryModel) string
-	DeleteStoryByIDService(storyID string) string
-}
-
 // NewStoryService NewNlpService
-func NewStoryService(repo1 repositories.IStoryRepository) IStoryService {
+func NewStoryService(repo1 repositories.IStoryRepository) story.IStoryService {
 	return &StoryService{
 		storyRepo: repo1,
 	}

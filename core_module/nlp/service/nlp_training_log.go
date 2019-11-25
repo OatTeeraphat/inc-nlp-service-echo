@@ -1,8 +1,9 @@
 package service
 
 import (
-	"inc-nlp-service-echo/core_module/nlp/dao"
 	"inc-nlp-service-echo/business_module/repositories"
+	"inc-nlp-service-echo/core_module/nlp"
+	"inc-nlp-service-echo/core_module/nlp/dao"
 	"math"
 	"strconv"
 
@@ -14,13 +15,8 @@ type NlpTrainingLogService struct {
 	nlpTrainingLogRepository repositories.INlpTrainingLogRepository
 }
 
-// INlpTrainingLogService INlpTrainingLogService
-type INlpTrainingLogService interface {
-	ReadPaginationNlpRecordService(PageID string) dao.NlpTrainingLogPaginationSearchModel
-}
-
 // NewNlpTrainingLogService NewNlpTrainingLogService
-func NewNlpTrainingLogService(repo1 repositories.INlpTrainingLogRepository) INlpTrainingLogService {
+func NewNlpTrainingLogService(repo1 repositories.INlpTrainingLogRepository) nlp.INlpTrainingLogService {
 	return &NlpTrainingLogService{
 		repo1,
 	}

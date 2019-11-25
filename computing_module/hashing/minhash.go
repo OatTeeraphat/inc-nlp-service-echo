@@ -1,10 +1,10 @@
-package nlp
+package hashing
 
 import "math"
 
 // MinWise is a collection of minimum hashes for a set
 type MinWise struct {
-	minimums []uint64
+	Minimums []uint64
 	h1       Hash64
 	h2       Hash64
 }
@@ -23,7 +23,7 @@ func NewMinWise(h1, h2 Hash64, size int) *MinWise {
 	return &MinWise{
 		h1:       h1,
 		h2:       h2,
-		minimums: minimums,
+		Minimums: minimums,
 	}
 }
 
@@ -36,7 +36,7 @@ func NewMinWiseFromSignatures(h1, h2 Hash64, signatures []uint64) *MinWise {
 	return &MinWise{
 		h1:       h1,
 		h2:       h2,
-		minimums: signatures,
+		Minimums: signatures,
 	}
 }
 
@@ -46,10 +46,10 @@ func (m *MinWise) Push(b []byte) {
 	v1 := m.h1(b)
 	v2 := m.h2(b)
 
-	for i, v := range m.minimums {
+	for i, v := range m.Minimums {
 		hv := v1 + uint64(i)*v2
 		if hv < v {
-			m.minimums[i] = hv
+			m.Minimums[i] = hv
 		}
 	}
 }
@@ -57,10 +57,10 @@ func (m *MinWise) Push(b []byte) {
 // Merge combines the signatures of the second set, creating the signature of their union.
 func (m *MinWise) Merge(m2 *MinWise) {
 
-	for i, v := range m2.minimums {
+	for i, v := range m2.Minimums {
 
-		if v < m.minimums[i] {
-			m.minimums[i] = v
+		if v < m.Minimums[i] {
+			m.Minimums[i] = v
 		}
 	}
 }
@@ -72,34 +72,34 @@ func (m *MinWise) Cardinality() int {
 
 	sum := 0.0
 
-	for _, v := range m.minimums {
+	for _, v := range m.Minimums {
 		sum += -math.Log(float64(math.MaxUint64-v) / float64(math.MaxUint64))
 	}
 
-	return int(float64(len(m.minimums)-1) / sum)
+	return int(float64(len(m.Minimums)-1) / sum)
 }
 
 // Signature returns a signature for the set.
 func (m *MinWise) Signature() []uint64 {
-	return m.minimums
+	return m.Minimums
 }
 
 // Similarity computes an estimate for the similarity between the two sets.
 func (m *MinWise) Similarity(m2 *MinWise) float64 {
 
-	if len(m.minimums) != len(m2.minimums) {
+	if len(m.Minimums) != len(m2.Minimums) {
 		panic("minhash minimums size mismatch")
 	}
 
 	intersect := 0
 
-	for i := range m.minimums {
-		if m.minimums[i] == m2.minimums[i] {
+	for i := range m.Minimums {
+		if m.Minimums[i] == m2.Minimums[i] {
 			intersect++
 		}
 	}
 
-	return float64(intersect) / float64(len(m.minimums))
+	return float64(intersect) / float64(len(m.Minimums))
 }
 
 // SignatureBbit returns a b-bit reduction of the signature.  This will result in unused bits at the high-end of the words if b does not divide 64 evenly.
@@ -111,7 +111,7 @@ func (m *MinWise) SignatureBbit(b uint) []uint64 {
 
 	mask := uint64(1<<b) - 1
 
-	for _, v := range m.minimums {
+	for _, v := range m.Minimums {
 		if bits >= b {
 			w <<= b
 			w |= v & mask

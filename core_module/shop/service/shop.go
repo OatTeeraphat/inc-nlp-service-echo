@@ -2,6 +2,7 @@ package service
 
 import (
 	"inc-nlp-service-echo/business_module/repositories"
+	"inc-nlp-service-echo/core_module/shop"
 )
 
 // ShopService ShopService
@@ -9,13 +10,8 @@ type ShopService struct {
 	shopRepo repositories.IShopRepository
 }
 
-// IShopService IShopService
-type IShopService interface {
-	ReadShopByIDService(ID string) string
-}
-
 // NewShopService NewShopService
-func NewShopService(repo1 repositories.IShopRepository) IShopService {
+func NewShopService(repo1 repositories.IShopRepository) shop.IShopService {
 	return &ShopService{
 		repo1,
 	}

@@ -3,8 +3,9 @@ package controller
 import (
 	"bytes"
 	"encoding/json"
+	"inc-nlp-service-echo/core_module/facebook"
 	"inc-nlp-service-echo/core_module/facebook/dao"
-	"inc-nlp-service-echo/core_module/nlp/service"
+	"inc-nlp-service-echo/core_module/nlp"
 	"io/ioutil"
 	"net/http"
 
@@ -15,19 +16,12 @@ import (
 
 // FBWebhookController FBWebhookController
 type FBWebhookController struct {
-	NlpService        service.INlpRecordService
+	NlpService        nlp.INlpRecordService
 	WebSocketUpgrader websocket.Upgrader
 }
 
-// IFBWebhookController IFBWebhookController
-type IFBWebhookController interface {
-	VerifyFBWebhookController(e echo.Context) error
-	ReplyFBWebhookController(e echo.Context) error
-	ReplyFBWebhookSocketIO(c echo.Context) error
-}
-
 // NewFBWebhookController NewFBWebhookController
-func NewFBWebhookController(nlpRecordService service.INlpRecordService, ws websocket.Upgrader) IFBWebhookController {
+func NewFBWebhookController(nlpRecordService nlp.INlpRecordService, ws websocket.Upgrader) facebook.IFBWebhookController {
 	return &FBWebhookController{nlpRecordService, ws}
 }
 

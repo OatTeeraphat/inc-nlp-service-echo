@@ -3,6 +3,7 @@ package main
 import (
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
+	"inc-nlp-service-echo/common_module/security"
 
 	nlpController "inc-nlp-service-echo/core_module/nlp/controller"
 	nlpService "inc-nlp-service-echo/core_module/nlp/service"
@@ -19,7 +20,6 @@ import (
 	authController "inc-nlp-service-echo/core_module/authentication/controller"
 	facebookController "inc-nlp-service-echo/core_module/facebook/controller"
 
-	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/repositories"
 	"inc-nlp-service-echo/common_module/websockets"
 	"net/http"

@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"inc-nlp-service-echo/core_module/categorize/service"
+	"inc-nlp-service-echo/core_module/categorize"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -9,16 +9,11 @@ import (
 
 // ShopStoryController story rest api controller
 type ShopStoryController struct {
-	ShopStoryService service.IShopStoryService
-}
-
-// IShopStoryController story rest api interface
-type IShopStoryController interface {
-	CreateShopStoryController(e echo.Context) error
+	ShopStoryService categorize.IShopStoryService
 }
 
 // NewShopStoryController new story controller instace
-func NewShopStoryController(svc0 service.IShopStoryService) IShopStoryController {
+func NewShopStoryController(svc0 categorize.IShopStoryService) categorize.IShopStoryController {
 	return &ShopStoryController{svc0}
 }
 

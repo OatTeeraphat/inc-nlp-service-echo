@@ -1,7 +1,8 @@
 package controller
 
 import (
-	"inc-nlp-service-echo/auth_module/security"
+	"inc-nlp-service-echo/common_module/security"
+	"inc-nlp-service-echo/core_module/authentication"
 	"net/http"
 	"time"
 
@@ -13,13 +14,8 @@ type ClientAuthController struct {
 	ClientAuthSecurity security.IClientAuthSecurity
 }
 
-// IClientAuthController IClientAuthController
-type IClientAuthController interface {
-	ClientLoginController(c echo.Context) error
-}
-
 // NewClientAuthController NewClientAuthController
-func NewClientAuthController(newClientAuthSecurity security.IClientAuthSecurity) IClientAuthController {
+func NewClientAuthController(newClientAuthSecurity security.IClientAuthSecurity) authentication.IClientAuthController {
 	return &ClientAuthController{
 		ClientAuthSecurity: newClientAuthSecurity,
 	}
