@@ -1,4 +1,4 @@
-Vue.component('line-chart-training-growth', {
+export default Vue.component('line-chart-training-growth', {
 	extends: VueChartJs.Line,
 	mounted() {
 		this.renderChart({

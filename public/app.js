@@ -34,6 +34,13 @@ import accessLogPage from './vue-module/logs/logs_page.js'
 // TODO: Setting Module
 
 
+import './vue-custom-module/navbar/nav_component.js'
+import './vue-custom-module/chart/chart_bubble_intent_component.js'
+import './vue-custom-module/chart/chart_model_accuracy_component.js'
+import './vue-custom-module/chart/chart_stack_training_component.js'
+import './vue-custom-module/chart/chart_training_growth_component.js'
+import './vue-custom-module/chart/chart_usage_api_component.js'
+import './vue-custom-module/chart/chart_usage_average_time_component.js'
 
 // repositories initialize
 const cookieRepo = new CookieRepository(Cookies)
@@ -101,5 +108,8 @@ Vue.use(VueRouter)
 
 new Vue({
     el: '#app',
-    router: vueRouter
+    router: vueRouter,
+    component: {
+        // navComponent
+    }
 })

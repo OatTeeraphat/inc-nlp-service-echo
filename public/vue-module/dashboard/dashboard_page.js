@@ -263,7 +263,7 @@ export default Vue.component('dashboard-page', {
 			</div>
 		</div>
 	</div>
-    `,
+	`,
 	data: function () {
 		return {
 			toggle_chart : {

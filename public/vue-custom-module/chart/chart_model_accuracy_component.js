@@ -1,4 +1,4 @@
-Vue.component('line-chart-acc', {
+export default Vue.component('line-chart-acc', {
 	extends: VueChartJs.Line,
 	mounted() {
 		this.renderChart({

@@ -1,4 +1,4 @@
-var navPresenter = Vue.component('nav-component', {
+export default Vue.component('nav-component', {
 	template: `
 	<div class="fixed-top navbar-warpper bg-light">
 	

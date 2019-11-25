@@ -5,7 +5,7 @@ const colorByStory = {
   PRODUCT   : "#ffb43b",
 }
 
-Vue.component('bubble-chart-intent', {
+export default Vue.component('bubble-chart-intent', {
 	extends: VueChartJs.Bubble,
 	data: function () {
 		return {
