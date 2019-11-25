@@ -133,6 +133,8 @@ func main() {
 	v1.DELETE("/nlp/record/bulk", c0.BulkDeleteNlpRecordByIDsController)
 	v1.GET("/nlp/record/pagination", c0.ReadPaginationNlpRecordController)
 	v1.GET("/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
+	v1.PUT("/nlp/record", c0.UpdateNlpRecordByIDController)
+
 	v1.GET("/nlp/log/pagination", c6.ReadPaginationNlpTrainingLogController)
 
 	// Start server
