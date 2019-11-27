@@ -55,16 +55,11 @@ func main() {
 	common0 := commons.NewFillChatSelectENV()
 	common1 := commons.NewFillChatMiddleware()
 
-	if common0.Env != "development" {
-		log.SetFormatter(&log.JSONFormatter{})
-	} else {
-		log.SetFormatter(&log.TextFormatter{})
-	}
+	log.SetFormatter(&log.TextFormatter{})
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
 
 	e := echo.New()
-	ws := websockets.NewWebSocket()
 
 	e.Use(
 		middleware.Logger(),
@@ -83,13 +78,14 @@ func main() {
 	repo5 := repositories.NewShopStoryRepository(orm)
 	repo6 := repositories.NewShopRepository(orm)
 
-	e.GET("/health_check", heathCheck)
+	jwtConfig := security.NewJWTConfig("secret")
+	secure0 := security.NewClientAuthSecurity("secret")
 
 	// FIXME: move to nuxt js
 	e.Use(staticMiddleware())
 
-	jwtConfig := security.NewJWTConfig("secret")
-	secure0 := security.NewClientAuthSecurity("secret")
+	ws := websockets.NewWebSocket()
+	e.GET("/health_check", heathCheck)
 
 	q := e.Group("/swagger")
 	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
