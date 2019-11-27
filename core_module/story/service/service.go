@@ -9,23 +9,23 @@ import (
 	"strconv"
 )
 
-// StoryService NlpService
-type StoryService struct {
+// Service Service
+type Service struct {
 	storyRepo repositories.IStoryRepository
 }
 
-// NewStoryService NewNlpService
-func NewStoryService(repo1 repositories.IStoryRepository) story.IStoryService {
-	return &StoryService{
-		storyRepo: repo1,
+// NewService NewNlpService
+func NewService(repo repositories.IStoryRepository) story.Service {
+	return &Service{
+		storyRepo: repo,
 	}
 }
 
 // ReadAllStoryRecordService ReadAllStoryRecordService
-func (svc StoryService) ReadAllStoryRecordService() []dao.StoryModel {
+func (s Service) ReadAllStoryRecordService() []dao.StoryModel {
 	var storyRecord []domains.StoryDomain
 	var storyModel []dao.StoryModel
-	storyRecord = svc.storyRepo.FindAll()
+	storyRecord = s.storyRepo.FindAll()
 
 	for _, item := range storyRecord {
 		eachStory := dao.StoryModel{}
@@ -43,10 +43,10 @@ func (svc StoryService) ReadAllStoryRecordService() []dao.StoryModel {
 }
 
 // NewStoryRecordService NewStoryRecordService
-func (svc StoryService) NewStoryRecordService(newStoryModel dao.NewStoryModel) string {
+func (s Service) NewStoryRecordService(newStoryModel dao.NewStoryModel) string {
 	var storyRecord domains.StoryDomain
 
-	isStoryNameExisting := svc.storyRepo.FindByName(newStoryModel.Name)
+	isStoryNameExisting := s.storyRepo.FindByName(newStoryModel.Name)
 
 	if isStoryNameExisting.Name != "" {
 		return "invalid"
@@ -56,13 +56,13 @@ func (svc StoryService) NewStoryRecordService(newStoryModel dao.NewStoryModel) s
 	storyRecord.Description = newStoryModel.Description
 	storyRecord.Owner = newStoryModel.Owner
 
-	svc.storyRepo.Save(&storyRecord)
+	s.storyRepo.Save(&storyRecord)
 
 	return "OK"
 }
 
 // DeleteStoryByIDService DeleteStoryByIDService
-func (svc StoryService) DeleteStoryByIDService(storyID string) string {
+func (s Service) DeleteStoryByIDService(storyID string) string {
 
 	u64, err := strconv.ParseUint(storyID, 10, 32)
 	if err != nil {
@@ -70,7 +70,7 @@ func (svc StoryService) DeleteStoryByIDService(storyID string) string {
 	}
 	storyIDConverted := uint(u64)
 
-	svc.storyRepo.DeleteByID(storyIDConverted)
+	s.storyRepo.DeleteByID(storyIDConverted)
 
 	return "OK"
 }

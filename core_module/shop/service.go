@@ -1,6 +1,6 @@
 package shop
 
 // IShopService IShopService
-type IShopService interface {
+type Service interface {
 	ReadShopByIDService(ID string) string
 }

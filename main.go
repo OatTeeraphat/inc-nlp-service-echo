@@ -5,20 +5,17 @@ import (
 	"inc-nlp-service-echo/common_module/commons"
 	"inc-nlp-service-echo/common_module/security"
 
-	nlpController "inc-nlp-service-echo/core_module/nlp/controller"
-	nlpService "inc-nlp-service-echo/core_module/nlp/service"
-
-	storyController "inc-nlp-service-echo/core_module/story/controller"
+	shopGateway "inc-nlp-service-echo/core_module/shop/gateway"
+	shopService "inc-nlp-service-echo/core_module/shop/service"
+	storyGateway "inc-nlp-service-echo/core_module/story/gateway"
 	storyService "inc-nlp-service-echo/core_module/story/service"
 
+	authController "inc-nlp-service-echo/core_module/authentication/controller"
 	shopStoryController "inc-nlp-service-echo/core_module/categorize/controller"
 	shopStoryService "inc-nlp-service-echo/core_module/categorize/service"
-
-	shopController "inc-nlp-service-echo/core_module/shop/controller"
-	shopService "inc-nlp-service-echo/core_module/shop/service"
-
-	authController "inc-nlp-service-echo/core_module/authentication/controller"
 	facebookController "inc-nlp-service-echo/core_module/facebook/controller"
+	nlpController "inc-nlp-service-echo/core_module/nlp/controller"
+	nlpService "inc-nlp-service-echo/core_module/nlp/service"
 
 	"inc-nlp-service-echo/business_module/repositories"
 	"inc-nlp-service-echo/common_module/websockets"
@@ -87,8 +84,7 @@ func main() {
 	// ################# Services 💰 #################
 	svc0 := nlpService.NewNlpRecordService(repo1, repo0, repo3)
 	svc4 := nlpService.NewNlpTrainingLogService(repo0)
-	svc1 := storyService.NewStoryService(repo4)
-	svc3 := shopService.NewShopService(repo6)
+
 	svc2 := shopStoryService.NewShopStoryService(repo5, repo6)
 
 	// ################# Security 🔑 #################
@@ -98,8 +94,8 @@ func main() {
 	// ################# Controllers 🎮 #################
 	c0 := nlpController.NewNlpController(svc0)
 	c6 := nlpController.NewNlpTrainingLogController(svc4)
-	c3 := storyController.NewStoryController(svc1)
-	c5 := shopController.NewShopController(svc3)
+	// c3 := storyController.NewStoryController(svc1)
+
 	c4 := shopStoryController.NewShopStoryController(svc2)
 
 	c2 := facebookController.NewFBWebhookController(svc0, *ws.Upgrader)
@@ -137,9 +133,12 @@ func main() {
 	v1 := e.Group("/v1")
 	v1.Use(middleware.JWTWithConfig(jwtConfig))
 
-	v1.GET("/story", c3.ReadAllStoryRecordController)
-	v1.POST("/story", c3.NewStoryRecordController)
-	v1.DELETE("/story", c3.DeleteStoryByIDController)
+	svc3 := shopService.NewService(repo6)
+	c5 := shopGateway.NewHTTPGateway(svc3)
+
+	// TODO: fix import type
+	svc1 := storyService.NewService(repo4)
+	storyGateway.NewHTTPGateway(v1, svc1)
 
 	v1.GET("/shop", c5.ReadShopByIDController)
 	v1.POST("/shop/story", c4.CreateShopStoryController)

@@ -5,19 +5,19 @@ import (
 	"inc-nlp-service-echo/core_module/shop"
 )
 
-// ShopService ShopService
-type ShopService struct {
+// NewService ShopService
+type Service struct {
 	shopRepo repositories.IShopRepository
 }
 
-// NewShopService NewShopService
-func NewShopService(repo1 repositories.IShopRepository) shop.IShopService {
-	return &ShopService{
+// NewService NewShopService
+func NewService(repo1 repositories.IShopRepository) shop.Service {
+	return &Service{
 		repo1,
 	}
 }
 
 // ReadShopByIDService ReadShopByIDService
-func (svc ShopService) ReadShopByIDService(ID string) string {
+func (svc Service) ReadShopByIDService(ID string) string {
 	return "OK"
 }
