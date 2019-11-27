@@ -1,17 +1,33 @@
 package main
 
 import (
-	"inc-nlp-service-echo/commons"
-	"inc-nlp-service-echo/controllers"
-	"inc-nlp-service-echo/datasources"
-	"inc-nlp-service-echo/repositories"
-	"inc-nlp-service-echo/security"
-	"inc-nlp-service-echo/services"
-	"inc-nlp-service-echo/websockets"
+	"inc-nlp-service-echo/business_module/datasources"
+	"inc-nlp-service-echo/common_module/commons"
+	"inc-nlp-service-echo/common_module/security"
+	"inc-nlp-service-echo/common_module/websockets"
+
+	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
+	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
+	nlpGateway "inc-nlp-service-echo/core_module/nlp/gateway"
+	nlpService "inc-nlp-service-echo/core_module/nlp/service"
+	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
+	nlpTraininglogService "inc-nlp-service-echo/core_module/nlptraininglog/service"
+	shopGateway "inc-nlp-service-echo/core_module/shop/gateway"
+	shopService "inc-nlp-service-echo/core_module/shop/service"
+	storyGateway "inc-nlp-service-echo/core_module/story/gateway"
+	storyService "inc-nlp-service-echo/core_module/story/service"
+
+	// TODO: refractor fb, auth service
+	// fbService "inc-nlp-service-echo/core_module/facebook/service"
+	fbGateway "inc-nlp-service-echo/core_module/facebook/gateway"
+
+	// authGateway "inc-nlp-service-echo/core_module/authentication/service"
+	authGateway "inc-nlp-service-echo/core_module/authentication/gateway"
+
+	"inc-nlp-service-echo/business_module/repositories"
 	"net/http"
 	"os"
 
-	// docs folder to server swagger
 	_ "inc-nlp-service-echo/docs"
 
 	"github.com/labstack/echo/v4"
@@ -39,30 +55,22 @@ func main() {
 	common0 := commons.NewFillChatSelectENV()
 	common1 := commons.NewFillChatMiddleware()
 
-	// if common0.Env != "development" {
-	// 	log.SetFormatter(&log.JSONFormatter{})
-	// } else {
 	log.SetFormatter(&log.TextFormatter{})
-	// }
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
 
 	e := echo.New()
-	ws := websockets.NewWebSocket()
 
-	// ################# Middleware #################
 	e.Use(
 		middleware.Logger(),
 		middleware.Recover(),
 		middleware.RequestID(),
-		// middleware.Gzip(),
+		middleware.Gzip(),
 	)
 
-	// ################# Sync GORM 📦 #################
 	orm := datasources.NewFillChatGORM(common0)
 	orm.DB.LogMode(false)
 
-	// ################# Repositories 🏦 #################
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
 	repo3 := repositories.NewShopStoryRepository(orm)
@@ -70,79 +78,50 @@ func main() {
 	repo5 := repositories.NewShopStoryRepository(orm)
 	repo6 := repositories.NewShopRepository(orm)
 
-	// ################# Services 💰 #################
-	svc0 := services.NewNlpRecordService(repo1, repo0, repo3)
-	svc1 := services.NewStoryService(repo4)
-	svc2 := services.NewShopStoryService(repo5, repo6)
-	svc3 := services.NewShopService(repo6)
-	svc4 := services.NewNlpTrainingLogService(repo0)
-
-	// ################# Security 🔑 #################
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
 
-	// ################# Controllers 🎮 #################
-	c0 := controllers.NewNlpController(svc0)
-	c2 := controllers.NewFBWebhookController(svc0, *ws.Upgrader)
-	c3 := controllers.NewStoryController(svc1)
-	c4 := controllers.NewShopStoryController(svc2)
-	c5 := controllers.NewShopController(svc3)
-	c6 := controllers.NewNlpTrainingLogController(svc4)
-	c7 := controllers.NewClientAuthController(secure0)
+	// FIXME: move to nuxt js
+	e.Use(staticMiddleware())
+	ws := websockets.NewWebSocket()
+	e.GET("/health_check", heathCheck)
 
-	e.GET("/health_check", func(c echo.Context) error {
-		return c.String(http.StatusOK, "OK")
-	})
-
-	// ################# Static 🕸 #################
-	// e.Static("/", "public")
-
-	// e.File("/", "public/index.html")
-
-	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Root:   "public",
-		Browse: true,
-		HTML5:  true,
-	}))
-
-	// ################# Swagger ENDPOINT 📑 #################
 	q := e.Group("/swagger")
 	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
 	q.GET("/*", echoSwagger.WrapHandler)
 
-	// ################# Non Restrict ENDPOINT 🦴 #################
-	v0 := e.Group("/v1")
-	v0.POST("/login", c7.ClientLoginController)
-
-	v0.GET("/fb/webhook", c2.VerifyFBWebhookController)
-	v0.POST("/fb/webhook", c2.ReplyFBWebhookController)
-	v0.Any("/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)
-
-	// ################# Restrict ENDPOINT With JWT 🔑 #################
 	v1 := e.Group("/v1")
+	authGateway.NewHTTPGateway(v1, secure0)
 	v1.Use(middleware.JWTWithConfig(jwtConfig))
+	svc0 := shopService.NewService(repo6)
+	svc1 := storyService.NewService(repo4)
+	svc2 := nlpTraininglogService.NewService(repo0)
+	svc3 := nlpService.NewService(repo1, repo0, repo3)
+	svc4 := categorizeService.NewService(repo5, repo6)
 
-	v1.GET("/story", c3.ReadAllStoryRecordController)
-	v1.POST("/story", c3.NewStoryRecordController)
-	v1.DELETE("/story", c3.DeleteStoryByIDController)
-
-	v1.GET("/shop", c5.ReadShopByIDController)
-	v1.POST("/shop/story", c4.CreateShopStoryController)
-
-	v1.POST("/nlp/record", c0.CreateNlpRecordByShopController)
-	v1.POST("/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)
-	v1.DELETE("/nlp/record/drop", c0.DropNlpRecordByShopController)
-	v1.DELETE("/nlp/record", c0.DeleteNlpRecordByIDController)
-	v1.DELETE("/nlp/record/bulk", c0.BulkDeleteNlpRecordByIDsController)
-	v1.GET("/nlp/record/pagination", c0.ReadPaginationNlpRecordController)
-	v1.GET("/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
-	v1.PUT("/nlp/record", c0.UpdateNlpRecordByIDController)
-
-	v1.GET("/nlp/log/pagination", c6.ReadPaginationNlpTrainingLogController)
+	shopGateway.NewHTTPGateway(v1, svc0)
+	storyGateway.NewHTTPGateway(v1, svc1)
+	nlpTraininglogGateway.NewHTTPGateway(v1, svc2)
+	nlpGateway.NewHTTPGateway(v1, svc3)
+	fbGateway.NewHTTPGateway(v1, svc3)
+	fbGateway.NewSocketGateway(v1, svc3, *ws.Upgrader)
+	categorizeGateway.NewHTTPGateway(v1, svc4)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
 
 	defer e.Close()
 	defer orm.DB.Close()
+}
+
+func staticMiddleware() echo.MiddlewareFunc {
+	return middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:   "public",
+		Browse: true,
+		HTML5:  true,
+	})
+}
+
+func heathCheck(c echo.Context) error {
+	return c.String(http.StatusOK, "OK")
 }

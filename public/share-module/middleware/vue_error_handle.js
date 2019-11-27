@@ -29,7 +29,7 @@ export class VueErrorHandler {
             else if (e.status > 304) {
                 swal2('error', { text: "เซิฟเวอร์ผิดพลาด"})
             }
-            
+
             else {
                 swal2('error', { text: "ยังไม่ได้ดัก"})
             }

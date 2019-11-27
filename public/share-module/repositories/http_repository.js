@@ -136,14 +136,18 @@ export class HttpRepository {
         })
     }
 
-    // END_POINT: ############# TODO ###############
-    deleteNlpTrainingLogByID() {
-        return of({}).pipe(
-            delay(600)
-        )
+    // END_POINT: /v1/nlp/log?id=
+    deleteNlpTrainingLogByID(id) {
+        return ajax({
+            method: "DELETE", 
+            url: `${this.BASE_API}/v1/nlp/log?id=${id}`,
+            headers: { 
+                "Authorization": this._getAuthorizedBearer() 
+            }
+        })
     }
 
-    // END_POINT: ############# TODO ###############
+    // END_POINT: ############# TODO: ###############
     bulkDeleteNlpTrainingLogsByIDs() {
         return of()
     }
@@ -157,7 +161,7 @@ export class HttpRepository {
         })
     }
 
-    // END_POINT: ############# TODO ###############
+    // END_POINT: ############# TODO: ###############
     getNlpReplyCounterByClientID() {
         return of({ reply_count: Math.floor(Math.random() * 3000) }).pipe(
             delay(600)
@@ -171,14 +175,17 @@ export class HttpRepository {
         )
     }
 
+    // END_POINT: ############# TODO: ###############
     getNlpConfidenceByClientID = () => of({ confidence: Math.floor(Math.random() * 90 + 10) }).pipe(
         delay(600)
     )
 
+    // END_POINT: ############# TODO: ###############
     setNlpConfidenceByClientID = () => of({}).pipe(
         delay(600)
     )
 
+    // END_POINT: ############# TODO: ###############
     getAppInfoByClientId = () => of({
         id: "632861333807100",
         status : 1,
@@ -189,10 +196,12 @@ export class HttpRepository {
         delay(600)
     )
 
+    // END_POINT: ############# TODO: ###############
     setAppInfoByClientId = (app_info) => of({}).pipe(
         delay(600)
     )
 
+    // END_POINT: ############# TODO: ###############
     getAppCredentialByAppId = () => of({
         access_token: 'token ' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
         client_secret: 'secret ' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
@@ -200,12 +209,14 @@ export class HttpRepository {
         delay(600)
     )
 
+    // END_POINT: ############# TODO: ###############
     revokeAccessTokenByAppId = () => of({
         access_token : 'token re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
     }).pipe(
         delay(600)
     )
-
+    
+    // END_POINT: ############# TODO: ###############
     revokeSecretByAppId = () => of({
         client_secret : 'secret re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
     }).pipe(

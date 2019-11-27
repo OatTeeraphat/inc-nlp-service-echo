@@ -15,7 +15,7 @@ services:
       - ENV=heroku
       - ECHO_APP_NAME=inc-nlp-service-echo
       - PORT=9000
-      - ECHO_LOG_LEVEL=INFO
+      - ECHO_LOG_LEVEL=INFO 
       - NLP_DB_DIALECTS=postgres
       - NLP_DB_NAME=postgres
       - NLP_DB_HOST=postgres

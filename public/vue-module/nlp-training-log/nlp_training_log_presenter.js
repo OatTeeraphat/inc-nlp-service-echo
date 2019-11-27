@@ -35,7 +35,7 @@ export class NlpTrainingLogPresenter {
     }
 
     deselectAllNlpTrainingLog() {
-        this.view.nlpLogsCheckedList.ids = []
+        this.view.nlpLogsCheckedList.ids =   []
     }
 
     bulkDeleteNlpTrainingLog() {
@@ -43,10 +43,11 @@ export class NlpTrainingLogPresenter {
     }
 
     deleteNlpTrainingLogByID(id) {
-        // this.nlpTrainingLogService.deleteNlpTrainingLogByID(id).subscribe( () =>  
-        //     this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id) 
-        // )
-        this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id) 
+        console.log(id)
+        this.nlpTrainingLogService.deleteNlpTrainingLogByID(id).subscribe( () =>  
+            this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id) 
+        )
+        // this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id) 
     }
 
     beforeDestroy() {
