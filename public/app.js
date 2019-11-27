@@ -75,7 +75,6 @@ const vueErrorHandler = new VueErrorHandler(cookieRepo, vueRouter)
 // service initialize
 const authService = new AuthenticationService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
 const storyService = new StoryService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
-const webChatService = new WebChatService(socketRepo, vueErrorHandler)
 const nlpRecordsService = new NlpRecordsService(httpRepo, vueRouter, localStorageRepo, cookieRepo, vueErrorHandler)
 const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
@@ -88,7 +87,7 @@ const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)
 const storyPresenter = new StoryPresenter(storyService)
 const nlpTrainingLogPresenter = new NlpTrainingLogPresenter(nlpTrainingLogService)
 const nlpRecordPresenter = new NlpRecordPresenter(nlpRecordsService)
-const settingPresenter = new SettingPresenter(settingService, webChatService)
+const settingPresenter = new SettingPresenter(settingService)
 const dashboardPresenter = new DashBoardPresenter(dashBoardService)
 
 Vue.use({
@@ -103,8 +102,8 @@ Vue.use({
         Vue.prototype.$settingPresenter = settingPresenter
         Vue.prototype.$dashboardPresenter = dashboardPresenter
 
-        // TODO:  inject presenter instead of service
-        Vue.prototype.$webChatService = webChatService
+        // FIXME:  webchat error
+        // Vue.prototype.$webChatService = webChatService
             
     }
 })

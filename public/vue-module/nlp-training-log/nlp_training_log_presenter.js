@@ -7,6 +7,11 @@ class NlpTrainingLogViewModel {
         this.nlpLogs = []
         this.nlpLogsCheckedList = { ids: [] }
         this.searchKeyword = ""
+        this.searchPage = 1
+        this.searchLimit = 1
+        this.searchTotal = 1
+        this.nlpRecordsByKeyword = []
+        this.nlpRecordsByKeywordCheckedList = { ids: [] }
     }
 }
 
@@ -20,36 +25,44 @@ export class NlpTrainingLogPresenter {
 
     // getInitialInstance
     onMounted(){
-        this.$nlpTrainingLogInfiniteScrollSubscription = this.nlpTrainingLogService.getNlpTrainingLogPaginationByInfiniteScrollSubject().subscribe( it => {
+        this.$nlpTrainingLogInfiniteScrollSubscription = this.nlpTrainingLogService.getPaginationByInfiniteScrollSubject().subscribe( it => {
             this.view.page = it.page
             this.view.total = it.total
             this.view.limit = it.limit
             this.view.nlpLogs.push(...it.nlp_logs)
         })
         // get first page
-        this.nlpTrainingLogService.nextNlpTrainingLogPaginationPage(this.view.page, this.view.searchKeyword)
+        this.nlpTrainingLogService.nextPaginationPage(this.view.page, this.view.searchKeyword)
     }
 
-    selectAllNlpTrainingLog() {
+    // getByInfiniteScroll( event ) {
+    //     let {scrollTop, clientHeight, scrollHeight } = event.srcElement
+    //     if (scrollTop + clientHeight >= scrollHeight / 1.2) {
+    //         this.view.isShowLoadingIndicator = true
+    //         this.nlpRecordsService.nextPageByInfiniteScroll(this.view.page)
+    //     }
+    // }
+
+    selectAll() {
         this.view.nlpLogsCheckedList.ids = []
         this.view.nlpLogs.forEach( ({ id }) => { this.view.nlpLogsCheckedList.ids.push(id) })
     }
 
-    deselectAllNlpTrainingLog() {
+    deselectAll() {
         this.view.nlpLogsCheckedList.ids =   []
     }
 
-    bulkDeleteNlpTrainingLog() {
-        this.nlpTrainingLogService.bulkDeleteNlpTrainingLogsByIDs(this.view.nlpLogsCheckedList.ids).subscribe( () => {
+    bulkDelete() {
+        this.nlpTrainingLogService.bulkDeleteByIDs(this.view.nlpLogsCheckedList.ids).subscribe( () => {
 
             this.view.nlpLogs = this.view.nlpLogs.filter( ({ id }) => !this.view.nlpLogsCheckedList.ids.includes(id) )
             this.view.nlpLogsCheckedList.ids = []
         })
     }
 
-    deleteNlpTrainingLogByID(id) {
+    deleteByID(id) {
         console.log(id)
-        this.nlpTrainingLogService.deleteNlpTrainingLogByID(id).subscribe( () =>  
+        this.nlpTrainingLogService.deleteByID(id).subscribe( () =>  
             this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id) 
         )
     }

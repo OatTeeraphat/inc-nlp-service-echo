@@ -7,8 +7,11 @@ export class VueErrorHandler {
 
     catchHttpError = () => catchError( e => {
 
+        
         if ( e instanceof AjaxError ) {
+            
             if (e.status == 401) {
+                console.error("401 from catchHttpError ", e)
                 swal2('error', { text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน"})
                 this.cookieRepo.removeClientSession()
                 if ( this.vueRouter.history.current.path !== "/login" ) {
@@ -17,9 +20,13 @@ export class VueErrorHandler {
             }
         
             else if (e.status == 403) {
+                console.error("403 from catchHttpError ", e)
                 swal2('error', { text: "ไม่สามารถทำรายการต่อไปได้"})
                 this.cookieRepo.removeClientSession()
-                console.error("403")
+                if ( this.vueRouter.history.current.path !== "/login" ) {
+                    this.vueRouter.replace('/login')
+                }
+                
             }
             
             else if (e.status == 500) {
@@ -34,7 +41,6 @@ export class VueErrorHandler {
                 swal2('error', { text: "ยังไม่ได้ดัก"})
             }
         }
-        console.error("catchHttpError", e)
         return of(e)
     })
     

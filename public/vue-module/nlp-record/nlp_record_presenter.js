@@ -28,16 +28,17 @@ export class NlpRecordPresenter {
     }
 
     onMounted() {
-        this.$getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( item => {
-            this.view.page = this.view.page + 1
-            this.view.total = item.total
-            this.view.limit = item.limit
-            this.view.nlpRecords.push(...item.nlp_records)
-            this.view.isShowLoadingIndicator = false
-        }, 
-        error => {
-            console.error(error)
-            this.view.isShowLoadingIndicator = false
+        this.$getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( 
+            item => {
+                this.view.page = this.view.page + 1
+                this.view.total = item.total
+                this.view.limit = item.limit
+                this.view.nlpRecords.push(...item.nlp_records)
+                this.view.isShowLoadingIndicator = false
+            }, 
+            error => {
+                console.error(error)
+                this.view.isShowLoadingIndicator = false
         })
 
         this.$searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {

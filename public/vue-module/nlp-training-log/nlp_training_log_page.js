@@ -26,12 +26,12 @@ export default Vue.component('nlp-training-log-page', {
                                     Bulk Action
                                 </button>
                                 <div class="dropdown-menu">
-                                    <button @click="$nlpTrainingLogPresenter.selectAllNlpTrainingLog()" class="dropdown-item">Select All</button>
+                                    <button @click="$nlpTrainingLogPresenter.selectAll()" class="dropdown-item">Select All</button>
 
-                                    <button @click="$nlpTrainingLogPresenter.deselectAllNlpTrainingLog()" class="dropdown-item">Deselect All</button>
+                                    <button @click="$nlpTrainingLogPresenter.deselectAll()" class="dropdown-item">Deselect All</button>
                                     <div class="dropdown-divider"></div>
 
-                                    <button @click="$nlpTrainingLogPresenter.bulkDeleteNlpTrainingLog()" class="dropdown-item text-danger">Delete All</button>
+                                    <button @click="$nlpTrainingLogPresenter.bulkDelete()" class="dropdown-item text-danger">Delete All</button>
                                 </div>
                             </div>
                             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -78,7 +78,7 @@ export default Vue.component('nlp-training-log-page', {
                                         <i class="fe fe-plus-circle"></i>
                                     </button>
                                     <!-- // TODO: delete one by ID -->
-                                    <button @click="$nlpTrainingLogPresenter.deleteNlpTrainingLogByID(item.id)" type="button"class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
+                                    <button @click="$nlpTrainingLogPresenter.deleteByID(item.id)" type="button"class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
                                     <i class="fe fe-delete"></i>
                                     </button>
                                 </td>
