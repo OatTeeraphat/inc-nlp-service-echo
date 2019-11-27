@@ -22,8 +22,8 @@ func NewService(repo1 repositories.INlpTrainingLogRepository) nlptraininglog.Ser
 	}
 }
 
-// ReadPaginationNlpRecordService ReadPaginationNlpRecordService
-func (repo Service) ReadPaginationNlpRecordService(PageID string) dao.NlpTrainingLogPaginationSearchModel {
+// ReadPaginationNlpTrainingLogService ReadPaginationNlpRecordService
+func (repo Service) ReadPaginationNlpTrainingLogService(PageID string) dao.NlpTrainingLogPaginationSearchModel {
 	var nlpTrainingLogPaginationSearchModel dao.NlpTrainingLogPaginationSearchModel
 
 	nlpTrainingLogPaginationSearchModel.Page = PageID
@@ -43,8 +43,6 @@ func (repo Service) ReadPaginationNlpRecordService(PageID string) dao.NlpTrainin
 
 	log.Info(nlpTrainingLogCount)
 
-	// nlpRecordPaginationSearchModel.NlpRecords = []models.NlpRecords{}
-
 	for _, item := range repo.nlpTrainingLogRepository.Pagination(pageInt, 40) {
 		var nlpModels dao.NlpTrainingLog
 		nlpModels.ID = item.ID
@@ -58,4 +56,18 @@ func (repo Service) ReadPaginationNlpRecordService(PageID string) dao.NlpTrainin
 
 	// return nlpRecordPaginationSearchModel
 	return nlpTrainingLogPaginationSearchModel
+}
+
+// DeleteByID DeleteByID
+func (s Service) DeleteByID(ID string) (string, error) {
+	u64, err := strconv.ParseUint(ID, 10, 32)
+	if err != nil {
+		return "INVALID", err
+	}
+
+	domainID := uint(u64)
+
+	s.nlpTrainingLogRepository.DeleteByID(domainID)
+
+	return "OK", nil
 }

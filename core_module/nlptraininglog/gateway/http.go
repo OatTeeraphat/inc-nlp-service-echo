@@ -19,17 +19,30 @@ func NewHTTPGateway(e *echo.Group, svc0 nlptraininglog.Service) {
 	}
 
 	e.GET("/nlp/log/pagination", handle.ReadPaginationNlpTrainingLogController)
+	e.DELETE("/nlp/log", handle.DeleteByID)
 }
 
 // ReadPaginationNlpTrainingLogController ReadPaginationNlpTrainingLogController
-func (service HTTPGateway) ReadPaginationNlpTrainingLogController(e echo.Context) error {
+func (h HTTPGateway) ReadPaginationNlpTrainingLogController(e echo.Context) error {
 	// intent := e.QueryParam("intent")
 	// keyword := e.QueryParam("keyword")
 	// story := e.QueryParam("story")
 	page := e.QueryParam("page")
 
-	response := service.NlpTrainingLogService.ReadPaginationNlpRecordService(page)
+	response := h.NlpTrainingLogService.ReadPaginationNlpTrainingLogService(page)
 
 	return e.JSON(http.StatusOK, response)
 
+}
+
+// DeleteByID DeleteByID
+func (h HTTPGateway) DeleteByID(e echo.Context) error {
+	ID := e.QueryParam("id")
+	response, error := h.NlpTrainingLogService.DeleteByID(ID)
+
+	if error != nil {
+		return e.String(http.StatusUnprocessableEntity, "INVALID")
+	}
+
+	return e.String(http.StatusOK, response)
 }

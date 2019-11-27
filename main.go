@@ -83,7 +83,6 @@ func main() {
 
 	// FIXME: move to nuxt js
 	e.Use(staticMiddleware())
-
 	ws := websockets.NewWebSocket()
 	e.GET("/health_check", heathCheck)
 
@@ -92,11 +91,8 @@ func main() {
 	q.GET("/*", echoSwagger.WrapHandler)
 
 	v1 := e.Group("/v1")
-
 	authGateway.NewHTTPGateway(v1, secure0)
-
 	v1.Use(middleware.JWTWithConfig(jwtConfig))
-
 	svc0 := shopService.NewService(repo6)
 	svc1 := storyService.NewService(repo4)
 	svc2 := nlpTraininglogService.NewService(repo0)

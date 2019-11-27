@@ -3,6 +3,8 @@ package repositories
 import (
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/business_module/domains"
+
+	"github.com/jinzhu/gorm"
 )
 
 // NlpTrainingLogRepository nlp query appearance
@@ -15,6 +17,7 @@ type INlpTrainingLogRepository interface {
 	Save(nlpTrainingRecordDomain *domains.NlpTrainingLogDomain)
 	Count() int64
 	Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain
+	DeleteByID(ID uint) *gorm.DB
 }
 
 // NewNlpTrainingLogRepository new nlp record instance
@@ -39,4 +42,11 @@ func (repo NlpTrainingLogRepository) Pagination(PageIndex int, Limit int) []doma
 	var nlpTrainingLogDomain []domains.NlpTrainingLogDomain
 	repo.DB.Limit(Limit).Find(&nlpTrainingLogDomain).Offset(Limit * (PageIndex - 1)).Order("id asc").Find(&nlpTrainingLogDomain)
 	return nlpTrainingLogDomain
+}
+
+// DeleteByID DeleteByID
+func (r NlpTrainingLogRepository) DeleteByID(ID uint) *gorm.DB {
+	domain := &domains.NlpTrainingLogDomain{}
+	domain.ID = ID
+	return r.DB.Unscoped().Delete(domain)
 }
