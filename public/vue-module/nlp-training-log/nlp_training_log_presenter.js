@@ -42,10 +42,7 @@ export class NlpTrainingLogPresenter {
         this.nlpTrainingLogService.bulkDeleteNlpTrainingLogsByIDs(this.view.nlpLogsCheckedList.ids).subscribe( () => {
 
             this.view.nlpLogs = this.view.nlpLogs.filter( ({ id }) => !this.view.nlpLogsCheckedList.ids.includes(id) )
-
             this.view.nlpLogsCheckedList.ids = []
-
-
         })
     }
 

@@ -26,14 +26,11 @@ export default Vue.component('nlp-training-log-page', {
                                     Bulk Action
                                 </button>
                                 <div class="dropdown-menu">
-                                    <!-- // TODO: select all -->
                                     <button @click="$nlpTrainingLogPresenter.selectAllNlpTrainingLog()" class="dropdown-item">Select All</button>
 
-                                    <!-- // TODO: deselect all -->
                                     <button @click="$nlpTrainingLogPresenter.deselectAllNlpTrainingLog()" class="dropdown-item">Deselect All</button>
                                     <div class="dropdown-divider"></div>
 
-                                    <!-- // TODO: bulk delete all selected -->
                                     <button @click="$nlpTrainingLogPresenter.bulkDeleteNlpTrainingLog()" class="dropdown-item text-danger">Delete All</button>
                                 </div>
                             </div>

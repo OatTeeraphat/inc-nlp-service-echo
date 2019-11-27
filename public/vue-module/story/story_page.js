@@ -25,7 +25,10 @@ export default Vue.component('story-page', {
                                     Bulk Action
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#">Select All</a>
+                                    <!-- TODO: add ajax  -->
+                                    <button @click="$storyPresenter.selectAllStory()" class="dropdown-item">Select All</button>
+
+                                    <!-- TODO: -->
                                     <a class="dropdown-item" href="#">Trained Select</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item text-danger" href="#">Delete All</a>
@@ -96,7 +99,7 @@ export default Vue.component('story-page', {
                                     </tr>
                                     <tr v-for="item in $storyPresenter.view.stories">
                                         <th scope="row" class="col-1">
-                                            <input type="checkbox">
+                                            <input :value="item.id" v-model="$storyPresenter.view.storiesCheckList.ids" type="checkbox">
                                         </th>
                                         <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Story Name" v-model="item.name"></td>
                                         <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description" v-model="item.desc"></td>
