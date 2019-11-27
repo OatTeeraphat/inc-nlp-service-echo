@@ -20,18 +20,36 @@ export default Vue.component('dashboard-page', {
 						<div class="card-body">
 								<div class="d-flex">
 										<div class="col-12 pt-2 pb-4">
-												<h3 class="card-title mb-0"><strong>Incommon Studio</strong></h3>
-												<small class="text-muted">App ID : 632861333807100</small>
+												<h3 class="card-title mb-0 preload">
+													<strong>{{ app_info.name }}</strong>
+													<div class="linear-preload" v-bind:class="{ invisible: app_info.name }">
+														<div class="indeterminate-preload"></div>
+													</div>
+													<div class="linear-preload span-next_warp" v-bind:class="{ invisible: app_info.name }">
+														<div class="indeterminate-preload"></div>
+													</div>
+												</h3>
+												<small class="text-muted" v-bind:class="{ invisible: !app_info.name }">App ID : <span class="position-relative"> {{ app_info.id }} </span> </small>
 										</div>
 								</div>
 							<div class="d-flex">
 									<div class="col-6">
 											<small class="text-muted">Remaining Call</small>
-											<h4 class="card-title text-purple dashboard-usage">Unlimited<span>(∞)</span></h4>
+											<h4 class="card-title text-purple dashboard-usage preload">
+												<context v-bind:class="{ invisible: !app_info.name }" >{{ app_info.plan }}</context><span v-bind:class="{ invisible: !app_info.name }">(∞)</span>
+												<div class="linear-preload" v-bind:class="{ invisible: app_info.name }">
+													<div class="indeterminate-preload"></div>
+												</div>
+											</h4>
 									</div>
 									<div class="col-6">
 											<small class="text-muted">Free Training Storage</small>
-											<h4 class="card-title text-purple dashboard-usage">437 Mb<span>(500 Mb)</span></h4>
+											<h4 class="card-title text-purple dashboard-usage preload">
+												<context v-bind:class="{ invisible: !app_info.name }" >{{ app_info.record_limit }} Mb</context><span v-bind:class="{ invisible: !app_info.name }">(500 Mb)</span>
+												<div class="linear-preload" v-bind:class="{ invisible: app_info.name }">
+													<div class="indeterminate-preload"></div>
+												</div>
+											</h4>
 									</div>
 							</div>
 						</div>
@@ -264,22 +282,11 @@ export default Vue.component('dashboard-page', {
 		</div>
 	</div>
 	`,
-	data: function () {
-		return {
-			toggle_chart : {
-				api : "tabFirst",
-				model : "tabFirst",
-				trainig : "tabFirst"
-			},
-		}
+	data: function() {
+		return this.$dashboardPresenter.view
 	},
-	beforeCreate : function (){
-	},
-	created: function () {
+	mounted : function() {
+		this.$dashboardPresenter.getInitialState() 
+	}
 
-	},
-	beforeDestroy: function () {
-	},
-	methods: {
-	},
 })

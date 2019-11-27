@@ -44,6 +44,13 @@
      background-color: #fff !important;
      font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 }
+ h3.preload{
+     min-height: 1.2em;
+ }
+ h4.preload{
+     height: 1.15em;
+ }
+ h4.preload .linear-preload{height: 15px;}
  .navbar-brand{
      max-width: 135px;
      margin: .33rem 0 .125rem;
@@ -662,14 +669,15 @@
  .linear-preload {
      overflow: hidden;
      width: 60%;
-     height: 1em;
      background-color: #f7f7f7;
      position: absolute;
-     top: 0.33em;
+     top: 0.3em;
+     height: 1.1em;
      left: 0;
      border-radius: 1em;
-     max-height: 23px;
+     max-height: 20px;
 }
+ .linear-preload.span-next_warp{top: 1.55em;height: 12px;width: 37.5%;}
  .indeterminate-preload {
      position: relative;
      width: 100%;
@@ -689,6 +697,7 @@
      background-color: #4FC3F7;
      animation: indeterminate_second 1.5s infinite ease-in;
 }
+
  @keyframes indeterminate_first-preload {
      0% {
          left: -100%;

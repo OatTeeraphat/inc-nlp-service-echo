@@ -22,6 +22,8 @@ import { StoryPresenter } from './vue-module/story/story_presenter.js'
 import { WebChatService } from './vue-module/webchat/webchat_service.js'
 import { NlpReplyCounterService } from './vue-module/welcome/nlp_reply_counter_service.js'
 import { WelcomePresenter } from './vue-module/welcome/welcome_presenter.js'
+import { DashBoardService } from './vue-module/dashboard/dashboard_service.js'
+import { DashBoardPresenter } from './vue-module/dashboard/dashboard_presenter.js'
 
 import nlpRecordPage from './vue-module/nlp-record/nlp_records_page.js'
 import nlpTrainingLog from './vue-module/nlp-training-log/nlp_training_log_page.js'
@@ -78,6 +80,7 @@ const nlpRecordsService = new NlpRecordsService(httpRepo, vueRouter, localStorag
 const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 const settingService = new SettingService(httpRepo, vueErrorHandler)
+const dashBoardService = new DashBoardService(httpRepo, vueErrorHandler)
 
 // presenter initialize
 const authPresenter = new AuthenticationPresenter(authService)
@@ -86,6 +89,7 @@ const storyPresenter = new StoryPresenter(storyService)
 const nlpTrainingLogPresenter = new NlpTrainingLogPresenter(nlpTrainingLogService)
 const nlpRecordPresenter = new NlpRecordPresenter(nlpRecordsService)
 const settingPresenter = new SettingPresenter(settingService, webChatService)
+const dashboardPresenter = new DashBoardPresenter(dashBoardService)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
@@ -97,6 +101,7 @@ Vue.use({
         Vue.prototype.$nlpTrainingLogPresenter = nlpTrainingLogPresenter
         Vue.prototype.$nlpRecordPresenter = nlpRecordPresenter
         Vue.prototype.$settingPresenter = settingPresenter
+        Vue.prototype.$dashboardPresenter = dashboardPresenter
 
         // TODO:  inject presenter instead of service
         Vue.prototype.$webChatService = webChatService

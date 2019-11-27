@@ -199,7 +199,8 @@ export class HttpRepository {
         status : 1,
         name: "Inccommon Studio",
         owner: "Chanasit.B",
-        plan: "unlimited"
+        plan: "unlimited",
+        record_limit : "437"
     }).pipe(
         delay(600)
     )
@@ -230,5 +231,8 @@ export class HttpRepository {
     }).pipe(
         delay(600)
     )
+
+
+
 
 }   
