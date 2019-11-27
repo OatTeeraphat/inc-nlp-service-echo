@@ -13,8 +13,10 @@ type HTTPGateway struct {
 }
 
 // NewHTTPGateway new shop controller instace
-func NewHTTPGateway(svc0 shop.Service) shop.HTTPGateway {
-	return &HTTPGateway{svc0}
+func NewHTTPGateway(e *echo.Group, svc0 shop.Service) {
+	handle := &HTTPGateway{svc0}
+
+	e.GET("/shop", handle.ReadShopByIDController)
 }
 
 // ReadShopByIDController ReadShopByIDController

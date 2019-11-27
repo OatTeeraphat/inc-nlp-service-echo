@@ -3,7 +3,6 @@ package controller
 import (
 	"bytes"
 	"encoding/json"
-	"inc-nlp-service-echo/core_module/facebook"
 	"inc-nlp-service-echo/core_module/facebook/dao"
 	"inc-nlp-service-echo/core_module/nlp"
 	"io/ioutil"
@@ -14,19 +13,23 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// FBWebhookController FBWebhookController
-type FBWebhookController struct {
-	NlpService        nlp.INlpRecordService
+// HTTPGateway FBWebhookController
+type HTTPGateway struct {
+	NlpService        nlp.Service
 	WebSocketUpgrader websocket.Upgrader
 }
 
-// NewFBWebhookController NewFBWebhookController
-func NewFBWebhookController(nlpRecordService nlp.INlpRecordService, ws websocket.Upgrader) facebook.IFBWebhookController {
-	return &FBWebhookController{nlpRecordService, ws}
+// NewHTTPGateway NewFBWebhookController
+func NewHTTPGateway(e *echo.Group, nlpRecordService nlp.Service, ws websocket.Upgrader) {
+	handle := &HTTPGateway{nlpRecordService, ws}
+
+	e.GET("/fb/webhook", handle.VerifyFBWebhookController)
+	e.POST("/fb/webhook", handle.ReplyFBWebhookController)
+	e.Any("/fb/webhook/socket.io", handle.ReplyFBWebhookSocketIO)
 }
 
 // VerifyFBWebhookController VerifyFBWebhookController
-func (svc *FBWebhookController) VerifyFBWebhookController(e echo.Context) error {
+func (svc *HTTPGateway) VerifyFBWebhookController(e echo.Context) error {
 
 	verifyToken := e.QueryParam("hub.verify_token")
 
@@ -44,7 +47,7 @@ func (svc *FBWebhookController) VerifyFBWebhookController(e echo.Context) error 
 }
 
 // ReplyFBWebhookController ReplyFBWebhookController
-func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
+func (svc *HTTPGateway) ReplyFBWebhookController(e echo.Context) error {
 	shopID := e.QueryParam("shop_id")
 	facebookWebhookRequest := new(dao.FacebookWebhookRequest)
 	e.Bind(&facebookWebhookRequest)
@@ -84,7 +87,7 @@ func (svc *FBWebhookController) ReplyFBWebhookController(e echo.Context) error {
 }
 
 // ReplyFBWebhookSocketIO ReplyFBWebhookSocketIO
-func (svc *FBWebhookController) ReplyFBWebhookSocketIO(c echo.Context) error {
+func (svc *HTTPGateway) ReplyFBWebhookSocketIO(c echo.Context) error {
 	ws, err := svc.WebSocketUpgrader.Upgrade(c.Response(), c.Request(), nil)
 
 	log.Debug("socket connected")

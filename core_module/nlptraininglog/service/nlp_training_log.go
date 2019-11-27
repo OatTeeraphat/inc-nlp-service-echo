@@ -2,28 +2,28 @@ package service
 
 import (
 	"inc-nlp-service-echo/business_module/repositories"
-	"inc-nlp-service-echo/core_module/nlp"
-	"inc-nlp-service-echo/core_module/nlp/dao"
+	"inc-nlp-service-echo/core_module/nlptraininglog"
+	"inc-nlp-service-echo/core_module/nlptraininglog/dao"
 	"math"
 	"strconv"
 
 	log "github.com/sirupsen/logrus"
 )
 
-// NlpTrainingLogService NlpTrainingLogService
-type NlpTrainingLogService struct {
+// Service NlpTrainingLogService
+type Service struct {
 	nlpTrainingLogRepository repositories.INlpTrainingLogRepository
 }
 
-// NewNlpTrainingLogService NewNlpTrainingLogService
-func NewNlpTrainingLogService(repo1 repositories.INlpTrainingLogRepository) nlp.INlpTrainingLogService {
-	return &NlpTrainingLogService{
+// NewService NewService
+func NewService(repo1 repositories.INlpTrainingLogRepository) nlptraininglog.Service {
+	return &Service{
 		repo1,
 	}
 }
 
 // ReadPaginationNlpRecordService ReadPaginationNlpRecordService
-func (repo NlpTrainingLogService) ReadPaginationNlpRecordService(PageID string) dao.NlpTrainingLogPaginationSearchModel {
+func (repo Service) ReadPaginationNlpRecordService(PageID string) dao.NlpTrainingLogPaginationSearchModel {
 	var nlpTrainingLogPaginationSearchModel dao.NlpTrainingLogPaginationSearchModel
 
 	nlpTrainingLogPaginationSearchModel.Page = PageID

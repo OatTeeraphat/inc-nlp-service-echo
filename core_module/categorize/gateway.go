@@ -2,7 +2,7 @@ package categorize
 
 import "github.com/labstack/echo/v4"
 
-// IShopStoryController story rest api interface
-type IShopStoryController interface {
+// HTTPGateway story rest api interface
+type HTTPGateway interface {
 	CreateShopStoryController(e echo.Context) error
 }

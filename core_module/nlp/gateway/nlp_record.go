@@ -11,14 +11,23 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// NlpController nlp rest api controller
-type NlpController struct {
-	NlpService nlp.INlpRecordService
+// HTTPGateway nlp rest api controller
+type HTTPGateway struct {
+	NlpService nlp.Service
 }
 
-// NewNlpController new nlp controller instace
-func NewNlpController(nlpRecordService nlp.INlpRecordService) nlp.INlpController {
-	return &NlpController{nlpRecordService}
+// NewHTTPGateway new nlp controller instace
+func NewHTTPGateway(e *echo.Group, nlpRecordService nlp.Service) {
+	handle := &HTTPGateway{nlpRecordService}
+
+	e.POST("/nlp/record", handle.CreateNlpRecordByShopController)
+	e.POST("/nlp/record/upload.xlsx", handle.UploadXlsxNlpRecordByShopController)
+	e.DELETE("/nlp/record/drop", handle.DropNlpRecordByShopController)
+	e.DELETE("/nlp/record", handle.DeleteNlpRecordByIDController)
+	e.DELETE("/nlp/record/bulk", handle.BulkDeleteNlpRecordByIDsController)
+	e.GET("/nlp/record/pagination", handle.ReadPaginationNlpRecordController)
+	e.GET("/nlp/record/reply", handle.ReadNlpReplyModelByShopController)
+	e.PUT("/nlp/record", handle.UpdateNlpRecordByIDController)
 }
 
 // ReadNlpReplyModelByShopController example
@@ -30,7 +39,7 @@ func NewNlpController(nlpRecordService nlp.INlpRecordService) nlp.INlpController
 // @Param keyword query string true "incomming keyword"
 // @Success 200 {object} models.NlpReplyModel
 // @Router /v1/nlp/record/reply [get]
-func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) error {
+func (con *HTTPGateway) ReadNlpReplyModelByShopController(e echo.Context) error {
 	keyword := e.QueryParam("keyword")
 	shopID := e.QueryParam("shop_id")
 	response := con.NlpService.ReadNlpReplyModelService(keyword, shopID)
@@ -45,7 +54,7 @@ func (con *NlpController) ReadNlpReplyModelByShopController(e echo.Context) erro
 // @Param shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [get]
-func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error {
+func (con *HTTPGateway) CreateNlpRecordByShopController(e echo.Context) error {
 	// shopID := e.QueryParam("shop_id")
 
 	createNlpRecordModel := new([]dao.CreateNlpRecordModel)
@@ -63,7 +72,7 @@ func (con *NlpController) CreateNlpRecordByShopController(e echo.Context) error 
 // @Param shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [get]
-func (con *NlpController) ReadPaginationNlpRecordController(e echo.Context) error {
+func (con *HTTPGateway) ReadPaginationNlpRecordController(e echo.Context) error {
 	intent := e.QueryParam("intent")
 	keyword := e.QueryParam("keyword")
 	story := e.QueryParam("story")
@@ -81,7 +90,7 @@ func (con *NlpController) ReadPaginationNlpRecordController(e echo.Context) erro
 // @Param 	shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record/upload.xlsx [post]
-func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) error {
+func (con *HTTPGateway) UploadXlsxNlpRecordByShopController(e echo.Context) error {
 	// shopID := e.QueryParam("shop_id")
 	// sheetName := e.QueryParam("sheet_name")
 
@@ -113,7 +122,7 @@ func (con *NlpController) UploadXlsxNlpRecordByShopController(e echo.Context) er
 // @Param 	shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [delete]
-func (con *NlpController) DropNlpRecordByShopController(e echo.Context) error {
+func (con *HTTPGateway) DropNlpRecordByShopController(e echo.Context) error {
 	// shopID := e.QueryParam("shop_id")
 	response := con.NlpService.DropNlpReplyByShopService()
 	return e.String(http.StatusOK, response)
@@ -127,7 +136,7 @@ func (con *NlpController) DropNlpRecordByShopController(e echo.Context) error {
 // @Param 	shop_id query string true "shop identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [delete]
-func (con *NlpController) DeleteNlpRecordByIDController(e echo.Context) error {
+func (con *HTTPGateway) DeleteNlpRecordByIDController(e echo.Context) error {
 	id := e.QueryParam("id")
 	response := con.NlpService.RemoveNlpRecordByID(id)
 	return e.String(http.StatusOK, response)
@@ -140,7 +149,7 @@ func (con *NlpController) DeleteNlpRecordByIDController(e echo.Context) error {
 // @Produce text/html
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [delete]
-func (con *NlpController) BulkDeleteNlpRecordByIDsController(e echo.Context) error {
+func (con *HTTPGateway) BulkDeleteNlpRecordByIDsController(e echo.Context) error {
 	ids := new([]uint)
 	e.Bind(&ids)
 
@@ -156,7 +165,7 @@ func (con *NlpController) BulkDeleteNlpRecordByIDsController(e echo.Context) err
 }
 
 // UpdateNlpRecordByIDAndClientID update nlp record by id and ClientID
-func (con *NlpController) UpdateNlpRecordByIDController(e echo.Context) error {
+func (con *HTTPGateway) UpdateNlpRecordByIDController(e echo.Context) error {
 	id := e.QueryParam("id")
 	response := con.NlpService.UpdateNlpRecordByIDAndClientID(id)
 	return e.String(http.StatusOK, response)

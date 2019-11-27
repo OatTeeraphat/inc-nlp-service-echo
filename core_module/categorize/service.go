@@ -1,6 +1,6 @@
 package categorize
 
-// IShopStoryService IShopStoryService
-type IShopStoryService interface {
+// Service IShopStoryService
+type Service interface {
 	CreateShopStoryService(shopID string, storyIDs []string) string
 }

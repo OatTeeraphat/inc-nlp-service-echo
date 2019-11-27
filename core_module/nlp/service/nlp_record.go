@@ -15,16 +15,16 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-// NlpRecordService NlpService
-type NlpRecordService struct {
+// Service NlpService
+type Service struct {
 	nlpTrainingRecordRepository repositories.INlpTrainingLogRepository
 	nlpRecordRepository         repositories.INlpRecordRepository
 	shopStoryRepository         repositories.IShopStoryRepository
 }
 
-// NewNlpRecordService NewNlpService
-func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, nlpTrainingRecordRepository repositories.INlpTrainingLogRepository, shopStoryRepository repositories.IShopStoryRepository) nlp.INlpRecordService {
-	return &NlpRecordService{
+// NewService NewNlpService
+func NewService(nlpRecordRepository repositories.INlpRecordRepository, nlpTrainingRecordRepository repositories.INlpTrainingLogRepository, shopStoryRepository repositories.IShopStoryRepository) nlp.Service {
+	return &Service{
 		nlpTrainingRecordRepository,
 		nlpRecordRepository,
 		shopStoryRepository,
@@ -32,7 +32,7 @@ func NewNlpRecordService(nlpRecordRepository repositories.INlpRecordRepository, 
 }
 
 // CreateNlpRecordService GetNlpModelReply
-func (svc NlpRecordService) CreateNlpRecordService(createNlpModel []dao.CreateNlpRecordModel) string {
+func (svc Service) CreateNlpRecordService(createNlpModel []dao.CreateNlpRecordModel) string {
 
 	for _, item := range createNlpModel {
 		hashValue := distance.GenerateKeywordMinhash(item.Keyword)
@@ -48,7 +48,7 @@ func (svc NlpRecordService) CreateNlpRecordService(createNlpModel []dao.CreateNl
 }
 
 // UploadXlsxNlpRecordService XlsxCreateNlpRecord
-func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) string {
+func (svc Service) UploadXlsxNlpRecordService(xlsxSheet [][]string) string {
 
 	var nlpRecord []interface{}
 	var tooLongSentence int
@@ -101,7 +101,7 @@ func (svc NlpRecordService) UploadXlsxNlpRecordService(xlsxSheet [][]string) str
 }
 
 // ReadNlpReplyModelService ReadNlpReplyModel
-func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID string) dao.NlpReplyModel {
+func (svc Service) ReadNlpReplyModelService(keyword string, shopID string) dao.NlpReplyModel {
 	var nlpReplyModel []dao.NlpReplyModel
 	var listStoryIDsInShopFound []uint32
 	var keywordMinhash uint32
@@ -151,7 +151,7 @@ func (svc NlpRecordService) ReadNlpReplyModelService(keyword string, shopID stri
 }
 
 // saveNlpTrainingSetsService saveNlpTrainingSetsService
-func (svc NlpRecordService) saveNlpTrainingSetsService(nlpResult *dao.NlpReplyModel, shopID uint) {
+func (svc Service) saveNlpTrainingSetsService(nlpResult *dao.NlpReplyModel, shopID uint) {
 	var nlpTraningRecordDomain domains.NlpTrainingLogDomain
 	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
 	nlpTraningRecordDomain.Intent = nlpResult.Intent
@@ -161,13 +161,13 @@ func (svc NlpRecordService) saveNlpTrainingSetsService(nlpResult *dao.NlpReplyMo
 }
 
 // DropNlpReplyByShopService DropNlpReplyByShop
-func (svc NlpRecordService) DropNlpReplyByShopService() string {
+func (svc Service) DropNlpReplyByShopService() string {
 	svc.nlpRecordRepository.Delete()
 	return "OK"
 }
 
 // ReadPaginationNlpRecordService ReadPaginationNlpRecordService
-func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) dao.NlpRecordPaginationSearchModel {
+func (svc Service) ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) dao.NlpRecordPaginationSearchModel {
 	var nlpRecordPaginationSearchModel dao.NlpRecordPaginationSearchModel
 
 	nlpRecordPaginationSearchModel.Page = page
@@ -219,7 +219,7 @@ func (svc NlpRecordService) ReadPaginationNlpRecordService(keyword string, inten
 }
 
 // RemoveNlpRecordByID RemoveNlpRecordByID
-func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
+func (svc Service) RemoveNlpRecordByID(id string) string {
 
 	u64, err := strconv.ParseUint(id, 10, 32)
 	if err != nil {
@@ -233,7 +233,7 @@ func (svc NlpRecordService) RemoveNlpRecordByID(id string) string {
 }
 
 // BulkDeleteNlpRecordByIDs BulkDeleteNlpRecordByIDs
-func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []uint) (string, error) {
+func (svc Service) BulkDeleteNlpRecordByIDs(ids []uint) (string, error) {
 
 	var idsForDelete []uint
 
@@ -247,7 +247,7 @@ func (svc NlpRecordService) BulkDeleteNlpRecordByIDs(ids []uint) (string, error)
 }
 
 // UpdateNlpRecordByIDAndClientID UpdateNlpRecordByIDAndClientID
-func (svc NlpRecordService) UpdateNlpRecordByIDAndClientID(id string) string {
+func (svc Service) UpdateNlpRecordByIDAndClientID(id string) string {
 	log.Debug(id)
 
 	return "OK"

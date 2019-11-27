@@ -4,21 +4,27 @@ import (
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
 	"inc-nlp-service-echo/common_module/security"
+	"inc-nlp-service-echo/common_module/websockets"
 
+	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
+	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
+	nlpGateway "inc-nlp-service-echo/core_module/nlp/gateway"
+	nlpService "inc-nlp-service-echo/core_module/nlp/service"
+	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
+	nlpTraininglogService "inc-nlp-service-echo/core_module/nlptraininglog/service"
 	shopGateway "inc-nlp-service-echo/core_module/shop/gateway"
 	shopService "inc-nlp-service-echo/core_module/shop/service"
 	storyGateway "inc-nlp-service-echo/core_module/story/gateway"
 	storyService "inc-nlp-service-echo/core_module/story/service"
 
-	authController "inc-nlp-service-echo/core_module/authentication/controller"
-	shopStoryController "inc-nlp-service-echo/core_module/categorize/controller"
-	shopStoryService "inc-nlp-service-echo/core_module/categorize/service"
-	facebookController "inc-nlp-service-echo/core_module/facebook/controller"
-	nlpController "inc-nlp-service-echo/core_module/nlp/controller"
-	nlpService "inc-nlp-service-echo/core_module/nlp/service"
+	// TODO: refractor fb, auth service
+	// fbService "inc-nlp-service-echo/core_module/facebook/service"
+	fbGateway "inc-nlp-service-echo/core_module/facebook/gateway"
+
+	authGateway "inc-nlp-service-echo/core_module/authentication/gateway"
 
 	"inc-nlp-service-echo/business_module/repositories"
-	"inc-nlp-service-echo/common_module/websockets"
+	// "inc-nlp-service-echo/common_module/websockets"
 	"net/http"
 	"os"
 
@@ -81,35 +87,17 @@ func main() {
 	repo5 := repositories.NewShopStoryRepository(orm)
 	repo6 := repositories.NewShopRepository(orm)
 
-	// ################# Services 💰 #################
-	svc0 := nlpService.NewNlpRecordService(repo1, repo0, repo3)
-	svc4 := nlpService.NewNlpTrainingLogService(repo0)
-
-	svc2 := shopStoryService.NewShopStoryService(repo5, repo6)
-
 	// ################# Security 🔑 #################
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
 
-	// ################# Controllers 🎮 #################
-	c0 := nlpController.NewNlpController(svc0)
-	c6 := nlpController.NewNlpTrainingLogController(svc4)
-	// c3 := storyController.NewStoryController(svc1)
-
-	c4 := shopStoryController.NewShopStoryController(svc2)
-
-	c2 := facebookController.NewFBWebhookController(svc0, *ws.Upgrader)
-	c7 := authController.NewClientAuthController(secure0)
+	// c7 := authController.NewClientAuthController(secure0)
 
 	e.GET("/health_check", func(c echo.Context) error {
 		return c.String(http.StatusOK, "OK")
 	})
 
 	// ################# Static 🕸 #################
-	// e.Static("/", "public")
-
-	// e.File("/", "public/index.html")
-
 	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root:   "public",
 		Browse: true,
@@ -121,38 +109,24 @@ func main() {
 	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
 	q.GET("/*", echoSwagger.WrapHandler)
 
-	// ################# Non Restrict ENDPOINT 🦴 #################
-	v0 := e.Group("/v1")
-	v0.POST("/login", c7.ClientLoginController)
-
-	v0.GET("/fb/webhook", c2.VerifyFBWebhookController)
-	v0.POST("/fb/webhook", c2.ReplyFBWebhookController)
-	v0.Any("/fb/webhook/socket.io", c2.ReplyFBWebhookSocketIO)
-
-	// ################# Restrict ENDPOINT With JWT 🔑 #################
 	v1 := e.Group("/v1")
+	// ################# Non Restrict ENDPOINT 🦴 #################
+	authGateway.NewHTTPGateway(v1, secure0)
 	v1.Use(middleware.JWTWithConfig(jwtConfig))
 
-	svc3 := shopService.NewService(repo6)
-	c5 := shopGateway.NewHTTPGateway(svc3)
+	// ################# Restrict ENDPOINT With JWT 🔑 #################
+	shopSvc := shopService.NewService(repo6)
+	storySvc := storyService.NewService(repo4)
+	nlpTrainingLogSvc := nlpTraininglogService.NewService(repo0)
+	nlpSvc := nlpService.NewService(repo1, repo0, repo3)
+	categorizeSvc := categorizeService.NewService(repo5, repo6)
 
-	// TODO: fix import type
-	svc1 := storyService.NewService(repo4)
-	storyGateway.NewHTTPGateway(v1, svc1)
-
-	v1.GET("/shop", c5.ReadShopByIDController)
-	v1.POST("/shop/story", c4.CreateShopStoryController)
-
-	v1.POST("/nlp/record", c0.CreateNlpRecordByShopController)
-	v1.POST("/nlp/record/upload.xlsx", c0.UploadXlsxNlpRecordByShopController)
-	v1.DELETE("/nlp/record/drop", c0.DropNlpRecordByShopController)
-	v1.DELETE("/nlp/record", c0.DeleteNlpRecordByIDController)
-	v1.DELETE("/nlp/record/bulk", c0.BulkDeleteNlpRecordByIDsController)
-	v1.GET("/nlp/record/pagination", c0.ReadPaginationNlpRecordController)
-	v1.GET("/nlp/record/reply", c0.ReadNlpReplyModelByShopController)
-	v1.PUT("/nlp/record", c0.UpdateNlpRecordByIDController)
-
-	v1.GET("/nlp/log/pagination", c6.ReadPaginationNlpTrainingLogController)
+	shopGateway.NewHTTPGateway(v1, shopSvc)
+	storyGateway.NewHTTPGateway(v1, storySvc)
+	nlpTraininglogGateway.NewHTTPGateway(v1, nlpTrainingLogSvc)
+	nlpGateway.NewHTTPGateway(v1, nlpSvc)
+	fbGateway.NewHTTPGateway(v1, nlpSvc, *ws.Upgrader)
+	categorizeGateway.NewHTTPGateway(v1, categorizeSvc)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))

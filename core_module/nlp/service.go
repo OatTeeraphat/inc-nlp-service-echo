@@ -2,8 +2,8 @@ package nlp
 
 import "inc-nlp-service-echo/core_module/nlp/dao"
 
-// INlpRecordService INlpService
-type INlpRecordService interface {
+// Service Service
+type Service interface {
 	UploadXlsxNlpRecordService(xlsxSheet [][]string) string
 	DropNlpReplyByShopService() string
 	ReadPaginationNlpRecordService(keyword string, intent string, story string, page string) dao.NlpRecordPaginationSearchModel
@@ -12,9 +12,4 @@ type INlpRecordService interface {
 	RemoveNlpRecordByID(id string) string
 	BulkDeleteNlpRecordByIDs(ids []uint) (string, error)
 	UpdateNlpRecordByIDAndClientID(id string) string
-}
-
-// INlpTrainingLogService INlpTrainingLogService
-type INlpTrainingLogService interface {
-	ReadPaginationNlpRecordService(PageID string) dao.NlpTrainingLogPaginationSearchModel
 }

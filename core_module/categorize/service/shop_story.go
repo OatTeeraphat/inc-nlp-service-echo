@@ -10,22 +10,22 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-// ShopStoryService ShopStoryService
-type ShopStoryService struct {
+// Service ShopStoryService
+type Service struct {
 	ShopStoryRepo repositories.IShopStoryRepository
 	ShopRepo      repositories.IShopRepository
 }
 
-// NewShopStoryService NewShopStoryService
-func NewShopStoryService(repo0 repositories.IShopStoryRepository, repo1 repositories.IShopRepository) categorize.IShopStoryService {
-	return &ShopStoryService{
+// NewService NewShopStoryService
+func NewService(repo0 repositories.IShopStoryRepository, repo1 repositories.IShopRepository) categorize.Service {
+	return &Service{
 		repo0,
 		repo1,
 	}
 }
 
 // CreateShopStoryService CreateShopStoryService
-func (svc ShopStoryService) CreateShopStoryService(shopID string, storyIDs []string) string {
+func (svc Service) CreateShopStoryService(shopID string, storyIDs []string) string {
 	log.Info(shopID, storyIDs)
 
 	u32, err := strconv.ParseUint(shopID, 10, 32)

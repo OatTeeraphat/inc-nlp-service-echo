@@ -1,28 +1,29 @@
-package controller
+package gateway
 
 import (
 	"inc-nlp-service-echo/common_module/security"
-	"inc-nlp-service-echo/core_module/authentication"
 	"net/http"
 	"time"
 
 	"github.com/labstack/echo/v4"
 )
 
-// ClientAuthController ClientAuthController
-type ClientAuthController struct {
+// HTTPGateway ClientAuthController
+type HTTPGateway struct {
 	ClientAuthSecurity security.IClientAuthSecurity
 }
 
-// NewClientAuthController NewClientAuthController
-func NewClientAuthController(newClientAuthSecurity security.IClientAuthSecurity) authentication.IClientAuthController {
-	return &ClientAuthController{
+// NewHTTPGateway NewClientAuthController
+func NewHTTPGateway(e *echo.Group, newClientAuthSecurity security.IClientAuthSecurity) {
+	handle := &HTTPGateway{
 		ClientAuthSecurity: newClientAuthSecurity,
 	}
+
+	e.POST("/login", handle.ClientLoginController)
 }
 
 // ClientLoginController ClientLoginController
-func (svc ClientAuthController) ClientLoginController(e echo.Context) error {
+func (h HTTPGateway) ClientLoginController(e echo.Context) error {
 	username := e.FormValue("username")
 	password := e.FormValue("password")
 
@@ -33,7 +34,7 @@ func (svc ClientAuthController) ClientLoginController(e echo.Context) error {
 
 	expired := time.Now().Add(time.Hour * 72).Unix()
 
-	t, err := svc.ClientAuthSecurity.GenerateClientToken(expired)
+	t, err := h.ClientAuthSecurity.GenerateClientToken(expired)
 
 	if err != nil {
 		return err
