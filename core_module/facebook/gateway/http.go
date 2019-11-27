@@ -1,4 +1,4 @@
-package controller
+package gateway
 
 import (
 	"bytes"
@@ -8,24 +8,21 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	log "github.com/sirupsen/logrus"
 )
 
 // HTTPGateway FBWebhookController
 type HTTPGateway struct {
-	NlpService        nlp.Service
-	WebSocketUpgrader websocket.Upgrader
+	NlpService nlp.Service
 }
 
 // NewHTTPGateway NewFBWebhookController
-func NewHTTPGateway(e *echo.Group, nlpRecordService nlp.Service, ws websocket.Upgrader) {
-	handle := &HTTPGateway{nlpRecordService, ws}
+func NewHTTPGateway(e *echo.Group, nlpRecordService nlp.Service) {
+	handle := &HTTPGateway{nlpRecordService}
 
 	e.GET("/fb/webhook", handle.VerifyFBWebhookController)
 	e.POST("/fb/webhook", handle.ReplyFBWebhookController)
-	e.Any("/fb/webhook/socket.io", handle.ReplyFBWebhookSocketIO)
 }
 
 // VerifyFBWebhookController VerifyFBWebhookController
@@ -84,54 +81,4 @@ func (svc *HTTPGateway) ReplyFBWebhookController(e echo.Context) error {
 	}
 
 	return e.String(http.StatusOK, "OK")
-}
-
-// ReplyFBWebhookSocketIO ReplyFBWebhookSocketIO
-func (svc *HTTPGateway) ReplyFBWebhookSocketIO(c echo.Context) error {
-	ws, err := svc.WebSocketUpgrader.Upgrade(c.Response(), c.Request(), nil)
-
-	log.Debug("socket connected")
-
-	if err != nil {
-		return err
-	}
-
-	defer ws.Close()
-
-	for {
-		_, msg, err := ws.ReadMessage()
-
-		stringMsg := string(msg)
-		log.Debug(stringMsg)
-
-		go func(msg []byte) {
-
-			if err != nil {
-				log.Error(err)
-			}
-			if string(msg) != "" {
-				nlpResult := svc.NlpService.ReadNlpReplyModelService(stringMsg, "1")
-
-				log.Info(nlpResult)
-
-				data, _ := json.Marshal(nlpResult)
-
-				// Write
-				err := ws.WriteMessage(websocket.TextMessage, []byte(data))
-				if err != nil {
-					log.Error(err)
-				}
-			}
-		}(msg)
-	}
-
-}
-
-func readLoop(c *websocket.Conn) {
-	for {
-		if _, _, err := c.NextReader(); err != nil {
-			c.Close()
-			break
-		}
-	}
 }
