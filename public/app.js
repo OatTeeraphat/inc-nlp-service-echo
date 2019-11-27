@@ -73,11 +73,12 @@ const vueErrorHandler = new VueErrorHandler(cookieRepo, vueRouter)
 // service initialize
 const authService = new AuthenticationService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
 const storyService = new StoryService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
-const webChatService = new WebChatService(socketRepo, vueErrorHandler)
 const nlpRecordsService = new NlpRecordsService(httpRepo, vueRouter, localStorageRepo, cookieRepo, vueErrorHandler)
 const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, cookieRepo, vueErrorHandler)
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 const settingService = new SettingService(httpRepo, vueErrorHandler)
+// FIXME: webchat error
+// const webChatService = new WebChatService(socketRepo, vueErrorHandler)
 
 // presenter initialize
 const authPresenter = new AuthenticationPresenter(authService)
@@ -85,7 +86,7 @@ const welcomePresenter = new WelcomePresenter(nlpReplyCounterService)
 const storyPresenter = new StoryPresenter(storyService)
 const nlpTrainingLogPresenter = new NlpTrainingLogPresenter(nlpTrainingLogService)
 const nlpRecordPresenter = new NlpRecordPresenter(nlpRecordsService)
-const settingPresenter = new SettingPresenter(settingService, webChatService)
+const settingPresenter = new SettingPresenter(settingService)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
@@ -98,8 +99,8 @@ Vue.use({
         Vue.prototype.$nlpRecordPresenter = nlpRecordPresenter
         Vue.prototype.$settingPresenter = settingPresenter
 
-        // TODO:  inject presenter instead of service
-        Vue.prototype.$webChatService = webChatService
+        // FIXME:  webchat error
+        // Vue.prototype.$webChatService = webChatService
             
     }
 })

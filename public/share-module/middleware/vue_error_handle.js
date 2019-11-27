@@ -7,8 +7,11 @@ export class VueErrorHandler {
 
     catchHttpError = () => catchError( e => {
 
+        
         if ( e instanceof AjaxError ) {
+            
             if (e.status == 401) {
+                console.error("catchHttpError", e)
                 swal2('error', { text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน"})
                 this.cookieRepo.removeClientSession()
                 if ( this.vueRouter.history.current.path !== "/login" ) {
@@ -34,7 +37,6 @@ export class VueErrorHandler {
                 swal2('error', { text: "ยังไม่ได้ดัก"})
             }
         }
-        console.error("catchHttpError", e)
         return of(e)
     })
     

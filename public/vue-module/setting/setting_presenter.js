@@ -11,17 +11,12 @@ class SettingViewModel {
 }
 
 class SettingPresenter {
-	constructor(settingService, webChatService) {
+	constructor(settingService) {
 		this.view = new SettingViewModel()
 		this.settingService = settingService
-		this.webChatService = webChatService
 	}
 
 	getInitialState() {
-
-		this.webChatService.getFillChatNlpReplyModelWS().subscribe(item => {
-			this.view.chat_logs.push(new GetNlpChatLogsAdapter().adapt(item))
-		})
 
 		this.settingService.getNlpConfidenceByClientId().subscribe(item => {
 			this.view.confidence = item.confidence
