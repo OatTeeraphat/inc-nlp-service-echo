@@ -226,39 +226,39 @@ export default Vue.component('dashboard-page', {
 								</h5>
 						</div>
 						<ul class="list-group list-group-flush">
-								<li class="list-group-item pt-4 pb-4 pr-4">
-								<transition
-									name="custom-classes-transition"
-									mode="out-in"
-									enter-active-class="animated zoomIn faster"
-								>
-									<div class="chart-warpper dashboard-summary">
-											<h3 class="mb-4 mt-1" v-if=" toggle_chart.model == 'tabFirst' " >82.33%<span>Answer Ratio In Period</span></h3>
-											<line-chart-acc
-												:height="175" 
-												:redraw="true"
-												v-if=" toggle_chart.model == 'tabFirst' " 
-												key="tabFirst"
-											>
-											</line-chart-acc>
-											<line-chart-api-usage 
-												:height="200" 
-												:redraw="true"
-												v-if=" toggle_chart.model == 'tabSecond' " 
-												key="tabSecond"
-											>
-											</line-chart-api-usage>
-											<div class="row">
-												<div class="col d-flex">
-														<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabFirst' " >All Transaction</p>
-														<p class="graph-legend pink ml-5" v-if=" toggle_chart.model == 'tabFirst' " >Can Be Slove <span>(Conf : 50%)</span></p>
-														<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabSecond' " >Answer</p>
-												</div>
+							<li class="list-group-item pt-4 pb-4 pr-4">
+							<transition
+								name="custom-classes-transition"
+								mode="out-in"
+								enter-active-class="animated zoomIn faster"
+							>
+								<div class="chart-warpper dashboard-summary">
+										<h3 class="mb-4 mt-1" v-if=" toggle_chart.model == 'tabFirst' " >82.33%<span>Answer Ratio In Period</span></h3>
+										<line-chart-acc
+											:height="175" 
+											:redraw="true"
+											v-if=" toggle_chart.model == 'tabFirst' " 
+											key="tabFirst"
+										>
+										</line-chart-acc>
+										<line-chart-api-usage 
+											:height="200" 
+											:redraw="true"
+											v-if=" toggle_chart.model == 'tabSecond' " 
+											key="tabSecond"
+										>
+										</line-chart-api-usage>
+										<div class="row">
+											<div class="col d-flex">
+													<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabFirst' " >All Transaction</p>
+													<p class="graph-legend pink ml-5" v-if=" toggle_chart.model == 'tabFirst' " >Can Be Slove <span>(Conf : 50%)</span></p>
+													<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabSecond' " >Answer</p>
 											</div>
-									</div>
-								</transition>
-								</li>
-							</ul>
+										</div>
+								</div>
+							</transition>
+							</li>
+						</ul>
 				</div>
 			</div>
 		</div>

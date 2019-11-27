@@ -6,8 +6,7 @@ export class NlpReplyCounterService {
     pollingNlpReplyCounter(pollingCallback) {
         return of(0).pipe(
                 mergeMap( () =>
-                    this.httpRepository
-                        .getNlpReplyCounter()
+                    this.httpRepository.getNlpReplyCounter()
                         .pipe(
                             map( it => new GetNlpReplyCounterAdapter().adapt(it) )
                         )
