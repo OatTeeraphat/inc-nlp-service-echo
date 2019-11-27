@@ -10,7 +10,7 @@ export class NlpTrainingLogService {
         this.infiniteHandler$$ = new Subject()
     }
 
-    getNlpTrainingLogPagination = (page, keyword) => {
+    getPagination = (page, keyword) => {
         return this.httpRepository.getNlpTrainingLogPagination(keyword, "intent", "story", page).pipe(
             map( ({ response }) => {
                 return new GetNlpTrainingLogPaginationAdapter().adapt(response) 
@@ -19,14 +19,14 @@ export class NlpTrainingLogService {
         )
     }
     
-    getNlpTrainingLogPaginationByInfiniteScrollSubject = () => {
+    getPaginationByInfiniteScrollSubject = () => {
         return this.infiniteHandler$$.pipe(
             throttleTime(200),
-            exhaustMap( ({ page, keyword }) => this.getNlpTrainingLogPagination(page, keyword) ),
+            exhaustMap( ({ page, keyword }) => this.getPagination(page, keyword) ),
         )
     }
 
-    bulkDeleteNlpTrainingLogsByIDs = (ids) => {
+    bulkDeleteByIDs = (ids) => {
         let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Delete NLP training record" }, true)
         return from( confirmModal ).pipe(
             switchMap( result => {
@@ -47,7 +47,7 @@ export class NlpTrainingLogService {
         )
     }
 
-    deleteNlpTrainingLogByID = (id) => {        
+    deleteByID = (id) => {        
         let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Delete NLP training record" }, true)
         return from( confirmModal ).pipe(
             switchMap( result => {
@@ -66,7 +66,7 @@ export class NlpTrainingLogService {
         )
     }
 
-    nextNlpTrainingLogPaginationPage = (page, keyword) => {
+    nextPaginationPage = (page, keyword) => {
         this.infiniteHandler$$.next({ page: page, keyword: keyword })
     }
 
