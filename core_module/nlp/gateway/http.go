@@ -148,13 +148,11 @@ func (con *HTTPGateway) DeleteNlpRecordByIDController(e echo.Context) error {
 // @Accept  text/html
 // @Produce text/html
 // @Success 200 {string} string "OK"
-// @Router /v1/nlp/record [delete]
+// @Router /v1/nlp/record/bulk [delete]
 func (con *HTTPGateway) BulkDeleteNlpRecordByIDsController(e echo.Context) error {
 	ids := new([]uint)
 	e.Bind(&ids)
-
 	fmt.Print(*ids)
-
 	response, error := con.NlpService.BulkDeleteNlpRecordByIDs(*ids)
 
 	if error != nil {
@@ -164,7 +162,7 @@ func (con *HTTPGateway) BulkDeleteNlpRecordByIDsController(e echo.Context) error
 	return e.String(http.StatusOK, response)
 }
 
-// UpdateNlpRecordByIDAndClientID update nlp record by id and ClientID
+// UpdateNlpRecordByIDController update nlp record by id and ClientID
 func (con *HTTPGateway) UpdateNlpRecordByIDController(e echo.Context) error {
 	id := e.QueryParam("id")
 	response := con.NlpService.UpdateNlpRecordByIDAndClientID(id)

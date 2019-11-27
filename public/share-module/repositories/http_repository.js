@@ -147,9 +147,17 @@ export class HttpRepository {
         })
     }
 
-    // END_POINT: ############# TODO: ###############
-    bulkDeleteNlpTrainingLogsByIDs() {
-        return of()
+    // END_POINT: /v1/nlp/log/bulk
+    bulkDeleteNlpTrainingLogsByIDs(body) {
+        return ajax({
+            method: "DELETE", 
+            url: `${this.BASE_API}/v1/nlp/log/bulk`,
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": this._getAuthorizedBearer() 
+            },
+            body: body
+        })
     }
 
     // END_POINT: /v1/nlp/log/pagination?keyword=&intent=&story=&page=

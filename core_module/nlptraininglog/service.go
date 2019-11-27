@@ -6,4 +6,5 @@ import "inc-nlp-service-echo/core_module/nlptraininglog/dao"
 type Service interface {
 	ReadPaginationNlpTrainingLogService(PageID string) dao.NlpTrainingLogPaginationSearchModel
 	DeleteByID(ID string) (string, error)
+	BulkDeleteByID(IDs []uint) (string, error)
 }

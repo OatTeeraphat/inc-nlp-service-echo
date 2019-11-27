@@ -71,3 +71,11 @@ func (s Service) DeleteByID(ID string) (string, error) {
 
 	return "OK", nil
 }
+
+// BulkDeleteByID BulkDeleteByID
+func (s Service) BulkDeleteByID(IDs []uint) (string, error) {
+
+	s.nlpTrainingLogRepository.BulkDeleteByIDs(IDs)
+
+	return "OK", nil
+}

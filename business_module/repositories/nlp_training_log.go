@@ -18,6 +18,7 @@ type INlpTrainingLogRepository interface {
 	Count() int64
 	Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain
 	DeleteByID(ID uint) *gorm.DB
+	BulkDeleteByIDs(ids []uint) *gorm.DB
 }
 
 // NewNlpTrainingLogRepository new nlp record instance
@@ -38,15 +39,20 @@ func (repo *NlpTrainingLogRepository) Count() int64 {
 }
 
 // Pagination Pagination
-func (repo NlpTrainingLogRepository) Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain {
+func (repo *NlpTrainingLogRepository) Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain {
 	var nlpTrainingLogDomain []domains.NlpTrainingLogDomain
 	repo.DB.Limit(Limit).Find(&nlpTrainingLogDomain).Offset(Limit * (PageIndex - 1)).Order("id asc").Find(&nlpTrainingLogDomain)
 	return nlpTrainingLogDomain
 }
 
-// DeleteByID DeleteByID
-func (r NlpTrainingLogRepository) DeleteByID(ID uint) *gorm.DB {
+// DeleteByID  DeleteByID
+func (r *NlpTrainingLogRepository) DeleteByID(ID uint) *gorm.DB {
 	domain := &domains.NlpTrainingLogDomain{}
 	domain.ID = ID
 	return r.DB.Unscoped().Delete(domain)
+}
+
+// BulkDeleteByIDs BulkDeleteByIDs
+func (repo *NlpTrainingLogRepository) BulkDeleteByIDs(ids []uint) *gorm.DB {
+	return repo.DB.Unscoped().Where(ids).Delete(&domains.NlpTrainingLogDomain{})
 }

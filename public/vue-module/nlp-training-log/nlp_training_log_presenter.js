@@ -39,7 +39,14 @@ export class NlpTrainingLogPresenter {
     }
 
     bulkDeleteNlpTrainingLog() {
-        this.view.nlpLogs = this.view.nlpLogs.filter( ({ id }) => !this.view.nlpLogsCheckedList.ids.includes(id) )
+        this.nlpTrainingLogService.bulkDeleteNlpTrainingLogsByIDs(this.view.nlpLogsCheckedList.ids).subscribe( () => {
+
+            this.view.nlpLogs = this.view.nlpLogs.filter( ({ id }) => !this.view.nlpLogsCheckedList.ids.includes(id) )
+
+            this.view.nlpLogsCheckedList.ids = []
+
+
+        })
     }
 
     deleteNlpTrainingLogByID(id) {
@@ -47,7 +54,6 @@ export class NlpTrainingLogPresenter {
         this.nlpTrainingLogService.deleteNlpTrainingLogByID(id).subscribe( () =>  
             this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id) 
         )
-        // this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id) 
     }
 
     beforeDestroy() {

@@ -20,6 +20,7 @@ func NewHTTPGateway(e *echo.Group, svc0 nlptraininglog.Service) {
 
 	e.GET("/nlp/log/pagination", handle.ReadPaginationNlpTrainingLogController)
 	e.DELETE("/nlp/log", handle.DeleteByID)
+	e.DELETE("/nlp/log/bulk", handle.BulkDeleteByID)
 }
 
 // ReadPaginationNlpTrainingLogController ReadPaginationNlpTrainingLogController
@@ -38,7 +39,20 @@ func (h HTTPGateway) ReadPaginationNlpTrainingLogController(e echo.Context) erro
 // DeleteByID DeleteByID
 func (h HTTPGateway) DeleteByID(e echo.Context) error {
 	ID := e.QueryParam("id")
+
 	response, error := h.NlpTrainingLogService.DeleteByID(ID)
+	if error != nil {
+		return e.String(http.StatusUnprocessableEntity, "INVALID")
+	}
+	return e.String(http.StatusOK, response)
+}
+
+// BulkDeleteByID BulkDeleteByID
+func (h HTTPGateway) BulkDeleteByID(e echo.Context) error {
+	ids := new([]uint)
+	e.Bind(&ids)
+
+	response, error := h.NlpTrainingLogService.BulkDeleteByID(*ids)
 
 	if error != nil {
 		return e.String(http.StatusUnprocessableEntity, "INVALID")
