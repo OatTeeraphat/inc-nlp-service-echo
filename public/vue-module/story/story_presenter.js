@@ -1,6 +1,9 @@
 class StoryViewModel {
     constructor() {
         this.stories = []
+        this.storiesCheckList = {
+            ids: []
+        }
         this.intents = [
             { id: 1, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
             { id: 2, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
@@ -23,6 +26,11 @@ export class StoryPresenter {
         this.storyService.getStoryState().subscribe(it => { 
             this.view.stories.push(...it) 
         })
+    }
+
+    selectAllStory() {
+        this.view.storiesCheckList.ids = []
+        this.view.stories.forEach( ({ id }) => { this.view.storiesCheckList.ids.push(id) })
     }
 
     deleteStoryByID (id) {

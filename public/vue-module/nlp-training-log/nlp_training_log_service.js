@@ -10,8 +10,8 @@ export class NlpTrainingLogService {
         this.infiniteHandler$$ = new Subject()
     }
 
-    getNlpTrainingLogPagination = (page) => {
-        return this.httpRepository.getNlpTrainingLogPagination("keyword", "intent", "story", page).pipe(
+    getNlpTrainingLogPagination = (page, keyword) => {
+        return this.httpRepository.getNlpTrainingLogPagination(keyword, "intent", "story", page).pipe(
             map( ({ response }) => {
                 return new GetNlpTrainingLogPaginationAdapter().adapt(response) 
             }),
@@ -22,7 +22,7 @@ export class NlpTrainingLogService {
     getNlpTrainingLogPaginationByInfiniteScrollSubject = () => {
         return this.infiniteHandler$$.pipe(
             throttleTime(200),
-            exhaustMap( ({ page }) => this.getNlpTrainingLogPagination(page) ),
+            exhaustMap( ({ page, keyword }) => this.getNlpTrainingLogPagination(page, keyword) ),
         )
     }
 
@@ -66,8 +66,8 @@ export class NlpTrainingLogService {
         )
     }
 
-    nextNlpTrainingLogPaginationPage = (pageID) => {
-        this.infiniteHandler$$.next({ page: pageID })
+    nextNlpTrainingLogPaginationPage = (page, keyword) => {
+        this.infiniteHandler$$.next({ page: page, keyword: keyword })
     }
 
 }

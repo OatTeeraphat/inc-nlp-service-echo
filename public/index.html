@@ -29,12 +29,12 @@
         <div class="container">
             <transition name="slide">
                 <!-- for cache component ( won't be call before destroy directly ) -->
-
+                <!-- 
                 <keep-alive v-if="$route.meta.keepAlive">
                     <router-view></router-views>
-                </keep-alive>
+                </keep-alive> -->
 
-                <router-view v-else></router-view>
+                <router-view ></router-view>
 
                 <!-- <keep-alive>
                     <router-view></router-view>

@@ -91,14 +91,14 @@ func (repo *NlpRecordRepository) CountByKeywordMinhash(KeywordMinhash uint32) in
 // Pagination Pagination
 func (repo *NlpRecordRepository) Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id asc").Find(&nlpRecordDomain)
+	repo.DB.Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id desc").Find(&nlpRecordDomain)
 	return nlpRecordDomain
 }
 
 // PaginationByKeywordMinhash PaginationByKeywordMinhash
 func (repo *NlpRecordRepository) PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id asc").Find(&nlpRecordDomain)
+	repo.DB.Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id desc").Find(&nlpRecordDomain)
 	return nlpRecordDomain
 }
 

@@ -10,11 +10,14 @@ export class GetNlpRecordsPagination {
 
         models.nlp_records.map( it => {
 
+            console.log(it)
+
             item.nlp_records.push({
                 id: it.id,
                 keyword: it.keyword,
                 intent: it.intent,
-                story_name: it.story_name
+                story_name: it.story_name,
+                updated_at: it.updated_at
             })
 
         })
