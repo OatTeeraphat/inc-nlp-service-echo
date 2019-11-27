@@ -1,5 +1,7 @@
 package dao
 
+import "time"
+
 // NlpTrainingLogPaginationSearchModel NlpRecordPaginationSearchModel
 type NlpTrainingLogPaginationSearchModel struct {
 	Page           string           `json:"page"`
@@ -10,9 +12,10 @@ type NlpTrainingLogPaginationSearchModel struct {
 
 // NlpTrainingLog NlpTrainingLog
 type NlpTrainingLog struct {
-	ID        uint    `json:"id"`
-	Keyword   string  `json:"keyword"`
-	Intent    string  `json:"intent"`
-	Distance  float32 `json:"distance"`
-	StoryName string  `json:"story_name"`
+	ID        uint      `json:"id"`
+	Keyword   string    `json:"keyword"`
+	Intent    string    `json:"intent"`
+	Distance  float32   `json:"distance"`
+	StoryName string    `json:"story_name"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

@@ -8,10 +8,11 @@ import (
 type NlpTrainingLogDomain struct {
 	gorm.Model
 	// ShopID   uint
-	Keyword  string
-	Distance float32
-	Intent   string
-	StoryID  uint32
+	Keyword        string
+	KeywordMinhash uint32
+	Distance       float32
+	Intent         string
+	StoryID        uint32
 }
 
 // TableName NlpRecordDomain

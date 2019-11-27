@@ -154,6 +154,7 @@ func (svc Service) ReadNlpReplyModelService(keyword string, shopID string) dao.N
 func (svc Service) saveNlpTrainingSetsService(nlpResult *dao.NlpReplyModel, shopID uint) {
 	var nlpTraningRecordDomain domains.NlpTrainingLogDomain
 	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
+	nlpTraningRecordDomain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
 	nlpTraningRecordDomain.Intent = nlpResult.Intent
 	nlpTraningRecordDomain.Distance = nlpResult.Distance
 	nlpTraningRecordDomain.StoryID = nlpResult.StoryID
@@ -195,6 +196,7 @@ func (svc Service) ReadPaginationNlpRecordService(keyword string, intent string,
 			nlpModels.Keyword = item.Keyword
 			nlpModels.Intent = item.Intent
 			nlpModels.StoryName = "mock_story_name"
+			nlpModels.UpdatedAt = item.UpdatedAt
 
 			nlpRecordPaginationSearchModel.NlpRecords = append(nlpRecordPaginationSearchModel.NlpRecords, nlpModels)
 		}
@@ -210,6 +212,7 @@ func (svc Service) ReadPaginationNlpRecordService(keyword string, intent string,
 			nlpModels.Keyword = item.Keyword
 			nlpModels.Intent = item.Intent
 			nlpModels.StoryName = "mock_story_name"
+			nlpModels.UpdatedAt = item.UpdatedAt
 
 			nlpRecordPaginationSearchModel.NlpRecords = append(nlpRecordPaginationSearchModel.NlpRecords, nlpModels)
 		}

@@ -49,6 +49,8 @@ export class NlpRecordPresenter {
         })
     }
 
+    
+
     getMoreNlpRecordByInfiniteScroll( event ) {
         let {scrollTop, clientHeight, scrollHeight } = event.srcElement
         if (scrollTop + clientHeight >= scrollHeight / 1.2) {

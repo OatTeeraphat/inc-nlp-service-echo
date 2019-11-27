@@ -26,11 +26,11 @@ func NewHTTPGateway(e *echo.Group, svc0 nlptraininglog.Service) {
 // ReadPaginationNlpTrainingLogController ReadPaginationNlpTrainingLogController
 func (h HTTPGateway) ReadPaginationNlpTrainingLogController(e echo.Context) error {
 	// intent := e.QueryParam("intent")
-	// keyword := e.QueryParam("keyword")
+	keyword := e.QueryParam("keyword")
 	// story := e.QueryParam("story")
 	page := e.QueryParam("page")
 
-	response := h.NlpTrainingLogService.ReadPaginationNlpTrainingLogService(page)
+	response := h.NlpTrainingLogService.ReadPaginationNlpTrainingLogService(page, keyword)
 
 	return e.JSON(http.StatusOK, response)
 

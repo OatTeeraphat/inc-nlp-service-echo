@@ -2,6 +2,7 @@ package service
 
 import (
 	"inc-nlp-service-echo/business_module/repositories"
+	"inc-nlp-service-echo/computing_module/distance"
 	"inc-nlp-service-echo/core_module/nlptraininglog"
 	"inc-nlp-service-echo/core_module/nlptraininglog/dao"
 	"math"
@@ -23,13 +24,13 @@ func NewService(repo1 repositories.INlpTrainingLogRepository) nlptraininglog.Ser
 }
 
 // ReadPaginationNlpTrainingLogService ReadPaginationNlpRecordService
-func (repo Service) ReadPaginationNlpTrainingLogService(PageID string) dao.NlpTrainingLogPaginationSearchModel {
+func (s Service) ReadPaginationNlpTrainingLogService(PageID string, keyword string) dao.NlpTrainingLogPaginationSearchModel {
 	var nlpTrainingLogPaginationSearchModel dao.NlpTrainingLogPaginationSearchModel
 
 	nlpTrainingLogPaginationSearchModel.Page = PageID
 	nlpTrainingLogPaginationSearchModel.Limit = "40"
 
-	nlpTrainingLogCount := repo.nlpTrainingLogRepository.Count()
+	nlpTrainingLogCount := s.nlpTrainingLogRepository.Count()
 
 	pageSizeFloat := float64(nlpTrainingLogCount) / 40
 
@@ -41,20 +42,40 @@ func (repo Service) ReadPaginationNlpTrainingLogService(PageID string) dao.NlpTr
 		log.Error(err)
 	}
 
-	log.Info(nlpTrainingLogCount)
+	// log.Info(nlpTrainingLogCount)
 
-	for _, item := range repo.nlpTrainingLogRepository.Pagination(pageInt, 40) {
-		var nlpModels dao.NlpTrainingLog
-		nlpModels.ID = item.ID
-		nlpModels.Keyword = item.Keyword
-		nlpModels.Intent = item.Intent
-		nlpModels.StoryName = "mock_story_name"
-		nlpModels.Distance = item.Distance
+	if keyword == "" {
+		for _, item := range s.nlpTrainingLogRepository.Pagination(pageInt, 40) {
+			var nlpModels dao.NlpTrainingLog
+			nlpModels.ID = item.ID
+			nlpModels.Keyword = item.Keyword
+			nlpModels.Intent = item.Intent
+			nlpModels.StoryName = "mock_story_name"
+			nlpModels.Distance = item.Distance
+			nlpModels.UpdatedAt = item.UpdatedAt
 
-		nlpTrainingLogPaginationSearchModel.NlpTrainingLog = append(nlpTrainingLogPaginationSearchModel.NlpTrainingLog, nlpModels)
+			nlpTrainingLogPaginationSearchModel.NlpTrainingLog = append(nlpTrainingLogPaginationSearchModel.NlpTrainingLog, nlpModels)
+		}
+	} else {
+
+		// log.Info(keyword)
+
+		nlpTrainingLogCount := s.nlpTrainingLogRepository.CountByKeywordMinhash(distance.GenerateKeywordMinhash(keyword))
+
+		pageSizeFloat := float64(nlpTrainingLogCount) / 50
+		nlpTrainingLogPaginationSearchModel.Total = strconv.FormatFloat(math.Ceil(pageSizeFloat), 'f', 0, 64)
+
+		for _, item := range s.nlpTrainingLogRepository.PaginationByKeywordMinhash(distance.GenerateKeywordMinhash(keyword), pageInt, 50) {
+			var nlpModels dao.NlpTrainingLog
+			nlpModels.ID = item.ID
+			nlpModels.Keyword = item.Keyword
+			nlpModels.Intent = item.Intent
+			nlpModels.StoryName = "mock_story_name"
+			nlpModels.UpdatedAt = item.UpdatedAt
+
+			nlpTrainingLogPaginationSearchModel.NlpTrainingLog = append(nlpTrainingLogPaginationSearchModel.NlpTrainingLog, nlpModels)
+		}
 	}
-
-	// return nlpRecordPaginationSearchModel
 	return nlpTrainingLogPaginationSearchModel
 }
 

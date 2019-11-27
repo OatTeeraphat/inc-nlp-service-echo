@@ -6,6 +6,7 @@ class NlpTrainingLogViewModel {
         this.total = 1
         this.nlpLogs = []
         this.nlpLogsCheckedList = { ids: [] }
+        this.searchKeyword = ""
     }
 }
 
@@ -26,7 +27,7 @@ export class NlpTrainingLogPresenter {
             this.view.nlpLogs.push(...it.nlp_logs)
         })
         // get first page
-        this.nlpTrainingLogService.nextNlpTrainingLogPaginationPage(this.view.page)
+        this.nlpTrainingLogService.nextNlpTrainingLogPaginationPage(this.view.page, this.view.searchKeyword)
     }
 
     selectAllNlpTrainingLog() {
