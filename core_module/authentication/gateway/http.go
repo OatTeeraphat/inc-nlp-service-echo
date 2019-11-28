@@ -1,7 +1,7 @@
 package gateway
 
 import (
-	"inc-nlp-service-echo/common_module/security"
+	"inc-nlp-service-echo/auth_module/security"
 	"net/http"
 	"time"
 

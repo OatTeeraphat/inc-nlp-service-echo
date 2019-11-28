@@ -1,9 +1,9 @@
 package main
 
 import (
+	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
-	"inc-nlp-service-echo/common_module/security"
 	"inc-nlp-service-echo/common_module/websockets"
 
 	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
