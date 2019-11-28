@@ -9,7 +9,7 @@ func (svc Service) BulkDeleteByIDs(ids []uint) (string, error) {
 		idsForDelete = append(idsForDelete, id)
 	}
 
-	go svc.nlpRecordRepository.BulkDeleteNlpRecordsByIDs(idsForDelete)
+	go svc.nlpRecordRepository.BulkDeleteByIDs(idsForDelete)
 
 	return "OK", nil
 }

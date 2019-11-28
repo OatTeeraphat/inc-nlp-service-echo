@@ -15,8 +15,8 @@ type NlpRecordRepository struct {
 // INlpRecordRepository nlp query appearance interface
 type INlpRecordRepository interface {
 	Save(nlpRecordDomain *domains.NlpRecordDomain)
-	BulkInsertNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error
-	BulkDeleteNlpRecordsByIDs(nlpRecordDomain []uint) *gorm.DB
+	BulkInsert(nlpRecordDomain []interface{}, bulkCount int) error
+	BulkDeleteByIDs(nlpRecordDomain []uint) *gorm.DB
 	FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain
 	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
@@ -25,7 +25,7 @@ type INlpRecordRepository interface {
 	Count() int64
 	CountByKeywordMinhash(KeywordMinhash uint32) int64
 	Delete() *gorm.DB
-	DeleteNlpRecordByID(id uint) *gorm.DB
+	DeleteByID(id uint) *gorm.DB
 }
 
 // NewNlpRecordRepository new nlp record instance
@@ -59,13 +59,13 @@ func (repo *NlpRecordRepository) FindByKeywordMinhash(keywordMinhash uint32) []d
 	return nlpRecordDomain
 }
 
-// BulkInsertNlpRecords BulkInsertNlpRecords
-func (repo *NlpRecordRepository) BulkInsertNlpRecords(nlpRecordDomain []interface{}, bulkCount int) error {
+// BulkInsert BulkInsert
+func (repo *NlpRecordRepository) BulkInsert(nlpRecordDomain []interface{}, bulkCount int) error {
 	return repo.BulkInsert(nlpRecordDomain, bulkCount)
 }
 
-// BulkDeleteNlpRecordsByIDs BulkDeleteNlpRecordsByIDs
-func (repo *NlpRecordRepository) BulkDeleteNlpRecordsByIDs(ids []uint) *gorm.DB {
+// BulkDeleteByIDs BulkDeleteByIDs
+func (repo *NlpRecordRepository) BulkDeleteByIDs(ids []uint) *gorm.DB {
 	return repo.DB.Unscoped().Where(ids).Delete(&domains.NlpRecordDomain{})
 }
 
@@ -102,8 +102,8 @@ func (repo *NlpRecordRepository) PaginationByKeywordMinhash(KeywordMinhash uint3
 	return nlpRecordDomain
 }
 
-// DeleteNlpRecordByID DeleteNlpRecordByID
-func (repo *NlpRecordRepository) DeleteNlpRecordByID(id uint) *gorm.DB {
+// DeleteByID DeleteByID
+func (repo *NlpRecordRepository) DeleteByID(id uint) *gorm.DB {
 	domain := &domains.NlpRecordDomain{}
 	domain.ID = id
 	return repo.DB.Unscoped().Delete(domain)

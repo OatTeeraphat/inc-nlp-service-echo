@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-// RemoveNlpRecordByID RemoveNlpRecordByID
+// DeleteByID DeleteByID
 func (svc Service) DeleteByID(id string) string {
 
 	u64, err := strconv.ParseUint(id, 10, 32)
@@ -14,7 +14,7 @@ func (svc Service) DeleteByID(id string) string {
 	}
 	nlpRecordID := uint(u64)
 
-	svc.nlpRecordRepository.DeleteNlpRecordByID(nlpRecordID)
+	svc.nlpRecordRepository.DeleteByID(nlpRecordID)
 
 	return "OK"
 }
