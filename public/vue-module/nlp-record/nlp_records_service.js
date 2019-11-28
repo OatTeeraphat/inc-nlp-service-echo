@@ -1,11 +1,11 @@
-import { GetNlpRecordsPagination } from './get_nlp_records_pagination_adapter.js'
+import { GetNlpRecordsPagination, GetSearchByKeywordAndDistancePagination } from './get_nlp_records_pagination_adapter.js'
 
 // nlp records service
 export class NlpRecordsService {
 
     constructor( httpRepository, vueRouter, localStorageRepository, cookieRepository, vueErrorHandler) {
         this.vueRouter = vueRouter
-        this.vueErrorHandler =vueErrorHandler
+        this.vueErrorHandler = vueErrorHandler
         this.httpRepository = httpRepository
         this.localStorageRepository = localStorageRepository
         this.cookieRepository = cookieRepository
@@ -22,13 +22,13 @@ export class NlpRecordsService {
                 if ( keyword !== "" ) {
                     this.localStorageRepository.setRecentlyNlpRecordSearch(keyword)
                 }
-                return new GetNlpRecordsPagination().adapt(response)
+                return new GetSearchByKeywordAndDistancePagination(response).sortDistance(keyword)
             }),
             this.vueErrorHandler.catchHttpError(),
         )
     }
     searchNlpRecordsPaginationByKeywordSubject() {
-        return this.$searchNlpRecordByKeyword.pipe(
+        return this.$searchNlpRecordByKeyword.pipe( 
             throttleTime(300),
             switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
         )

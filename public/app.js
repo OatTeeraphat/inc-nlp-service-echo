@@ -44,6 +44,7 @@ import './vue-custom-module/chart/chart_training_growth_component.js'
 import './vue-custom-module/chart/chart_usage_api_component.js'
 import './vue-custom-module/chart/chart_usage_average_time_component.js'
 
+
 // repositories initialize
 const cookieRepo = new CookieRepository(Cookies)
 const httpRepo = new HttpRepository(cookieRepo)
