@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-// ReadNlpReplyModelService ReadNlpReplyModel
+// ReadNlpReply ReadNlpReply
 func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyDao {
 	var readNlpReplyDao []dao.ReadNlpReplyDao
 	var listStoryIDsInShopFound []uint32
