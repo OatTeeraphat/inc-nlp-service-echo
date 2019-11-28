@@ -9,9 +9,9 @@ export class DashBoardService {
 		return this.httpRepository.getAppInfoByClientId()
 	}
 
-	// getApiCallStat(){
-
-	// }
+	getApiStatRequestPerPeriod(){
+		
+	}
 
 	// getApiAverageReqTime(){
 

@@ -24,6 +24,7 @@ export class DashBoardPresenter {
 			this.view.app_info = item
 		})
 		
+		
 
 	}
 
