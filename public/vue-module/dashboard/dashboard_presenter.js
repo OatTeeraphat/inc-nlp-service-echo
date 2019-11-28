@@ -5,6 +5,7 @@ class DashBoardViewModel {
 			model : "tabFirst", 
 			trainig : "tabFirst" 
 		}
+		this.period = "halfOfMonth"
 		this.app_info = {}
 	}
 
@@ -24,7 +25,10 @@ export class DashBoardPresenter {
 			this.view.app_info = item
 		})
 		
-		
+		this.dashBoardService.getApiStatInPeriodByAppId(this.period).subscribe(item => {
+			let data = new GetChartApiStat().adapt(item)
+			console.log(data)
+		})
 
 	}
 
