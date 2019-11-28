@@ -2,7 +2,7 @@ package distance
 
 import (
 	"inc-nlp-service-echo/computing_module/hashing"
-	"inc-nlp-service-echo/core_module/nlp/dao"
+	"inc-nlp-service-echo/core_module/nlprecord/dao"
 	"math"
 
 	"github.com/agnivade/levenshtein"

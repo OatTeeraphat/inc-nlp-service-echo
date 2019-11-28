@@ -2,8 +2,8 @@ package controller
 
 import (
 	"fmt"
-	"inc-nlp-service-echo/core_module/nlp"
-	"inc-nlp-service-echo/core_module/nlp/dao"
+	"inc-nlp-service-echo/core_module/nlprecord"
+	"inc-nlp-service-echo/core_module/nlprecord/dao"
 	"net/http"
 
 	"github.com/360EntSecGroup-Skylar/excelize"

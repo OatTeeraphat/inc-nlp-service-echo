@@ -2,7 +2,7 @@ package gateway
 
 import (
 	"encoding/json"
-	"inc-nlp-service-echo/core_module/nlp"
+	"inc-nlp-service-echo/core_module/nlprecord"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"

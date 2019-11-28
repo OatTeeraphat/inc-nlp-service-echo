@@ -1,7 +1,7 @@
 package nlp
 
 import (
-	"inc-nlp-service-echo/core_module/nlp/dao"
+	"inc-nlp-service-echo/core_module/nlprecord/dao"
 
 	"github.com/labstack/echo/v4"
 )

@@ -8,8 +8,8 @@ import (
 
 	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
 	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
-	nlpGateway "inc-nlp-service-echo/core_module/nlp/gateway"
-	nlpService "inc-nlp-service-echo/core_module/nlp/service"
+	nlpGateway "inc-nlp-service-echo/core_module/nlprecord/gateway"
+	nlpService "inc-nlp-service-echo/core_module/nlprecord/service"
 	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
 	nlpTraininglogService "inc-nlp-service-echo/core_module/nlptraininglog/service"
 	shopGateway "inc-nlp-service-echo/core_module/shop/gateway"

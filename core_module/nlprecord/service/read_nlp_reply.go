@@ -3,7 +3,7 @@ package service
 import (
 	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/computing_module/distance"
-	"inc-nlp-service-echo/core_module/nlp/dao"
+	"inc-nlp-service-echo/core_module/nlprecord/dao"
 
 	"github.com/labstack/gommon/log"
 )
