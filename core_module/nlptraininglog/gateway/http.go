@@ -18,19 +18,19 @@ func NewHTTPGateway(e *echo.Group, svc0 nlptraininglog.Service) {
 		NlpTrainingLogService: svc0,
 	}
 
-	e.GET("/nlp/log/pagination", handle.ReadPaginationNlpTrainingLogController)
+	e.GET("/nlp/log/pagination", handle.ReadPagination)
 	e.DELETE("/nlp/log", handle.DeleteByID)
 	e.DELETE("/nlp/log/bulk", handle.BulkDeleteByID)
 }
 
-// ReadPaginationNlpTrainingLogController ReadPaginationNlpTrainingLogController
-func (h HTTPGateway) ReadPaginationNlpTrainingLogController(e echo.Context) error {
+// ReadPagination ReadPagination
+func (h HTTPGateway) ReadPagination(e echo.Context) error {
 	// intent := e.QueryParam("intent")
 	keyword := e.QueryParam("keyword")
 	// story := e.QueryParam("story")
 	page := e.QueryParam("page")
 
-	response := h.NlpTrainingLogService.ReadPaginationNlpTrainingLogService(page, keyword)
+	response := h.NlpTrainingLogService.ReadPagination(page, keyword)
 
 	return e.JSON(http.StatusOK, response)
 

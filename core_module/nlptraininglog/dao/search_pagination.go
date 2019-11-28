@@ -2,8 +2,8 @@ package dao
 
 import "time"
 
-// NlpTrainingLogPaginationSearchModel NlpRecordPaginationSearchModel
-type NlpTrainingLogPaginationSearchModel struct {
+// SearchPaginationModel PaginationSearchModel
+type SearchPaginationModel struct {
 	Page           string           `json:"page"`
 	Limit          string           `json:"limit"`
 	Total          string           `json:"total"`

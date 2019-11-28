@@ -18,10 +18,8 @@ import (
 	storyService "inc-nlp-service-echo/core_module/story/service"
 
 	// TODO: refractor fb, auth service
-	// fbService "inc-nlp-service-echo/core_module/facebook/service"
 	fbGateway "inc-nlp-service-echo/core_module/facebook/gateway"
 
-	// authGateway "inc-nlp-service-echo/core_module/authentication/service"
 	authGateway "inc-nlp-service-echo/core_module/authentication/gateway"
 
 	"inc-nlp-service-echo/business_module/repositories"
