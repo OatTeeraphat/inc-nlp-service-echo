@@ -1,7 +1,7 @@
 package dao
 
-// StoryModel StoryModel
-type StoryModel struct {
+// ReadStoryDao ReadStoryDao
+type ReadStoryDao struct {
 	ID          uint   `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"desc"`
@@ -10,9 +10,5 @@ type StoryModel struct {
 	UpdatedAt   int64  `json:"updated_at"`
 }
 
-// NewStoryModel StoryModel
-type NewStoryModel struct {
-	Name        string `json:"name"`
-	Description string `json:"desc"`
-	Owner       string `json:"owner"`
-}
+// ReadAllStoryDao ReadAllStoryDao
+type ReadAllStoryDao []ReadStoryDao

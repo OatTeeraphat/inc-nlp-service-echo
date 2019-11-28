@@ -2,6 +2,7 @@ package controller
 
 import (
 	"inc-nlp-service-echo/core_module/nlptraininglog"
+	"inc-nlp-service-echo/core_module/nlptraininglog/dao"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -14,23 +15,24 @@ type HTTPGateway struct {
 
 // NewHTTPGateway NewHTTPGateway
 func NewHTTPGateway(e *echo.Group, svc0 nlptraininglog.Service) {
+
 	handle := &HTTPGateway{
 		NlpTrainingLogService: svc0,
 	}
 
-	e.GET("/nlp/log/pagination", handle.ReadPagination)
+	e.GET("/nlp/log/pagination", handle.SearchPagination)
 	e.DELETE("/nlp/log", handle.DeleteByID)
 	e.DELETE("/nlp/log/bulk", handle.BulkDeleteByID)
 }
 
-// ReadPagination ReadPagination
-func (h HTTPGateway) ReadPagination(e echo.Context) error {
+// SearchPagination SearchPagination
+func (h HTTPGateway) SearchPagination(e echo.Context) error {
 	// intent := e.QueryParam("intent")
 	keyword := e.QueryParam("keyword")
 	// story := e.QueryParam("story")
 	page := e.QueryParam("page")
 
-	response := h.NlpTrainingLogService.ReadPagination(page, keyword)
+	response := h.NlpTrainingLogService.SearchPagination(page, keyword)
 
 	return e.JSON(http.StatusOK, response)
 
@@ -49,10 +51,10 @@ func (h HTTPGateway) DeleteByID(e echo.Context) error {
 
 // BulkDeleteByID BulkDeleteByID
 func (h HTTPGateway) BulkDeleteByID(e echo.Context) error {
-	ids := new([]uint)
-	e.Bind(&ids)
+	bulkDeleteByIDsDao := new(dao.BulkDeleteByIDsDao)
+	e.Bind(&bulkDeleteByIDsDao)
 
-	response, error := h.NlpTrainingLogService.BulkDeleteByID(*ids)
+	response, error := h.NlpTrainingLogService.BulkDeleteByID(*bulkDeleteByIDsDao)
 
 	if error != nil {
 		return e.String(http.StatusUnprocessableEntity, "INVALID")

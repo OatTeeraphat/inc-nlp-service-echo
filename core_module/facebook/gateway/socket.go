@@ -48,7 +48,7 @@ func (h *SocketGateway) ReplyFBWebhookSocketIO(c echo.Context) error {
 				log.Error(err)
 			}
 			if string(msg) != "" {
-				nlpResult := h.NlpService.ReadNlpReplyModelService(stringMsg, "1")
+				nlpResult := h.NlpService.ReadNlpReply(stringMsg, "1")
 
 				log.Info(nlpResult)
 

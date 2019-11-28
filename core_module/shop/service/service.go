@@ -5,7 +5,7 @@ import (
 	"inc-nlp-service-echo/core_module/shop"
 )
 
-// NewService ShopService
+// Service ShopService
 type Service struct {
 	shopRepo repositories.IShopRepository
 }
@@ -15,9 +15,4 @@ func NewService(repo1 repositories.IShopRepository) shop.Service {
 	return &Service{
 		repo1,
 	}
-}
-
-// ReadShopByIDService ReadShopByIDService
-func (svc Service) ReadShopByIDService(ID string) string {
-	return "OK"
 }

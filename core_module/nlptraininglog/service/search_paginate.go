@@ -9,8 +9,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// ReadPagination ReadPagination
-func (s Service) ReadPagination(Page string, keyword string) dao.SearchPaginationModel {
+// SearchPagination SearchPagination
+func (s Service) SearchPagination(Page string, keyword string) dao.SearchPaginationModel {
 	var searchPaginateDao dao.SearchPaginationModel
 
 	searchPaginateDao.Page = Page
@@ -27,8 +27,6 @@ func (s Service) ReadPagination(Page string, keyword string) dao.SearchPaginatio
 	if err != nil {
 		log.Error(err)
 	}
-
-	// log.Info(nlpTrainingLogCount)
 
 	if keyword == "" {
 		for _, item := range s.nlpTrainingLogRepository.Pagination(pageInt, 40) {
