@@ -1,4 +1,4 @@
-import { GetClientSignInAdapter } from './get_client_sign_in_adapter.js'
+import { GetClientSignInAdapter } from './dao.js'
 
 class ClientSignInRequest {
     constructor(username, password, rememberMe) {

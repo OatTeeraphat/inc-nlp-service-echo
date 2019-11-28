@@ -1,4 +1,4 @@
-import { GetNlpTrainingLogPaginationAdapter } from './get_nlp_training_log_pagination_adapter.js'
+import { GetNlpTrainingLogPaginationAdapter } from './dao.js'
 
 export class NlpTrainingLogService {
     

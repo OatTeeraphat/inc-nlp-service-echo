@@ -1,4 +1,4 @@
-import { GetNlpRecordsPagination, GetSearchByKeywordAndDistancePagination } from './get_nlp_records_pagination_adapter.js'
+import { GetNlpRecordsPagination, GetSearchByKeywordAndDistancePagination } from './dao.js'
 
 // nlp records service
 export class NlpRecordsService {

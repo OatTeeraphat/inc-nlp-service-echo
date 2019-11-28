@@ -1,4 +1,4 @@
-import { GetStoryModelAdapter } from './get_story_adapter.js'
+import { GetStoryModelAdapter } from './dao.js'
 
 export class StoryService {
     
