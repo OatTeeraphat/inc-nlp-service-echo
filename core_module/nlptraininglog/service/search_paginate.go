@@ -10,8 +10,8 @@ import (
 )
 
 // SearchPagination SearchPagination
-func (s Service) SearchPagination(Page string, keyword string) dao.SearchPaginationModel {
-	var searchPaginateDao dao.SearchPaginationModel
+func (s Service) SearchPagination(Page string, keyword string) dao.SearchPaginationDao {
+	var searchPaginateDao dao.SearchPaginationDao
 
 	searchPaginateDao.Page = Page
 	searchPaginateDao.Limit = "40"

@@ -2,8 +2,8 @@ package dao
 
 import "time"
 
-// SearchPaginationModel PaginationSearchModel
-type SearchPaginationModel struct {
+// SearchPaginationDao SearchPaginationDao
+type SearchPaginationDao struct {
 	Page           string           `json:"page"`
 	Limit          string           `json:"limit"`
 	Total          string           `json:"total"`

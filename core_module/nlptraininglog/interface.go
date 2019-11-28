@@ -15,7 +15,7 @@ type HTTPGateway interface {
 
 // Service INlpTrainingLogService
 type Service interface {
-	SearchPagination(Page string, keyword string) dao.SearchPaginationModel
+	SearchPagination(Page string, keyword string) dao.SearchPaginationDao
 	DeleteByID(ID string) (string, error)
 	BulkDeleteByID(IDs dao.BulkDeleteByIDsDao) (string, error)
 }
