@@ -6,7 +6,12 @@ class DashBoardViewModel {
 			trainig : "tabFirst" 
 		}
 		this.period = "halfOfMonth"
-		this.app_info = {}
+		this.app_info = {},
+		this.api_stat = {
+			label : {},
+			call : {},
+			avg_time : {}
+		}
 	}
 
 }
@@ -21,13 +26,17 @@ export class DashBoardPresenter {
 	getInitialState(){
 		
 		this.dashBoardService.getAppInfoByClientId().subscribe(item => {
-			console.log(item)
+			// console.log(item)
 			this.view.app_info = item
 		})
 		
-		this.dashBoardService.getApiStatInPeriodByAppId(this.period).subscribe(item => {
+		this.dashBoardService.getApiStatInPeriodByAppId(this.period)
+		.subscribe(item => {
 			let data = new GetChartApiStat().adapt(item)
-			console.log(data)
+			this.view.api_stat.label = data.labels
+			this.view.api_stat.call = data.chart.api_call
+			this.view.api_stat.avg_time = data.chart.avg_time
+			// console.log(data)
 		})
 
 	}

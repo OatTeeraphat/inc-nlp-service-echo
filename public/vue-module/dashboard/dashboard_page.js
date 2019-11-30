@@ -86,6 +86,9 @@ export default Vue.component('dashboard-page', {
 										<line-chart-api-usage 
 											:height="120" 
 											:redraw="true"
+											:data-chart="$dashboardPresenter.view.api_stat.call"
+											:data-label="$dashboardPresenter.view.api_stat.label"
+											:title="'Calls'"
 											v-if=" toggle_chart.api == 'tabFirst' " 
 											key="tabFirst"
 										>
@@ -93,6 +96,9 @@ export default Vue.component('dashboard-page', {
 										<line-chart-api-usage 
 											:height="120" 
 											:redraw="true"
+											:data-chart="$dashboardPresenter.view.api_stat.avg_time"
+											:data-label="$dashboardPresenter.view.api_stat.label"
+											:title="'Avg. Time (ms)'"
 											v-if=" toggle_chart.api == 'tabSecond' " 
 											key="tabSecond"
 										>
@@ -283,10 +289,10 @@ export default Vue.component('dashboard-page', {
 	</div>
 	`,
 	data: function() {
+		//console.log(this.$dashboardPresenter.view)
 		return this.$dashboardPresenter.view
 	},
 	mounted : function() {
 		this.$dashboardPresenter.getInitialState() 
 	}
-
 })
