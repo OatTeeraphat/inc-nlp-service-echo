@@ -269,19 +269,19 @@ export class HttpRepository {
         [
             { time: "2019-11-01 00:00:00.00+00", amount: "0" },
             { time: "2019-11-02 00:00:00.00+00", amount: "40" },
-            { time: "2019-11-03 00:00:00.00+00", amount: "320" },
-            { time: "2019-11-04 00:00:00.00+00", amount: "140" },
-            { time: "2019-11-05 00:00:00.00+00", amount: "160" },
-            { time: "2019-11-06 00:00:00.00+00", amount: "75" },
-            { time: "2019-11-07 00:00:00.00+00", amount: "10" },
-            { time: "2019-11-08 00:00:00.00+00", amount: "40" },
-            { time: "2019-11-09 00:00:00.00+00", amount: "320" },
-            { time: "2019-11-10 00:00:00.00+00", amount: "140" },
-            { time: "2019-11-11 00:00:00.00+00", amount: "160" },
-            { time: "2019-11-12 00:00:00.00+00", amount: "75" },
-            { time: "2019-11-13 00:00:00.00+00", amount: "320" },
-            { time: "2019-11-14 00:00:00.00+00", amount: "140" },
-            { time: "2019-11-15 00:00:00.00+00", amount: "75" },
+            { time: "2019-11-03 00:00:00.00+00", amount: "360" },
+            { time: "2019-11-04 00:00:00.00+00", amount: "500" },
+            { time: "2019-11-05 00:00:00.00+00", amount: "660" },
+            { time: "2019-11-06 00:00:00.00+00", amount: "735" },
+            { time: "2019-11-07 00:00:00.00+00", amount: "745" },
+            { time: "2019-11-08 00:00:00.00+00", amount: "780" },
+            { time: "2019-11-09 00:00:00.00+00", amount: "1100" },
+            { time: "2019-11-10 00:00:00.00+00", amount: "1240" },
+            { time: "2019-11-11 00:00:00.00+00", amount: "1400" },
+            { time: "2019-11-12 00:00:00.00+00", amount: "1475" },
+            { time: "2019-11-13 00:00:00.00+00", amount: "1790" },
+            { time: "2019-11-14 00:00:00.00+00", amount: "1880" },
+            { time: "2019-11-15 00:00:00.00+00", amount: "1950" },
         ]
     ).pipe(
         delay(600)
@@ -294,7 +294,7 @@ export class HttpRepository {
      ** future plan : can query slove by toggle confidence value
     */
 
-    getModelStatInPeriodByAppId = (period) => of(
+    getModelStatInPeriodByAppId = (period, confidence) => of(
         [
             { time: "2019-11-01 00:00:00.00+00", amount: "0", slove: "0" },
             { time: "2019-11-02 00:00:00.00+00", amount: "40", slove: "14" },
@@ -323,10 +323,10 @@ export class HttpRepository {
 
     getCountNlpSetInStoryByAppId = (limit) => of (
         [
-            { story_name: "GREETING", amount: 37 },
-            { story_name: "FAQ", amount: 100 },
-            { story_name: "CHITCHAT", amount: 189 },
-            { story_name: "PRODUCT", amount: 327 },
+            { story_name: "GREETING", amount: 120 },
+            { story_name: "FAQ", amount: 140 },
+            { story_name: "CHITCHAT", amount: 260 },
+            { story_name: "PRODUCT", amount: 297 },
             { story_name: "Non Training", amount: 529 }
         ]
     ).pipe(

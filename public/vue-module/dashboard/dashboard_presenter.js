@@ -5,12 +5,25 @@ class DashBoardViewModel {
 			model : "tabFirst", 
 			trainig : "tabFirst" 
 		}
-		this.period = "halfOfMonth"
+		this.period = "halfOfMonth",
+		this.stack_limit = 10,
+		this.current_confidence = 50,
 		this.app_info = {},
 		this.api_stat = {
-			label : {},
+			label : [],
 			call : {},
 			avg_time : {}
+		}
+		this.training_stat = {
+			label : [],
+			amount : {},
+			stacks : {}
+		}
+		this.model_stat = {
+			label : [],
+			slove_amount : {},
+			transaction_amount : {},
+			ratio : 0
 		}
 	}
 
@@ -37,6 +50,24 @@ export class DashBoardPresenter {
 			this.view.api_stat.call = data.chart.api_call
 			this.view.api_stat.avg_time = data.chart.avg_time
 			// console.log(data)
+		})
+
+		this.dashBoardService.getDataGrowthInPeriodByAppId(this.period)
+		.subscribe(item => {
+			let data = new GetChartTrainingStat().adapt(item)
+			this.view.training_stat.label = data.labels
+			this.view.training_stat.amount = data.amount
+		})
+
+		this.dashBoardService.getCountNlpSetInStoryByAppId(this.stack_limit)
+		.subscribe(item => {
+			let data = new GetChartTrainingSummary().adapt(item)
+			this.view.training_stat.stacks = data.stacks
+		})
+
+		this.dashBoardService.getModelStatInPeriodByAppId(this.period, this.current_confidence)
+		.subscribe(item => {
+			let data = new GetChartModelStat().adapt(item)
 		})
 
 	}

@@ -3,13 +3,8 @@ export default Vue.component('line-chart-api-usage', {
 	props: {
 		dataChart : Object,
 		dataLabel : Object,
-		title: String
-	},
-	data: function () {
-		return {
-			dataChart: this.dataChart,
-			dataLabel: this.dataLabel
-		}
+		title: String,
+		point: Boolean
 	},
 	mounted() {
 		this.$nextTick(() => {
@@ -18,6 +13,7 @@ export default Vue.component('line-chart-api-usage', {
 	},
 	methods: {
 		createChart() {
+			
 			//console.log("dataChart:", this.dataChart)
 			//console.log("dataLabel:", this.dataLabel)
 			this.renderChart({
@@ -25,7 +21,7 @@ export default Vue.component('line-chart-api-usage', {
 				datasets: [
 					{
 						label: this.title,
-						pointRadius: 2,
+						pointRadius: !this.point ? 0 : 2,
 						pointBackgroundColor: "#673AB7",
 						pointBorderWidth: 2,
 						fill: false,
@@ -75,7 +71,7 @@ export default Vue.component('line-chart-api-usage', {
 							},
 							ticks: {
 								beginAtZero: true,
-								maxTicksLimit: 4,
+								maxTicksLimit: 3,
 								minTicksLimit: 2
 							}
 						}

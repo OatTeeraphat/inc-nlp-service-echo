@@ -89,6 +89,7 @@ export default Vue.component('dashboard-page', {
 											:data-chart="$dashboardPresenter.view.api_stat.call"
 											:data-label="$dashboardPresenter.view.api_stat.label"
 											:title="'Calls'"
+											:point=true
 											v-if=" toggle_chart.api == 'tabFirst' " 
 											key="tabFirst"
 										>
@@ -99,6 +100,7 @@ export default Vue.component('dashboard-page', {
 											:data-chart="$dashboardPresenter.view.api_stat.avg_time"
 											:data-label="$dashboardPresenter.view.api_stat.label"
 											:title="'Avg. Time (ms)'"
+											:point=true
 											v-if=" toggle_chart.api == 'tabSecond' " 
 											key="tabSecond"
 										>
@@ -217,20 +219,25 @@ export default Vue.component('dashboard-page', {
 											<stack-chart-training
 												:height="100" 
 												:redraw="true"
+												:data-chart="$dashboardPresenter.view.training_stat.stacks"
 												v-if=" toggle_chart.trainig == 'tabFirst' " 
 												key="tabFirst"
 											></stack-chart-training>
-											<line-chart-training-growth
+											<line-chart-api-usage 
 												:height="120" 
 												:redraw="true"
+												:data-chart="$dashboardPresenter.view.training_stat.amount"
+												:data-label="$dashboardPresenter.view.training_stat.label"
+												:title="'Total Data'"
+												:point=false
 												v-if=" toggle_chart.trainig == 'tabSecond' " 
-												key="tabSecond"
+												key="tabFirst"
 											>
-											</line-chart-training-growth>
+											</line-chart-api-usage>
 											<div class="row">
 												<div class="col">
 														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabFirst' " >Non Training Data</p>
-														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabSecond' " >Average Request Time</p>
+														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabSecond' " >Amount Of Data Growth</p>
 												</div>
 											</div>
 									</div>
