@@ -21,9 +21,12 @@ class DashBoardViewModel {
 		}
 		this.model_stat = {
 			label : [],
-			slove_amount : {},
-			transaction_amount : {},
-			ratio : 0
+			amount: {
+				slove_amount: {},
+				transaction_amount: {},
+			},
+			ratio : 0,
+			confidence: this.current_confidence
 		}
 	}
 
@@ -65,15 +68,19 @@ export class DashBoardPresenter {
 			this.view.training_stat.stacks = data.stacks
 		})
 
-		this.dashBoardService.getModelStatInPeriodByAppId(this.period, this.current_confidence)
+		this.dashBoardService.getModelStatInPeriodByAppId(this.period, this.view.model_stat.confidence)
 		.subscribe(item => {
 			let data = new GetChartModelStat().adapt(item)
+			this.view.model_stat.label = data.labels
+			this.view.model_stat.amount.slove_amount = data.slove_amount
+			this.view.model_stat.amount.transaction_amount = data.transaction_amount
+			this.view.model_stat.ratio = data.ratio
 		})
 
 	}
 
-	onSelectPeriod(){
+	// onSelectPeriod(){
 
-	}
+	// }
 
 }

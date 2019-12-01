@@ -9,7 +9,7 @@
 class GetChartModelStat {
 
 	adapt(models) {
-		console.log(models)
+		
 		let item = {
 			labels: [],
 			slove_amount: [],
@@ -26,11 +26,12 @@ class GetChartModelStat {
 			item.slove_amount.push(it.slove)
 			item.transaction_amount.push(it.amount)
 
-			
-
 		})
 
-		console.log(models)
+		item.ratio = this.calculateCanBeSloveRatio(models)
+
+		console.log(item)
+
 		return item
 
 	}
@@ -52,6 +53,23 @@ class GetChartModelStat {
 		return rule ? [txtMonth[month], date] : date 
 
 	}
+
+	calculateCanBeSloveRatio = (models) => {
+
+		let sumOfAmount = 0
+		let sumOfSlove = 0
+
+		models.map((it) => {
+			sumOfAmount = parseInt(it.amount) + sumOfAmount
+			sumOfSlove = parseInt(it.slove) + sumOfSlove
+		})
+
+		let CanBeSloveRatio = (sumOfSlove / sumOfAmount) * 100
+
+		return CanBeSloveRatio.toFixed(2)
+
+	}
+
 }
 
 /*
