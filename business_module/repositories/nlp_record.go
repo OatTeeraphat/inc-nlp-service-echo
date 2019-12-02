@@ -26,6 +26,7 @@ type INlpRecordRepository interface {
 	CountByKeywordMinhash(KeywordMinhash uint32) int64
 	Delete() *gorm.DB
 	DeleteByID(id uint) *gorm.DB
+	UpdateByID(nlpRecordDomain *domains.NlpRecordDomain)
 }
 
 // NewNlpRecordRepository new nlp record instance
@@ -107,4 +108,9 @@ func (repo *NlpRecordRepository) DeleteByID(id uint) *gorm.DB {
 	domain := &domains.NlpRecordDomain{}
 	domain.ID = id
 	return repo.DB.Unscoped().Delete(domain)
+}
+
+// UpdateByID UpdateByID
+func (repo *NlpRecordRepository) UpdateByID(nlpRecordDomain *domains.NlpRecordDomain) {
+	repo.DB.Save(nlpRecordDomain)
 }

@@ -2,7 +2,7 @@ package controller
 
 import (
 	"fmt"
-	"inc-nlp-service-echo/core_module/nlprecord"
+	nlp "inc-nlp-service-echo/core_module/nlprecord"
 	"inc-nlp-service-echo/core_module/nlprecord/dao"
 	"net/http"
 
@@ -164,7 +164,8 @@ func (con *HTTPGateway) BulkDeleteByIDs(e echo.Context) error {
 
 // UpdateByIDAndClientID update nlp record by id and ClientID
 func (con *HTTPGateway) UpdateByIDAndClientID(e echo.Context) error {
-	id := e.QueryParam("id")
-	response := con.NlpService.UpdateByIDAndClientID(id)
+	domain := new(dao.UpdateNlpRecordDao)
+	e.Bind(&domain)
+	response := con.NlpService.UpdateByIDAndClientID(*domain)
 	return e.String(http.StatusOK, response)
 }

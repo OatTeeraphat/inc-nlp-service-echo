@@ -27,5 +27,5 @@ type Service interface {
 	ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyDao
 	DeleteByID(id string) string
 	BulkDeleteByIDs(ids []uint) (string, error)
-	UpdateByIDAndClientID(id string) string
+	UpdateByIDAndClientID(updateNlpRecordDao dao.UpdateNlpRecordDao) string
 }
