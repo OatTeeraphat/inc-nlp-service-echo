@@ -28,6 +28,9 @@ class DashBoardViewModel {
 			ratio : 0,
 			confidence: this.current_confidence
 		}
+		this.bubble_chart = {
+			data : {}
+		}
 	}
 
 }
@@ -75,6 +78,12 @@ export class DashBoardPresenter {
 			this.view.model_stat.amount.slove_amount = data.slove_amount
 			this.view.model_stat.amount.transaction_amount = data.transaction_amount
 			this.view.model_stat.ratio = data.ratio
+		})
+
+		this.dashBoardService.getBubbleChart(this.limit)
+		.subscribe(item => {
+			let data = new GetChartTopIntent().adapt(item)
+			this.view.bubble_chart.data = data.intents
 		})
 
 	}
