@@ -121,5 +121,5 @@ func staticMiddleware() echo.MiddlewareFunc {
 }
 
 func heathCheck(c echo.Context) error {
-	return c.String(http.StatusOK, "OK")
+	return c.String(http.StatusOK, "PONG")
 }
