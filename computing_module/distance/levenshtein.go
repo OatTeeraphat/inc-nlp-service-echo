@@ -2,7 +2,7 @@ package distance
 
 import (
 	"inc-nlp-service-echo/computing_module/hashing"
-	"inc-nlp-service-echo/core_module/nlp/dao"
+	"inc-nlp-service-echo/core_module/nlprecord/dao"
 	"math"
 
 	"github.com/agnivade/levenshtein"
@@ -37,7 +37,7 @@ func GenerateKeywordMinhash(keyword string) uint32 {
 }
 
 // FindMinDistanceFromNlpModels find minimum distance from nlp model
-func FindMinDistanceFromNlpModels(nlpReplyModels []dao.NlpReplyModel, incomingKeyword string) dao.NlpReplyModel {
+func FindMinDistanceFromNlpModels(nlpReplyModels []dao.ReadNlpReplyDao, incomingKeyword string) dao.ReadNlpReplyDao {
 
 	minDistance := float32(math.Inf(InitialInfinityPositiveValue))
 	minIDX := InitialMinimumIndex

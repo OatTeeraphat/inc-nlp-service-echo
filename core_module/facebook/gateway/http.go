@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"inc-nlp-service-echo/core_module/facebook/dao"
-	"inc-nlp-service-echo/core_module/nlp"
+	"inc-nlp-service-echo/core_module/nlprecord"
 	"io/ioutil"
 	"net/http"
 
@@ -57,7 +57,7 @@ func (svc *HTTPGateway) ReplyFBWebhookController(e echo.Context) error {
 			fbTextReply := dao.NewFBTextReplyModel()
 			fbTextReply.Recipient.ID = item.Messaging[index].Sender.ID
 
-			nlpModel := svc.NlpService.ReadNlpReplyModelService(item.Messaging[index].Message.Text, shopID)
+			nlpModel := svc.NlpService.ReadNlpReply(item.Messaging[index].Message.Text, shopID)
 
 			fbTextReply.Message.Text = nlpModel.Intent
 

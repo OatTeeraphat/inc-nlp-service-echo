@@ -2,7 +2,7 @@ package gateway
 
 import (
 	"encoding/json"
-	"inc-nlp-service-echo/core_module/nlp"
+	"inc-nlp-service-echo/core_module/nlprecord"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
@@ -48,7 +48,7 @@ func (h *SocketGateway) ReplyFBWebhookSocketIO(c echo.Context) error {
 				log.Error(err)
 			}
 			if string(msg) != "" {
-				nlpResult := h.NlpService.ReadNlpReplyModelService(stringMsg, "1")
+				nlpResult := h.NlpService.ReadNlpReply(stringMsg, "1")
 
 				log.Info(nlpResult)
 

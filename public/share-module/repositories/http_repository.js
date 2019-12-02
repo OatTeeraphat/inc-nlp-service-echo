@@ -71,6 +71,24 @@ export class HttpRepository {
             }
         })
     }
+
+    putNlpRecord(id, keyword, intent, story_name) {
+        console.log(id, keyword, intent, story_name)
+        return ajax ({
+            method: "PUT", 
+            url: `${this.BASE_API}/v1/nlp/record`,
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": this._getAuthorizedBearer() 
+            },
+            body: {	
+                "id": id,
+                "keyword": keyword,
+                "intent": intent,
+                "story_id": story_name
+            }
+        })
+    }
     
 
     uploadXlSXNlpRecord(formData) {

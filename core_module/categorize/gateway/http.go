@@ -16,13 +16,13 @@ type HTTPGateway struct {
 func NewHTTPGateway(e *echo.Group, svc0 categorize.Service) {
 	handle := &HTTPGateway{svc0}
 
-	e.POST("/shop/story", handle.CreateShopStoryController)
+	e.POST("/shop/story", handle.CreateRecord)
 }
 
-// CreateShopStoryController CreateShopStoryController
-func (con HTTPGateway) CreateShopStoryController(e echo.Context) error {
+// CreateRecord CreateRecord
+func (con HTTPGateway) CreateRecord(e echo.Context) error {
 	shopID := e.QueryParam("shop_id")
 	storyIDs := []string{"1", "2"}
-	response := con.ShopStoryService.CreateShopStoryService(shopID, storyIDs)
+	response := con.ShopStoryService.CreateRecord(shopID, storyIDs)
 	return e.String(http.StatusOK, response)
 }

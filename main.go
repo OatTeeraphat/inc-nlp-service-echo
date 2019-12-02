@@ -1,15 +1,15 @@
 package main
 
 import (
+	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
-	"inc-nlp-service-echo/common_module/security"
 	"inc-nlp-service-echo/common_module/websockets"
 
 	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
 	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
-	nlpGateway "inc-nlp-service-echo/core_module/nlp/gateway"
-	nlpService "inc-nlp-service-echo/core_module/nlp/service"
+	nlpGateway "inc-nlp-service-echo/core_module/nlprecord/gateway"
+	nlpService "inc-nlp-service-echo/core_module/nlprecord/service"
 	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
 	nlpTraininglogService "inc-nlp-service-echo/core_module/nlptraininglog/service"
 	shopGateway "inc-nlp-service-echo/core_module/shop/gateway"
@@ -18,10 +18,8 @@ import (
 	storyService "inc-nlp-service-echo/core_module/story/service"
 
 	// TODO: refractor fb, auth service
-	// fbService "inc-nlp-service-echo/core_module/facebook/service"
 	fbGateway "inc-nlp-service-echo/core_module/facebook/gateway"
 
-	// authGateway "inc-nlp-service-echo/core_module/authentication/service"
 	authGateway "inc-nlp-service-echo/core_module/authentication/gateway"
 
 	"inc-nlp-service-echo/business_module/repositories"
@@ -123,5 +121,5 @@ func staticMiddleware() echo.MiddlewareFunc {
 }
 
 func heathCheck(c echo.Context) error {
-	return c.String(http.StatusOK, "OK")
+	return c.String(http.StatusOK, "PONG")
 }

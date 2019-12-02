@@ -19,29 +19,29 @@ func NewHTTPGateway(e *echo.Group, storyService story.Service) {
 		storyService: storyService,
 	}
 
-	e.GET("/story", handle.ReadAllStoryRecordController)
-	e.POST("/story", handle.NewStoryRecordController)
-	e.DELETE("/story", handle.DeleteStoryByIDController)
+	e.GET("/story", handle.ReadAll)
+	e.POST("/story", handle.CreateOneStory)
+	e.DELETE("/story", handle.DeleteByID)
 
 }
 
-// ReadAllStoryRecordController ReadAllStoryRecordController
-func (h HTTPGateway) ReadAllStoryRecordController(e echo.Context) error {
-	response := h.storyService.ReadAllStoryRecordService()
+// ReadAll ReadAll
+func (h HTTPGateway) ReadAll(e echo.Context) error {
+	response := h.storyService.ReadAll()
 	return e.JSON(http.StatusOK, response)
 }
 
-// NewStoryRecordController ReadAllStoryRecordController
-func (h HTTPGateway) NewStoryRecordController(e echo.Context) error {
-	var body dao.NewStoryModel
-	e.Bind(&body)
-	response := h.storyService.NewStoryRecordService(body)
+// CreateOneStory CreateOneStory
+func (h HTTPGateway) CreateOneStory(e echo.Context) error {
+	var newStoryDao dao.NewStoryDao
+	e.Bind(&newStoryDao)
+	response := h.storyService.CreateOneStory(newStoryDao)
 	return e.String(http.StatusOK, response)
 }
 
-// DeleteStoryByIDController DeleteStoryByIDController
-func (h HTTPGateway) DeleteStoryByIDController(e echo.Context) error {
+// DeleteByID DeleteByID
+func (h HTTPGateway) DeleteByID(e echo.Context) error {
 	storyID := e.QueryParam("id")
-	response := h.storyService.DeleteStoryByIDService(storyID)
+	response := h.storyService.DeleteByID(storyID)
 	return e.String(http.StatusOK, response)
 }

@@ -13,12 +13,36 @@ export class NlpRecordsService {
         this.$searchNlpRecordByKeyword = new Subject()
         this.$NlpRecordXLSXUploadSubject = new Subject()
         this.$uploadXLSXNlpRecordProgressBar = new Subject()
+        this.$updateNlpRecordRow = new Subject()
+    }
+
+    updateNlpRecordRowSubject() {
+        return this.$updateNlpRecordRow.pipe(
+            // map( ({id, keyword, intent , story_name}) => console.log(id, keyword, intent , story_name) ),
+            debounceTime(500),
+            switchMap( ({id, keyword, intent , story_name}) =>  {
+                return this.httpRepository.putNlpRecord(id, keyword, intent , story_name).pipe(
+                    map( () => {
+
+                        swal2( ALERT.TOAST , { title: 'Reslove', icon : 'success' })
+
+                        return {
+                            id: id, 
+                            keyword: keyword, 
+                            intent: intent , 
+                            story_name: story_name
+                        }
+                    }),
+                    this.vueErrorHandler.catchHttpError()
+                )
+            })
+        )
     }
 
     getNlpRecordsPaginationByKeyword(keyword, page) {
         return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
             map( ({ response }) => {
-
+                console.log(response)
                 if ( keyword !== "" ) {
                     this.localStorageRepository.setRecentlyNlpRecordSearch(keyword)
                 }
@@ -29,8 +53,8 @@ export class NlpRecordsService {
     }
     searchNlpRecordsPaginationByKeywordSubject() {
         return this.$searchNlpRecordByKeyword.pipe( 
-            throttleTime(300),
-            switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
+            debounceTime(200),
+            concatMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
         )
     }
 
@@ -102,6 +126,10 @@ export class NlpRecordsService {
                 )
             }),
         )
+    }
+
+    nextUpdateNlpRecordRow(item) {
+        return this.$updateNlpRecordRow.next(item)
     }
 
 

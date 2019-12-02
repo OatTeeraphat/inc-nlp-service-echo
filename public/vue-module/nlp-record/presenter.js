@@ -21,10 +21,12 @@ class NlpRecordViewModel {
 export class NlpRecordPresenter {
     constructor(nlpRecordsService) {
         this.view = new NlpRecordViewModel()
+        this.ref = {}
         this.nlpRecordsService = nlpRecordsService
         this.$searchNlpRecordsServiceSubscription = null
         this.$getNlpRecordsByInfiniteScrollSubscription = null
         this.$uploadXlSXNlpRecordUnSubscription = null
+        this.$updateNlpRecordRowSubscription = null
     }
 
     onMounted() {
@@ -39,15 +41,27 @@ export class NlpRecordPresenter {
             error => {
                 console.error(error)
                 this.view.isShowLoadingIndicator = false
-        })
+            }
+        )
 
-        this.$searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( it => {
-            this.view.nlpRecordsByKeyword.push(...it.nlp_records)
-        })
+        this.$searchNlpRecordsServiceSubscription = this.nlpRecordsService.searchNlpRecordsPaginationByKeywordSubject().subscribe( 
+            it => {
+                this.view.nlpRecordsByKeyword.push(...it.nlp_records)
+            }
+        )
 
-        this.$uploadXlSXNlpRecordUnSubscription = this.nlpRecordsService.uploadXlSXNlpRecordSubject().subscribe( it => {
-            console.log("upload percentage, ", it )
-        })
+        this.$uploadXlSXNlpRecordUnSubscription = this.nlpRecordsService.uploadXlSXNlpRecordSubject().subscribe( 
+            it => {
+                console.log("upload percentage, ", it )
+            }
+        )
+
+        this.$updateNlpRecordRowSubscription = this.nlpRecordsService.updateNlpRecordRowSubject().subscribe( 
+            it => {
+                console.log(it)
+                // let index = this.view.nlpRecords.findIndex(item => item.id === it.id);
+            }
+        )
     }
 
     
@@ -109,11 +123,21 @@ export class NlpRecordPresenter {
         this.nlpRecordsService.nextUploadXLSXNlpRecord(fileList)
     }
 
+    updateNlpRecordRow(item) {
+        this.nlpRecordsService.nextUpdateNlpRecordRow({
+            id: item.id,
+            keyword: item.keyword,
+            intent: item.intent,
+            story_name: item.story_name
+        })
+    }
+
     beforeDestroy() {
 
         this.$searchNlpRecordsServiceSubscription.unsubscribe()
         this.$getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
         this.$uploadXlSXNlpRecordUnSubscription.unsubscribe()
+        this.$updateNlpRecordRowSubscription.unsubscribe()
 
         // set page index to 1
         this.view.page = 1
