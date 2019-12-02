@@ -10,13 +10,11 @@ export class WelcomePresenter {
 
     constructor(nlpReplyCounterService) {
         this.view = new WelcomeViewModel()
-        console.log(this.view)
         this.nlpReplyCounterService = nlpReplyCounterService
         this.$pollingNlpReplyCounter = null
     }
 
     onMounted = () => {
-        console.log(this.view)
         this.$pollingNlpReplyCounter = this.nlpReplyCounterService.pollingNlpReplyCounter(this.pollingCallBackNlpReplyCounter).subscribe()
     }
     

@@ -9,12 +9,20 @@ export class DashBoardService {
 		return this.httpRepository.getAppInfoByClientId()
 	}
 
-	// getApiCallStat(){
+	getApiStatInPeriodByAppId(period){
+		return this.httpRepository.getApiStatInPeriodByAppId(period)
+	}
 
-	// }
+	getDataGrowthInPeriodByAppId(period){
+		return this.httpRepository.getDataGrowthInPeriodByAppId(period)
+	}
 
-	// getApiAverageReqTime(){
+	getCountNlpSetInStoryByAppId(limit){
+		return this.httpRepository.getCountNlpSetInStoryByAppId(limit)
+	}
 
-	// }
+	getModelStatInPeriodByAppId(period, confidence) {
+		return this.httpRepository.getModelStatInPeriodByAppId(period, confidence)
+	}
 
 }

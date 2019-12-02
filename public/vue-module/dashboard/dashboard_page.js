@@ -86,6 +86,10 @@ export default Vue.component('dashboard-page', {
 										<line-chart-api-usage 
 											:height="120" 
 											:redraw="true"
+											:data-chart="$dashboardPresenter.view.api_stat.call"
+											:data-label="$dashboardPresenter.view.api_stat.label"
+											:title="'Calls'"
+											:point=true
 											v-if=" toggle_chart.api == 'tabFirst' " 
 											key="tabFirst"
 										>
@@ -93,6 +97,10 @@ export default Vue.component('dashboard-page', {
 										<line-chart-api-usage 
 											:height="120" 
 											:redraw="true"
+											:data-chart="$dashboardPresenter.view.api_stat.avg_time"
+											:data-label="$dashboardPresenter.view.api_stat.label"
+											:title="'Avg. Time (ms)'"
+											:point=true
 											v-if=" toggle_chart.api == 'tabSecond' " 
 											key="tabSecond"
 										>
@@ -211,20 +219,25 @@ export default Vue.component('dashboard-page', {
 											<stack-chart-training
 												:height="100" 
 												:redraw="true"
+												:data-chart="$dashboardPresenter.view.training_stat.stacks"
 												v-if=" toggle_chart.trainig == 'tabFirst' " 
 												key="tabFirst"
 											></stack-chart-training>
-											<line-chart-training-growth
+											<line-chart-api-usage 
 												:height="120" 
 												:redraw="true"
+												:data-chart="$dashboardPresenter.view.training_stat.amount"
+												:data-label="$dashboardPresenter.view.training_stat.label"
+												:title="'Total Data'"
+												:point=false
 												v-if=" toggle_chart.trainig == 'tabSecond' " 
-												key="tabSecond"
+												key="tabFirst"
 											>
-											</line-chart-training-growth>
+											</line-chart-api-usage>
 											<div class="row">
 												<div class="col">
 														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabFirst' " >Non Training Data</p>
-														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabSecond' " >Average Request Time</p>
+														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabSecond' " >Amount Of Data Growth</p>
 												</div>
 											</div>
 									</div>
@@ -251,25 +264,20 @@ export default Vue.component('dashboard-page', {
 								enter-active-class="animated zoomIn faster"
 							>
 								<div class="chart-warpper dashboard-summary">
-										<h3 class="mb-4 mt-1" v-if=" toggle_chart.model == 'tabFirst' " >82.33%<span>Answer Ratio In Period</span></h3>
+										<h3 class="mb-4 mt-1" v-if=" toggle_chart.model == 'tabFirst' " >{{ $dashboardPresenter.view.model_stat.ratio }}%<span>Answer Ratio In Period</span></h3>
 										<line-chart-acc
 											:height="175" 
 											:redraw="true"
+											:data-chart="$dashboardPresenter.view.model_stat.amount"
+											:data-label="$dashboardPresenter.view.model_stat.label"
 											v-if=" toggle_chart.model == 'tabFirst' " 
 											key="tabFirst"
 										>
 										</line-chart-acc>
-										<line-chart-api-usage 
-											:height="200" 
-											:redraw="true"
-											v-if=" toggle_chart.model == 'tabSecond' " 
-											key="tabSecond"
-										>
-										</line-chart-api-usage>
 										<div class="row">
 											<div class="col d-flex">
 													<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabFirst' " >All Transaction</p>
-													<p class="graph-legend pink ml-5" v-if=" toggle_chart.model == 'tabFirst' " >Can Be Slove <span>(Conf : 50%)</span></p>
+													<p class="graph-legend pink ml-5" v-if=" toggle_chart.model == 'tabFirst' " >Can Be Slove <span>(Conf : {{ $dashboardPresenter.view.model_stat.confidence }}%)</span></p>
 													<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabSecond' " >Answer</p>
 											</div>
 										</div>
@@ -283,10 +291,10 @@ export default Vue.component('dashboard-page', {
 	</div>
 	`,
 	data: function() {
+		//console.log(this.$dashboardPresenter.view)
 		return this.$dashboardPresenter.view
 	},
 	mounted : function() {
 		this.$dashboardPresenter.getInitialState() 
 	}
-
 })
