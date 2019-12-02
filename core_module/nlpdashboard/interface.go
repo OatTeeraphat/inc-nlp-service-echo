@@ -1,15 +1,17 @@
 package nlpdashboard
 
 import (
+	"inc-nlp-service-echo/core_module/nlpdashboard/dao"
+
 	"github.com/labstack/echo/v4"
 )
 
 // HTTPGateway nlp rest api interface
 type HTTPGateway interface {
-	Mock(e echo.Context) error
+	ReadNlpLogging(e echo.Context) error
 }
 
 // Service INlpTrainingLogService
 type Service interface {
-	Mock() error
+	ReadNlpLogging(ID string) []dao.ReadLoggingDAO
 }

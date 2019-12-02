@@ -3,8 +3,8 @@ package datasources
 import (
 	"errors"
 	"fmt"
-	"inc-nlp-service-echo/common_module/commons"
 	"inc-nlp-service-echo/business_module/domains"
+	"inc-nlp-service-echo/common_module/commons"
 	"log"
 	"reflect"
 	"sort"
@@ -41,6 +41,7 @@ func NewFillChatGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 		&domains.ShopStoryDomain{},
 		&domains.StoryDomain{},
 		&domains.ShopDomain{},
+		&domains.NlpDashboardDomain{},
 	)
 	return &FillChatGORM{
 		DB: db,

@@ -13,6 +13,8 @@ import { AuthenticationPresenter } from './vue-module/authentication/presenter.j
 import mainPage from './vue-module/authentication/page.js'
 
 // NLP training record module
+import { NlpLoggingService } from './vue-module/logs/service.js'
+import { NlpLoggingPresenter } from './vue-module/logs/presenter.js'
 import { NlpRecordsService } from './vue-module/nlp-record/service.js'
 import { NlpRecordPresenter } from './vue-module/nlp-record/presenter.js'
 import { NlpTrainingLogService } from './vue-module/nlp-training-log/service.js'
@@ -81,6 +83,7 @@ const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, coo
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 const settingService = new SettingService(httpRepo, vueErrorHandler)
 const dashBoardService = new DashBoardService(httpRepo, vueErrorHandler)
+const nlpLoggingService = new NlpLoggingService(httpRepo, vueErrorHandler)
 
 // presenter initialize
 const authPresenter = new AuthenticationPresenter(authService)
@@ -90,6 +93,7 @@ const nlpTrainingLogPresenter = new NlpTrainingLogPresenter(nlpTrainingLogServic
 const nlpRecordPresenter = new NlpRecordPresenter(nlpRecordsService)
 const settingPresenter = new SettingPresenter(settingService)
 const dashboardPresenter = new DashBoardPresenter(dashBoardService)
+const nlpLoggingPresenter = new NlpLoggingPresenter(nlpLoggingService)
 
 Vue.use({
     // The install method will be called with the Vue constructor as the first argument, along with possible options
@@ -102,6 +106,7 @@ Vue.use({
         Vue.prototype.$nlpRecordPresenter = nlpRecordPresenter
         Vue.prototype.$settingPresenter = settingPresenter
         Vue.prototype.$dashboardPresenter = dashboardPresenter
+        Vue.prototype.$nlpLoggingPresenter = nlpLoggingPresenter
 
         // FIXME:  webchat error
         // Vue.prototype.$webChatService = webChatService

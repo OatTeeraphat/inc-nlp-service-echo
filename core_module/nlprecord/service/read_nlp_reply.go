@@ -55,16 +55,29 @@ func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyD
 
 		go svc.saveToNlpTrainingLogs(&nlpResult, 1)
 	}
+
+	go svc.saveToNlpDashboard(&nlpResult, 1)
+
 	return nlpResult
+}
+
+func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, shopID uint) {
+	var domain domains.NlpDashboardDomain
+	domain.Keyword = nlpResult.Keyword
+	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
+	domain.Intent = nlpResult.Intent
+	domain.Distance = nlpResult.Distance
+	domain.StoryID = nlpResult.StoryID
+	svc.nlpDashboardRepository.Save(&domain)
 }
 
 // saveNlpTrainingSetsService saveNlpTrainingSetsService
 func (svc Service) saveToNlpTrainingLogs(nlpResult *dao.ReadNlpReplyDao, shopID uint) {
-	var nlpTraningRecordDomain domains.NlpTrainingLogDomain
-	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
-	nlpTraningRecordDomain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
-	nlpTraningRecordDomain.Intent = nlpResult.Intent
-	nlpTraningRecordDomain.Distance = nlpResult.Distance
-	nlpTraningRecordDomain.StoryID = nlpResult.StoryID
-	svc.nlpTrainingRecordRepository.Save(&nlpTraningRecordDomain)
+	var domain domains.NlpTrainingLogDomain
+	domain.Keyword = nlpResult.Keyword
+	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
+	domain.Intent = nlpResult.Intent
+	domain.Distance = nlpResult.Distance
+	domain.StoryID = nlpResult.StoryID
+	svc.nlpTrainingRecordRepository.Save(&domain)
 }
