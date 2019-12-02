@@ -21,6 +21,7 @@ class NlpRecordViewModel {
 export class NlpRecordPresenter {
     constructor(nlpRecordsService) {
         this.view = new NlpRecordViewModel()
+        this.ref = {}
         this.nlpRecordsService = nlpRecordsService
         this.$searchNlpRecordsServiceSubscription = null
         this.$getNlpRecordsByInfiniteScrollSubscription = null

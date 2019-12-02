@@ -42,7 +42,7 @@ export class NlpRecordsService {
     getNlpRecordsPaginationByKeyword(keyword, page) {
         return this.httpRepository.getNlpRecordsPaginationByKeyword(keyword, page).pipe(
             map( ({ response }) => {
-
+                console.log(response)
                 if ( keyword !== "" ) {
                     this.localStorageRepository.setRecentlyNlpRecordSearch(keyword)
                 }
@@ -53,8 +53,8 @@ export class NlpRecordsService {
     }
     searchNlpRecordsPaginationByKeywordSubject() {
         return this.$searchNlpRecordByKeyword.pipe( 
-            throttleTime(300),
-            switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
+            debounceTime(200),
+            concatMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
         )
     }
 
