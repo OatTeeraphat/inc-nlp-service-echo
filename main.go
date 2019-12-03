@@ -8,6 +8,8 @@ import (
 
 	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
 	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
+	nlpDashboardGateway "inc-nlp-service-echo/core_module/nlpdashboard/gateway"
+	nlpDashboardService "inc-nlp-service-echo/core_module/nlpdashboard/service"
 	nlpGateway "inc-nlp-service-echo/core_module/nlprecord/gateway"
 	nlpService "inc-nlp-service-echo/core_module/nlprecord/service"
 	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
@@ -75,9 +77,17 @@ func main() {
 	repo4 := repositories.NewStoryRepository(orm)
 	repo5 := repositories.NewShopStoryRepository(orm)
 	repo6 := repositories.NewShopRepository(orm)
+	repo7 := repositories.NewNlpDashboardRepository(orm)
 
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
+
+	svc0 := shopService.NewService(repo6)
+	svc1 := storyService.NewService(repo4)
+	svc2 := nlpTraininglogService.NewService(repo0)
+	svc3 := nlpService.NewService(repo1, repo0, repo3, repo7)
+	svc4 := categorizeService.NewService(repo5, repo6)
+	svc5 := nlpDashboardService.NewService(repo7)
 
 	// FIXME: move to nuxt js
 	e.Use(staticMiddleware())
@@ -91,11 +101,6 @@ func main() {
 	v1 := e.Group("/v1")
 	authGateway.NewHTTPGateway(v1, secure0)
 	v1.Use(middleware.JWTWithConfig(jwtConfig))
-	svc0 := shopService.NewService(repo6)
-	svc1 := storyService.NewService(repo4)
-	svc2 := nlpTraininglogService.NewService(repo0)
-	svc3 := nlpService.NewService(repo1, repo0, repo3)
-	svc4 := categorizeService.NewService(repo5, repo6)
 
 	shopGateway.NewHTTPGateway(v1, svc0)
 	storyGateway.NewHTTPGateway(v1, svc1)
@@ -104,6 +109,7 @@ func main() {
 	fbGateway.NewHTTPGateway(v1, svc3)
 	fbGateway.NewSocketGateway(v1, svc3, *ws.Upgrader)
 	categorizeGateway.NewHTTPGateway(v1, svc4)
+	nlpDashboardGateway.NewHTTPGateway(v1, svc5)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))

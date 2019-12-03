@@ -53,8 +53,8 @@ export class NlpRecordsService {
     }
     searchNlpRecordsPaginationByKeywordSubject() {
         return this.$searchNlpRecordByKeyword.pipe( 
-            debounceTime(200),
-            concatMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
+            debounceTime(150),
+            switchMap( ({keyword, page}) => this.getNlpRecordsPaginationByKeyword(keyword, page) )
         )
     }
 

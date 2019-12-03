@@ -7,10 +7,11 @@ import (
 // NlpDashboardDomain NlpDashboardDomain
 type NlpDashboardDomain struct {
 	gorm.Model
-	// Keyword        string
-	// KeywordMinhash uint32 `gorm:"index:idx_keyword_minhash"`
-	// Intent         string
-	// StoryID        uint32 `gorm:"index:idx_keyword_minhash,idx_story_id"`
+	Keyword        string
+	Distance       float32
+	KeywordMinhash uint32
+	Intent         string
+	StoryID        uint32
 }
 
 // TableName NlpRecordDomain

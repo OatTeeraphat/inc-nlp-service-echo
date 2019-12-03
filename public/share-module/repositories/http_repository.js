@@ -36,6 +36,7 @@ export class HttpRepository {
     signOut() {
         return of()
     }
+    
 
     // END_POINT: /v1/nlp/record/pagination?page=
     getNlpRecordsPagination(page) {
@@ -87,6 +88,17 @@ export class HttpRepository {
                 "intent": intent,
                 "story_id": story_name
             }
+        })
+    }
+
+    readNlpLogging(id) {
+        return ajax({
+            methods: "GET",
+            url: `${this.BASE_API}/v1/nlp/dashboard/gte?=${id}`,
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": this._getAuthorizedBearer() 
+            },
         })
     }
     
