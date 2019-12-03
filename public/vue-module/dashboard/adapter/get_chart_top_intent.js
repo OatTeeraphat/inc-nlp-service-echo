@@ -13,6 +13,8 @@ class GetChartTopIntent {
 		let item = {
 			intents : []
 		}
+		let cons = 1
+		let width = 50
 
 		models.map((it) => {
 
@@ -27,18 +29,21 @@ class GetChartTopIntent {
 
 			it.data.map((_data) => {
 
+				let radius = this.calculateRadius(_data.call, width, cons)
+				let xAxe = this.calculateRandom(100, radius)
+				let yAxe = this.calculateRandom(100, radius)
+
 				_model.data.push({
-					x: 65, y: 75, r: parseInt(_data.call)/10 , intent: _data.intent, calls: _data.call , story_name: it.label
+					x: xAxe, y: yAxe, r: radius , intent: _data.intent, calls: _data.call , story_name: it.label
 				})
 
 			})
 
 			item.intents.push(_model)
 
-
 		})
 
-		console.log(item)
+		//console.log(item)
 		
 		return item
 
@@ -61,16 +66,37 @@ class GetChartTopIntent {
 
 	}
 
-	calculateRadius = (models) => {
+	calculateRadius = (value, width, cons) => {
 
-		let sumOfAmount = 0
+		let base = 0;
 
-		models.map((it) => {
-			sumOfAmount = it.amount + sumOfAmount
-		})
+		switch (true) {
+			case value > 1000:
+				base = Math.abs(value) / 15;
+				break;
+			case value > 500:
+				base = Math.abs(value) / 10;
+				break;
+			case value > 100:
+				base = Math.abs(value) / 6;
+				break;
+			case value > 50:
+				base = Math.abs(value) / 7;
+				break;
+			case value > 5:
+				base = Math.abs(value);
+				break;
+			default:
+				base = Math.abs(value) * 2;
+				break;
+		}
 
-		return sumOfAmount
-		
+		return ( width / 100 ) * base; 
+
+	}
+
+	calculateRandom = (max, radius) => {
+		return Math.floor(Math.random() * (max - (radius/2))) + 1
 	}
 
 	

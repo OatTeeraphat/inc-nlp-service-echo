@@ -84,6 +84,7 @@ export class DashBoardPresenter {
 		.subscribe(item => {
 			let data = new GetChartTopIntent().adapt(item)
 			this.view.bubble_chart.data = data.intents
+			console.log(data.intents[0].data)
 		})
 
 	}
