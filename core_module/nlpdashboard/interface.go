@@ -11,6 +11,11 @@ type HTTPGateway interface {
 	ReadNlpLogging(e echo.Context) error
 }
 
+// SocketGateway SocketGateway
+type SocketGateway interface {
+	GetLogging(e echo.Context) error
+}
+
 // Service INlpTrainingLogService
 type Service interface {
 	ReadNlpLogging(ID string) []dao.ReadLoggingDAO

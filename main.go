@@ -4,7 +4,6 @@ import (
 	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
-	"inc-nlp-service-echo/common_module/websockets"
 
 	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
 	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
@@ -91,25 +90,28 @@ func main() {
 
 	// FIXME: move to nuxt js
 	e.Use(staticMiddleware())
-	ws := websockets.NewWebSocket()
+	// ws := websockets.NewWebSocket()
 	e.GET("/health_check", heathCheck)
 
 	q := e.Group("/swagger")
 	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
 	q.GET("/*", echoSwagger.WrapHandler)
 
-	v1 := e.Group("/v1")
-	authGateway.NewHTTPGateway(v1, secure0)
-	v1.Use(middleware.JWTWithConfig(jwtConfig))
+	ws := e.Group("/v1")
+	nlpDashboardGateway.NewWebSocket(ws)
 
-	shopGateway.NewHTTPGateway(v1, svc0)
-	storyGateway.NewHTTPGateway(v1, svc1)
-	nlpTraininglogGateway.NewHTTPGateway(v1, svc2)
-	nlpGateway.NewHTTPGateway(v1, svc3)
-	fbGateway.NewHTTPGateway(v1, svc3)
-	fbGateway.NewSocketGateway(v1, svc3, *ws.Upgrader)
-	categorizeGateway.NewHTTPGateway(v1, svc4)
-	nlpDashboardGateway.NewHTTPGateway(v1, svc5)
+	api := e.Group("/v1")
+	authGateway.NewHTTPGateway(api, secure0)
+	api.Use(middleware.JWTWithConfig(jwtConfig))
+
+	shopGateway.NewHTTPGateway(api, svc0)
+	storyGateway.NewHTTPGateway(api, svc1)
+	nlpTraininglogGateway.NewHTTPGateway(api, svc2)
+	nlpGateway.NewHTTPGateway(api, svc3)
+	fbGateway.NewHTTPGateway(api, svc3)
+	// fbGateway.NewSocketGateway(v1, svc3, *ws.Upgrader)
+	categorizeGateway.NewHTTPGateway(api, svc4)
+	nlpDashboardGateway.NewHTTPGateway(api, svc5)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
