@@ -9,9 +9,9 @@ import (
 )
 
 // ReadNlpReply ReadNlpReply
-func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyDao {
+func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDao {
 	var readNlpReplyDao []dao.ReadNlpReplyDao
-	var listStoryIDsInShopFound []uint32
+	var listStoryIDsInAppFound []uint32
 	var keywordMinhash uint32
 
 	if keyword == "" {
@@ -20,14 +20,14 @@ func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyD
 
 	keywordMinhash = distance.GenerateKeywordMinhash(keyword)
 
-	shopStoryDomainFoundByShopID := svc.shopStoryRepository.FindByShopID(1)
+	appStoryDomainFoundByAppID := svc.appStoryRepository.FindByAppID(1)
 
-	for _, item := range shopStoryDomainFoundByShopID {
-		listStoryIDsInShopFound = append(listStoryIDsInShopFound, item.StoryID)
+	for _, item := range appStoryDomainFoundByAppID {
+		listStoryIDsInAppFound = append(listStoryIDsInAppFound, item.StoryID)
 	}
 
 	// nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(hashValue)
-	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(keywordMinhash, listStoryIDsInShopFound)
+	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(keywordMinhash, listStoryIDsInAppFound)
 
 	if len(nlpFindByKeyword) == 0 {
 		readNlpReplyDao := dao.ReadNlpReplyDao{
@@ -61,7 +61,7 @@ func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyD
 	return nlpResult
 }
 
-func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, shopID uint) {
+func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, appID uint) {
 	var domain domains.NlpDashboardDomain
 	domain.Keyword = nlpResult.Keyword
 	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
@@ -73,7 +73,7 @@ func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, shopID uin
 }
 
 // saveNlpTrainingSetsService saveNlpTrainingSetsService
-func (svc Service) saveToNlpTrainingLogs(nlpResult *dao.ReadNlpReplyDao, shopID uint) {
+func (svc Service) saveToNlpTrainingLogs(nlpResult *dao.ReadNlpReplyDao, appID uint) {
 	var domain domains.NlpTrainingLogDomain
 	domain.Keyword = nlpResult.Keyword
 	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)

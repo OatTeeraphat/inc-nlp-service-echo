@@ -7,7 +7,7 @@ type HTTPGateway interface {
 	CreateRecord(e echo.Context) error
 }
 
-// Service IShopStoryService
+// Service IAppStoryService
 type Service interface {
-	CreateRecord(shopID string, storyIDs []string) string
+	CreateRecord(appID string, storyIDs []string) string
 }

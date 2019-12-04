@@ -44,12 +44,12 @@ var doc = `{
                 "tags": [
                     "customer"
                 ],
-                "summary": "Read nlp record by shop id",
+                "summary": "Read nlp record by app id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "shop identify",
-                        "name": "shop_id",
+                        "description": "app identify",
+                        "name": "app_id",
                         "in": "query",
                         "required": true
                     }
@@ -73,12 +73,12 @@ var doc = `{
                 "tags": [
                     "customer"
                 ],
-                "summary": "Drop nlp record by shop id",
+                "summary": "Drop nlp record by app id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "shop identify",
-                        "name": "shop_id",
+                        "description": "app identify",
+                        "name": "app_id",
                         "in": "query",
                         "required": true
                     }
@@ -104,12 +104,12 @@ var doc = `{
                 "tags": [
                     "customer"
                 ],
-                "summary": "Read nlp model by shop id",
+                "summary": "Read nlp model by app id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "shop identify",
-                        "name": "shop_id",
+                        "description": "app identify",
+                        "name": "app_id",
                         "in": "query",
                         "required": true
                     },
@@ -154,8 +154,8 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "shop identify",
-                        "name": "shop_id",
+                        "description": "app identify",
+                        "name": "app_id",
                         "in": "query",
                         "required": true
                     }

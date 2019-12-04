@@ -7,7 +7,7 @@ import (
 // NlpTrainingLogDomain NlpTrainingLogDomain
 type NlpTrainingLogDomain struct {
 	gorm.Model
-	// ShopID   uint
+	// AppID   uint
 	Keyword        string
 	KeywordMinhash uint32
 	Distance       float32

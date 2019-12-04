@@ -38,9 +38,9 @@ func NewFillChatGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 	db.AutoMigrate(
 		&domains.NlpRecordDomain{},
 		&domains.NlpTrainingLogDomain{},
-		&domains.ShopStoryDomain{},
+		&domains.AppStoryDomain{},
 		&domains.StoryDomain{},
-		&domains.ShopDomain{},
+		&domains.AppDomain{},
 		&domains.NlpDashboardDomain{},
 	)
 	return &FillChatGORM{

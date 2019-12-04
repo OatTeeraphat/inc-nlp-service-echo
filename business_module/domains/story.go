@@ -9,7 +9,7 @@ type StoryDomain struct {
 	gorm.Model
 	Name        string
 	Description string
-	Owner       string // staff, specific shop
+	Owner       string // staff, specific app
 }
 
 // TableName StoryDomain

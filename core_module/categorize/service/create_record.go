@@ -9,34 +9,34 @@ import (
 )
 
 // CreateRecord CreateRecord
-func (svc Service) CreateRecord(shopID string, storyIDs []string) string {
-	log.Info(shopID, storyIDs)
+func (svc Service) CreateRecord(appID string, storyIDs []string) string {
+	log.Info(appID, storyIDs)
 
-	u32, err := strconv.ParseUint(shopID, 10, 32)
+	u32, err := strconv.ParseUint(appID, 10, 32)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	shopDomainFoundByID := svc.ShopRepo.FindByID(uint(u32))
+	appDomainFoundByID := svc.AppRepo.FindByID(uint(u32))
 
-	if shopDomainFoundByID.ID == 0 {
+	if appDomainFoundByID.ID == 0 {
 		return "Not OK"
 	}
 
 	for _, item := range storyIDs {
 
-		var domain domains.ShopStoryDomain
+		var domain domains.AppStoryDomain
 
-		domain.ShopID = uint32(u32)
+		domain.AppID = uint32(u32)
 
-		shopIDu32, err := strconv.ParseUint(item, 10, 32)
+		appIDu32, err := strconv.ParseUint(item, 10, 32)
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		domain.StoryID = uint32(shopIDu32)
+		domain.StoryID = uint32(appIDu32)
 
-		svc.ShopStoryRepo.Save(&domain)
+		svc.AppStoryRepo.Save(&domain)
 	}
 
 	return "OK"

@@ -7,7 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// StoryRepository shop story mapping
+// StoryRepository app story mapping
 type StoryRepository struct {
 	*datasources.FillChatGORM
 }
@@ -25,19 +25,19 @@ func NewStoryRepository(data *datasources.FillChatGORM) IStoryRepository {
 	return &StoryRepository{data}
 }
 
-// Save find similar shop ids
+// Save find similar app ids
 func (repo *StoryRepository) Save(storyDomain *domains.StoryDomain) {
 	repo.DB.Create(&storyDomain)
 }
 
-// FindAll find similar shop ids
+// FindAll find similar app ids
 func (repo *StoryRepository) FindAll() []domains.StoryDomain {
 	var storyDomain []domains.StoryDomain
 	repo.DB.Where(&domains.StoryDomain{}).Find(&storyDomain)
 	return storyDomain
 }
 
-// FindByName find similar shop ids
+// FindByName find similar app ids
 func (repo *StoryRepository) FindByName(storyName string) domains.StoryDomain {
 	var storyDomain domains.StoryDomain
 	repo.DB.Where(&domains.StoryDomain{Name: storyName}).Find(&storyDomain)
