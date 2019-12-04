@@ -23,7 +23,7 @@ class SettingService {
 				)
 			}),
 			map(next => {
-				swal2("success", { title: 'Save Confidence', toast: true })
+				swal2(ALERT.TOAST, { title: 'Save Success', icon: "success" })
 			}),
 		)
 	}
@@ -45,7 +45,7 @@ class SettingService {
 				)
 			}),
 			map(next => {
-				swal2("success", { title: 'Save App Info', toast: true })
+				swal2(ALERT.TOAST, { title: 'Save Success', icon: "success" })
 			}),
 		)
 	}
@@ -71,24 +71,27 @@ class SettingService {
 
 
 	setRevokeAppSecret(){
-		let alertBox = swal2("warning", { title: "Revoke App Secret?", html: 'your old app secret will be depecate <br> New secret can be used now.' }, true);
+		let alertBox = swal2( ALERT.WARNNING , { title: "Revoke App Secret?", html: 'your old app secret will be depecate <br> New secret can be used now.' });
 		return from( alertBox )
 			.pipe(
 				switchMap( it => {
-				if ( it.value ) return this.httpRepository.revokeSecretByAppId().pipe(
-					this.vueErrorHandler.catchHttpError()
-				)
-					return of()
+					console.log(it)
+					if ( it.value ) {
+						return this.httpRepository.revokeSecretByAppId().pipe(
+							this.vueErrorHandler.catchHttpError()
+						)
+					}
+					return of({})
 				}),
 				map(next => {
-					swal2("success", { title: 'Revoke App Secret', toast: true })
+					swal2(ALERT.TOAST, { title: 'Change App Secret', icon: "success" })
+					return next
 				}),
 			)
-
 	}
 
 	setRevokeAppToken() {
-		let alertBox = swal2("warning", { title: "Revoke Access Token?", html: 'your old app access token will be depecate <br> New token can be used after confirm.' }, true);
+		let alertBox = swal2(ALERT.WARNNING, { title: "Revoke Access Token?", html: 'your old app access token will be depecate <br> New token can be used after confirm.' }, true);
 		return from( alertBox )
 			.pipe(
 				switchMap(it => {
@@ -98,7 +101,8 @@ class SettingService {
 					return of()
 				}),
 				map(next => {
-					swal2("success", { title: 'Revoke Access Token', toast: true })
+					swal2(ALERT.TOAST, { title: 'Revoke Access Token', icon: "success" })
+					return next
 				}),
 			)
 

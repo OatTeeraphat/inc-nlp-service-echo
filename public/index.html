@@ -18,8 +18,9 @@
     <!-- <script src="https://cdn.lr-ingest.io/LogRocket.min.js" crossorigin="anonymous"></script>
     <script>window.LogRocket && window.LogRocket.init('whge6f/incommon-fillfeel-chatbot');</script> -->
 
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="assets/css/three-dot.min.css">    
+    
+    <link rel="stylesheet" href="assets/css/three-dot.min.css">
+    <link rel="stylesheet" href="index.css?v=10">
     <title>FillFeel Management</title>
 </head>
  
@@ -28,12 +29,12 @@
         <div class="container">
             <transition name="slide">
                 <!-- for cache component ( won't be call before destroy directly ) -->
-
+                <!-- 
                 <keep-alive v-if="$route.meta.keepAlive">
                     <router-view></router-views>
-                </keep-alive>
+                </keep-alive> -->
 
-                <router-view v-else></router-view>
+                <router-view ></router-view>
 
                 <!-- <keep-alive>
                     <router-view></router-view>
@@ -65,6 +66,10 @@
 
     
     <!-- setting -->
+    <script src="vue-module/dashboard/adapter/get_chart_api_stat.js"></script>
+    <script src="vue-module/dashboard/adapter/get_chart_training_stat.js"></script>
+    <script src="vue-module/dashboard/adapter/get_chart_training_summary.js"></script>
+    <script src="vue-module/dashboard/adapter/get_chart_model_stat.js"></script>
     <script src="vue-module/setting/get_nlp_reply_adapter.js"></script>
     <script src="vue-module/setting/setting_service.js"></script>
     <script src="vue-module/setting/setting_presenter.js"></script>
@@ -80,21 +85,10 @@
         // function gtag(){dataLayer.push(arguments);}
         // gtag('js', new Date());
         // gtag('config', 'UA-149130032-2');
-        // 
-        //swal.fire({ text : 'resolve', icon: "success", buttons: { cancel: true, submit: true } })
-        // swal.fire({
-        //         icon: 'error',
-        //         title: 'Oops...',
-        //         text: 'Something went wrong!',
-        //         footer: '<a href>Why do I have this issue?</a>',
-        //         showCancelButton: true,
-        //     })
         
-        // swal('resolve', { buttons: { cancel: true, ok: true } }) 
-
-        //swal2("error", { title: 'Reslove', toast: true })
-        //swal2("error", { title: 'Reslove', text: "transaction will be slove" })
-        //swal2("success", { title: 'Reslove', text : "transaction will be slove"}, true)
+        //swal2( ALERT.SUCCESS , { title: 'Reslove' })
+        //swal2( ALERT.ERROR , { title: 'Reslove', text: "transaction will be slove" })
+        //swal2( ALERT.TOAST , { title: 'Reslove', icon : 'warning' })
 
     </script>
 

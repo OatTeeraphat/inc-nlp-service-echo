@@ -6,13 +6,13 @@ ENV GO111MODULE=on
 WORKDIR $GOPATH/src/inc-nlp-service-echo/
 
 # swagger generate libs
-RUN go get -u github.com/swaggo/swag/cmd/swag
+# RUN go get -u github.com/swaggo/swag/cmd/swag
 # RUN swag init
 
 COPY go.mod .
 COPY go.sum .
 
-RUN go mod tidy
+RUN go mod download
 
 COPY . .
 
@@ -23,6 +23,7 @@ RUN go build
 # FROM BUILDER PATH
 FROM alpine
 RUN apk add ca-certificates
+
 COPY --from=build-env /go/src/inc-nlp-service-echo/ /go/src/inc-nlp-service-echo/
 
 RUN ls /go/src/inc-nlp-service-echo/

@@ -8,12 +8,14 @@ services:
       - postgres
     ports: 
       - 9000:9000
+    volumes:
+      - ./public:/go/src/inc-nlp-service-echo/public
     environment: 
       - TZ=Asia/Bangkok
       - ENV=heroku
       - ECHO_APP_NAME=inc-nlp-service-echo
       - PORT=9000
-      - ECHO_LOG_LEVEL=INFO
+      - ECHO_LOG_LEVEL=INFO 
       - NLP_DB_DIALECTS=postgres
       - NLP_DB_NAME=postgres
       - NLP_DB_HOST=postgres
@@ -21,3 +23,5 @@ services:
       - NLP_DB_USERNAME=postgres
       - NLP_DB_PASSWORD=
       - IS_SWAGGER=true
+    command: 
+      - /go/src/inc-nlp-service-echo/inc-nlp-service-echo

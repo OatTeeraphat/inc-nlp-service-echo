@@ -20,18 +20,36 @@ export default Vue.component('dashboard-page', {
 						<div class="card-body">
 								<div class="d-flex">
 										<div class="col-12 pt-2 pb-4">
-												<h3 class="card-title mb-0"><strong>Incommon Studio</strong></h3>
-												<small class="text-muted">App ID : 632861333807100</small>
+												<h3 class="card-title mb-0 preload">
+													<strong>{{ app_info.name }}</strong>
+													<div class="linear-preload" v-bind:class="{ invisible: app_info.name }">
+														<div class="indeterminate-preload"></div>
+													</div>
+													<div class="linear-preload span-next_warp" v-bind:class="{ invisible: app_info.name }">
+														<div class="indeterminate-preload"></div>
+													</div>
+												</h3>
+												<small class="text-muted" v-bind:class="{ invisible: !app_info.name }">App ID : <span class="position-relative"> {{ app_info.id }} </span> </small>
 										</div>
 								</div>
 							<div class="d-flex">
 									<div class="col-6">
 											<small class="text-muted">Remaining Call</small>
-											<h4 class="card-title text-purple dashboard-usage">Unlimited<span>(∞)</span></h4>
+											<h4 class="card-title text-purple dashboard-usage preload">
+												<context v-bind:class="{ invisible: !app_info.name }" >{{ app_info.plan }}</context><span v-bind:class="{ invisible: !app_info.name }">(∞)</span>
+												<div class="linear-preload" v-bind:class="{ invisible: app_info.name }">
+													<div class="indeterminate-preload"></div>
+												</div>
+											</h4>
 									</div>
 									<div class="col-6">
 											<small class="text-muted">Free Training Storage</small>
-											<h4 class="card-title text-purple dashboard-usage">437 Mb<span>(500 Mb)</span></h4>
+											<h4 class="card-title text-purple dashboard-usage preload">
+												<context v-bind:class="{ invisible: !app_info.name }" >{{ app_info.record_limit }} Mb</context><span v-bind:class="{ invisible: !app_info.name }">(500 Mb)</span>
+												<div class="linear-preload" v-bind:class="{ invisible: app_info.name }">
+													<div class="indeterminate-preload"></div>
+												</div>
+											</h4>
 									</div>
 							</div>
 						</div>
@@ -68,6 +86,10 @@ export default Vue.component('dashboard-page', {
 										<line-chart-api-usage 
 											:height="120" 
 											:redraw="true"
+											:data-chart="$dashboardPresenter.view.api_stat.call"
+											:data-label="$dashboardPresenter.view.api_stat.label"
+											:title="'Calls'"
+											:point=true
 											v-if=" toggle_chart.api == 'tabFirst' " 
 											key="tabFirst"
 										>
@@ -75,6 +97,10 @@ export default Vue.component('dashboard-page', {
 										<line-chart-api-usage 
 											:height="120" 
 											:redraw="true"
+											:data-chart="$dashboardPresenter.view.api_stat.avg_time"
+											:data-label="$dashboardPresenter.view.api_stat.label"
+											:title="'Avg. Time (ms)'"
+											:point=true
 											v-if=" toggle_chart.api == 'tabSecond' " 
 											key="tabSecond"
 										>
@@ -193,20 +219,25 @@ export default Vue.component('dashboard-page', {
 											<stack-chart-training
 												:height="100" 
 												:redraw="true"
+												:data-chart="$dashboardPresenter.view.training_stat.stacks"
 												v-if=" toggle_chart.trainig == 'tabFirst' " 
 												key="tabFirst"
 											></stack-chart-training>
-											<line-chart-training-growth
+											<line-chart-api-usage 
 												:height="120" 
 												:redraw="true"
+												:data-chart="$dashboardPresenter.view.training_stat.amount"
+												:data-label="$dashboardPresenter.view.training_stat.label"
+												:title="'Total Data'"
+												:point=false
 												v-if=" toggle_chart.trainig == 'tabSecond' " 
-												key="tabSecond"
+												key="tabFirst"
 											>
-											</line-chart-training-growth>
+											</line-chart-api-usage>
 											<div class="row">
 												<div class="col">
 														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabFirst' " >Non Training Data</p>
-														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabSecond' " >Average Request Time</p>
+														<p class="graph-legend purple" v-if=" toggle_chart.trainig == 'tabSecond' " >Amount Of Data Growth</p>
 												</div>
 											</div>
 									</div>
@@ -226,60 +257,44 @@ export default Vue.component('dashboard-page', {
 								</h5>
 						</div>
 						<ul class="list-group list-group-flush">
-								<li class="list-group-item pt-4 pb-4 pr-4">
-								<transition
-									name="custom-classes-transition"
-									mode="out-in"
-									enter-active-class="animated zoomIn faster"
-								>
-									<div class="chart-warpper dashboard-summary">
-											<h3 class="mb-4 mt-1" v-if=" toggle_chart.model == 'tabFirst' " >82.33%<span>Answer Ratio In Period</span></h3>
-											<line-chart-acc
-												:height="175" 
-												:redraw="true"
-												v-if=" toggle_chart.model == 'tabFirst' " 
-												key="tabFirst"
-											>
-											</line-chart-acc>
-											<line-chart-api-usage 
-												:height="200" 
-												:redraw="true"
-												v-if=" toggle_chart.model == 'tabSecond' " 
-												key="tabSecond"
-											>
-											</line-chart-api-usage>
-											<div class="row">
-												<div class="col d-flex">
-														<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabFirst' " >All Transaction</p>
-														<p class="graph-legend pink ml-5" v-if=" toggle_chart.model == 'tabFirst' " >Can Be Slove <span>(Conf : 50%)</span></p>
-														<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabSecond' " >Answer</p>
-												</div>
+							<li class="list-group-item pt-4 pb-4 pr-4">
+							<transition
+								name="custom-classes-transition"
+								mode="out-in"
+								enter-active-class="animated zoomIn faster"
+							>
+								<div class="chart-warpper dashboard-summary">
+										<h3 class="mb-4 mt-1" v-if=" toggle_chart.model == 'tabFirst' " >{{ $dashboardPresenter.view.model_stat.ratio }}%<span>Answer Ratio In Period</span></h3>
+										<line-chart-acc
+											:height="175" 
+											:redraw="true"
+											:data-chart="$dashboardPresenter.view.model_stat.amount"
+											:data-label="$dashboardPresenter.view.model_stat.label"
+											v-if=" toggle_chart.model == 'tabFirst' " 
+											key="tabFirst"
+										>
+										</line-chart-acc>
+										<div class="row">
+											<div class="col d-flex">
+													<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabFirst' " >All Transaction</p>
+													<p class="graph-legend pink ml-5" v-if=" toggle_chart.model == 'tabFirst' " >Can Be Slove <span>(Conf : {{ $dashboardPresenter.view.model_stat.confidence }}%)</span></p>
+													<p class="graph-legend purple" v-if=" toggle_chart.model == 'tabSecond' " >Answer</p>
 											</div>
-									</div>
-								</transition>
-								</li>
-							</ul>
+										</div>
+								</div>
+							</transition>
+							</li>
+						</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 	`,
-	data: function () {
-		return {
-			toggle_chart : {
-				api : "tabFirst",
-				model : "tabFirst",
-				trainig : "tabFirst"
-			},
-		}
+	data: function() {
+		//console.log(this.$dashboardPresenter.view)
+		return this.$dashboardPresenter.view
 	},
-	beforeCreate : function (){
-	},
-	created: function () {
-
-	},
-	beforeDestroy: function () {
-	},
-	methods: {
-	},
+	mounted : function() {
+		this.$dashboardPresenter.getInitialState() 
+	}
 })

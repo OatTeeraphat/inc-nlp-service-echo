@@ -1,7 +1,7 @@
 package main_test
 
 import (
-	"inc-nlp-service-echo/commons"
+	"inc-nlp-service-echo/common_module/commons"
 	"testing"
 
 	"github.com/smartystreets/goconvey/convey"
