@@ -30,4 +30,6 @@ RUN ls /go/src/inc-nlp-service-echo/
 
 RUN chmod 700 /go/src/inc-nlp-service-echo/inc-nlp-service-echo
 
-CMD /go/src/inc-nlp-service-echo/inc-nlp-service-echo
+WORKDIR /go/src/inc-nlp-service-echo
+
+CMD ./inc-nlp-service-echo

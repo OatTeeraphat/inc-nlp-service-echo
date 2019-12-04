@@ -89,7 +89,12 @@ func main() {
 	svc5 := nlpDashboardService.NewService(repo7)
 
 	// FIXME: move to nuxt js
-	e.Use(staticMiddleware())
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:   "public",
+		Browse: true,
+		HTML5:  true,
+	}))
+
 	e.GET("/health_check", heathCheck)
 
 	q := e.Group("/swagger")
@@ -115,14 +120,6 @@ func main() {
 
 	defer e.Close()
 	defer orm.DB.Close()
-}
-
-func staticMiddleware() echo.MiddlewareFunc {
-	return middleware.StaticWithConfig(middleware.StaticConfig{
-		Root:   "public",
-		Browse: true,
-		HTML5:  true,
-	})
 }
 
 func heathCheck(c echo.Context) error {
