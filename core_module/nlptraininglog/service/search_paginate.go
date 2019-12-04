@@ -31,7 +31,8 @@ func (s Service) SearchPagination(Page string, keyword string) dao.SearchPaginat
 	if keyword == "" {
 		for _, item := range s.nlpTrainingLogRepository.Pagination(pageInt, 40) {
 			var nlpModels dao.NlpTrainingLog
-			nlpModels.ID = item.ID
+
+			nlpModels.ID = item.ID.String()
 			nlpModels.Keyword = item.Keyword
 			nlpModels.Intent = item.Intent
 			nlpModels.StoryName = "mock_story_name"
@@ -51,7 +52,7 @@ func (s Service) SearchPagination(Page string, keyword string) dao.SearchPaginat
 
 		for _, item := range s.nlpTrainingLogRepository.PaginationByKeywordMinhash(distance.GenerateKeywordMinhash(keyword), pageInt, 50) {
 			var nlpModels dao.NlpTrainingLog
-			nlpModels.ID = item.ID
+			nlpModels.ID = item.ID.String()
 			nlpModels.Keyword = item.Keyword
 			nlpModels.Intent = item.Intent
 			nlpModels.StoryName = "mock_story_name"

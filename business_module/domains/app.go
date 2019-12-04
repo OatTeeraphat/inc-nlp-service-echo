@@ -1,16 +1,16 @@
 package domains
 
 import (
-	"github.com/jinzhu/gorm"
 	"github.com/jinzhu/gorm/dialects/postgres"
+	uuid "github.com/satori/go.uuid"
 )
 
 // AppDomain AppDomain
 type AppDomain struct {
-	gorm.Model
+	BaseDomain
 	Name     string
 	Category string
-	ClientID uint
+	ClientID uuid.UUID
 	Channel  postgres.Jsonb
 }
 

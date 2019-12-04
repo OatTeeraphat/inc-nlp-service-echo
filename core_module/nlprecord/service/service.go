@@ -10,7 +10,7 @@ type Service struct {
 	nlpTrainingRecordRepository repositories.INlpTrainingLogRepository
 	nlpRecordRepository         repositories.INlpRecordRepository
 	nlpDashboardRepository      repositories.INlpDashboardRepository
-	appStoryRepository         repositories.IAppStoryRepository
+	appStoryRepository          repositories.IAppStoryRepository
 }
 
 // NewService NewNlpService
@@ -18,7 +18,7 @@ func NewService(repo0 repositories.INlpRecordRepository, repo1 repositories.INlp
 	return &Service{
 		nlpRecordRepository:         repo0,
 		nlpTrainingRecordRepository: repo1,
-		appStoryRepository:         repo2,
+		appStoryRepository:          repo2,
 		nlpDashboardRepository:      repo3,
 	}
 }

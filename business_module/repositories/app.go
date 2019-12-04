@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	uuid "github.com/satori/go.uuid"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/business_module/domains"
 )
@@ -12,7 +13,7 @@ type AppRepository struct {
 
 // IAppRepository app repository interface
 type IAppRepository interface {
-	FindByID(ID uint) domains.AppDomain
+	FindByID(ID uuid.UUID) domains.AppDomain
 }
 
 // NewAppRepository app repository
@@ -21,7 +22,7 @@ func NewAppRepository(data *datasources.FillChatGORM) IAppRepository {
 }
 
 // FindByID FindByID
-func (repo AppRepository) FindByID(ID uint) domains.AppDomain {
+func (repo AppRepository) FindByID(ID uuid.UUID) domains.AppDomain {
 	var appDomain domains.AppDomain
 	repo.DB.First(&appDomain, ID)
 	return appDomain

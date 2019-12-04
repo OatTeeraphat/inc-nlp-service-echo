@@ -1,17 +1,19 @@
 package service
 
 import (
+	"fmt"
 	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/computing_module/distance"
 	"inc-nlp-service-echo/core_module/nlprecord/dao"
 
 	"github.com/labstack/gommon/log"
+	uuid "github.com/satori/go.uuid"
 )
 
 // ReadNlpReply ReadNlpReply
 func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDao {
 	var readNlpReplyDao []dao.ReadNlpReplyDao
-	var listStoryIDsInAppFound []uint32
+	// var listStoryIDsInAppFound []uuid.UUID
 	var keywordMinhash uint32
 
 	if keyword == "" {
@@ -20,14 +22,15 @@ func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDa
 
 	keywordMinhash = distance.GenerateKeywordMinhash(keyword)
 
-	appStoryDomainFoundByAppID := svc.appStoryRepository.FindByAppID(1)
+	// appStoryDomainFoundByAppID := svc.appStoryRepository.FindByAppID(1)
 
-	for _, item := range appStoryDomainFoundByAppID {
-		listStoryIDsInAppFound = append(listStoryIDsInAppFound, item.StoryID)
-	}
+	// for _, item := range appStoryDomainFoundByAppID {
 
-	// nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(hashValue)
-	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(keywordMinhash, listStoryIDsInAppFound)
+	// 	listStoryIDsInAppFound = append(listStoryIDsInAppFound, item.StoryID)
+	// }
+
+	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(keywordMinhash)
+	// nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(keywordMinhash, listStoryIDsInAppFound)
 
 	if len(nlpFindByKeyword) == 0 {
 		readNlpReplyDao := dao.ReadNlpReplyDao{
@@ -42,10 +45,10 @@ func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDa
 	}
 
 	for _, item := range nlpFindByKeyword {
-		eachNlpModel := dao.ReadNlpReplyDao{Keyword: item.Keyword, Intent: item.Intent, StoryID: item.StoryID}
+		eachNlpModel := dao.ReadNlpReplyDao{Keyword: item.Keyword, Intent: item.Intent, StoryID: uuid.NewV4().String()}
 		eachNlpModel.Keyword = item.Keyword
 		eachNlpModel.Intent = item.Intent
-		eachNlpModel.StoryID = item.StoryID
+		eachNlpModel.StoryID = item.StoryID.String()
 		readNlpReplyDao = append(readNlpReplyDao, eachNlpModel)
 	}
 
@@ -67,7 +70,13 @@ func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, appID uint
 	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
 	domain.Intent = nlpResult.Intent
 	domain.Distance = nlpResult.Distance
-	domain.StoryID = nlpResult.StoryID
+	u2, err := uuid.FromString(nlpResult.StoryID)
+
+	if err != nil {
+		fmt.Printf("Something went wrong: %s", err)
+	}
+
+	domain.StoryID = u2
 	svc.nlpDashboardRepository.Save(&domain)
 
 }
@@ -79,6 +88,12 @@ func (svc Service) saveToNlpTrainingLogs(nlpResult *dao.ReadNlpReplyDao, appID u
 	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
 	domain.Intent = nlpResult.Intent
 	domain.Distance = nlpResult.Distance
-	domain.StoryID = nlpResult.StoryID
+	u2, err := uuid.FromString(nlpResult.StoryID)
+
+	if err != nil {
+		fmt.Printf("Something went wrong: %s", err)
+	}
+
+	domain.StoryID = u2
 	svc.nlpTrainingRecordRepository.Save(&domain)
 }

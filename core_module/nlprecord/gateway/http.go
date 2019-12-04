@@ -150,7 +150,7 @@ func (con *HTTPGateway) DeleteByID(e echo.Context) error {
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record/bulk [delete]
 func (con *HTTPGateway) BulkDeleteByIDs(e echo.Context) error {
-	ids := new([]uint)
+	ids := new([]string)
 	e.Bind(&ids)
 	fmt.Print(*ids)
 	response, error := con.NlpService.BulkDeleteByIDs(*ids)

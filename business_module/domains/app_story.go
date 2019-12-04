@@ -1,14 +1,12 @@
 package domains
 
-import (
-	"github.com/jinzhu/gorm"
-)
+import uuid "github.com/satori/go.uuid"
 
 // AppStoryDomain AppStoryDomain
 type AppStoryDomain struct {
-	gorm.Model
-	AppID  uint32
-	StoryID uint32
+	BaseDomain
+	AppID   uuid.UUID
+	StoryID uuid.UUID
 }
 
 // TableName AppStoryDomain

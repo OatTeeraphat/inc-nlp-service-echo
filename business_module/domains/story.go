@@ -1,12 +1,8 @@
 package domains
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 // StoryDomain StoryDomain
 type StoryDomain struct {
-	gorm.Model
+	BaseDomain
 	Name        string
 	Description string
 	Owner       string // staff, specific app

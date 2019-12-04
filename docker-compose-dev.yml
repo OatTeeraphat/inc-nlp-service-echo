@@ -4,7 +4,7 @@ services:
     build: .
     image: inc-nlp-service-echo
     container_name: inc-nlp-service-echo
-    external_links: 
+    external_links:
       - postgres
     ports: 
       - 9000:9000

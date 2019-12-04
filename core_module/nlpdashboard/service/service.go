@@ -2,11 +2,11 @@ package service
 
 import (
 	"fmt"
-	"github.com/labstack/gommon/log"
 	"inc-nlp-service-echo/business_module/repositories"
 	"inc-nlp-service-echo/core_module/nlpdashboard"
 	"inc-nlp-service-echo/core_module/nlpdashboard/dao"
-	"strconv"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // Service Service
@@ -27,18 +27,17 @@ func (svc *Service) ReadNlpLogging(ID string) []dao.ReadLoggingDAO {
 
 	var readLoggingDAO []dao.ReadLoggingDAO
 
-	int64, err := strconv.ParseUint(ID, 10, 32)
-
+	u2, err := uuid.FromString(ID)
 	if err != nil {
-		log.Error(err)
+		fmt.Printf("Something went wrong: %s", err)
 	}
 
-	domain := svc.nlpDashboardRepository.FindGreaterThanByID(uint(int64))
+	domain := svc.nlpDashboardRepository.FindGreaterThanByID(u2)
 
 	for _, item := range domain {
 		var eachReadLoggingDAO dao.ReadLoggingDAO
 
-		eachReadLoggingDAO.ID = strconv.FormatUint(uint64(item.ID), 10)
+		eachReadLoggingDAO.ID = item.ID.String()
 		eachReadLoggingDAO.Keyword = item.Keyword
 		eachReadLoggingDAO.Intent = item.Intent
 		eachReadLoggingDAO.StoryName = "MOCK story name .. "

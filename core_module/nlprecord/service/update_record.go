@@ -1,11 +1,13 @@
 package service
 
 import (
+	"fmt"
 	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/computing_module/distance"
 	"inc-nlp-service-echo/core_module/nlprecord/dao"
 
 	"github.com/labstack/gommon/log"
+	uuid "github.com/satori/go.uuid"
 )
 
 // UpdateByIDAndClientID UpdateByIDAndClientID
@@ -18,11 +20,17 @@ func (svc Service) UpdateByIDAndClientID(updateNlpRecordDao dao.UpdateNlpRecordD
 	// 	log.Error("parse ID error")
 	// }
 
-	domain.ID = updateNlpRecordDao.ID
+	u2, err := uuid.FromString(updateNlpRecordDao.ID)
+	if err != nil {
+		fmt.Printf("Something went wrong: %s", err)
+		return "..."
+	}
+
+	domain.ID = u2
 	domain.Keyword = updateNlpRecordDao.Keyword
 	domain.KeywordMinhash = distance.GenerateKeywordMinhash(updateNlpRecordDao.Keyword)
 	domain.Intent = updateNlpRecordDao.Intent
-	domain.StoryID = 9
+	domain.StoryID = uuid.NewV4()
 
 	log.Info(domain)
 

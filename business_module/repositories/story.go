@@ -5,6 +5,7 @@ import (
 	"inc-nlp-service-echo/business_module/domains"
 
 	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 )
 
 // StoryRepository app story mapping
@@ -17,7 +18,7 @@ type IStoryRepository interface {
 	Save(storyDomain *domains.StoryDomain)
 	FindAll() []domains.StoryDomain
 	FindByName(storyName string) domains.StoryDomain
-	DeleteByID(ID uint) *gorm.DB
+	DeleteByID(ID uuid.UUID) *gorm.DB
 }
 
 // NewStoryRepository story desc instance
@@ -45,7 +46,7 @@ func (repo *StoryRepository) FindByName(storyName string) domains.StoryDomain {
 }
 
 // DeleteByID DeleteByID
-func (repo *StoryRepository) DeleteByID(ID uint) *gorm.DB {
+func (repo *StoryRepository) DeleteByID(ID uuid.UUID) *gorm.DB {
 	var storyDomain domains.StoryDomain
 	storyDomain.ID = ID
 	return repo.DB.Unscoped().Delete(&storyDomain)

@@ -12,7 +12,7 @@ type SearchPaginationDao struct {
 
 // NlpTrainingLog NlpTrainingLog
 type NlpTrainingLog struct {
-	ID        uint      `json:"id"`
+	ID        string    `json:"id"`
 	Keyword   string    `json:"keyword"`
 	Intent    string    `json:"intent"`
 	Distance  float32   `json:"distance"`

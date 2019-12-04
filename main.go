@@ -68,7 +68,7 @@ func main() {
 	)
 
 	orm := datasources.NewFillChatGORM(common0)
-	orm.DB.LogMode(false)
+	orm.DB.LogMode(true)
 
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
@@ -77,6 +77,7 @@ func main() {
 	repo5 := repositories.NewAppStoryRepository(orm)
 	repo6 := repositories.NewAppRepository(orm)
 	repo7 := repositories.NewNlpDashboardRepository(orm)
+	// repo8 := repositories.NewClientRepository(orm)
 
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
