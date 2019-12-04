@@ -12,7 +12,7 @@ import (
 	"os"
 
 	// docs folder to server swagger
-	_ "inc-nlp-service-echo/docs"
+	// _ "inc-nlp-service-echo/docs"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
