@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"inc-nlp-service-echo/core_module/facebook/dao"
-	"inc-nlp-service-echo/core_module/nlprecord"
+	nlp "inc-nlp-service-echo/core_module/nlprecord"
 	"io/ioutil"
 	"net/http"
 

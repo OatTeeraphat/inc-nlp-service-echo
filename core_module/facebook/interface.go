@@ -8,7 +8,3 @@ type HTTPGateway interface {
 	ReplyFBWebhookController(e echo.Context) error
 	ReplyFBWebhookSocketIO(c echo.Context) error
 }
-
-type SocketGateway interface {
-	ReplyFBWebhookSocketIO(c echo.Context) error
-}

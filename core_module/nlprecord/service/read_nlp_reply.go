@@ -69,6 +69,7 @@ func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, shopID uin
 	domain.Distance = nlpResult.Distance
 	domain.StoryID = nlpResult.StoryID
 	svc.nlpDashboardRepository.Save(&domain)
+
 }
 
 // saveNlpTrainingSetsService saveNlpTrainingSetsService

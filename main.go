@@ -90,7 +90,6 @@ func main() {
 
 	// FIXME: move to nuxt js
 	e.Use(staticMiddleware())
-	// ws := websockets.NewWebSocket()
 	e.GET("/health_check", heathCheck)
 
 	q := e.Group("/swagger")
@@ -108,7 +107,6 @@ func main() {
 	nlpTraininglogGateway.NewHTTPGateway(api, svc2)
 	nlpGateway.NewHTTPGateway(api, svc3)
 	fbGateway.NewHTTPGateway(api, svc3)
-	// fbGateway.NewSocketGateway(v1, svc3, *ws.Upgrader)
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
 
