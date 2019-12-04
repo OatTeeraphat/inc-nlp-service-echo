@@ -97,11 +97,10 @@ func main() {
 	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
 	q.GET("/*", echoSwagger.WrapHandler)
 
-	ws := e.Group("/v1")
-	nlpDashboardGateway.NewWebSocket(ws)
-
 	api := e.Group("/v1")
 	authGateway.NewHTTPGateway(api, secure0)
+	nlpDashboardGateway.NewWebSocket(api)
+
 	api.Use(middleware.JWTWithConfig(jwtConfig))
 
 	shopGateway.NewHTTPGateway(api, svc0)
