@@ -5,6 +5,7 @@ import (
 	"inc-nlp-service-echo/business_module/domains"
 
 	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 )
 
 // NlpDashboardRepository nlp dashboard repository
@@ -14,8 +15,8 @@ type NlpDashboardRepository struct {
 
 // INlpDashboardRepository nlp dashboard repository interface
 type INlpDashboardRepository interface {
-	FindByID(ID uint) domains.NlpDashboardDomain
-	FindGreaterThanByID(ID uint) []domains.NlpDashboardDomain
+	FindByID(ID uuid.UUID) domains.NlpDashboardDomain
+	FindGreaterThanByID(ID uuid.UUID) []domains.NlpDashboardDomain
 	Save(domain *domains.NlpDashboardDomain) *gorm.DB
 }
 
@@ -25,7 +26,7 @@ func NewNlpDashboardRepository(data *datasources.FillChatGORM) INlpDashboardRepo
 }
 
 // FindByID FindByID
-func (repo NlpDashboardRepository) FindByID(ID uint) domains.NlpDashboardDomain {
+func (repo NlpDashboardRepository) FindByID(ID uuid.UUID) domains.NlpDashboardDomain {
 	var domain domains.NlpDashboardDomain
 	repo.DB.First(&domain, ID)
 	return domain
@@ -37,7 +38,7 @@ func (repo NlpDashboardRepository) Save(domain *domains.NlpDashboardDomain) *gor
 }
 
 // FindGreaterThanByID FindGreaterThanByID
-func (repo NlpDashboardRepository) FindGreaterThanByID(ID uint) []domains.NlpDashboardDomain {
+func (repo NlpDashboardRepository) FindGreaterThanByID(ID uuid.UUID) []domains.NlpDashboardDomain {
 	var domain []domains.NlpDashboardDomain
 	repo.DB.Where("id > ?", ID).Find(&domain)
 	return domain

@@ -5,6 +5,7 @@ import (
 	"inc-nlp-service-echo/business_module/domains"
 
 	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 )
 
 // NlpTrainingLogRepository nlp query appearance
@@ -17,8 +18,8 @@ type INlpTrainingLogRepository interface {
 	Save(nlpTrainingRecordDomain *domains.NlpTrainingLogDomain)
 	Count() int64
 	Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain
-	DeleteByID(ID uint) *gorm.DB
-	BulkDeleteByIDs(ids []uint) *gorm.DB
+	DeleteByID(ID uuid.UUID) *gorm.DB
+	BulkDeleteByIDs(ids []uuid.UUID) *gorm.DB
 	CountByKeywordMinhash(KeywordMinhash uint32) int64
 	PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpTrainingLogDomain
 }
@@ -48,14 +49,14 @@ func (repo *NlpTrainingLogRepository) Pagination(PageIndex int, Limit int) []dom
 }
 
 // DeleteByID DeleteByID..
-func (repo *NlpTrainingLogRepository) DeleteByID(ID uint) *gorm.DB {
+func (repo *NlpTrainingLogRepository) DeleteByID(ID uuid.UUID) *gorm.DB {
 	domain := &domains.NlpTrainingLogDomain{}
 	domain.ID = ID
 	return repo.DB.Unscoped().Delete(domain)
 }
 
 // BulkDeleteByIDs BulkDeleteByIDs
-func (repo *NlpTrainingLogRepository) BulkDeleteByIDs(ids []uint) *gorm.DB {
+func (repo *NlpTrainingLogRepository) BulkDeleteByIDs(ids []uuid.UUID) *gorm.DB {
 	return repo.DB.Unscoped().Where(ids).Delete(&domains.NlpTrainingLogDomain{})
 }
 

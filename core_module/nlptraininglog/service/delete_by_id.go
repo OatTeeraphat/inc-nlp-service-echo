@@ -1,19 +1,20 @@
 package service
 
 import (
-	"strconv"
+	"fmt"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // DeleteByID DeleteByID
 func (s Service) DeleteByID(ID string) (string, error) {
-	u64, err := strconv.ParseUint(ID, 10, 32)
+
+	u2, err := uuid.FromString(ID)
 	if err != nil {
-		return "INVALID", err
+		fmt.Printf("Something went wrong: %s", err)
 	}
 
-	domainID := uint(u64)
-
-	s.nlpTrainingLogRepository.DeleteByID(domainID)
+	s.nlpTrainingLogRepository.DeleteByID(u2)
 
 	return "OK", nil
 }

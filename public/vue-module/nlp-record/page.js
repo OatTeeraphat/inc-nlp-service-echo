@@ -109,8 +109,8 @@ export default Vue.component('nlp-record-page', {
                                 <th scope="row" class="col-1">
                                     <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
                                 </th>
-                                <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                                 <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
+                                <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
                                 <td class="col-2"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
                                 <td class="col-1 text-center"> 
                                     <button @click="$nlpRecordPresenter.deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">

@@ -2,7 +2,6 @@ package service
 
 import (
 	"inc-nlp-service-echo/business_module/domains"
-	"inc-nlp-service-echo/common_module/utils"
 	"inc-nlp-service-echo/computing_module/distance"
 	"strings"
 
@@ -39,25 +38,18 @@ func (svc Service) UploadXlsx(xlsxSheet [][]string) string {
 			tooLongSentence++
 			continue
 		}
-		nlpRecord = append(nlpRecord, domains.NlpRecordDomain{
-			Keyword:        keyword,
-			Intent:         intent,
-			KeywordMinhash: distance.GenerateKeywordMinhash(keyword),
-			StoryID:        utils.NewRandomIDBetween(1, 3),
-		})
+		newDomain := domains.NlpRecordDomain{}
+		newDomain.Keyword = keyword
+		newDomain.Intent = intent
+		newDomain.KeywordMinhash = distance.GenerateKeywordMinhash(keyword)
+		nlpRecord = append(nlpRecord, newDomain)
 	}
 
-	var ret error
+	log.Print(nlpRecord)
 
-	log.Error("before upload")
+	log.Info("before upload")
 
-	go func() {
-		ret = svc.nlpRecordRepository.BulkInsert(nlpRecord, 200)
-	}()
-
-	if ret != nil {
-		log.Error("error up load nlp record")
-	}
+	go svc.nlpRecordRepository.BulkInsert(nlpRecord, 1000)
 
 	return "OK"
 }

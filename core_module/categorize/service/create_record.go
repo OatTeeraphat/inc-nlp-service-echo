@@ -3,40 +3,36 @@ package service
 import (
 	"fmt"
 	"inc-nlp-service-echo/business_module/domains"
-	"strconv"
 
 	"github.com/labstack/gommon/log"
+	uuid "github.com/satori/go.uuid"
 )
 
 // CreateRecord CreateRecord
-func (svc Service) CreateRecord(shopID string, storyIDs []string) string {
-	log.Info(shopID, storyIDs)
+func (svc Service) CreateRecord(appID string, storyIDs []string) string {
+	log.Info(appID, storyIDs)
 
-	u32, err := strconv.ParseUint(shopID, 10, 32)
+	u2, err := uuid.FromString(appID)
 	if err != nil {
-		fmt.Println(err)
-	}
-
-	shopDomainFoundByID := svc.ShopRepo.FindByID(uint(u32))
-
-	if shopDomainFoundByID.ID == 0 {
-		return "Not OK"
+		fmt.Printf("Something went wrong: %s", err)
+		return "..."
 	}
 
 	for _, item := range storyIDs {
 
-		var domain domains.ShopStoryDomain
+		var domain domains.AppStoryDomain
 
-		domain.ShopID = uint32(u32)
+		domain.AppID = u2
 
-		shopIDu32, err := strconv.ParseUint(item, 10, 32)
+		appUUID, err := uuid.FromString(item)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("Something went wrong: %s", err)
+			return "..."
 		}
 
-		domain.StoryID = uint32(shopIDu32)
+		domain.StoryID = appUUID
 
-		svc.ShopStoryRepo.Save(&domain)
+		svc.AppStoryRepo.Save(&domain)
 	}
 
 	return "OK"

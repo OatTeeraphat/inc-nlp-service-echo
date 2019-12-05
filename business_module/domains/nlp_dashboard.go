@@ -1,17 +1,15 @@
 package domains
 
-import (
-	"github.com/jinzhu/gorm"
-)
+import uuid "github.com/satori/go.uuid"
 
 // NlpDashboardDomain NlpDashboardDomain
 type NlpDashboardDomain struct {
-	gorm.Model
+	BaseDomain
 	Keyword        string
 	Distance       float32
 	KeywordMinhash uint32
 	Intent         string
-	StoryID        uint32
+	StoryID        uuid.UUID
 }
 
 // TableName NlpRecordDomain

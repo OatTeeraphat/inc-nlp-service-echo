@@ -34,7 +34,7 @@ func (svc Service) SearchPagination(keyword string, intent string, story string,
 
 		for _, item := range svc.nlpRecordRepository.Pagination(pageInt, 50) {
 			var nlpModels dao.NlpRecords
-			nlpModels.ID = item.ID
+			nlpModels.ID = item.ID.String()
 			nlpModels.Keyword = item.Keyword
 			nlpModels.Intent = item.Intent
 			nlpModels.StoryName = "mock_story_name"
@@ -50,7 +50,7 @@ func (svc Service) SearchPagination(keyword string, intent string, story string,
 
 		for _, item := range svc.nlpRecordRepository.PaginationByKeywordMinhash(distance.GenerateKeywordMinhash(keyword), pageInt, 50) {
 			var nlpModels dao.NlpRecords
-			nlpModels.ID = item.ID
+			nlpModels.ID = item.ID.String()
 			nlpModels.Keyword = item.Keyword
 			nlpModels.Intent = item.Intent
 			nlpModels.StoryName = "mock_story_name"

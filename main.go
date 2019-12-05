@@ -5,6 +5,8 @@ import (
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
 
+	appGateway "inc-nlp-service-echo/core_module/app/gateway"
+	appService "inc-nlp-service-echo/core_module/app/service"
 	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
 	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
 	nlpDashboardGateway "inc-nlp-service-echo/core_module/nlpdashboard/gateway"
@@ -13,8 +15,6 @@ import (
 	nlpService "inc-nlp-service-echo/core_module/nlprecord/service"
 	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
 	nlpTraininglogService "inc-nlp-service-echo/core_module/nlptraininglog/service"
-	shopGateway "inc-nlp-service-echo/core_module/shop/gateway"
-	shopService "inc-nlp-service-echo/core_module/shop/service"
 	storyGateway "inc-nlp-service-echo/core_module/story/gateway"
 	storyService "inc-nlp-service-echo/core_module/story/service"
 
@@ -68,20 +68,21 @@ func main() {
 	)
 
 	orm := datasources.NewFillChatGORM(common0)
-	orm.DB.LogMode(false)
+	orm.DB.LogMode(true)
 
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
-	repo3 := repositories.NewShopStoryRepository(orm)
+	repo3 := repositories.NewAppStoryRepository(orm)
 	repo4 := repositories.NewStoryRepository(orm)
-	repo5 := repositories.NewShopStoryRepository(orm)
-	repo6 := repositories.NewShopRepository(orm)
+	repo5 := repositories.NewAppStoryRepository(orm)
+	repo6 := repositories.NewAppRepository(orm)
 	repo7 := repositories.NewNlpDashboardRepository(orm)
+	// repo8 := repositories.NewClientRepository(orm)
 
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
 
-	svc0 := shopService.NewService(repo6)
+	svc0 := appService.NewService(repo6)
 	svc1 := storyService.NewService(repo4)
 	svc2 := nlpTraininglogService.NewService(repo0)
 	svc3 := nlpService.NewService(repo1, repo0, repo3, repo7)
@@ -107,7 +108,7 @@ func main() {
 
 	api.Use(middleware.JWTWithConfig(jwtConfig))
 
-	shopGateway.NewHTTPGateway(api, svc0)
+	appGateway.NewHTTPGateway(api, svc0)
 	storyGateway.NewHTTPGateway(api, svc1)
 	nlpTraininglogGateway.NewHTTPGateway(api, svc2)
 	nlpGateway.NewHTTPGateway(api, svc3)
