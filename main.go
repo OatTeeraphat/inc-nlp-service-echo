@@ -27,7 +27,8 @@ import (
 	"net/http"
 	"os"
 
-	_ "inc-nlp-service-echo/docs"
+	// TODO: completet swagger
+	// _ "inc-nlp-service-echo/docs"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -68,7 +69,8 @@ func main() {
 	)
 
 	orm := datasources.NewFillChatGORM(common0)
-	orm.DB.LogMode(true)
+
+	orm.DB.LogMode(false)
 
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
@@ -78,6 +80,8 @@ func main() {
 	repo6 := repositories.NewAppRepository(orm)
 	repo7 := repositories.NewNlpDashboardRepository(orm)
 	// repo8 := repositories.NewClientRepository(orm)
+
+	// producer0 := producer.NewKafkaProducer()
 
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
@@ -104,7 +108,7 @@ func main() {
 
 	api := e.Group("/v1")
 	authGateway.NewHTTPGateway(api, secure0)
-	nlpDashboardGateway.NewWebSocket(api)
+	// nlpDashboardGateway.NewWebSocketGateway(api)
 
 	api.Use(middleware.JWTWithConfig(jwtConfig))
 

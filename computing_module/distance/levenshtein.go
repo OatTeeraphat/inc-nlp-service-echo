@@ -52,6 +52,6 @@ func FindMinDistanceFromNlpModels(nlpReplyModels []dao.ReadNlpReplyDao, incoming
 			MinIndex = index
 		}
 	}
-
+	nlpReplyModels[MinIndex].Keyword = incomingKeyword
 	return nlpReplyModels[MinIndex]
 }

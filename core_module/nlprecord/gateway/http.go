@@ -18,16 +18,18 @@ type HTTPGateway struct {
 
 // NewHTTPGateway new nlp controller instace
 func NewHTTPGateway(e *echo.Group, nlpRecordService nlp.Service) {
-	handle := &HTTPGateway{nlpRecordService}
+	handle := &HTTPGateway{
+		NlpService: nlpRecordService,
+	}
 
+	e.GET("/nlp/record/reply", handle.ReadNlpReply)
+	e.GET("/nlp/record/pagination", handle.SearchPagination)
 	e.POST("/nlp/record", handle.CreateRecord)
 	e.POST("/nlp/record/upload.xlsx", handle.UploadXlsx)
+	e.PUT("/nlp/record", handle.UpdateByIDAndClientID)
 	e.DELETE("/nlp/record/drop", handle.DropAllRecord)
 	e.DELETE("/nlp/record", handle.DeleteByID)
 	e.DELETE("/nlp/record/bulk", handle.BulkDeleteByIDs)
-	e.GET("/nlp/record/pagination", handle.SearchPagination)
-	e.GET("/nlp/record/reply", handle.ReadNlpReply)
-	e.PUT("/nlp/record", handle.UpdateByIDAndClientID)
 }
 
 // ReadNlpReply example
@@ -43,6 +45,7 @@ func (con *HTTPGateway) ReadNlpReply(e echo.Context) error {
 	keyword := e.QueryParam("keyword")
 	appID := e.QueryParam("app_id")
 	response := con.NlpService.ReadNlpReply(keyword, appID)
+	// go con.KafkaProducer.ProduceNlpDashboardLogging(response)
 	return e.JSON(http.StatusOK, response)
 }
 

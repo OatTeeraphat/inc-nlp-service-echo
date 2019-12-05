@@ -1,6 +1,7 @@
 package gateway
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/websocket"
@@ -8,8 +9,8 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-// Websocket Websocket
-type Websocket struct {
+// WebsocketGetway WebsocketGetway
+type WebsocketGetway struct {
 	Upgrader *websocket.Upgrader
 	// Conn *websocket.Conn
 }
@@ -25,9 +26,9 @@ func newWebsocketConfig() *websocket.Upgrader {
 	}
 }
 
-// NewWebSocket NewWebSocket
-func NewWebSocket(e *echo.Group) {
-	handle := &Websocket{
+// NewWebSocketGateway NewWebSocketGateway
+func NewWebSocketGateway(e *echo.Group) {
+	handle := &WebsocketGetway{
 		Upgrader: newWebsocketConfig(),
 	}
 
@@ -35,19 +36,45 @@ func NewWebSocket(e *echo.Group) {
 }
 
 // GetLogging GetLogging
-func (ws Websocket) GetLogging(e echo.Context) error {
+func (ws WebsocketGetway) GetLogging(e echo.Context) error {
 	conn, err := ws.Upgrader.Upgrade(e.Response(), e.Request(), nil)
+
 	if err != nil {
 		log.Error(err)
 		return err
 	}
 
-	writeError := conn.WriteMessage(websocket.TextMessage, []byte("hello"))
+	// consumer0 := consumer.NewKafkaConsumer(uuid.NewV4().String())
 
-	if writeError != nil {
-		log.Error(writeError)
-		return writeError
-	}
+	// topic := os.Getenv("CLOUDKARAFKA_TOPIC_PREFIX") + "nlp.dashboard.logging"
 
-	return nil
+	// topicErr := consumer0.Consumer.Subscribe(topic, nil)
+
+	// if topicErr != nil {
+	// 	panic(topicErr)
+	// }
+
+	defer conn.Close()
+	// defer consumer0.Close()
+
+	fmt.Println("#### start nlp dashboard consume ####")
+
+	// for {
+	// 	msg, err := consumer0.Consumer.ReadMessage(-1)
+
+	// 	if err == nil {
+	// 		fmt.Printf("Message on %s: %s\n", msg.TopicPartition, string(msg.Value))
+
+	// 		writeError := conn.WriteMessage(websocket.TextMessage, []byte(string(msg.Value)))
+
+	// 		if writeError != nil {
+	// 			log.Error(writeError)
+	// 			return writeError
+	// 		}
+
+	// 	} else {
+	// 		// The client will automatically try to recover from all errors.
+	// 		fmt.Printf("Consumer error: %v (%v)\n", err, msg)
+	// 	}
+	// }
 }
