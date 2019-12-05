@@ -39,10 +39,10 @@ func NewWebSocketGateway(e *echo.Group) {
 func (ws WebsocketGetway) GetLogging(e echo.Context) error {
 	conn, err := ws.Upgrader.Upgrade(e.Response(), e.Request(), nil)
 
-	if err != nil {
-		log.Error(err)
-		return err
-	}
+	// if err != nil {
+	// 	log.Error(err)
+	// 	return err
+	// }
 
 	// consumer0 := consumer.NewKafkaConsumer(uuid.NewV4().String())
 
@@ -77,4 +77,5 @@ func (ws WebsocketGetway) GetLogging(e echo.Context) error {
 	// 		fmt.Printf("Consumer error: %v (%v)\n", err, msg)
 	// 	}
 	// }
+	return err
 }
