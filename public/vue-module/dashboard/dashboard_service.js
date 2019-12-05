@@ -25,4 +25,8 @@ export class DashBoardService {
 		return this.httpRepository.getModelStatInPeriodByAppId(period, confidence)
 	}
 
+	getBubbleChart(limit) {
+		return this.httpRepository.getBubbleChart(limit)
+	}
+
 }

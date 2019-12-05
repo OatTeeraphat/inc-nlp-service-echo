@@ -24,8 +24,8 @@ type Service interface {
 	UploadXlsx(xlsxSheet [][]string) string
 	DropAllRecord() string
 	SearchPagination(keyword string, intent string, story string, page string) dao.SearchPaginationDao
-	ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyDao
+	ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDao
 	DeleteByID(id string) string
-	BulkDeleteByIDs(ids []uint) (string, error)
+	BulkDeleteByIDs(ids []string) (string, error)
 	UpdateByIDAndClientID(updateNlpRecordDao dao.UpdateNlpRecordDao) string
 }

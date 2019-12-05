@@ -5,6 +5,7 @@ import (
 	"inc-nlp-service-echo/business_module/domains"
 
 	"github.com/jinzhu/gorm"
+	uuid "github.com/satori/go.uuid"
 )
 
 // NlpRecordRepository nlp query appearance
@@ -16,16 +17,16 @@ type NlpRecordRepository struct {
 type INlpRecordRepository interface {
 	Save(nlpRecordDomain *domains.NlpRecordDomain)
 	BulkInsert(nlpRecordDomain []interface{}, bulkCount int) error
-	BulkDeleteByIDs(nlpRecordDomain []uint) *gorm.DB
+	BulkDeleteByIDs(nlpRecordDomain []string) *gorm.DB
 	FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain
-	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain
+	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uuid.UUID) []domains.NlpRecordDomain
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
 	Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain
 	PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpRecordDomain
 	Count() int64
 	CountByKeywordMinhash(KeywordMinhash uint32) int64
 	Delete() *gorm.DB
-	DeleteByID(id uint) *gorm.DB
+	DeleteByID(id uuid.UUID) *gorm.DB
 	UpdateByID(nlpRecordDomain *domains.NlpRecordDomain)
 }
 
@@ -47,7 +48,7 @@ func (repo *NlpRecordRepository) FindByKeyword(keyword string) []domains.NlpReco
 }
 
 // FindByKeywordMinhashAndStoryID find similar keyword group and story ids
-func (repo *NlpRecordRepository) FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uint32) []domains.NlpRecordDomain {
+func (repo *NlpRecordRepository) FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uuid.UUID) []domains.NlpRecordDomain {
 	var nlpRecordDomain []domains.NlpRecordDomain
 	repo.DB.Where("story_id IN(?) and keyword_minhash = ?", storyID, keywordMinhash).Find(&nlpRecordDomain)
 	return nlpRecordDomain
@@ -62,11 +63,11 @@ func (repo *NlpRecordRepository) FindByKeywordMinhash(keywordMinhash uint32) []d
 
 // BulkInsert BulkInsert
 func (repo *NlpRecordRepository) BulkInsert(nlpRecordDomain []interface{}, bulkCount int) error {
-	return repo.BulkInsert(nlpRecordDomain, bulkCount)
+	return repo.FillChatGORM.BulkInsert(nlpRecordDomain, bulkCount)
 }
 
 // BulkDeleteByIDs BulkDeleteByIDs
-func (repo *NlpRecordRepository) BulkDeleteByIDs(ids []uint) *gorm.DB {
+func (repo *NlpRecordRepository) BulkDeleteByIDs(ids []string) *gorm.DB {
 	return repo.DB.Unscoped().Where(ids).Delete(&domains.NlpRecordDomain{})
 }
 
@@ -104,7 +105,7 @@ func (repo *NlpRecordRepository) PaginationByKeywordMinhash(KeywordMinhash uint3
 }
 
 // DeleteByID DeleteByID
-func (repo *NlpRecordRepository) DeleteByID(id uint) *gorm.DB {
+func (repo *NlpRecordRepository) DeleteByID(id uuid.UUID) *gorm.DB {
 	domain := &domains.NlpRecordDomain{}
 	domain.ID = id
 	return repo.DB.Unscoped().Delete(domain)

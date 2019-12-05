@@ -6,13 +6,6 @@
   y : count of training set must be created in same date [int]
 */
 
-const colorByStory = {
-	GREETING: "#673AB7",
-	CHITCHAT: "#e83e8c",
-	FAQ: "#224367",
-	PRODUCT: "#ffb43b",
-}
-
 class GetChartTrainingSummary {
 
 	adapt(models) {

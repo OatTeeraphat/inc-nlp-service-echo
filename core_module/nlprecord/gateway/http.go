@@ -31,31 +31,31 @@ func NewHTTPGateway(e *echo.Group, nlpRecordService nlp.Service) {
 }
 
 // ReadNlpReply example
-// @Summary Read nlp model by shop id
+// @Summary Read nlp model by app id
 // @Tags client
 // @Accept  json
 // @Produce  json
-// @Param shop_id query string true "shop identify"
+// @Param app_id query string true "app identify"
 // @Param keyword query string true "incomming keyword"
 // @Success 200 {object} models.NlpReplyModel
 // @Router /v1/nlp/record/reply [get]
 func (con *HTTPGateway) ReadNlpReply(e echo.Context) error {
 	keyword := e.QueryParam("keyword")
-	shopID := e.QueryParam("shop_id")
-	response := con.NlpService.ReadNlpReply(keyword, shopID)
+	appID := e.QueryParam("app_id")
+	response := con.NlpService.ReadNlpReply(keyword, appID)
 	return e.JSON(http.StatusOK, response)
 }
 
-// CreateRecord create new nlp record by shop
-// @Summary Create nlp model by shop id
+// CreateRecord create new nlp record by app
+// @Summary Create nlp model by app id
 // @Tags client
 // @Accept  json
 // @Produce  json
-// @Param shop_id query string true "shop identify"
+// @Param app_id query string true "app identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [get]
 func (con *HTTPGateway) CreateRecord(e echo.Context) error {
-	// shopID := e.QueryParam("shop_id")
+	// appID := e.QueryParam("app_id")
 
 	createNlpRecordModel := new([]dao.CreateNlpRecordDao)
 	e.Bind(&createNlpRecordModel)
@@ -64,12 +64,12 @@ func (con *HTTPGateway) CreateRecord(e echo.Context) error {
 	return e.String(http.StatusOK, response)
 }
 
-// SearchPagination get nlp records by shop
-// @Summary Read nlp record by shop id
+// SearchPagination get nlp records by app
+// @Summary Read nlp record by app id
 // @Tags client
 // @Accept  json
 // @Produce  text/html
-// @Param shop_id query string true "shop identify"
+// @Param app_id query string true "app identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [get]
 func (con *HTTPGateway) SearchPagination(e echo.Context) error {
@@ -81,17 +81,17 @@ func (con *HTTPGateway) SearchPagination(e echo.Context) error {
 	return e.JSON(http.StatusOK, response)
 }
 
-// UploadXlsx create new nlp records by shop
+// UploadXlsx create new nlp records by app
 // @Summary Upload nlp record with xlsx
 // @Tags 	client
 // @Accept  multipart/form-data
 // @Produce text/html
 // @Param   xlsx formData file true  "this is a test file"
-// @Param 	shop_id query string true "shop identify"
+// @Param 	app_id query string true "app identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record/upload.xlsx [post]
 func (con *HTTPGateway) UploadXlsx(e echo.Context) error {
-	// shopID := e.QueryParam("shop_id")
+	// appID := e.QueryParam("app_id")
 	// sheetName := e.QueryParam("sheet_name")
 
 	log.Debug(e.Request())
@@ -114,26 +114,26 @@ func (con *HTTPGateway) UploadXlsx(e echo.Context) error {
 	return e.String(http.StatusOK, response)
 }
 
-// DropAllRecord delete nlp record by shop
-// @Summary Drop nlp record by shop id
+// DropAllRecord delete nlp record by app
+// @Summary Drop nlp record by app id
 // @Tags 	client
 // @Accept  text/html
 // @Produce text/html
-// @Param 	shop_id query string true "shop identify"
+// @Param 	app_id query string true "app identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [delete]
 func (con *HTTPGateway) DropAllRecord(e echo.Context) error {
-	// shopID := e.QueryParam("shop_id")
+	// appID := e.QueryParam("app_id")
 	response := con.NlpService.DropAllRecord()
 	return e.String(http.StatusOK, response)
 }
 
-// DeleteByID delete nlp record by shop
-// @Summary Drop nlp record by shop id
+// DeleteByID delete nlp record by app
+// @Summary Drop nlp record by app id
 // @Tags 	client
 // @Accept  text/html
 // @Produce text/html
-// @Param 	shop_id query string true "shop identify"
+// @Param 	app_id query string true "app identify"
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record [delete]
 func (con *HTTPGateway) DeleteByID(e echo.Context) error {
@@ -142,7 +142,7 @@ func (con *HTTPGateway) DeleteByID(e echo.Context) error {
 	return e.String(http.StatusOK, response)
 }
 
-// BulkDeleteByIDs delete nlp record by shop
+// BulkDeleteByIDs delete nlp record by app
 // @Summary batch delete nlp record by id
 // @Tags 	client
 // @Accept  text/html
@@ -150,7 +150,7 @@ func (con *HTTPGateway) DeleteByID(e echo.Context) error {
 // @Success 200 {string} string "OK"
 // @Router /v1/nlp/record/bulk [delete]
 func (con *HTTPGateway) BulkDeleteByIDs(e echo.Context) error {
-	ids := new([]uint)
+	ids := new([]string)
 	e.Bind(&ids)
 	fmt.Print(*ids)
 	response, error := con.NlpService.BulkDeleteByIDs(*ids)

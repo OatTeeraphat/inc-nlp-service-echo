@@ -5,7 +5,7 @@ type ReadNlpReplyDao struct {
 	Keyword  string  `json:"keyword"`
 	Intent   string  `json:"intent"`
 	Distance float32 `json:"distance"`
-	StoryID  uint32  `json:"story_id"`
+	StoryID  string  `json:"story_id"`
 }
 
 // NewReadNlpReplyDao NewReadNlpReplyDao

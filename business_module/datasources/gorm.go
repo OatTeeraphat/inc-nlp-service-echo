@@ -3,8 +3,8 @@ package datasources
 import (
 	"errors"
 	"fmt"
-	"inc-nlp-service-echo/common_module/commons"
 	"inc-nlp-service-echo/business_module/domains"
+	"inc-nlp-service-echo/common_module/commons"
 	"log"
 	"reflect"
 	"sort"
@@ -14,6 +14,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	uuid "github.com/satori/go.uuid"
 )
 
 // FillChatGORM FillChatGORM
@@ -38,9 +39,11 @@ func NewFillChatGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 	db.AutoMigrate(
 		&domains.NlpRecordDomain{},
 		&domains.NlpTrainingLogDomain{},
-		&domains.ShopStoryDomain{},
+		&domains.AppStoryDomain{},
 		&domains.StoryDomain{},
-		&domains.ShopDomain{},
+		&domains.AppDomain{},
+		&domains.NlpDashboardDomain{},
+		&domains.ClientDomain{},
 	)
 	return &FillChatGORM{
 		DB: db,
@@ -80,8 +83,15 @@ func insertObjSet(db *gorm.DB, objects []interface{}, excludeColumns ...string) 
 	// Store placeholders for embedding variables
 	placeholders := make([]string, 0, attrSize)
 
+	fmt.Println("placeholder: ", placeholders)
+	fmt.Println("main scope: ", mainScope)
+
 	// Replace with database column name
 	dbColumns := make([]string, 0, attrSize)
+
+	// Replace with database column id
+	dbColumns = append(dbColumns, "id")
+
 	for _, key := range sortedKeys(firstAttrs) {
 		dbColumns = append(dbColumns, gorm.ToColumnName(key))
 	}
@@ -99,8 +109,14 @@ func insertObjSet(db *gorm.DB, objects []interface{}, excludeColumns ...string) 
 
 		scope := db.NewScope(obj)
 
-		// Append variables
+		// Make new row
 		variables := make([]string, 0, attrSize)
+
+		// Append id
+		scope.AddToVars(uuid.NewV4().String())
+		variables = append(variables, "?")
+
+		// Append variables
 		for _, key := range sortedKeys(objAttrs) {
 			scope.AddToVars(objAttrs[key])
 			variables = append(variables, "?")

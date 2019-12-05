@@ -2,19 +2,20 @@ package service
 
 import (
 	"fmt"
-	"strconv"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // DeleteByID DeleteByID
 func (s Service) DeleteByID(storyID string) string {
 
-	u64, err := strconv.ParseUint(storyID, 10, 32)
+	u2, err := uuid.FromString(storyID)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Something went wrong: %s", err)
+		return "..."
 	}
-	storyIDConverted := uint(u64)
 
-	s.storyRepo.DeleteByID(storyIDConverted)
+	s.storyRepo.DeleteByID(u2)
 
 	return "OK"
 }

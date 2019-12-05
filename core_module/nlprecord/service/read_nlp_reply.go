@@ -1,17 +1,19 @@
 package service
 
 import (
+	"fmt"
 	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/computing_module/distance"
 	"inc-nlp-service-echo/core_module/nlprecord/dao"
 
 	"github.com/labstack/gommon/log"
+	uuid "github.com/satori/go.uuid"
 )
 
 // ReadNlpReply ReadNlpReply
-func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyDao {
+func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDao {
 	var readNlpReplyDao []dao.ReadNlpReplyDao
-	var listStoryIDsInShopFound []uint32
+	// var listStoryIDsInAppFound []uuid.UUID
 	var keywordMinhash uint32
 
 	if keyword == "" {
@@ -20,14 +22,15 @@ func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyD
 
 	keywordMinhash = distance.GenerateKeywordMinhash(keyword)
 
-	shopStoryDomainFoundByShopID := svc.shopStoryRepository.FindByShopID(1)
+	// appStoryDomainFoundByAppID := svc.appStoryRepository.FindByAppID(1)
 
-	for _, item := range shopStoryDomainFoundByShopID {
-		listStoryIDsInShopFound = append(listStoryIDsInShopFound, item.StoryID)
-	}
+	// for _, item := range appStoryDomainFoundByAppID {
 
-	// nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(hashValue)
-	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(keywordMinhash, listStoryIDsInShopFound)
+	// 	listStoryIDsInAppFound = append(listStoryIDsInAppFound, item.StoryID)
+	// }
+
+	nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhash(keywordMinhash)
+	// nlpFindByKeyword := svc.nlpRecordRepository.FindByKeywordMinhashAndStoryID(keywordMinhash, listStoryIDsInAppFound)
 
 	if len(nlpFindByKeyword) == 0 {
 		readNlpReplyDao := dao.ReadNlpReplyDao{
@@ -42,10 +45,10 @@ func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyD
 	}
 
 	for _, item := range nlpFindByKeyword {
-		eachNlpModel := dao.ReadNlpReplyDao{Keyword: item.Keyword, Intent: item.Intent, StoryID: item.StoryID}
+		eachNlpModel := dao.ReadNlpReplyDao{Keyword: item.Keyword, Intent: item.Intent, StoryID: uuid.NewV4().String()}
 		eachNlpModel.Keyword = item.Keyword
 		eachNlpModel.Intent = item.Intent
-		eachNlpModel.StoryID = item.StoryID
+		eachNlpModel.StoryID = item.StoryID.String()
 		readNlpReplyDao = append(readNlpReplyDao, eachNlpModel)
 	}
 
@@ -55,16 +58,42 @@ func (svc Service) ReadNlpReply(keyword string, shopID string) dao.ReadNlpReplyD
 
 		go svc.saveToNlpTrainingLogs(&nlpResult, 1)
 	}
+
+	go svc.saveToNlpDashboard(&nlpResult, 1)
+
 	return nlpResult
 }
 
+func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, appID uint) {
+	var domain domains.NlpDashboardDomain
+	domain.Keyword = nlpResult.Keyword
+	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
+	domain.Intent = nlpResult.Intent
+	domain.Distance = nlpResult.Distance
+	u2, err := uuid.FromString(nlpResult.StoryID)
+
+	if err != nil {
+		fmt.Printf("Something went wrong: %s", err)
+	}
+
+	domain.StoryID = u2
+	svc.nlpDashboardRepository.Save(&domain)
+
+}
+
 // saveNlpTrainingSetsService saveNlpTrainingSetsService
-func (svc Service) saveToNlpTrainingLogs(nlpResult *dao.ReadNlpReplyDao, shopID uint) {
-	var nlpTraningRecordDomain domains.NlpTrainingLogDomain
-	nlpTraningRecordDomain.Keyword = nlpResult.Keyword
-	nlpTraningRecordDomain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
-	nlpTraningRecordDomain.Intent = nlpResult.Intent
-	nlpTraningRecordDomain.Distance = nlpResult.Distance
-	nlpTraningRecordDomain.StoryID = nlpResult.StoryID
-	svc.nlpTrainingRecordRepository.Save(&nlpTraningRecordDomain)
+func (svc Service) saveToNlpTrainingLogs(nlpResult *dao.ReadNlpReplyDao, appID uint) {
+	var domain domains.NlpTrainingLogDomain
+	domain.Keyword = nlpResult.Keyword
+	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
+	domain.Intent = nlpResult.Intent
+	domain.Distance = nlpResult.Distance
+	u2, err := uuid.FromString(nlpResult.StoryID)
+
+	if err != nil {
+		fmt.Printf("Something went wrong: %s", err)
+	}
+
+	domain.StoryID = u2
+	svc.nlpTrainingRecordRepository.Save(&domain)
 }

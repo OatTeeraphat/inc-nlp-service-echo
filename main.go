@@ -4,16 +4,17 @@ import (
 	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
-	"inc-nlp-service-echo/common_module/websockets"
 
+	appGateway "inc-nlp-service-echo/core_module/app/gateway"
+	appService "inc-nlp-service-echo/core_module/app/service"
 	categorizeGateway "inc-nlp-service-echo/core_module/categorize/gateway"
 	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
+	nlpDashboardGateway "inc-nlp-service-echo/core_module/nlpdashboard/gateway"
+	nlpDashboardService "inc-nlp-service-echo/core_module/nlpdashboard/service"
 	nlpGateway "inc-nlp-service-echo/core_module/nlprecord/gateway"
 	nlpService "inc-nlp-service-echo/core_module/nlprecord/service"
 	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
 	nlpTraininglogService "inc-nlp-service-echo/core_module/nlptraininglog/service"
-	shopGateway "inc-nlp-service-echo/core_module/shop/gateway"
-	shopService "inc-nlp-service-echo/core_module/shop/service"
 	storyGateway "inc-nlp-service-echo/core_module/story/gateway"
 	storyService "inc-nlp-service-echo/core_module/story/service"
 
@@ -68,57 +69,59 @@ func main() {
 	)
 
 	orm := datasources.NewFillChatGORM(common0)
-	orm.DB.LogMode(false)
+	orm.DB.LogMode(true)
 
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
-	repo3 := repositories.NewShopStoryRepository(orm)
+	repo3 := repositories.NewAppStoryRepository(orm)
 	repo4 := repositories.NewStoryRepository(orm)
-	repo5 := repositories.NewShopStoryRepository(orm)
-	repo6 := repositories.NewShopRepository(orm)
+	repo5 := repositories.NewAppStoryRepository(orm)
+	repo6 := repositories.NewAppRepository(orm)
+	repo7 := repositories.NewNlpDashboardRepository(orm)
+	// repo8 := repositories.NewClientRepository(orm)
 
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
 
+	svc0 := appService.NewService(repo6)
+	svc1 := storyService.NewService(repo4)
+	svc2 := nlpTraininglogService.NewService(repo0)
+	svc3 := nlpService.NewService(repo1, repo0, repo3, repo7)
+	svc4 := categorizeService.NewService(repo5, repo6)
+	svc5 := nlpDashboardService.NewService(repo7)
+
 	// FIXME: move to nuxt js
-	e.Use(staticMiddleware())
-	ws := websockets.NewWebSocket()
+	e.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:   "public",
+		Browse: true,
+		HTML5:  true,
+	}))
+
 	e.GET("/health_check", heathCheck)
 
 	q := e.Group("/swagger")
 	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
 	q.GET("/*", echoSwagger.WrapHandler)
 
-	v1 := e.Group("/v1")
-	authGateway.NewHTTPGateway(v1, secure0)
-	v1.Use(middleware.JWTWithConfig(jwtConfig))
-	svc0 := shopService.NewService(repo6)
-	svc1 := storyService.NewService(repo4)
-	svc2 := nlpTraininglogService.NewService(repo0)
-	svc3 := nlpService.NewService(repo1, repo0, repo3)
-	svc4 := categorizeService.NewService(repo5, repo6)
+	api := e.Group("/v1")
+	authGateway.NewHTTPGateway(api, secure0)
+	nlpDashboardGateway.NewWebSocket(api)
 
-	shopGateway.NewHTTPGateway(v1, svc0)
-	storyGateway.NewHTTPGateway(v1, svc1)
-	nlpTraininglogGateway.NewHTTPGateway(v1, svc2)
-	nlpGateway.NewHTTPGateway(v1, svc3)
-	fbGateway.NewHTTPGateway(v1, svc3)
-	fbGateway.NewSocketGateway(v1, svc3, *ws.Upgrader)
-	categorizeGateway.NewHTTPGateway(v1, svc4)
+	api.Use(middleware.JWTWithConfig(jwtConfig))
+
+	appGateway.NewHTTPGateway(api, svc0)
+	storyGateway.NewHTTPGateway(api, svc1)
+	nlpTraininglogGateway.NewHTTPGateway(api, svc2)
+	nlpGateway.NewHTTPGateway(api, svc3)
+	fbGateway.NewHTTPGateway(api, svc3)
+	categorizeGateway.NewHTTPGateway(api, svc4)
+	nlpDashboardGateway.NewHTTPGateway(api, svc5)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
 
 	defer e.Close()
 	defer orm.DB.Close()
-}
-
-func staticMiddleware() echo.MiddlewareFunc {
-	return middleware.StaticWithConfig(middleware.StaticConfig{
-		Root:   "public",
-		Browse: true,
-		HTML5:  true,
-	})
 }
 
 func heathCheck(c echo.Context) error {

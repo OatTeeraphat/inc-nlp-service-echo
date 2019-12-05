@@ -4,7 +4,7 @@ import (
 	"inc-nlp-service-echo/core_module/nlpdashboard"
 	"net/http"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // HTTPGateway HTTPGateway
@@ -16,10 +16,13 @@ type HTTPGateway struct {
 func NewHTTPGateway(e *echo.Group, dashboardService nlpdashboard.Service) {
 	handle := &HTTPGateway{dashboardService}
 
-	e.Any("/", handle.Mock)
+	e.GET("/nlp/dashboard/gte", handle.ReadNlpLogging)
 }
 
-// Mock Mock
-func (h *HTTPGateway) Mock(e echo.Context) error {
-	return e.String(http.StatusOK, "OK")
+// ReadNlpLogging ReadNlpLogging
+func (h *HTTPGateway) ReadNlpLogging(e echo.Context) error {
+	ID := e.QueryParam("id")
+	responseEntity := h.NlpDashboardService.ReadNlpLogging(ID)
+
+	return e.JSON(http.StatusOK, responseEntity)
 }

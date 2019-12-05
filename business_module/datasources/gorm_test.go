@@ -11,7 +11,7 @@ func TestDatasource(t *testing.T) {
 		convey.Convey("GORM", func() {
 
 			// data := datasources.SyncORM()
-			// nlpRecordDomain := domains.NlpRecordDomain{ShopID: 1, Keyword: "x", KeywordMinhash: 1, Intent: "1"}
+			// nlpRecordDomain := domains.NlpRecordDomain{AppID: 1, Keyword: "x", KeywordMinhash: 1, Intent: "1"}
 			// result := data.Create(&nlpRecordDomain)
 
 			// t.Log(result, nlpRecordDomain)

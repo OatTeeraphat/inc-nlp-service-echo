@@ -14,7 +14,7 @@ func (s Service) ReadAll() []dao.ReadStoryDao {
 
 	for _, item := range storyDomain {
 		each := dao.ReadStoryDao{}
-		each.ID = item.ID
+		each.ID = item.ID.String()
 		each.Name = item.Name
 		each.Description = item.Description
 		each.Owner = item.Owner

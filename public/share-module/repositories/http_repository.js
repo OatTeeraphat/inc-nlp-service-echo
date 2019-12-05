@@ -26,6 +26,7 @@ export class HttpRepository {
     signOut() {
         return of()
     }
+    
 
     // END_POINT: /v1/nlp/record/pagination?page=
     getNlpRecordsPagination(page) {
@@ -77,6 +78,17 @@ export class HttpRepository {
                 "intent": intent,
                 "story_id": story_name
             }
+        })
+    }
+
+    readNlpLogging(id) {
+        return ajax({
+            methods: "GET",
+            url: `${this.BASE_API}/v1/nlp/dashboard/gte?=${id}`,
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": this._getAuthorizedBearer() 
+            },
         })
     }
     
@@ -340,36 +352,36 @@ export class HttpRepository {
             {
                 label: 'GREETING',
                 data: [ 
-                    { intent: "สวัสดีจ้า", call: "1,938", story_name: "GREETING" },
-                    { intent: "หิวมั้ย", call: "1,038", story_name: "GREETING" },
-                    { intent: "สบายดีรึป่าว", call: "7", story_name: "GREETING" },
-                    { intent: "มีคนมั้ย", call: "7", story_name: "GREETING" },
-                    { intent: "Hello Dog", call: "32", story_name: "GREETING" }
+                    { intent: "สวัสดีจ้า", call: "1938" },
+                    { intent: "หิวมั้ย", call: "1038" },
+                    { intent: "สบายดีรึป่าว", call: "7" },
+                    { intent: "มีคนมั้ย", call: "7" },
+                    { intent: "Hello Dog", call: "32" }
                 ]
             },
             {
                 label: 'CHITCHAT',
                 data: [
-                    { intent: "กินข้าวยัง", call: "1,438", story_name: "CHITCHAT" },
-                    { intent: "ชื่อรัยอ่ะ", call: "913", story_name: "CHITCHAT" },
-                    { intent: "รักน่ะเด็กดื้อ", call: "412", story_name: "CHITCHAT" },
-                    { intent: "ดีจังตังอยู่ครบ", call: "12", story_name: "CHITCHAT" }
+                    { intent: "กินข้าวยัง", call: "1438" },
+                    { intent: "ชื่อรัยอ่ะ", call: "913" },
+                    { intent: "รักน่ะเด็กดื้อ", call: "412" },
+                    { intent: "ดีจังตังอยู่ครบ", call: "12" }
                 ]
             },
             {
                 label: 'FAQ',
                 data: [
-                    { intent: "ถามใรตอบได้", call: "112", story_name: "FAQ" },
-                    { intent: "จัดส่งอย่างไร", call: "42", story_name: "FAQ" },
-                    { intent: "จัดส่งที่ไหน", call: "12", story_name: "FAQ" }
+                    { intent: "ถามใรตอบได้", call: "112" },
+                    { intent: "จัดส่งอย่างไร", call: "42" },
+                    { intent: "จัดส่งที่ไหน", call: "12" }
                 ]
             },
             {
                 label: 'PRODUCT',
                 data: [
-                    { intent: "อยากดูของ", call: "95", story_name: "PRODUCT" },
-                    { intent: "มีรัยขาย", call: "42", story_name: "PRODUCT" },
-                    { intent: "ของหมดแล้วต้องสั่งนะ", call: "12", story_name: "PRODUCT" }
+                    { intent: "อยากดูของ", call: "95" },
+                    { intent: "มีรัยขาย", call: "42" },
+                    { intent: "ของหมดแล้วต้องสั่งนะ", call: "12" }
                 ]
             }
         ]

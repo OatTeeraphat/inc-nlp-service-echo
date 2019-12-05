@@ -182,7 +182,9 @@ export default Vue.component('dashboard-page', {
 								</h5>
 						</div>
 						<div class="card-body">
-								<bubble-chart-intent >
+								<bubble-chart-intent
+								 :data-chart="$dashboardPresenter.view.bubble_chart.data"
+								>
 								</bubble-chart-intent>
 						</div>
 				</div>

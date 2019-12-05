@@ -40,7 +40,7 @@ export default Vue.component('logs-page', {
                                         <a class="dropdown-item" href="#">Export All</a>
                                         <a class="dropdown-item" href="#">Export Selected</a>
                                     </div>
-                                </div>
+                                </div>  
                             </div>
                         </div>
                     </div>
@@ -49,8 +49,8 @@ export default Vue.component('logs-page', {
                 </div>
                 <div class="card card-webchat mb-3 mt-3 border-0">
                     <div class="card-body p-4 pb-0">
-                        <code class="highlighter-rouge d-block">
-                            <span class="text-muted">{{ this.getCurrentTime() }} : <br></span>hi
+                        <code v-for="item in log" class="highlighter-rouge d-block">
+                            <span class="text-muted">{{ item }}: </span>
                         </code>
                     </div>
                     <div class="card-footer px-4 pb-0 border-1">
@@ -69,18 +69,148 @@ export default Vue.component('logs-page', {
     `,
     data: function () {
         return {
-
+            log: [
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+                {
+                    "keyword": "สวัสดีครับบบบบบบบบบ",
+                    "intent": "สวัสดีค่ะพี่ขา",
+                    "distance": 8,
+                    "story_id": 1,
+                    "time": new Date(),
+                    "destination": "http://localhost:9999/v1/nlp/reply"
+                },
+            ]
         }
     },
     mounted: function () {
-        this.getCurrentTime()
     },
     beforeDestroy: function () {
-    },
-    methods: {
-        getCurrentTime: function() {
-            var d = new Date()
-            return d.toISOString()
-        }
     }
 })

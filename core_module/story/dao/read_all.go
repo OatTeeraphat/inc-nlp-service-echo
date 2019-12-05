@@ -2,7 +2,7 @@ package dao
 
 // ReadStoryDao ReadStoryDao
 type ReadStoryDao struct {
-	ID          uint   `json:"id"`
+	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"desc"`
 	Owner       string `json:"owner"`

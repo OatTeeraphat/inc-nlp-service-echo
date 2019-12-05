@@ -5,14 +5,14 @@ import (
 	"inc-nlp-service-echo/core_module/categorize"
 )
 
-// Service ShopStoryService
+// Service AppStoryService
 type Service struct {
-	ShopStoryRepo repositories.IShopStoryRepository
-	ShopRepo      repositories.IShopRepository
+	AppStoryRepo repositories.IAppStoryRepository
+	AppRepo      repositories.IAppRepository
 }
 
-// NewService NewShopStoryService
-func NewService(repo0 repositories.IShopStoryRepository, repo1 repositories.IShopRepository) categorize.Service {
+// NewService NewAppStoryService
+func NewService(repo0 repositories.IAppStoryRepository, repo1 repositories.IAppRepository) categorize.Service {
 	return &Service{
 		repo0,
 		repo1,

@@ -4,12 +4,10 @@ services:
     build: .
     image: inc-nlp-service-echo
     container_name: inc-nlp-service-echo
-    external_links: 
+    external_links:
       - postgres
     ports: 
       - 9000:9000
-    volumes:
-      - ./public:/go/src/inc-nlp-service-echo/public
     environment: 
       - TZ=Asia/Bangkok
       - ENV=heroku
@@ -17,11 +15,11 @@ services:
       - PORT=9000
       - ECHO_LOG_LEVEL=INFO 
       - NLP_DB_DIALECTS=postgres
-      - NLP_DB_NAME=postgres
-      - NLP_DB_HOST=postgres
+      - NLP_DB_NAME=reaxllzt
+      - NLP_DB_HOST=john.db.elephantsql.com
       - NLP_DB_PORT=5432
-      - NLP_DB_USERNAME=postgres
-      - NLP_DB_PASSWORD=
+      - NLP_DB_USERNAME=reaxllzt
+      - NLP_DB_PASSWORD=qs0jZQMUWFOvQU4SaYXElVegjzDgLz7c
       - IS_SWAGGER=true
-    command: 
-      - /go/src/inc-nlp-service-echo/inc-nlp-service-echo
+    command:
+      - ./inc-nlp-service-echo
