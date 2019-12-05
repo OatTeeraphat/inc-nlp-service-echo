@@ -5,14 +5,14 @@ export class VueErrorHandler {
         this.cookieRepo = cookieRepo
     }
 
-    catchHttpError = () => catchError( e => {
+    catchHttpError = (title="Can't Reslove", description) => catchError( e => {
 
         
         if ( e instanceof AjaxError ) {
             
             if (e.status == 401) {
                 console.error("401 from catchHttpError ", e)
-                swal2('error', { text: "ไม่มีสิทธิ์เข้าถึงการใช้งาน"})
+                swal2(ALERT.ERROR, { title: title, text: description} )
                 this.cookieRepo.removeClientSession()
                 if ( this.vueRouter.history.current.path !== "/login" ) {
                     this.vueRouter.replace('/login')

@@ -40,7 +40,7 @@ export class AuthenticationService {
                             }
                             return this.vueRouter.replace('/dashboard')
                         }),
-                        this.vueErrorHandler.catchHttpError(),
+                        this.vueErrorHandler.catchHttpError("Invalid Credential", "Your email or password is not correct"),
                     )
                 },
             )
