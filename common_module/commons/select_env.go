@@ -24,7 +24,7 @@ type FillChatSelectENV struct {
 	KafkaTopicPrefix string
 	KafkaGroupID     string
 	IsSwagger        string
-	IsGORMLogging    string
+	IsGORMLogging    bool
 }
 
 // NewFillChatSelectENV switch
@@ -56,7 +56,7 @@ func SelectFillChatSelectENVDevelopment() *FillChatSelectENV {
 		KafkaTopicPrefix: "60vh9kjz-",
 		KafkaGroupID:     "CLOUDKARAFKA_GROUPID",
 		IsSwagger:        "true",
-		IsGORMLogging:    "true",
+		IsGORMLogging:    formatENVtoBoolean("true"),
 	}
 }
 
@@ -79,12 +79,12 @@ func SelectFillChatSelectENVBuild() *FillChatSelectENV {
 		KafkaTopicPrefix: os.Getenv("KAFKA_TOPIC_PREFIX"),
 		KafkaGroupID:     os.Getenv("KAFKA_GROUP_ID"),
 		IsSwagger:        os.Getenv("IS_SWAGGER"),
-		IsGORMLogging:    os.Getenv("IS_GORM_LOGGING"),
+		IsGORMLogging:    formatENVtoBoolean(os.Getenv("IS_GORM_LOGGING")),
 	}
 }
 
 // FormatENVtoBoolean format env to boolean
-func FormatENVtoBoolean(env string) bool {
+func formatENVtoBoolean(env string) bool {
 	result, err := strconv.ParseBool(env)
 	if err != nil {
 		log.Fatal("swagger flag error: ", err)
@@ -93,7 +93,7 @@ func FormatENVtoBoolean(env string) bool {
 }
 
 // FormatENVtoInteger format string to int
-func FormatENVtoInteger(env string) int {
+func formatENVtoInteger(env string) int {
 	result, err := strconv.Atoi(env)
 	if err != nil {
 		log.Fatal("echo port error: ", err)

@@ -26,5 +26,6 @@ services:
       - KAFKA_TOPIC_PREFIX=60vh9kjz-
       - KAFKA_GROUP_ID=CLOUDKARAFKA_GROUPID
       - IS_SWAGGER=true
+      - IS_GORM_LOGGING=true
     command:
       - ./inc-nlp-service-echo

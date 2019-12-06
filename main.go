@@ -13,6 +13,7 @@ import (
 	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
 	nlpDashboardGateway "inc-nlp-service-echo/core_module/nlpdashboard/gateway"
 	nlpDashboardService "inc-nlp-service-echo/core_module/nlpdashboard/service"
+	"inc-nlp-service-echo/core_module/nlprecord/dao"
 	nlpGateway "inc-nlp-service-echo/core_module/nlprecord/gateway"
 	nlpService "inc-nlp-service-echo/core_module/nlprecord/service"
 	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
@@ -50,7 +51,13 @@ func NewHealthCheck(kafkaProducer *producer.Producer) *HealthCheck {
 
 func (h HealthCheck) HeathCheck(c echo.Context) error {
 
-	h.KafaProducer.ProduceNlpDashboardMessage("hello")
+	data := dao.ReadNlpReplyDao{}
+	data.Keyword = "PING"
+	data.Intent = "PING"
+	data.Distance = 0
+	data.StoryID = "PING"
+
+	h.KafaProducer.ProduceNlpDashboardMessage(data)
 
 	return c.String(http.StatusOK, "PONG")
 }
@@ -80,7 +87,7 @@ func main() {
 
 	e := echo.New()
 
-	pro := producer.NewProducer(selectENV)
+	pro0 := producer.NewProducer(selectENV)
 	// pro.ProduceNlpDashboardMessage("hello")
 	consume := consumer.NewConsumerSarama(selectENV)
 
@@ -93,7 +100,7 @@ func main() {
 
 	orm := datasources.NewFillChatGORM(selectENV)
 
-	orm.DB.LogMode(false)
+	orm.DB.LogMode(selectENV.IsGORMLogging)
 
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
@@ -112,7 +119,7 @@ func main() {
 	svc0 := appService.NewService(repo6)
 	svc1 := storyService.NewService(repo4)
 	svc2 := nlpTraininglogService.NewService(repo0)
-	svc3 := nlpService.NewService(repo1, repo0, repo3, repo7)
+	svc3 := nlpService.NewService(repo1, repo0, repo3, repo7, pro0)
 	svc4 := categorizeService.NewService(repo5, repo6)
 	svc5 := nlpDashboardService.NewService(repo7)
 
@@ -123,7 +130,7 @@ func main() {
 		HTML5:  true,
 	}))
 
-	healthCheck := NewHealthCheck(pro)
+	healthCheck := NewHealthCheck(pro0)
 
 	e.GET("/health_check", healthCheck.HeathCheck)
 
@@ -152,6 +159,6 @@ func main() {
 
 	defer e.Close()
 	defer orm.DB.Close()
-	defer pro.Close()
+	defer pro0.Close()
 	defer consume.Close()
 }
