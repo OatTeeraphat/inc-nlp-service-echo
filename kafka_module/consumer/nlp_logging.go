@@ -9,11 +9,11 @@ import (
 	"github.com/Shopify/sarama"
 )
 
-// Consuming Consuming
-func (con Consumer) Consuming() {
+// ConsumeNlpLoggingMessage ConsumeNlpLoggingMessage
+func (con Consumer) ConsumeNlpLoggingMessage() {
 
 	log.Println("commence consuming")
-	partitionConsumer, err := con.Config.ConsumePartition(con.Topic, 0, sarama.OffsetNewest)
+	partitionConsumer, err := con.Config.ConsumePartition(con.Topic, 0, sarama.OffsetOldest)
 	if err != nil {
 		panic(err)
 	}

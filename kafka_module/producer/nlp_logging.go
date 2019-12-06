@@ -9,8 +9,8 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-// ProduceNlpDashboardMessage ProduceNlpDashboardMessage
-func (con Producer) ProduceNlpDashboardMessage(value dao.ReadNlpReplyDao) {
+// ProduceNlpLoggingMessage ProduceNlpLoggingMessage
+func (con Producer) ProduceNlpLoggingMessage(value dao.ReadNlpReplyDao) {
 
 	byteValue, jsonErr := json.Marshal(value)
 

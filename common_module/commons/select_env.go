@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 
-// FillChatSelectENV FillChat12Factor
-type FillChatSelectENV struct {
+// SelectENV SelectENV
+type SelectENV struct {
 	Env              string
 	EchoAppName      string
 	EchoPort         string
@@ -27,19 +27,19 @@ type FillChatSelectENV struct {
 	IsGORMLogging    bool
 }
 
-// NewFillChatSelectENV switch
-func NewFillChatSelectENV() *FillChatSelectENV {
+// NewSelectENV switch
+func NewSelectENV() *SelectENV {
 	var env = os.Getenv("ENV")
 
 	if env != "development" && env != "" {
-		return SelectFillChatSelectENVBuild()
+		return SelectBuild()
 	}
-	return SelectFillChatSelectENVDevelopment()
+	return SelectDevelopment()
 }
 
-// SelectFillChatSelectENVDevelopment DEVELOPMENT
-func SelectFillChatSelectENVDevelopment() *FillChatSelectENV {
-	return &FillChatSelectENV{
+// SelectDevelopment DEVELOPMENT
+func SelectDevelopment() *SelectENV {
+	return &SelectENV{
 		Env:              "development",
 		EchoAppName:      "EchoApp-DEV",
 		EchoPort:         "9000",
@@ -60,9 +60,9 @@ func SelectFillChatSelectENVDevelopment() *FillChatSelectENV {
 	}
 }
 
-// SelectFillChatSelectENVBuild DOCKER ENVIRONMENT
-func SelectFillChatSelectENVBuild() *FillChatSelectENV {
-	return &FillChatSelectENV{
+// SelectBuild DOCKER ENVIRONMENT
+func SelectBuild() *SelectENV {
+	return &SelectENV{
 		Env:              os.Getenv("ENV"),
 		EchoAppName:      os.Getenv("ECHO_APP_NAME"),
 		EchoPort:         os.Getenv("PORT"),

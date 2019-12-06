@@ -57,7 +57,7 @@ func (h HealthCheck) HeathCheck(c echo.Context) error {
 	data.Distance = 0
 	data.StoryID = "PING"
 
-	h.KafaProducer.ProduceNlpDashboardMessage(data)
+	h.KafaProducer.ProduceNlpLoggingMessage(data)
 
 	return c.String(http.StatusOK, "PONG")
 }
@@ -78,8 +78,8 @@ func (h HealthCheck) HeathCheck(c echo.Context) error {
 // @BasePath /
 func main() {
 	// Configuration
-	selectENV := commons.NewFillChatSelectENV()
-	// common1 := commons.NewFillChatMiddleware()
+	selectENV := commons.NewSelectENV()
+	// common1 := commons.NewMiddleware()
 
 	log.SetFormatter(&log.TextFormatter{})
 	log.SetOutput(os.Stdout)
@@ -88,7 +88,6 @@ func main() {
 	e := echo.New()
 
 	pro0 := producer.NewProducer(selectENV)
-	// pro.ProduceNlpDashboardMessage("hello")
 	consume := consumer.NewConsumerSarama(selectENV)
 
 	e.Use(
@@ -98,7 +97,7 @@ func main() {
 		middleware.Gzip(),
 	)
 
-	orm := datasources.NewFillChatGORM(selectENV)
+	orm := datasources.NewGORM(selectENV)
 
 	orm.DB.LogMode(selectENV.IsGORMLogging)
 
@@ -110,8 +109,6 @@ func main() {
 	repo6 := repositories.NewAppRepository(orm)
 	repo7 := repositories.NewNlpDashboardRepository(orm)
 	// repo8 := repositories.NewClientRepository(orm)
-
-	// producer0 := producer.NewKafkaProducer()
 
 	jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
@@ -152,7 +149,7 @@ func main() {
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
 
-	go consume.Consuming()
+	go consume.ConsumeNlpLoggingMessage()
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + selectENV.EchoPort))

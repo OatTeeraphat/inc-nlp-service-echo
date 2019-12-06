@@ -62,7 +62,7 @@ func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDa
 
 	go svc.saveToNlpDashboard(&nlpResult, 1)
 
-	go svc.kafkaProducer.ProduceNlpDashboardMessage(nlpResult)
+	go svc.kafkaProducer.ProduceNlpLoggingMessage(nlpResult)
 
 	return nlpResult
 }

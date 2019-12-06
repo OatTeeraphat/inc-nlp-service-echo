@@ -22,8 +22,8 @@ type FillChatGORM struct {
 	DB *gorm.DB
 }
 
-// NewFillChatGORM NewFillChatGORM
-func NewFillChatGORM(config *commons.FillChatSelectENV) *FillChatGORM {
+// NewGORM NewGORM
+func NewGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 	dbURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
 		config.NlpDBHost,
 		config.NlpDBPort,
