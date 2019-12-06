@@ -21,7 +21,6 @@ export class AuthenticationPresenter {
             .subscribe(
                 next => { this.view.isNotSignInLoading = true }
             )
-
     }
 
     clientSignIn() {

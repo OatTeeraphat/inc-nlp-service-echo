@@ -4,6 +4,8 @@ import (
 	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
+	"inc-nlp-service-echo/kafka_module/consumer"
+	"inc-nlp-service-echo/kafka_module/producer"
 
 	appGateway "inc-nlp-service-echo/core_module/app/gateway"
 	appService "inc-nlp-service-echo/core_module/app/service"
@@ -36,6 +38,23 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+type HealthCheck struct {
+	KafaProducer *producer.Producer
+}
+
+func NewHealthCheck(kafkaProducer *producer.Producer) *HealthCheck {
+	return &HealthCheck{
+		KafaProducer: kafkaProducer,
+	}
+}
+
+func (h HealthCheck) HeathCheck(c echo.Context) error {
+
+	h.KafaProducer.ProduceNlpDashboardMessage("hello")
+
+	return c.String(http.StatusOK, "PONG")
+}
+
 // @title Swagger Example API
 // @version 1.0
 // @description This is a sample server Petstore server.
@@ -52,7 +71,7 @@ import (
 // @BasePath /
 func main() {
 	// Configuration
-	common0 := commons.NewFillChatSelectENV()
+	selectENV := commons.NewFillChatSelectENV()
 	common1 := commons.NewFillChatMiddleware()
 
 	log.SetFormatter(&log.TextFormatter{})
@@ -61,6 +80,10 @@ func main() {
 
 	e := echo.New()
 
+	pro := producer.NewProducer(selectENV)
+	// pro.ProduceNlpDashboardMessage("hello")
+	consume := consumer.NewConsumerSarama(selectENV)
+
 	e.Use(
 		middleware.Logger(),
 		middleware.Recover(),
@@ -68,7 +91,7 @@ func main() {
 		middleware.Gzip(),
 	)
 
-	orm := datasources.NewFillChatGORM(common0)
+	orm := datasources.NewFillChatGORM(selectENV)
 
 	orm.DB.LogMode(false)
 
@@ -100,7 +123,9 @@ func main() {
 		HTML5:  true,
 	}))
 
-	e.GET("/health_check", heathCheck)
+	healthCheck := NewHealthCheck(pro)
+
+	e.GET("/health_check", healthCheck.HeathCheck)
 
 	q := e.Group("/swagger")
 	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
@@ -120,13 +145,13 @@ func main() {
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
 
+	go consume.Consuming()
+
 	// Start server
-	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
+	e.Logger.Fatal(e.Start(":" + selectENV.EchoPort))
 
 	defer e.Close()
 	defer orm.DB.Close()
-}
-
-func heathCheck(c echo.Context) error {
-	return c.String(http.StatusOK, "PONG")
+	defer pro.Close()
+	defer consume.Close()
 }

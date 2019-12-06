@@ -24,6 +24,7 @@ type FillChatSelectENV struct {
 	KafkaTopicPrefix string
 	KafkaGroupID     string
 	IsSwagger        string
+	IsGORMLogging    string
 }
 
 // NewFillChatSelectENV switch
@@ -55,6 +56,7 @@ func SelectFillChatSelectENVDevelopment() *FillChatSelectENV {
 		KafkaTopicPrefix: "60vh9kjz-",
 		KafkaGroupID:     "CLOUDKARAFKA_GROUPID",
 		IsSwagger:        "true",
+		IsGORMLogging:    "true",
 	}
 }
 
@@ -77,6 +79,7 @@ func SelectFillChatSelectENVBuild() *FillChatSelectENV {
 		KafkaTopicPrefix: os.Getenv("KAFKA_TOPIC_PREFIX"),
 		KafkaGroupID:     os.Getenv("KAFKA_GROUP_ID"),
 		IsSwagger:        os.Getenv("IS_SWAGGER"),
+		IsGORMLogging:    os.Getenv("IS_GORM_LOGGING"),
 	}
 }
 
