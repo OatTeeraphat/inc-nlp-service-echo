@@ -1,21 +1,19 @@
-package producer
+package consumer
 
 import (
 	"crypto/tls"
-	"fmt"
 	"inc-nlp-service-echo/common_module/commons"
 	"inc-nlp-service-echo/kafka_module/config"
+	"log"
 	"strings"
 
 	"github.com/Shopify/sarama"
-
-	"github.com/labstack/gommon/log"
 )
 
-// Producer Producer
-type Producer struct {
-	Producer sarama.SyncProducer
-	Topic    string
+// Consumer Consumer
+type Consumer struct {
+	Config sarama.Consumer
+	Topic  string
 }
 
 func createTLSConfiguration() (t *tls.Config) {
@@ -25,12 +23,10 @@ func createTLSConfiguration() (t *tls.Config) {
 	return t
 }
 
-// NewProducer NewProducer
-func NewProducer(selectENV *commons.FillChatSelectENV) *Producer {
+// NewConsumerSarama NewConsumerSarama
+func NewConsumerSarama(selectENV *commons.FillChatSelectENV) *Consumer {
 	algorithm := "sha256"
 	splitBrokers := strings.Split(selectENV.KafkaBrokers, ",")
-	// logMsg = flag.Bool("logmsg", false, "True to log consumed messages to console")
-
 	conf := sarama.NewConfig()
 	conf.Producer.Retry.Max = 1
 	conf.Producer.RequiredAcks = sarama.WaitForAll
@@ -43,7 +39,6 @@ func NewProducer(selectENV *commons.FillChatSelectENV) *Producer {
 	conf.Net.SASL.User = selectENV.KafkaUsername
 	conf.Net.SASL.Password = selectENV.KafkaPassword
 	conf.Net.SASL.Handshake = true
-
 	if algorithm == "sha512" {
 		conf.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &config.XDGSCRAMClient{HashGeneratorFcn: config.SHA512} }
 		conf.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeSCRAMSHA512)
@@ -57,31 +52,18 @@ func NewProducer(selectENV *commons.FillChatSelectENV) *Producer {
 
 	conf.Net.TLS.Enable = true
 	conf.Net.TLS.Config = createTLSConfiguration()
-
-	syncProducer, err := sarama.NewSyncProducer(splitBrokers, conf)
+	consumer, err := sarama.NewConsumer(splitBrokers, conf)
 	if err != nil {
-		log.Error("failed to create producer: ", err)
+		panic(err)
 	}
 
-	return &Producer{
-		Producer: syncProducer,
-		Topic:    selectENV.KafkaTopicPrefix + "ping.kafka",
+	return &Consumer{
+		Config: consumer,
+		Topic:  selectENV.KafkaTopicPrefix + "ping.kafka",
 	}
 }
 
-// ProduceNlpDashboardMessage ProduceNlpDashboardMessage
-func (con Producer) ProduceNlpDashboardMessage(value string) {
-	partition, offset, err := con.Producer.SendMessage(&sarama.ProducerMessage{
-		Topic: con.Topic,
-		Value: sarama.StringEncoder(value),
-	})
-	if err != nil {
-		log.Error("failed to send message to ", con.Topic, err)
-	}
-	fmt.Println("wrote message at partition: ", partition, ", offset:", offset)
-}
-
-// Close close producer connection
-func (con Producer) Close() {
-	con.Producer.Close()
+// Close Close
+func (con *Consumer) Close() {
+	con.Config.Close()
 }
