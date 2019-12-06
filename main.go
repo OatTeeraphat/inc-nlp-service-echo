@@ -128,7 +128,7 @@ func main() {
 	e.GET("/health_check", healthCheck.HeathCheck)
 
 	q := e.Group("/swagger")
-	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
+	// q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
 	q.GET("/*", echoSwagger.WrapHandler)
 
 	api := e.Group("/v1")

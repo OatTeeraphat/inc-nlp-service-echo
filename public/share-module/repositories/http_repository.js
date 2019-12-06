@@ -2,7 +2,7 @@ export class HttpRepository {
 
     constructor(cookieRepo) {
         this.cookieRepo = cookieRepo
-        this.BASE_API = "http://localhost:3000"
+        this.BASE_API = getHttpHost()
     }
 
     _getAuthorizedBearer() {
