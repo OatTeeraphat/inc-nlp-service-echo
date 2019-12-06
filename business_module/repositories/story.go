@@ -15,7 +15,7 @@ type StoryRepository struct {
 
 // IStoryRepository story desc interface
 type IStoryRepository interface {
-	Save(storyDomain *domains.StoryDomain)
+	Save(Domain *domains.StoryDomain)
 	FindAll() []domains.StoryDomain
 	FindByName(storyName string) domains.StoryDomain
 	DeleteByID(ID uuid.UUID) *gorm.DB
@@ -27,27 +27,27 @@ func NewStoryRepository(data *datasources.GORM) IStoryRepository {
 }
 
 // Save find similar app ids
-func (repo *StoryRepository) Save(storyDomain *domains.StoryDomain) {
-	repo.DB.Create(&storyDomain)
+func (repo *StoryRepository) Save(Domain *domains.StoryDomain) {
+	repo.DB.Create(&Domain)
 }
 
 // FindAll find similar app ids
 func (repo *StoryRepository) FindAll() []domains.StoryDomain {
-	var storyDomain []domains.StoryDomain
-	repo.DB.Where(&domains.StoryDomain{}).Find(&storyDomain)
-	return storyDomain
+	var Domain []domains.StoryDomain
+	repo.DB.Where(&domains.StoryDomain{}).Find(&Domain)
+	return Domain
 }
 
 // FindByName find similar app ids
 func (repo *StoryRepository) FindByName(storyName string) domains.StoryDomain {
-	var storyDomain domains.StoryDomain
-	repo.DB.Where(&domains.StoryDomain{Name: storyName}).Find(&storyDomain)
-	return storyDomain
+	var Domain domains.StoryDomain
+	repo.DB.Where(&domains.StoryDomain{Name: storyName}).Find(&Domain)
+	return Domain
 }
 
 // DeleteByID DeleteByID
 func (repo *StoryRepository) DeleteByID(ID uuid.UUID) *gorm.DB {
-	var storyDomain domains.StoryDomain
-	storyDomain.ID = ID
-	return repo.DB.Unscoped().Delete(&storyDomain)
+	var Domain domains.StoryDomain
+	Domain.ID = ID
+	return repo.DB.Unscoped().Delete(&Domain)
 }

@@ -15,7 +15,7 @@ type ClientRepository struct {
 
 // IClientRepository app repository interface
 type IClientRepository interface {
-	Save(domain *domains.ClientDomain) *gorm.DB
+	Save(Domain *domains.ClientDomain) *gorm.DB
 	FindByID(ID uuid.UUID) domains.ClientDomain
 }
 
@@ -25,13 +25,13 @@ func NewClientRepository(data *datasources.GORM) IClientRepository {
 }
 
 // Save Save
-func (repo ClientRepository) Save(domain *domains.ClientDomain) *gorm.DB {
-	return repo.DB.Create(&domain)
+func (repo ClientRepository) Save(Domain *domains.ClientDomain) *gorm.DB {
+	return repo.DB.Create(&Domain)
 }
 
 // FindByID FindByID
 func (repo ClientRepository) FindByID(ID uuid.UUID) domains.ClientDomain {
-	var domain domains.ClientDomain
-	repo.DB.First(&domain, ID)
-	return domain
+	var Domain domains.ClientDomain
+	repo.DB.First(&Domain, ID)
+	return Domain
 }
