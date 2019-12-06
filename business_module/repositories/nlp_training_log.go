@@ -10,7 +10,7 @@ import (
 
 // NlpTrainingLogRepository nlp query appearance
 type NlpTrainingLogRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // INlpTrainingLogRepository nlp query appearance interface
@@ -25,7 +25,7 @@ type INlpTrainingLogRepository interface {
 }
 
 // NewNlpTrainingLogRepository new nlp record instance
-func NewNlpTrainingLogRepository(data *datasources.FillChatGORM) INlpTrainingLogRepository {
+func NewNlpTrainingLogRepository(data *datasources.GORM) INlpTrainingLogRepository {
 	return &NlpTrainingLogRepository{data}
 }
 

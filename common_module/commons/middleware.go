@@ -4,23 +4,23 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// FillChatMiddleware FillChatMiddleware
+// Middleware Middleware
 type Middleware struct {
 }
 
-// IFillChatMiddleware IFillChatMiddleware
+// IMiddleware IMiddleware
 type IMiddleware interface {
 	HTTPErrorMiddleware(err error, c echo.Context)
 	StaffAuthMiddleware(username, password string, c echo.Context) (bool, error)
 	CustomerAuthMiddleware(err error, c echo.Context)
 }
 
-// NewFillChatMiddleware NewFillChatMiddleware
+// NewMiddleware NewMiddleware
 func NewMiddleware() IMiddleware {
 	return &Middleware{}
 }
 
-// HTTPErrorMiddleware FillChatHTTPErrorHandler
+// HTTPErrorMiddleware HTTPErrorHandler
 func (*Middleware) HTTPErrorMiddleware(err error, c echo.Context) {
 	// fmt.Println(c.Path(), c.QueryParams(), err.Error())
 	// code := http.StatusInternalServerError

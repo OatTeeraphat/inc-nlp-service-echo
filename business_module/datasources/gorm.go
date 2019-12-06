@@ -17,13 +17,13 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-// FillChatGORM FillChatGORM
-type FillChatGORM struct {
+// GORM GORM
+type GORM struct {
 	DB *gorm.DB
 }
 
 // NewGORM NewGORM
-func NewGORM(config *commons.FillChatSelectENV) *FillChatGORM {
+func NewGORM(config *commons.SelectENV) *GORM {
 	dbURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
 		config.NlpDBHost,
 		config.NlpDBPort,
@@ -45,7 +45,7 @@ func NewGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 		&domains.NlpDashboardDomain{},
 		&domains.ClientDomain{},
 	)
-	return &FillChatGORM{
+	return &GORM{
 		DB: db,
 	}
 }
@@ -56,7 +56,7 @@ func NewGORM(config *commons.FillChatSelectENV) *FillChatGORM {
 //                  Embedding a large number of variables at once will raise an error beyond the limit of prepared statement.
 //                  Larger size will normally lead the better performance, but 2000 to 3000 is reasonable.
 // [excludeColumns] Columns you want to exclude from insert. You can omit if there is no column you want to exclude.
-func (gorm FillChatGORM) BulkInsert(objects []interface{}, chunkSize int, excludeColumns ...string) error {
+func (gorm GORM) BulkInsert(objects []interface{}, chunkSize int, excludeColumns ...string) error {
 	// Split records with specified size not to exceed Database parameter limit
 	for _, objSet := range splitObjects(objects, chunkSize) {
 		if err := insertObjSet(gorm.DB, objSet, excludeColumns...); err != nil {

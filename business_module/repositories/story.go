@@ -10,7 +10,7 @@ import (
 
 // StoryRepository app story mapping
 type StoryRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // IStoryRepository story desc interface
@@ -22,7 +22,7 @@ type IStoryRepository interface {
 }
 
 // NewStoryRepository story desc instance
-func NewStoryRepository(data *datasources.FillChatGORM) IStoryRepository {
+func NewStoryRepository(data *datasources.GORM) IStoryRepository {
 	return &StoryRepository{data}
 }
 

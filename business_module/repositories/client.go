@@ -10,7 +10,7 @@ import (
 
 // ClientRepository app repository
 type ClientRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // IClientRepository app repository interface
@@ -20,7 +20,7 @@ type IClientRepository interface {
 }
 
 // NewClientRepository app repository
-func NewClientRepository(data *datasources.FillChatGORM) IClientRepository {
+func NewClientRepository(data *datasources.GORM) IClientRepository {
 	return &ClientRepository{data}
 }
 

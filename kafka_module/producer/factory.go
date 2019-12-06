@@ -25,7 +25,7 @@ func createTLSConfiguration() (t *tls.Config) {
 }
 
 // NewProducer NewProducer
-func NewProducer(selectENV *commons.FillChatSelectENV) *Producer {
+func NewProducer(selectENV *commons.SelectENV) *Producer {
 	algorithm := "sha256"
 	splitBrokers := strings.Split(selectENV.KafkaBrokers, ",")
 	conf := sarama.NewConfig()

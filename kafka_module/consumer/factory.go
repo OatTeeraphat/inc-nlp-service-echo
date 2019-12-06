@@ -24,7 +24,7 @@ func createTLSConfiguration() (t *tls.Config) {
 }
 
 // NewConsumerSarama NewConsumerSarama
-func NewConsumerSarama(selectENV *commons.FillChatSelectENV) *Consumer {
+func NewConsumerSarama(selectENV *commons.SelectENV) *Consumer {
 	algorithm := "sha256"
 	splitBrokers := strings.Split(selectENV.KafkaBrokers, ",")
 	conf := sarama.NewConfig()

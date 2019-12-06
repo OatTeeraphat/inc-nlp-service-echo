@@ -10,7 +10,7 @@ import (
 
 // NlpDashboardRepository nlp dashboard repository
 type NlpDashboardRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // INlpDashboardRepository nlp dashboard repository interface
@@ -21,7 +21,7 @@ type INlpDashboardRepository interface {
 }
 
 // NewNlpDashboardRepository nlp dashboard repository
-func NewNlpDashboardRepository(data *datasources.FillChatGORM) INlpDashboardRepository {
+func NewNlpDashboardRepository(data *datasources.GORM) INlpDashboardRepository {
 	return &NlpDashboardRepository{data}
 }
 

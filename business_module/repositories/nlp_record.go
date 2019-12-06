@@ -10,7 +10,7 @@ import (
 
 // NlpRecordRepository nlp query appearance
 type NlpRecordRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // INlpRecordRepository nlp query appearance interface
@@ -31,7 +31,7 @@ type INlpRecordRepository interface {
 }
 
 // NewNlpRecordRepository new nlp record instance
-func NewNlpRecordRepository(data *datasources.FillChatGORM) INlpRecordRepository {
+func NewNlpRecordRepository(data *datasources.GORM) INlpRecordRepository {
 	return &NlpRecordRepository{data}
 }
 
@@ -63,7 +63,7 @@ func (repo *NlpRecordRepository) FindByKeywordMinhash(keywordMinhash uint32) []d
 
 // BulkInsert BulkInsert
 func (repo *NlpRecordRepository) BulkInsert(nlpRecordDomain []interface{}, bulkCount int) error {
-	return repo.FillChatGORM.BulkInsert(nlpRecordDomain, bulkCount)
+	return repo.GORM.BulkInsert(nlpRecordDomain, bulkCount)
 }
 
 // BulkDeleteByIDs BulkDeleteByIDs
