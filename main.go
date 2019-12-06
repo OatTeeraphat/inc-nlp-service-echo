@@ -79,7 +79,7 @@ func (h HealthCheck) HeathCheck(c echo.Context) error {
 func main() {
 	// Configuration
 	selectENV := commons.NewSelectENV()
-	// common1 := commons.NewMiddleware()
+	// selectMiddleware := commons.NewMiddleware()
 
 	log.SetFormatter(&log.TextFormatter{})
 	log.SetOutput(os.Stdout)
@@ -116,7 +116,7 @@ func main() {
 	svc0 := appService.NewService(repo6)
 	svc1 := storyService.NewService(repo4)
 	svc2 := nlpTraininglogService.NewService(repo0)
-	svc3 := nlpService.NewService(repo1, repo0, repo3, repo7, pro0)
+	svc3 := nlpService.NewService(repo1, repo0, repo3, repo7)
 	svc4 := categorizeService.NewService(repo5, repo6)
 	svc5 := nlpDashboardService.NewService(repo7)
 
@@ -144,7 +144,7 @@ func main() {
 	appGateway.NewHTTPGateway(api, svc0)
 	storyGateway.NewHTTPGateway(api, svc1)
 	nlpTraininglogGateway.NewHTTPGateway(api, svc2)
-	nlpGateway.NewHTTPGateway(api, svc3)
+	nlpGateway.NewHTTPGateway(api, svc3, pro0)
 	fbGateway.NewHTTPGateway(api, svc3)
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)

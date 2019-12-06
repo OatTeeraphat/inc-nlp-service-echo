@@ -112,7 +112,7 @@ func insertObjSet(db *gorm.DB, objects []interface{}, excludeColumns ...string) 
 		// Make new row
 		variables := make([]string, 0, attrSize)
 
-		// Append id
+		// Append uuid
 		scope.AddToVars(uuid.NewV4().String())
 		variables = append(variables, "?")
 
