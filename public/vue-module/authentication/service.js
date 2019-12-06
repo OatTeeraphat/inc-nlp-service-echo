@@ -11,7 +11,7 @@ class ClientSignInRequest {
 // authentication service
 export class AuthenticationService {
 
-    constructor( httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
+    constructor(httpRepository, vueRouter, cookieRepository, vueErrorHandler) {
         this.httpRepository = httpRepository
         this.cookieRepository = cookieRepository
         this.vueRouter = vueRouter
@@ -25,12 +25,12 @@ export class AuthenticationService {
             switchMap(
                 it => {
                     if (this.isEmptyUsernameOrPassword(it)) return throwError("username or password can not be empty")
-                    
+
                     if (this.isNotEmail(it.username)) return throwError("email invalid format")
 
                     return this.httpRepository.clientSignIn(it.username, it.password).pipe(
-                        map( ({ response }) => {
-
+                        map(({ response }) => {
+                            console.log({ response })
                             let model = new GetClientSignInAdapter().adapt(response)
 
                             if (it.rememberMe) {
@@ -49,7 +49,7 @@ export class AuthenticationService {
 
     // ล้อกอินจ้า
     newClientSignInEvent(username, password, rememberMe) {
-        return this.clientSignInSubject.next( new ClientSignInRequest(username, password, rememberMe) )
+        return this.clientSignInSubject.next(new ClientSignInRequest(username, password, rememberMe))
     }
 
     // เช็ค email format
@@ -67,5 +67,5 @@ export class AuthenticationService {
         this.cookieRepository.removeClientSession()
         return this.vueRouter.replace("/")
     }
-    
+
 }

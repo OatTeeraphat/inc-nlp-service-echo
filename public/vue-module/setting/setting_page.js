@@ -43,7 +43,7 @@ var settingPage = Vue.component('setting-page', {
                                             </button>
                                         </h3>
                                         
-                                        <p class="text-muted mb-0">Your App Name</p>
+                                        <p class="text-muted mb-0">TEST</p>
                                     </div>
                                 </div>
                                 <hr>

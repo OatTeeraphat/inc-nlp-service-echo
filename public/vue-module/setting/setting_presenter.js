@@ -1,12 +1,12 @@
 class SettingViewModel {
 	constructor() {
-		this.chat_logs =  []
-		this.is_edit = { confidence: false, app_info : false }
+		this.chat_logs = []
+		this.is_edit = { confidence: false, app_info: false }
 		this.confidence = 0
 		this.app_info = {}
 		this.app_secret = ""
 		this.app_token = ""
-		this.debug = { keyword : "", loading : false }
+		this.debug = { keyword: "", loading: false }
 	}
 }
 
@@ -22,13 +22,14 @@ class SettingPresenter {
 			this.view.confidence = item.confidence
 		})
 
-		this.settingService.getAppInfoByClientId().subscribe(item => {
-			this.view.app_info = item
+		this.settingService.getAppInfoByClientId().subscribe(appInfo => {
+			this.view.app_info = appInfo.response
 		})
 
-		this.settingService.getAppCredentialByAppId().subscribe(item => {
-			this.view.app_secret = item.client_secret
-			this.view.app_token = item.access_token
+		this.settingService.getAppCredentialByAppId().subscribe(appSecret => {
+			const { access_token, client_secret } = appSecret.response
+			this.view.app_secret = `secret ${client_secret}`
+			this.view.app_token = `token ${access_token}`
 		})
 
 		this.settingService.setNlpConfidenceByClientID().subscribe()
@@ -58,7 +59,7 @@ class SettingPresenter {
 
 	onEditAppInfo($refs) {
 		let toggleDelay = of({}).pipe(delay(200))
-		toggleDelay.subscribe(() => $refs.focus() )
+		toggleDelay.subscribe(() => $refs.focus())
 		this.view.is_edit.app_info = true
 	}
 
@@ -78,7 +79,7 @@ class SettingPresenter {
 		})
 	}
 
-	onRevokeAppToken () {
+	onRevokeAppToken() {
 		this.settingService.setRevokeAppToken().subscribe(item => {
 			this.view.app_token = item.access_token
 		})
