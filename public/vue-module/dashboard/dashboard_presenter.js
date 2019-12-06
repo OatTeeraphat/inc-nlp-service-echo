@@ -43,10 +43,8 @@ export class DashBoardPresenter {
 	}
 
 	getInitialState(){
-		
 		this.dashBoardService.getAppInfoByClientId().subscribe(item => {
-			// console.log(item)
-			this.view.app_info = item
+			this.view.app_info = item.response
 		})
 		
 		this.dashBoardService.getApiStatInPeriodByAppId(this.period)

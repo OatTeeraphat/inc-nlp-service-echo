@@ -216,7 +216,7 @@ export class HttpRepository {
     getAppInfoByClientId = () => {
         return ajax({
             method: "GET",
-            url: `${this.BASE_API}/user/51494b2a-d412-4e41-86b6-052995dd3270/app`
+            url: `${this.BASE_API}/user/3794bfa3-b010-43fd-a670-d604c7740bda/app`
         })
     }
 
@@ -228,7 +228,7 @@ export class HttpRepository {
     getAppCredentialByAppId = () => {
         return ajax({
             method: "GET",
-            url: `${this.BASE_API}/user/51494b2a-d412-4e41-86b6-052995dd3270/secret`
+            url: `${this.BASE_API}/user/3794bfa3-b010-43fd-a670-d604c7740bda/secret`
         })
     }
 
