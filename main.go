@@ -72,7 +72,7 @@ func (h HealthCheck) HeathCheck(c echo.Context) error {
 func main() {
 	// Configuration
 	selectENV := commons.NewFillChatSelectENV()
-	common1 := commons.NewFillChatMiddleware()
+	// common1 := commons.NewFillChatMiddleware()
 
 	log.SetFormatter(&log.TextFormatter{})
 	log.SetOutput(os.Stdout)
