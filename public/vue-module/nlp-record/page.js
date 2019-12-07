@@ -97,8 +97,8 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                     </button>
                                 </th>
                                 <!-- // TODO: add one new keyword, intent, story -->
-                                <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence Here" v-model="$nlpRecordPresenter.view.addRow.keyword" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow($refs.keyword)" ref="keyword" autofocus></td>
-                                <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="$nlpRecordPresenter.view.addRow.intent" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow($refs.keyword)" ref="intent"></td>
+                                <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence Here" v-model="$nlpRecordPresenter.view.addRow.keyword" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow()" ref="keyword" autofocus :disabled="$nlpRecordPresenter.view.addRow.inputDisabled" ></td>
+                                <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="$nlpRecordPresenter.view.addRow.intent" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow()" ref="intent" :disabled="$nlpRecordPresenter.view.addRow.inputDisabled" ></td>
                                 <td class="col-2">
                                     <div class="input-group">
                                         <input type="text" class="form-control-plaintext p-0 input-dropdown-event" placeholder="Story Here" data-toggle="dropdown" :disabled="true" v-model="$nlpRecordPresenter.view.addRow.story" @focus="$nlpRecordPresenter.view.addRow.toggleStory = true" ref="story_name" >
@@ -114,10 +114,9 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                                             
                                                             $nlpRecordPresenter.view.addRow.keyword !== '' ||
                                                             $nlpRecordPresenter.view.addRow.intent !== '' 
-                                                            ? $nlpRecordPresenter.insertNlpRecordsRow($refs.keyword) 
+                                                            ? $nlpRecordPresenter.insertNlpRecordsRow() 
                                                             : true
-
-                                                        " 
+                                                        "
                                                         class="dropdown-item" href="#">{{ item.name }}</button>
                                                 <div class="dropdown-divider"></div>
                                                 <router-link class="dropdown-item" href="#" :to="{ path: '/story'}">Add New Story</router-link>
@@ -127,7 +126,7 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                 </td>
                                 <td class="col-1 text-center">
                                     <!-- // TODO: update one keyword, intent, story -->
-                                    <button @click="$nlpRecordPresenter.insertNlpRecordsRow($refs.keyword)" type="button" class="btn btn-link btn-table hover-success" title="Add Row">
+                                    <button @click="$nlpRecordPresenter.insertNlpRecordsRow()" type="button" class="btn btn-link btn-table hover-success" title="Add Row">
                                         <i class="fe fe-plus-circle"></i>
                                     </button>
                                 </td>

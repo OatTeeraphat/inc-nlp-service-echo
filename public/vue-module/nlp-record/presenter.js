@@ -20,11 +20,12 @@ class NlpRecordViewModel {
             toggleRow : false,
             toggleStory: false,
             highlight : false,
+            inputDisabled: false,
             keyword : "",
             intent : "",
             story: "",
             search_story : "",
-            listStory : ""
+            listStory : "",
         }
     }
 }
@@ -43,7 +44,7 @@ export class NlpRecordPresenter {
         this.view.addRow = new NlpRecordViewModel().addRow
     }
 
-    onMounted() {
+    onMounted($refs) {
         this.$getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( 
             item => {
                 this.view.page = this.view.page + 1
@@ -86,11 +87,20 @@ export class NlpRecordPresenter {
 
         this.nlpRecordsService.insertNlpRecords().subscribe(
             it => {
+
+                this.view.addRow.keyword = ""
+                this.view.addRow.intent = ""
+                this.view.addRow.story = ""
+
+                this.view.addRow.inputDisabled = false
+                this.toggleStory = false
+
+                of({}).pipe(delay(1)).subscribe(() => $refs.keyword.focus())
+
                 console.log("update success ", it)
                 if (it !== "ERROR") {
                     this.view.nlpRecords = [it, ...this.view.nlpRecords]
                     this.view.addRow.highlight = true
-                    this.toggleStory = false
                 }
             }
         )
@@ -163,8 +173,8 @@ export class NlpRecordPresenter {
         this.nlpRecordsService.nextUploadXLSXNlpRecord(fileList)
     }
 
-    insertNlpRecordsRow($refs) {
-        
+    insertNlpRecordsRow() {
+
         let _addRow = this.view.addRow
 
         this.nlpRecordsService.nextInsertNlpRecords({
@@ -172,14 +182,10 @@ export class NlpRecordPresenter {
             intent: _addRow.intent ,
             story_name: _addRow.story,
         })
-
-        this.view.addRow.keyword = ""
-        this.view.addRow.intent = ""
-        this.view.addRow.story = ""
         
         this.view.addRow.highlight = false
-        of({}).subscribe(() => $refs.focus())
-        
+        this.view.addRow.inputDisabled = true
+  
     }
  
     updateNlpRecordRow(item) {
