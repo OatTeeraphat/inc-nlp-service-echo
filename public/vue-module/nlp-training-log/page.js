@@ -1,4 +1,4 @@
-export default Vue.component('nlp-training-log-page', {    
+export const nlpTrainingLog = Vue.component('nlp-training-log-page', {    
     template: `
     <div class="warp" >
         <nav-component></nav-component>

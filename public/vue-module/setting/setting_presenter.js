@@ -10,7 +10,7 @@ class SettingViewModel {
 	}
 }
 
-class SettingPresenter {
+export class SettingPresenter {
 	constructor(settingService) {
 		this.view = new SettingViewModel()
 		this.settingService = settingService

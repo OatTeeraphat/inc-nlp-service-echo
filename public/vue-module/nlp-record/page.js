@@ -1,4 +1,4 @@
-export default Vue.component('nlp-record-page', {    
+export const nlpRecordPage = Vue.component('nlp-record-page', {    
     template: `
     <div class="warp" >
         <nav-component></nav-component>
