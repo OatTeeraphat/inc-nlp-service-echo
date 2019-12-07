@@ -23,13 +23,14 @@ class SettingPresenter {
 		})
 
 		this.settingService.getAppInfoByClientId().subscribe(appInfo => {
-			this.view.app_info = appInfo.response
+			// this.view.app_info = appInfo.response
 		})
 
 		this.settingService.getAppCredentialByAppId().subscribe(appSecret => {
-			const { access_token, client_secret } = appSecret.response
-			this.view.app_secret = `secret ${client_secret}`
-			this.view.app_token = `token ${access_token}`
+			console.log(appSecret)
+			// const { access_token, client_secret } = appSecret.response
+			// this.view.app_secret = `secret ${client_secret}`
+			// this.view.app_token = `token ${access_token}`
 		})
 
 		this.settingService.setNlpConfidenceByClientID().subscribe()
@@ -69,6 +70,7 @@ class SettingPresenter {
 		nlpResult.subscribe(item => {
 			this.view.debug.result = new GetNlpReplyAdapter().adapt(item.response)
 			this.view.debug.loading = false
+			console.log("success")
 		})
 	}
 
