@@ -44,7 +44,7 @@ func (repo *NlpTrainingLogRepository) Count() int64 {
 // Pagination Pagination
 func (repo *NlpTrainingLogRepository) Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain {
 	var Domain []domains.NlpTrainingLogDomain
-	repo.DB.Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("id desc").Find(&Domain)
+	repo.DB.Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
 	return Domain
 }
 
@@ -70,6 +70,6 @@ func (repo *NlpTrainingLogRepository) CountByKeywordMinhash(KeywordMinhash uint3
 // PaginationByKeywordMinhash PaginationByKeywordMinhash
 func (repo *NlpTrainingLogRepository) PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpTrainingLogDomain {
 	var Domain []domains.NlpTrainingLogDomain
-	repo.DB.Where(&domains.NlpTrainingLogDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("id desc").Find(&Domain)
+	repo.DB.Where(&domains.NlpTrainingLogDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
 	return Domain
 }
