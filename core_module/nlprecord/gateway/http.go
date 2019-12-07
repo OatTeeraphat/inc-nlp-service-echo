@@ -63,11 +63,11 @@ func (con *HTTPGateway) ReadNlpReply(e echo.Context) error {
 func (con *HTTPGateway) CreateRecord(e echo.Context) error {
 	// appID := e.QueryParam("app_id")
 
-	createNlpRecordModel := new([]dao.CreateNlpRecordDao)
+	createNlpRecordModel := new(dao.CreateNlpRecordDao)
 	e.Bind(&createNlpRecordModel)
 
-	response := con.NlpService.CreateRecord(*createNlpRecordModel)
-	return e.String(http.StatusOK, response)
+	response := con.NlpService.CreateOneRecord(*createNlpRecordModel)
+	return e.JSON(http.StatusOK, response)
 }
 
 // SearchPagination get nlp records by app

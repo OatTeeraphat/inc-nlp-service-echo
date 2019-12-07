@@ -64,16 +64,25 @@ export class HttpRepository {
     }
 
     insertNlpRecords(nlpRecord){
-        return of({
-            id: "ff2e1820-099b-434c-9237-0ab3040ffee9",
-            intent: nlpRecord.intent,
-            keyword: nlpRecord.keyword,
-            story_name: nlpRecord.story_name,
-            updated_at: "2019-12-06T04:48:29.508284Z"
-        }).pipe(
-           tap( () => console.log("httpRepository ", nlpRecord)),
-           delay(600)
-        )
+        return ajax({
+            method: "POST",
+            url: `${this.BASE_API}/v1/nlp/record`,
+            headers: { 
+                'Content-Type': 'application/json',
+                "Authorization": this._getAuthorizedBearer()
+            },
+            body: {
+                keyword: nlpRecord.keyword,
+                intent: nlpRecord.intent,
+                story_name: nlpRecord.story_name
+            }
+        })
+
+        // id: "ff2e1820-099b-434c-9237-0ab3040ffee9",
+        // intent: nlpRecord.intent,
+        // keyword: nlpRecord.keyword,
+        // story_name: nlpRecord.story_name,
+        // updated_at: "2019-12-06T04:48:29.508284Z"
     }
 
     putNlpRecord(id, keyword, intent, story_name) {

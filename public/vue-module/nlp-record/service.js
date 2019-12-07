@@ -95,6 +95,15 @@ export class NlpRecordsService {
                 let condition = nlpRecord.keyword !== "" &&  nlpRecord.intent !== ""
                 if (condition){
                     return this.httpRepository.insertNlpRecords(nlpRecord).pipe(
+                        map( ({ response }) => { 
+                            return {
+                                "id": response.id,
+                                "intent": response.intent,
+                                "keyword": response.keyword,
+                                "story_name": response.story_name,
+                                "updated_at": response.updated_at
+                            } 
+                        }),
                         this.vueErrorHandler.catchHttpError()
                     )
                 }
