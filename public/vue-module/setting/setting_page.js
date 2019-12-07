@@ -273,6 +273,6 @@ var settingPage = Vue.component('setting-page', {
         this.$settingPresenter.getInitialState(this.$refs) 
     },
     beforeDestroy: function () {
-        this.$webChatService.disposable()
+        this.$settingPresenter.beforeDestroy()
     }
 })

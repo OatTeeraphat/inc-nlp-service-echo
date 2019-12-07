@@ -92,7 +92,7 @@ class SettingPresenter {
 		return d.toISOString()
 	}
 
-	disposal() {
+	beforeDestroy() {
 		this.view = new SettingViewModel()
 	}
 }
