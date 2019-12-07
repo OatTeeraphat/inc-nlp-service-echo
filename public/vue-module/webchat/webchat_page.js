@@ -101,23 +101,23 @@ export const webChatPage = Vue.component('web-chat-page', {
         }
     },
     mounted: function () {
-        this.subscription = this.$webChatService.getFillChatNlpReplyModelWS().subscribe( item => {
-            console.log(item)
-            this.chat_logs.push( new GetNlpChatLogsAdapter().adapt(item))
-        })
-        this.getCurrentTime()
+        // this.subscription = this.$webChatService.getFillChatNlpReplyModelWS().subscribe( item => {
+        //     console.log(item)
+        //     this.chat_logs.push( new GetNlpChatLogsAdapter().adapt(item))
+        // })
+        // this.getCurrentTime()
     },
     beforeDestroy: function () {
-        this.subscription.unsubscribe()
+        // this.subscription.unsubscribe()
     },
     methods: {
-        onSendNlpKeyword: function () {
-            this.$webChatService.nextNlpKeyword(this.keyword_input)
-            this.keyword_input = ""
-        },
-        getCurrentTime: function() {
-            var d = new Date()
-            return d.toISOString()
-        }
+        // onSendNlpKeyword: function () {
+        //     this.$webChatService.nextNlpKeyword(this.keyword_input)
+        //     this.keyword_input = ""
+        // },
+        // getCurrentTime: function() {
+        //     var d = new Date()
+        //     return d.toISOString()
+        // }
     },
 })

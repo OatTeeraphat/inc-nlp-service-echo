@@ -1,4 +1,4 @@
-class GetNlpReplyAdapter {
+export class GetNlpReplyAdapter {
     adapt(item) {
         return {
             keyword: item.keyword,
@@ -8,7 +8,7 @@ class GetNlpReplyAdapter {
     }
 }
 
-class GetNlpChatLogsAdapter {
+export class GetNlpChatLogsAdapter {
     adapt(item) {
         return {
             keyword: item.keyword,

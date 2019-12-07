@@ -1,3 +1,5 @@
+import { GetNlpReplyAdapter } from './get_nlp_reply_adapter.js'
+
 class SettingViewModel {
 	constructor() {
 		this.chat_logs = []
