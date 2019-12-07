@@ -32,6 +32,7 @@ class NlpRecordViewModel {
 
 export class NlpRecordPresenter {
     constructor(nlpRecordsService) {
+        this.$refs = {}
         this.view = new NlpRecordViewModel()
         this.nlpRecordsService = nlpRecordsService
         this.$searchNlpRecordsServiceSubscription = null
@@ -45,6 +46,7 @@ export class NlpRecordPresenter {
     }
 
     onMounted($refs) {
+        this.$refs = $refs
         this.$getNlpRecordsByInfiniteScrollSubscription = this.nlpRecordsService.getNlpRecordsByInfiniteScrollSubject().subscribe( 
             item => {
                 this.view.page = this.view.page + 1
@@ -95,7 +97,7 @@ export class NlpRecordPresenter {
                 this.view.addRow.inputDisabled = false
                 this.toggleStory = false
 
-                of({}).pipe(delay(1)).subscribe(() => $refs.keyword.focus())
+                of({}).pipe(delay(1)).subscribe(() => this.$refs.keyword.focus())
 
                 console.log("update success ", it)
                 if (it !== "ERROR") {
@@ -203,15 +205,9 @@ export class NlpRecordPresenter {
         this.$getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
         this.$uploadXlSXNlpRecordUnSubscription.unsubscribe()
         this.$updateNlpRecordRowSubscription.unsubscribe()
-
-        // set page index to 1
-        this.view.page = 1
         this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(1)
         
-        this.view.nlpRecords = []
-        this.view.nlpRecordsCheckedList = { ids: [] }
-
-        this.view.nlpRecordsByKeyword = []
-        this.view.nlpRecordsByKeywordCheckedList = { ids: [] }
+        // set page index to 1
+        this.view = new NlpRecordViewModel()
     }
 }
