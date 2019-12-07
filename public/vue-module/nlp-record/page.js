@@ -100,13 +100,8 @@ export default Vue.component('nlp-record-page', {
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence Here" v-model="$nlpRecordPresenter.view.addRow.keyword" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow($refs.keyword)" ref="keyword" autofocus></td>
                                 <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="$nlpRecordPresenter.view.addRow.intent" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow($refs.keyword)" ref="intent"></td>
                                 <td class="col-2">
-                                    
                                     <div class="input-group">
-                                        <input type="text" class="form-control-plaintext p-0 input-dropdown-event" placeholder="Story Here" data-toggle="dropdown" unselectable="on" disabled 
-                                            v-model="$nlpRecordPresenter.view.addRow.story" 
-                                            @focus="$nlpRecordPresenter.view.addRow.toggleStory = true"
-                                            ref="story_name"
-                                        >
+                                        <input type="text" class="form-control-plaintext p-0 input-dropdown-event" placeholder="Story Here" data-toggle="dropdown" :disabled="true" v-model="$nlpRecordPresenter.view.addRow.story" @focus="$nlpRecordPresenter.view.addRow.toggleStory = true" ref="story_name" >
                                         <div class="input-group-append" v-bind:class="{ show : $nlpRecordPresenter.view.addRow.toggleStory }" >
                                             <button class="btn dropdown-toggle p-0 box-shadow-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-event" v-bind:class="{ show : $nlpRecordPresenter.view.addRow.toggleStory }">
@@ -117,7 +112,7 @@ export default Vue.component('nlp-record-page', {
                                                             $nlpRecordPresenter.view.addRow.story = item.name;
                                                             $nlpRecordPresenter.view.addRow.toggleStory = false;
                                                             
-                                                            $nlpRecordPresenter.view.addRow.keyword !== '' &&
+                                                            $nlpRecordPresenter.view.addRow.keyword !== '' ||
                                                             $nlpRecordPresenter.view.addRow.intent !== '' 
                                                             ? $nlpRecordPresenter.insertNlpRecordsRow($refs.keyword) 
                                                             : true
@@ -126,12 +121,13 @@ export default Vue.component('nlp-record-page', {
                                                         class="dropdown-item" href="#">{{ item.name }}</button>
                                                 <div class="dropdown-divider"></div>
                                                 <router-link class="dropdown-item" href="#" :to="{ path: '/story'}">Add New Story</router-link>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="col-1 text-center">
                                     <!-- // TODO: update one keyword, intent, story -->
-                                    <button @click="$nlpRecordPresenter.insertNlpRecordsRow()" type="button" class="btn btn-link btn-table hover-success" title="Add Row">
+                                    <button @click="$nlpRecordPresenter.insertNlpRecordsRow($refs.keyword)" type="button" class="btn btn-link btn-table hover-success" title="Add Row">
                                         <i class="fe fe-plus-circle"></i>
                                     </button>
                                 </td>

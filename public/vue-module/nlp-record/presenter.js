@@ -164,7 +164,9 @@ export class NlpRecordPresenter {
     }
 
     insertNlpRecordsRow($refs) {
+        
         let _addRow = this.view.addRow
+
         this.nlpRecordsService.nextInsertNlpRecords({
             keyword: _addRow.keyword,
             intent: _addRow.intent ,
