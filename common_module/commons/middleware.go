@@ -4,24 +4,24 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// FillChatMiddleware FillChatMiddleware
-type FillChatMiddleware struct {
+// Middleware Middleware
+type Middleware struct {
 }
 
-// IFillChatMiddleware IFillChatMiddleware
-type IFillChatMiddleware interface {
+// IMiddleware IMiddleware
+type IMiddleware interface {
 	HTTPErrorMiddleware(err error, c echo.Context)
 	StaffAuthMiddleware(username, password string, c echo.Context) (bool, error)
 	CustomerAuthMiddleware(err error, c echo.Context)
 }
 
-// NewFillChatMiddleware NewFillChatMiddleware
-func NewFillChatMiddleware() IFillChatMiddleware {
-	return &FillChatMiddleware{}
+// NewMiddleware NewMiddleware
+func NewMiddleware() IMiddleware {
+	return &Middleware{}
 }
 
-// HTTPErrorMiddleware FillChatHTTPErrorHandler
-func (*FillChatMiddleware) HTTPErrorMiddleware(err error, c echo.Context) {
+// HTTPErrorMiddleware HTTPErrorHandler
+func (*Middleware) HTTPErrorMiddleware(err error, c echo.Context) {
 	// fmt.Println(c.Path(), c.QueryParams(), err.Error())
 	// code := http.StatusInternalServerError
 	// if he, ok := err.(*echo.HTTPError); ok {
@@ -35,7 +35,7 @@ func (*FillChatMiddleware) HTTPErrorMiddleware(err error, c echo.Context) {
 }
 
 // StaffAuthMiddleware StaffAuthMiddleware
-func (*FillChatMiddleware) StaffAuthMiddleware(username, password string, c echo.Context) (bool, error) {
+func (*Middleware) StaffAuthMiddleware(username, password string, c echo.Context) (bool, error) {
 	if username == "admin" && password == "admin" {
 		return true, nil
 	}
@@ -43,7 +43,7 @@ func (*FillChatMiddleware) StaffAuthMiddleware(username, password string, c echo
 }
 
 // CustomerAuthMiddleware CustomerAuthMiddleware
-func (*FillChatMiddleware) CustomerAuthMiddleware(err error, c echo.Context) {
+func (*Middleware) CustomerAuthMiddleware(err error, c echo.Context) {
 
 	c.Logger().Info("hello")
 }

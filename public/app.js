@@ -83,7 +83,7 @@ const nlpTrainingLogService = new NlpTrainingLogService(httpRepo, vueRouter, coo
 const nlpReplyCounterService = new NlpReplyCounterService(httpRepo, vueErrorHandler)
 const settingService = new SettingService(httpRepo, vueErrorHandler)
 const dashBoardService = new DashBoardService(httpRepo, vueErrorHandler)
-const nlpLoggingService = new NlpLoggingService(httpRepo, vueErrorHandler)
+const nlpLoggingService = new NlpLoggingService(socketRepo, vueErrorHandler)
 
 // presenter initialize
 const authPresenter = new AuthenticationPresenter(authService)

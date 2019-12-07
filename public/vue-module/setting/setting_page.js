@@ -43,7 +43,7 @@ var settingPage = Vue.component('setting-page', {
                                             </button>
                                         </h3>
                                         
-                                        <p class="text-muted mb-0">Your App Name</p>
+                                        <p class="text-muted mb-0">TEST</p>
                                     </div>
                                 </div>
                                 <hr>
@@ -273,6 +273,6 @@ var settingPage = Vue.component('setting-page', {
         this.$settingPresenter.getInitialState(this.$refs) 
     },
     beforeDestroy: function () {
-        this.$webChatService.disposable()
+        this.$settingPresenter.beforeDestroy()
     }
 })

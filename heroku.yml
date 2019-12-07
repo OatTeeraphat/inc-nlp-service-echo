@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: /go/src/inc-nlp-service-echo/inc-nlp-service-echo
+  web: ./inc-nlp-service-echo

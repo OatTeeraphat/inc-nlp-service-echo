@@ -20,6 +20,12 @@ services:
       - NLP_DB_PORT=5432
       - NLP_DB_USERNAME=reaxllzt
       - NLP_DB_PASSWORD=qs0jZQMUWFOvQU4SaYXElVegjzDgLz7c
+      - KAFKA_BROKERS=moped-01.srvs.cloudkafka.com:9094,moped-02.srvs.cloudkafka.com:9094,moped-03.srvs.cloudkafka.com:9094
+      - KAFKA_USERNAME=60vh9kjz
+      - KAFKA_PASSWORD=iMkMvCgioCShnTCAdsrDBLe0IdsM6RDF
+      - KAFKA_TOPIC_PREFIX=60vh9kjz-
+      - KAFKA_GROUP_ID=CLOUDKARAFKA_GROUPID
       - IS_SWAGGER=true
+      - IS_GORM_LOGGING=true
     command:
       - ./inc-nlp-service-echo

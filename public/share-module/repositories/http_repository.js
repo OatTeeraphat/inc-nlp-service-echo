@@ -8,30 +8,20 @@ export class HttpRepository {
     _getAuthorizedBearer() {
         return `Bearer ${this.cookieRepo.getClientSession()}`
     }
-    
+
     // END_POINT: /v1/login
     clientSignIn(username, password) {
         return ajax({
             method: "POST",
-            url: `${this.BASE_API}/v1/login`,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            url: `${this.BASE_API}/login`,
+            headers: { 'Content-Type': 'application/json' },
             body: {
-                username: username,
+                email: username,
                 password: password
             }
         })
-        return of({
-            "consumer_id": "fe62eca5-f4d3-468c-b628-1142214dbf87",
-            "username": "mock_chanasit",
-            "email": "mock_chanasit@gmail.com",
-            "access_token": "hOurGBmIfSlp6r2GBLwIf9zJNF9xusuL",
-            "refresh_token": "zK40mQb7KmROVc5jL7Ef1gbI7ewnqXsC",
-            "expires_in": 7776000
-        }).pipe(
-            delay(1600)
-        )
     }
-    
+
     // END_POINT: ############# TODO ###############
     signOut() {
         return of()
@@ -40,12 +30,12 @@ export class HttpRepository {
 
     // END_POINT: /v1/nlp/record/pagination?page=
     getNlpRecordsPagination(page) {
-        return ajax ({
-            method: "GET", 
-            url: `${this.BASE_API}/v1/nlp/record/pagination?page=${page}`, 
-            headers: { 
+        return ajax({
+            method: "GET",
+            url: `${this.BASE_API}/v1/nlp/record/pagination?page=${page}`,
+            headers: {
                 "Content-Type": "application/json",
-                "Authorization": this._getAuthorizedBearer() 
+                "Authorization": this._getAuthorizedBearer()
             }
         })
     }
@@ -63,12 +53,12 @@ export class HttpRepository {
 
     // END_POINT: /v1/nlp/record/pagination?keyword=&page=
     getNlpRecordsPaginationByKeyword(keyword, page) {
-        return ajax ({
-            method: "GET", 
+        return ajax({
+            method: "GET",
             url: `${this.BASE_API}/v1/nlp/record/pagination?keyword=${keyword}&page=${page}`,
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
-                "Authorization": this._getAuthorizedBearer() 
+                "Authorization": this._getAuthorizedBearer()
             }
         })
     }
@@ -133,9 +123,9 @@ export class HttpRepository {
     // END_POINT: /v1/nlp/record/bulk
     bulkDeleteNlpRecordsByIDs(ids) {
         return ajax({
-            method: "DELETE", 
+            method: "DELETE",
             url: `${this.BASE_API}/v1/nlp/record/bulk`,
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer()
             },
@@ -148,7 +138,7 @@ export class HttpRepository {
         return ajax({
             method: "DELETE",
             url: `${this.BASE_API}/v1/nlp/record?id=${id}`,
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer()
             },
@@ -177,12 +167,12 @@ export class HttpRepository {
 
     // EndPoint: /v1/story?id=
     deleteStoryByID(id) {
-        return ajax({ 
-            method: "DELETE", 
+        return ajax({
+            method: "DELETE",
             url: `${this.BASE_API}/v1/story?id=${id}`,
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
-                "Authorization": this._getAuthorizedBearer() 
+                "Authorization": this._getAuthorizedBearer()
             }
         })
     }
@@ -212,10 +202,10 @@ export class HttpRepository {
     }
 
     // END_POINT: /v1/nlp/log/pagination?keyword=&intent=&story=&page=
-    getNlpTrainingLogPagination (keyword, intent, story, page) {
-        return ajax ({
-            method: "GET", 
-            url: `${this.BASE_API}/v1/nlp/log/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`, 
+    getNlpTrainingLogPagination(keyword, intent, story, page) {
+        return ajax({
+            method: "GET",
+            url: `${this.BASE_API}/v1/nlp/log/pagination?keyword=${keyword}&intent=${intent}&story=${story}&page=${page}`,
             headers: { "Authorization": this._getAuthorizedBearer() }
         })
     }
@@ -244,41 +234,35 @@ export class HttpRepository {
         delay(600)
     )
 
-    // END_POINT: ############# TODO: ###############
-    getAppInfoByClientId = () => of({
-        id: "632861333807100",
-        status : 1,
-        name: "Inccommon Studio",
-        owner: "Chanasit.B",
-        plan: "unlimited",
-        record_limit : "437"
-    }).pipe(
-        delay(600)
-    )
+    getAppInfoByClientId = () => {
+        return ajax({
+            method: "GET",
+            url: `${this.BASE_API}/user/3794bfa3-b010-43fd-a670-d604c7740bda/app`
+        })
+    }
 
     // END_POINT: ############# TODO: ###############
     setAppInfoByClientId = (app_info) => of({}).pipe(
         delay(600)
     )
 
-    // END_POINT: ############# TODO: ###############
-    getAppCredentialByAppId = () => of({
-        access_token: 'token ' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
-        client_secret: 'secret ' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
-    }).pipe(
-        delay(600)
-    )
+    getAppCredentialByAppId = () => {
+        return ajax({
+            method: "GET",
+            url: `${this.BASE_API}/user/3794bfa3-b010-43fd-a670-d604c7740bda/secret`
+        })
+    }
 
     // END_POINT: ############# TODO: ###############
     revokeAccessTokenByAppId = () => of({
-        access_token : 'token re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
+        access_token: 'token re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2),
     }).pipe(
         delay(600)
     )
     
     // END_POINT: ############# TODO: ###############
     revokeSecretByAppId = () => of({
-        client_secret : 'secret re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+        client_secret: 'secret re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
     }).pipe(
         delay(600)
     )

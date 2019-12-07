@@ -8,7 +8,7 @@ import (
 
 // AppRepository app repository
 type AppRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // IAppRepository app repository interface
@@ -17,13 +17,13 @@ type IAppRepository interface {
 }
 
 // NewAppRepository app repository
-func NewAppRepository(data *datasources.FillChatGORM) IAppRepository {
+func NewAppRepository(data *datasources.GORM) IAppRepository {
 	return &AppRepository{data}
 }
 
 // FindByID FindByID
 func (repo AppRepository) FindByID(ID uuid.UUID) domains.AppDomain {
-	var appDomain domains.AppDomain
-	repo.DB.First(&appDomain, ID)
-	return appDomain
+	var Domain domains.AppDomain
+	repo.DB.First(&Domain, ID)
+	return Domain
 }

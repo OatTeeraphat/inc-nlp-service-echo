@@ -8,7 +8,7 @@ import (
 )
 
 func TestENV(t *testing.T) {
-	config := commons.NewFillChatSelectENV()
+	config := commons.NewSelectENV()
 
 	convey.Convey("Subject: TestENV", t, func() {
 

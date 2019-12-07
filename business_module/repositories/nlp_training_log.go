@@ -10,12 +10,12 @@ import (
 
 // NlpTrainingLogRepository nlp query appearance
 type NlpTrainingLogRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // INlpTrainingLogRepository nlp query appearance interface
 type INlpTrainingLogRepository interface {
-	Save(nlpTrainingRecordDomain *domains.NlpTrainingLogDomain)
+	Save(Domain *domains.NlpTrainingLogDomain)
 	Count() int64
 	Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain
 	DeleteByID(ID uuid.UUID) *gorm.DB
@@ -25,13 +25,13 @@ type INlpTrainingLogRepository interface {
 }
 
 // NewNlpTrainingLogRepository new nlp record instance
-func NewNlpTrainingLogRepository(data *datasources.FillChatGORM) INlpTrainingLogRepository {
+func NewNlpTrainingLogRepository(data *datasources.GORM) INlpTrainingLogRepository {
 	return &NlpTrainingLogRepository{data}
 }
 
 // Save create new nlp record domain
-func (repo *NlpTrainingLogRepository) Save(nlpTrainingRecordDomain *domains.NlpTrainingLogDomain) {
-	repo.DB.Create(&nlpTrainingRecordDomain)
+func (repo *NlpTrainingLogRepository) Save(Domain *domains.NlpTrainingLogDomain) {
+	repo.DB.Create(&Domain)
 }
 
 // Count Count
@@ -43,16 +43,16 @@ func (repo *NlpTrainingLogRepository) Count() int64 {
 
 // Pagination Pagination
 func (repo *NlpTrainingLogRepository) Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain {
-	var nlpTrainingLogDomain []domains.NlpTrainingLogDomain
-	repo.DB.Limit(Limit).Find(&nlpTrainingLogDomain).Offset(Limit * (PageIndex - 1)).Order("id desc").Find(&nlpTrainingLogDomain)
-	return nlpTrainingLogDomain
+	var Domain []domains.NlpTrainingLogDomain
+	repo.DB.Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
+	return Domain
 }
 
 // DeleteByID DeleteByID..
 func (repo *NlpTrainingLogRepository) DeleteByID(ID uuid.UUID) *gorm.DB {
-	domain := &domains.NlpTrainingLogDomain{}
-	domain.ID = ID
-	return repo.DB.Unscoped().Delete(domain)
+	Domain := &domains.NlpTrainingLogDomain{}
+	Domain.ID = ID
+	return repo.DB.Unscoped().Delete(Domain)
 }
 
 // BulkDeleteByIDs BulkDeleteByIDs
@@ -69,7 +69,7 @@ func (repo *NlpTrainingLogRepository) CountByKeywordMinhash(KeywordMinhash uint3
 
 // PaginationByKeywordMinhash PaginationByKeywordMinhash
 func (repo *NlpTrainingLogRepository) PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpTrainingLogDomain {
-	var nlpTraininglogDomain []domains.NlpTrainingLogDomain
-	repo.DB.Where(&domains.NlpTrainingLogDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&nlpTraininglogDomain).Offset(Limit * (PageIndex - 1)).Order("id desc").Find(&nlpTraininglogDomain)
-	return nlpTraininglogDomain
+	var Domain []domains.NlpTrainingLogDomain
+	repo.DB.Where(&domains.NlpTrainingLogDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
+	return Domain
 }

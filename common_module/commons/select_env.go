@@ -6,8 +6,8 @@ import (
 	"strconv"
 )
 
-// FillChatSelectENV FillChat12Factor
-type FillChatSelectENV struct {
+// SelectENV SelectENV
+type SelectENV struct {
 	Env              string
 	EchoAppName      string
 	EchoPort         string
@@ -24,21 +24,22 @@ type FillChatSelectENV struct {
 	KafkaTopicPrefix string
 	KafkaGroupID     string
 	IsSwagger        string
+	IsGORMLogging    bool
 }
 
-// NewFillChatSelectENV switch
-func NewFillChatSelectENV() *FillChatSelectENV {
+// NewSelectENV switch
+func NewSelectENV() *SelectENV {
 	var env = os.Getenv("ENV")
 
 	if env != "development" && env != "" {
-		return SelectFillChatSelectENVBuild()
+		return SelectBuild()
 	}
-	return SelectFillChatSelectENVDevelopment()
+	return SelectDevelopment()
 }
 
-// SelectFillChatSelectENVDevelopment DEVELOPMENT
-func SelectFillChatSelectENVDevelopment() *FillChatSelectENV {
-	return &FillChatSelectENV{
+// SelectDevelopment DEVELOPMENT
+func SelectDevelopment() *SelectENV {
+	return &SelectENV{
 		Env:              "development",
 		EchoAppName:      "EchoApp-DEV",
 		EchoPort:         "9000",
@@ -55,12 +56,13 @@ func SelectFillChatSelectENVDevelopment() *FillChatSelectENV {
 		KafkaTopicPrefix: "60vh9kjz-",
 		KafkaGroupID:     "CLOUDKARAFKA_GROUPID",
 		IsSwagger:        "true",
+		IsGORMLogging:    formatENVtoBoolean("true"),
 	}
 }
 
-// SelectFillChatSelectENVBuild DOCKER ENVIRONMENT
-func SelectFillChatSelectENVBuild() *FillChatSelectENV {
-	return &FillChatSelectENV{
+// SelectBuild DOCKER ENVIRONMENT
+func SelectBuild() *SelectENV {
+	return &SelectENV{
 		Env:              os.Getenv("ENV"),
 		EchoAppName:      os.Getenv("ECHO_APP_NAME"),
 		EchoPort:         os.Getenv("PORT"),
@@ -77,11 +79,12 @@ func SelectFillChatSelectENVBuild() *FillChatSelectENV {
 		KafkaTopicPrefix: os.Getenv("KAFKA_TOPIC_PREFIX"),
 		KafkaGroupID:     os.Getenv("KAFKA_GROUP_ID"),
 		IsSwagger:        os.Getenv("IS_SWAGGER"),
+		IsGORMLogging:    formatENVtoBoolean(os.Getenv("IS_GORM_LOGGING")),
 	}
 }
 
 // FormatENVtoBoolean format env to boolean
-func FormatENVtoBoolean(env string) bool {
+func formatENVtoBoolean(env string) bool {
 	result, err := strconv.ParseBool(env)
 	if err != nil {
 		log.Fatal("swagger flag error: ", err)
@@ -90,7 +93,7 @@ func FormatENVtoBoolean(env string) bool {
 }
 
 // FormatENVtoInteger format string to int
-func FormatENVtoInteger(env string) int {
+func formatENVtoInteger(env string) int {
 	result, err := strconv.Atoi(env)
 	if err != nil {
 		log.Fatal("echo port error: ", err)
