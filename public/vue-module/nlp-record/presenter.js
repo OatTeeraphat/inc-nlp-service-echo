@@ -79,17 +79,14 @@ export class NlpRecordPresenter {
                 // let index = this.view.nlpRecords.findIndex(item => item.id === it.id);
             }
         )
-
         this.nlpRecordsService.getAllStories().subscribe(
             it => {
                 this.view.allStory = it
                 this.view.addRow.listStory = this.view.allStory
             }
         )
-
         this.nlpRecordsService.insertNlpRecords().subscribe(
             it => {
-
                 this.view.addRow.keyword = ""
                 this.view.addRow.intent = ""
                 this.view.addRow.story = ""
@@ -97,19 +94,15 @@ export class NlpRecordPresenter {
                 this.view.addRow.inputDisabled = false
                 this.toggleStory = false
 
-                of({}).pipe(delay(1)).subscribe(() => this.$refs.keyword.focus())
-
-                console.log("update success ", it)
                 if (it !== "ERROR") {
                     this.view.nlpRecords = [it, ...this.view.nlpRecords]
                     this.view.addRow.highlight = true
                 }
+
+                of(null).pipe(delay(1)).subscribe(() => this.$refs.keyword.focus())
             }
         )
-
         this.nlpRecordsService.getSearchStories().subscribe()
-
-
     }
 
     searchStoryAddRow() {
