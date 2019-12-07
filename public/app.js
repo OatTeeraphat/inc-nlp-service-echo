@@ -10,7 +10,6 @@ import { VueErrorHandler } from './share-module/middleware/vue_error_handle.js'
 // Auth module
 import { AuthenticationService } from './vue-module/authentication/service.js'
 import { AuthenticationPresenter } from './vue-module/authentication/presenter.js'
-import mainPage from './vue-module/authentication/page.js'
 
 // NLP training record module
 import { NlpLoggingService } from './vue-module/logs/service.js'
@@ -29,15 +28,16 @@ import { DashBoardPresenter } from './vue-module/dashboard/dashboard_presenter.j
 import { SettingPresenter } from './vue-module/setting/setting_presenter.js'
 import { SettingService } from './vue-module/setting/setting_service.js'
 
-import nlpRecordPage from './vue-module/nlp-record/page.js'
-import nlpTrainingLog from './vue-module/nlp-training-log/page.js'
-import storyPage from './vue-module/story/page.js'
-import welcomePage from './vue-module/welcome/page.js'
-import dashboardPage from './vue-module/dashboard/dashboard_page.js'
-import webChatPage from './vue-module/webchat/webchat_page.js'
-import accessLogPage from './vue-module/logs/page.js'
+import { mainPage } from './vue-module/authentication/page.js'
+import { nlpRecordPage } from './vue-module/nlp-record/page.js'
+import { nlpTrainingLog } from './vue-module/nlp-training-log/page.js'
+import { storyPage } from './vue-module/story/page.js'
+import { welcomePage } from './vue-module/welcome/page.js'
+import { dashboardPage } from './vue-module/dashboard/dashboard_page.js'
+import { webChatPage } from './vue-module/webchat/webchat_page.js'
+import { accessLogPage } from './vue-module/logs/page.js'
+import { settingPage } from './vue-module/setting/setting_page.js'
 
-// TODO: Setting Module
 
 import './vue-custom-module/navbar/nav_component.js'
 import './vue-custom-module/chart/chart_bubble_intent_component.js'

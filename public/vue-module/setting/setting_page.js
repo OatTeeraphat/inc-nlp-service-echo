@@ -1,4 +1,4 @@
-var settingPage = Vue.component('setting-page', {    
+export const settingPage = Vue.component('setting-page', {    
     template: `
 	<div class="warp">
 		<nav-component></nav-component>
