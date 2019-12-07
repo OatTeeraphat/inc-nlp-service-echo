@@ -73,6 +73,19 @@ export class HttpRepository {
         })
     }
 
+    insertNlpRecords(nlpRecord){
+        return of({
+            id: "ff2e1820-099b-434c-9237-0ab3040ffee9",
+            intent: nlpRecord.intent,
+            keyword: nlpRecord.keyword,
+            story_name: nlpRecord.story_name,
+            updated_at: "2019-12-06T04:48:29.508284Z"
+        }).pipe(
+           tap( () => console.log("httpRepository ", nlpRecord)),
+           delay(600)
+        )
+    }
+
     putNlpRecord(id, keyword, intent, story_name) {
         console.log(id, keyword, intent, story_name)
         return ajax ({
@@ -144,14 +157,22 @@ export class HttpRepository {
 
     // EndPoint: /v1/story
     getAllStories() {
-        return ajax({ 
-            method: "GET", 
-            url: `${this.BASE_API}/v1/story`,
-            headers: { 
-                "Content-Type": "application/json",
-                "Authorization": this._getAuthorizedBearer() 
-            }
-        })
+        // return ajax({ 
+        //     method: "GET", 
+        //     url: `${this.BASE_API}/v1/story`,
+        //     headers: { 
+        //         "Content-Type": "application/json",
+        //         "Authorization": this._getAuthorizedBearer() 
+        //     }
+        // })
+
+        return of([
+            { id: 1, name: "GREETING", desc: "good for greet", owner: "632861333807100" },
+            { id: 2, name: "FAQ", desc: "good for greet", owner: "632861333807100" },
+            { id: 3, name: "PRODUCT", desc: "good for greet", owner: "632861333807100" }
+        ]).pipe(
+            delay(600)
+        )
     }
 
     // EndPoint: /v1/story?id=

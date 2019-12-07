@@ -89,7 +89,7 @@ class SettingPresenter {
 		return d.toISOString()
 	}
 
-	disposal() {
+	disposable() {
 		this.view = new SettingViewModel()
 	}
 }

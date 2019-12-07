@@ -70,3 +70,30 @@ export class GetSearchByKeywordAndDistancePagination {
         return item
     }
 }
+
+export class GetStoryModelAdapter extends Array {
+
+    adapt(models) {
+        console.log(models)
+        models.map(model => {
+            this.push({
+                id: model.id,
+                name: model.name,
+            })
+        })
+
+        return this
+    }
+
+}
+
+export class GetNlpRecordInsertModelAdapter {
+    
+    adapt(models) {
+
+        models.story_name = models.story_name == "" ? "DEFAULT_STORY" : models.story_name
+
+        return models
+    }
+
+}

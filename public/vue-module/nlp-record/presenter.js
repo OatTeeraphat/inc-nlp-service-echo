@@ -15,6 +15,17 @@ class NlpRecordViewModel {
         this.nlpRecordsByKeywordCheckedList = { ids: [] }
         this.searchRecently = {}
         this.uploadXlSXPercentage = 0
+        this.allStory = []
+        this.addRow = {
+            toggleRow : false,
+            toggleStory: false,
+            highlight : false,
+            keyword : "",
+            intent : "",
+            story: "",
+            search_story : "",
+            listStory : ""
+        }
     }
 }
 
@@ -26,6 +37,10 @@ export class NlpRecordPresenter {
         this.$getNlpRecordsByInfiniteScrollSubscription = null
         this.$uploadXlSXNlpRecordUnSubscription = null
         this.$updateNlpRecordRowSubscription = null
+    }
+
+    onToggleAddRows() {
+        this.view.addRow = new NlpRecordViewModel().addRow
     }
 
     onMounted() {
@@ -61,9 +76,35 @@ export class NlpRecordPresenter {
                 // let index = this.view.nlpRecords.findIndex(item => item.id === it.id);
             }
         )
+
+        this.nlpRecordsService.getAllStories().subscribe(
+            it => {
+                this.view.allStory = it
+                this.view.addRow.listStory = this.view.allStory
+            }
+        )
+
+        this.nlpRecordsService.insertNlpRecords().subscribe(
+            it => {
+                console.log("update success ", it)
+                if (it !== "ERROR") {
+                    this.view.nlpRecords = [it, ...this.view.nlpRecords]
+                    this.view.addRow.highlight = true
+                    this.toggleStory = false
+                }
+            }
+        )
+
+        this.nlpRecordsService.getSearchStories().subscribe()
+
+
     }
 
-    
+    searchStoryAddRow() {
+        let search = this.view.addRow.search_story
+        let allStory = this.view.addRow.allStory
+        this.nextSearchStories(search, allStory)
+    }
 
     getMoreNlpRecordByInfiniteScroll( event ) {
         let {scrollTop, clientHeight, scrollHeight } = event.srcElement
@@ -122,6 +163,23 @@ export class NlpRecordPresenter {
         this.nlpRecordsService.nextUploadXLSXNlpRecord(fileList)
     }
 
+    insertNlpRecordsRow($refs) {
+        let _addRow = this.view.addRow
+        this.nlpRecordsService.nextInsertNlpRecords({
+            keyword: _addRow.keyword,
+            intent: _addRow.intent ,
+            story_name: _addRow.story,
+        })
+
+        this.view.addRow.keyword = ""
+        this.view.addRow.intent = ""
+        this.view.addRow.story = ""
+        
+        this.view.addRow.highlight = false
+        of({}).subscribe(() => $refs.focus())
+        
+    }
+ 
     updateNlpRecordRow(item) {
         this.nlpRecordsService.nextUpdateNlpRecordRow({
             id: item.id,
