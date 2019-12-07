@@ -26,6 +26,8 @@ import { NlpReplyCounterService } from './vue-module/welcome/services/nlp_reply_
 import { WelcomePresenter } from './vue-module/welcome/presenter.js'
 import { DashBoardService } from './vue-module/dashboard/dashboard_service.js'
 import { DashBoardPresenter } from './vue-module/dashboard/dashboard_presenter.js'
+import { SettingPresenter } from './vue-module/setting/setting_presenter.js'
+import { SettingService } from './vue-module/setting/setting_service.js'
 
 import nlpRecordPage from './vue-module/nlp-record/page.js'
 import nlpTrainingLog from './vue-module/nlp-training-log/page.js'
@@ -36,7 +38,6 @@ import webChatPage from './vue-module/webchat/webchat_page.js'
 import accessLogPage from './vue-module/logs/page.js'
 
 // TODO: Setting Module
-
 
 import './vue-custom-module/navbar/nav_component.js'
 import './vue-custom-module/chart/chart_bubble_intent_component.js'

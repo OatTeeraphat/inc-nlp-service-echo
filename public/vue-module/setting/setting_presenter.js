@@ -10,7 +10,7 @@ class SettingViewModel {
 	}
 }
 
-class SettingPresenter {
+export class SettingPresenter {
 	constructor(settingService) {
 		this.view = new SettingViewModel()
 		this.settingService = settingService
@@ -92,11 +92,7 @@ class SettingPresenter {
 		return d.toISOString()
 	}
 
-<<<<<<< HEAD
-	disposable() {
-=======
 	beforeDestroy() {
->>>>>>> 3f44cd70038db034301bfa9b37ae8402cf7bc345
 		this.view = new SettingViewModel()
 	}
 }
