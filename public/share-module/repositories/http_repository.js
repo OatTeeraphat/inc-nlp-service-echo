@@ -77,12 +77,6 @@ export class HttpRepository {
                 story_name: nlpRecord.story_name
             }
         })
-
-        // id: "ff2e1820-099b-434c-9237-0ab3040ffee9",
-        // intent: nlpRecord.intent,
-        // keyword: nlpRecord.keyword,
-        // story_name: nlpRecord.story_name,
-        // updated_at: "2019-12-06T04:48:29.508284Z"
     }
 
     putNlpRecord(id, keyword, intent, story_name) {

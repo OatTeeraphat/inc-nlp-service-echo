@@ -110,7 +110,7 @@ func main() {
 	repo7 := repositories.NewNlpDashboardRepository(orm)
 	// repo8 := repositories.NewClientRepository(orm)
 
-	jwtConfig := security.NewJWTConfig("secret")
+	// jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
 
 	svc0 := appService.NewService(repo6)
@@ -137,9 +137,8 @@ func main() {
 
 	api := e.Group("/v1")
 	authGateway.NewHTTPGateway(api, secure0)
-	// nlpDashboardGateway.NewWebSocketGateway(api)
-
-	api.Use(middleware.JWTWithConfig(jwtConfig))
+	// nlpDashboardGateway.NewWebSocketGateway(api)ห
+	// api.Use(middleware.JWTWithConfig(jwtConfig))
 
 	appGateway.NewHTTPGateway(api, svc0)
 	storyGateway.NewHTTPGateway(api, svc1)
