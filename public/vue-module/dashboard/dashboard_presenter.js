@@ -44,7 +44,12 @@ export class DashBoardPresenter {
 
 	getInitialState(){
 		this.dashBoardService.getAppInfoByClientId().subscribe(item => {
-			this.view.app_info = item.response
+			// FIXME: change to response ajax
+			// this.view.app_info = item.response
+
+			this.view.app_info = {
+				name: "incommon studio"
+			}
 		})
 		
 		this.dashBoardService.getApiStatInPeriodByAppId(this.period)
@@ -58,6 +63,7 @@ export class DashBoardPresenter {
 
 		this.dashBoardService.getDataGrowthInPeriodByAppId(this.period)
 		.subscribe(item => {
+			console.log(item)
 			let data = new GetChartTrainingStat().adapt(item)
 			this.view.training_stat.label = data.labels
 			this.view.training_stat.amount = data.amount
@@ -65,6 +71,7 @@ export class DashBoardPresenter {
 
 		this.dashBoardService.getCountNlpSetInStoryByAppId(this.stack_limit)
 		.subscribe(item => {
+			console.log(item)
 			let data = new GetChartTrainingSummary().adapt(item)
 			this.view.training_stat.stacks = data.stacks
 		})
