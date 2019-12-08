@@ -4,6 +4,7 @@ import (
 	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
+	"inc-nlp-service-echo/event_module/eventbus"
 	"inc-nlp-service-echo/kafka_module/consumer"
 	"inc-nlp-service-echo/kafka_module/producer"
 
@@ -86,9 +87,9 @@ func main() {
 	log.SetLevel(log.DebugLevel)
 
 	e := echo.New()
-
-	pro0 := producer.NewProducer(selectENV)
-	consume := consumer.NewConsumerSarama(selectENV)
+	event0 := eventbus.NewEventBus(0, "ping.kafka")
+	consume0 := consumer.NewConsumerSarama(selectENV, event0)
+	pro0 := producer.NewProducer(selectENV, event0)
 
 	e.Use(
 		middleware.Logger(),
@@ -137,7 +138,6 @@ func main() {
 
 	api := e.Group("/v1")
 	authGateway.NewHTTPGateway(api, secure0)
-	// nlpDashboardGateway.NewWebSocketGateway(api)ห
 	// api.Use(middleware.JWTWithConfig(jwtConfig))
 
 	appGateway.NewHTTPGateway(api, svc0)
@@ -147,8 +147,9 @@ func main() {
 	fbGateway.NewHTTPGateway(api, svc3)
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
+	nlpDashboardGateway.NewWebSocketGateway(api, event0)
 
-	go consume.ConsumeNlpLoggingMessage()
+	go consume0.ConsumeNlpLoggingMessage()
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + selectENV.EchoPort))
@@ -156,5 +157,7 @@ func main() {
 	defer e.Close()
 	defer orm.DB.Close()
 	defer pro0.Close()
-	defer consume.Close()
+	defer consume0.Close()
+	defer event0.CloseChannel()
+	defer event0.Shutdown()
 }

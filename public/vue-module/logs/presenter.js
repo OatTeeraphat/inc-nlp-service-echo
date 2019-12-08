@@ -15,18 +15,20 @@ export class NlpLoggingPresenter {
     constructor(nlpLoggingService) {
         this.view = new ViewModel()
         this.nlpLoggingService = nlpLoggingService
-        // this.socket = new WebSocket(getSocketHost() + '/v1/nlp/dashboard/logging');
+        this.socket = new WebSocket(getSocketHost() + '/v1/nlp/dashboard/logging');
     }
 
     onMounted() {
         let _view = this.view
         
-
+        this.socket.onmessage = (event) => {
+            console.log(event.data)
+            _view.log.push(JSON.parse(event.data))
+        }
         
-
     }
 
     beforeDestroy() {
-        // this.socket.close()
+        this.socket.close()
     }
 }

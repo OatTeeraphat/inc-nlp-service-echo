@@ -3,6 +3,7 @@ package consumer
 import (
 	"crypto/tls"
 	"inc-nlp-service-echo/common_module/commons"
+	"inc-nlp-service-echo/event_module/eventbus"
 	"inc-nlp-service-echo/kafka_module/config"
 	"log"
 	"strings"
@@ -12,8 +13,9 @@ import (
 
 // Consumer Consumer
 type Consumer struct {
-	Config sarama.Consumer
-	Topic  string
+	Config   sarama.Consumer
+	Topic    string
+	EventBus eventbus.IEventBus
 }
 
 func createTLSConfiguration() (t *tls.Config) {
@@ -24,7 +26,7 @@ func createTLSConfiguration() (t *tls.Config) {
 }
 
 // NewConsumerSarama NewConsumerSarama
-func NewConsumerSarama(selectENV *commons.SelectENV) *Consumer {
+func NewConsumerSarama(selectENV *commons.SelectENV, event eventbus.IEventBus) *Consumer {
 	algorithm := "sha256"
 	splitBrokers := strings.Split(selectENV.KafkaBrokers, ",")
 	conf := sarama.NewConfig()
@@ -58,8 +60,9 @@ func NewConsumerSarama(selectENV *commons.SelectENV) *Consumer {
 	}
 
 	return &Consumer{
-		Config: consumer,
-		Topic:  selectENV.KafkaTopicPrefix + "ping.kafka",
+		Config:   consumer,
+		Topic:    selectENV.KafkaTopicPrefix + "ping.kafka",
+		EventBus: event,
 	}
 }
 
