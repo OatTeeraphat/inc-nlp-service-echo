@@ -34,6 +34,7 @@ func (con Consumer) ConsumeNlpLoggingMessage() {
 				fmt.Println(err)
 			case msg := <-partitionConsumer.Messages():
 				msgCount++
+				go con.EventBus.Publisher(string(msg.Value))
 				fmt.Println("Received messages", string(msg.Key), string(msg.Value))
 			case <-signals:
 				fmt.Println("Interrupt is detected")

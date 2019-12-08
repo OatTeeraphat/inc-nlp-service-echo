@@ -25,5 +25,6 @@ func (con Producer) ProduceNlpLoggingMessage(value dao.ReadNlpReplyDao) {
 	if err != nil {
 		log.Error("failed to send message to ", con.Topic, err)
 	}
+
 	fmt.Println("wrote message at partition: ", partition, ", offset:", offset)
 }

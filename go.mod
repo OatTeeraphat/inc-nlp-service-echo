@@ -7,9 +7,11 @@ require (
 	github.com/Shopify/sarama v1.24.1
 	github.com/agnivade/levenshtein v1.0.3
 	github.com/aryahadii/ngram v0.0.0-20170825131822-84d2901a89b2
+	github.com/cskr/pubsub v1.0.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dgryski/go-metro v0.0.0-20180109044635-280f6062b5bc
 	github.com/dgryski/go-spooky v0.0.0-20170606183049-ed3d087f40e2
+	github.com/google/martian v2.1.0+incompatible
 	github.com/gorilla/websocket v1.4.1
 	github.com/jinzhu/gorm v1.9.11
 	github.com/labstack/echo v3.3.10+incompatible

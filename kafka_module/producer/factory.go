@@ -3,6 +3,7 @@ package producer
 import (
 	"crypto/tls"
 	"inc-nlp-service-echo/common_module/commons"
+	"inc-nlp-service-echo/event_module/eventbus"
 	"inc-nlp-service-echo/kafka_module/config"
 	"strings"
 
@@ -15,6 +16,7 @@ import (
 type Producer struct {
 	Producer sarama.SyncProducer
 	Topic    string
+	EventBus eventbus.IEventBus
 }
 
 func createTLSConfiguration() (t *tls.Config) {
@@ -25,7 +27,7 @@ func createTLSConfiguration() (t *tls.Config) {
 }
 
 // NewProducer NewProducer
-func NewProducer(selectENV *commons.SelectENV) *Producer {
+func NewProducer(selectENV *commons.SelectENV, event eventbus.IEventBus) *Producer {
 	algorithm := "sha256"
 	splitBrokers := strings.Split(selectENV.KafkaBrokers, ",")
 	conf := sarama.NewConfig()
@@ -63,6 +65,7 @@ func NewProducer(selectENV *commons.SelectENV) *Producer {
 	return &Producer{
 		Producer: syncProducer,
 		Topic:    selectENV.KafkaTopicPrefix + "ping.kafka",
+		EventBus: event,
 	}
 }
 
