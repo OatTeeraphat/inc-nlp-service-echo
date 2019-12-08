@@ -22,6 +22,7 @@ import (
 	fbGateway "inc-nlp-service-echo/core_module/facebook/gateway"
 
 	authGateway "inc-nlp-service-echo/core_module/authentication/gateway"
+	clientGateway "inc-nlp-service-echo/core_module/client/gateway"
 
 	"inc-nlp-service-echo/business_module/repositories"
 	"net/http"
@@ -80,7 +81,7 @@ func main() {
 	repo7 := repositories.NewNlpDashboardRepository(orm)
 	// repo8 := repositories.NewClientRepository(orm)
 
-	jwtConfig := security.NewJWTConfig("secret")
+	// jwtConfig := security.NewJWTConfig("secret")
 	secure0 := security.NewClientAuthSecurity("secret")
 
 	svc0 := appService.NewService(repo6)
@@ -107,7 +108,7 @@ func main() {
 	authGateway.NewHTTPGateway(api, secure0)
 	nlpDashboardGateway.NewWebSocket(api)
 
-	api.Use(middleware.JWTWithConfig(jwtConfig))
+	// api.Use(middleware.JWTWithConfig(jwtConfig))
 
 	appGateway.NewHTTPGateway(api, svc0)
 	storyGateway.NewHTTPGateway(api, svc1)
@@ -116,6 +117,7 @@ func main() {
 	fbGateway.NewHTTPGateway(api, svc3)
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
+	clientGateway.NewHTTPGateway(api)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + common0.EchoPort))

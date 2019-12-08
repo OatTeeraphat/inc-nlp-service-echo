@@ -30,13 +30,12 @@ export class AuthenticationService {
 
                     return this.httpRepository.clientSignIn(it.username, it.password).pipe(
                         map(({ response }) => {
-                            console.log({ response })
                             let model = new GetClientSignInAdapter().adapt(response)
 
                             if (it.rememberMe) {
-                                this.cookieRepository.setClientSession(model.access_token, model.expired_date)
+                                this.cookieRepository.setClientSession(model, model.expired_date)
                             } else {
-                                this.cookieRepository.setClientSession(model.access_token)
+                                this.cookieRepository.setClientSession(model, model.expired_date)
                             }
                             return this.vueRouter.replace('/dashboard')
                         }),
