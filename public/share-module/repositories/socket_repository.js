@@ -1,4 +1,5 @@
-const { WebSocketSubject } = rxjs.webSocket;
+const { WebSocketSubject, webSocket } = rxjs.webSocket;
+
 
 export class SocketRepository {
 
@@ -7,6 +8,18 @@ export class SocketRepository {
     }
     
     getNlpDashboardLogging() {
-        return new WebSocketSubject({url: getSocketHost() + '/v1/nlp/dashboard/logging'})
+        return webSocket({
+            url: getSocketHost() + '/v1/nlp/dashboard/logging',
+            openObserver: {
+                next: () => {
+                    console.log('connetion ok');
+                }
+            },
+            closeObserver: {
+                next: () => {
+                    console.log('websocket subscription')
+                }
+            }
+        })
     }
 }

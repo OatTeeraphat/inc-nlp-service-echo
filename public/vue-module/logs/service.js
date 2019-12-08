@@ -1,11 +1,10 @@
 export class NlpLoggingService {
     constructor(webSocketRepository) {
         this.webSocketRepository = webSocketRepository
-        this.$getNlpDashboardLogging = this.webSocketRepository.getNlpDashboardLogging()
     }
 
     getNlpDashboardLogging() {
-        return this.$getNlpDashboardLogging.pipe(
+        return this.webSocketRepository.getNlpDashboardLogging().pipe(
             retryWhen(errors =>
                 errors.pipe(
                   tap(err => {
@@ -15,10 +14,6 @@ export class NlpLoggingService {
                 )
             ),
         )
-    }
-
-    nextNlpKeyword() {
-        this.$getNlpDashboardLogging.next()
     }
 
 }
