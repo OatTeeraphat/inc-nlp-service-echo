@@ -13,7 +13,7 @@ export class HttpRepository {
     clientSignIn(username, password) {
         return ajax({
             method: "POST",
-            url: `${this.BASE_API}/login`,
+            url: `${this.BASE_API}/v1/login`,
             headers: { 'Content-Type': 'application/json' },
             body: {
                 email: username,
