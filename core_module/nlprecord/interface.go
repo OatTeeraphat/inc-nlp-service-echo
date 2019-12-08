@@ -9,6 +9,7 @@ import (
 // HTTPGateway nlp rest api interface
 type HTTPGateway interface {
 	CreateRecord(e echo.Context) error
+	CreateOneRecord(e echo.Context) error
 	UploadXlsx(e echo.Context) error
 	DropAllRecord(e echo.Context) error
 	SearchPagination(e echo.Context) error
@@ -21,6 +22,7 @@ type HTTPGateway interface {
 // Service Service
 type Service interface {
 	CreateRecord(createNlpRecordDao []dao.CreateNlpRecordDao) string
+	CreateOneRecord(createNlpRecordDao dao.CreateNlpRecordDao) dao.CreateNlpResponse
 	UploadXlsx(xlsxSheet [][]string) string
 	DropAllRecord() string
 	SearchPagination(keyword string, intent string, story string, page string) dao.SearchPaginationDao

@@ -1,4 +1,9 @@
-import { GetNlpRecordsPagination, GetSearchByKeywordAndDistancePagination } from './dao.js'
+import { 
+    GetNlpRecordsPagination, 
+    GetSearchByKeywordAndDistancePagination, 
+    GetStoryModelAdapter, 
+    GetNlpRecordInsertModelAdapter 
+} from './dao.js'
 
 // nlp records service
 export class NlpRecordsService {
@@ -14,6 +19,8 @@ export class NlpRecordsService {
         this.$NlpRecordXLSXUploadSubject = new Subject()
         this.$uploadXLSXNlpRecordProgressBar = new Subject()
         this.$updateNlpRecordRow = new Subject()
+        this.$searchStories = new Subject()
+        this.$insertNlpRecord = new Subject()
     }
 
     updateNlpRecordRowSubject() {
@@ -76,6 +83,43 @@ export class NlpRecordsService {
         this.$infiniteHandler.next({
             page: page
         })
+    }
+
+    insertNlpRecords(){
+        return this.$insertNlpRecord.pipe(
+            debounceTime(1000),
+            switchMap( nlpRecord => {
+
+                nlpRecord = new GetNlpRecordInsertModelAdapter().adapt(nlpRecord)
+
+                let condition = nlpRecord.keyword !== "" &&  nlpRecord.intent !== ""
+                if (condition){
+                    return this.httpRepository.insertNlpRecords(nlpRecord).pipe(
+                        map( ({ response }) => { 
+                            return {
+                                "id": response.id,
+                                "intent": response.intent,
+                                "keyword": response.keyword,
+                                "story_name": response.story_name,
+                                "updated_at": response.updated_at
+                            } 
+                        }),
+                        this.vueErrorHandler.catchHttpError()
+                    )
+                }
+                swal2(ALERT.ERROR, { title: 'Invalid Field', text: 'Sentence Or Intent Can\'\t be empty field' })
+                return empty()
+                
+            }),
+            map(next => {
+                swal2(ALERT.TOAST, { title: 'Insert Success', icon: 'success' })
+                return next
+            })
+        )
+    }
+
+    nextInsertNlpRecords(nlpRecord){
+        return this.$insertNlpRecord.next(nlpRecord)
     }
 
 
@@ -155,4 +199,32 @@ export class NlpRecordsService {
         let domain =  this.localStorageRepository.getRecentlyNlpRecordSearch()
         return of(domain)
     }
+
+    getAllStories() {
+        return this.httpRepository.getAllStories().pipe(
+            map( response  => {
+                return new GetStoryModelAdapter().adapt(response)
+            }),
+            this.vueErrorHandler.catchHttpError()
+        )
+    }
+
+    getSearchStories() {
+        return this.$searchStories.pipe(
+            switchMap(({ search, allStory }) => {
+                return allStory
+            })
+        )
+    }
+
+    nextSearchStories(search, allStory){
+        return this.searchStories.next({
+            search : search,
+            allStory: allStory
+        })
+    }
+
+
+
+
 }

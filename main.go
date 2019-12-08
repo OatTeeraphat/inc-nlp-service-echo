@@ -4,6 +4,9 @@ import (
 	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
+	"inc-nlp-service-echo/event_module/eventbus"
+	"inc-nlp-service-echo/kafka_module/consumer"
+	"inc-nlp-service-echo/kafka_module/producer"
 
 	appGateway "inc-nlp-service-echo/core_module/app/gateway"
 	appService "inc-nlp-service-echo/core_module/app/service"
@@ -11,6 +14,7 @@ import (
 	categorizeService "inc-nlp-service-echo/core_module/categorize/service"
 	nlpDashboardGateway "inc-nlp-service-echo/core_module/nlpdashboard/gateway"
 	nlpDashboardService "inc-nlp-service-echo/core_module/nlpdashboard/service"
+	"inc-nlp-service-echo/core_module/nlprecord/dao"
 	nlpGateway "inc-nlp-service-echo/core_module/nlprecord/gateway"
 	nlpService "inc-nlp-service-echo/core_module/nlprecord/service"
 	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
@@ -28,7 +32,7 @@ import (
 	"net/http"
 	"os"
 
-	// docs folder to server swagger
+	// TODO: completet swagger
 	// _ "inc-nlp-service-echo/docs"
 
 	"github.com/labstack/echo/v4"
@@ -36,6 +40,29 @@ import (
 	log "github.com/sirupsen/logrus"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
+
+type HealthCheck struct {
+	KafaProducer *producer.Producer
+}
+
+func NewHealthCheck(kafkaProducer *producer.Producer) *HealthCheck {
+	return &HealthCheck{
+		KafaProducer: kafkaProducer,
+	}
+}
+
+func (h HealthCheck) HeathCheck(c echo.Context) error {
+
+	data := dao.ReadNlpReplyDao{}
+	data.Keyword = "PING"
+	data.Intent = "PING"
+	data.Distance = 0
+	data.StoryID = "PING"
+
+	h.KafaProducer.ProduceNlpLoggingMessage(data)
+
+	return c.String(http.StatusOK, "PONG")
+}
 
 // @title Swagger Example API
 // @version 1.0
@@ -53,14 +80,17 @@ import (
 // @BasePath /
 func main() {
 	// Configuration
-	common0 := commons.NewFillChatSelectENV()
-	common1 := commons.NewFillChatMiddleware()
+	selectENV := commons.NewSelectENV()
+	// selectMiddleware := commons.NewMiddleware()
 
 	log.SetFormatter(&log.TextFormatter{})
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
 
 	e := echo.New()
+	event0 := eventbus.NewEventBus(0, "ping.kafka")
+	consume0 := consumer.NewConsumerSarama(selectENV, event0)
+	pro0 := producer.NewProducer(selectENV, event0)
 
 	e.Use(
 		middleware.Logger(),
@@ -69,8 +99,9 @@ func main() {
 		middleware.Gzip(),
 	)
 
-	orm := datasources.NewFillChatGORM(common0)
-	orm.DB.LogMode(true)
+	orm := datasources.NewGORM(selectENV)
+
+	orm.DB.LogMode(selectENV.IsGORMLogging)
 
 	repo0 := repositories.NewNlpTrainingLogRepository(orm)
 	repo1 := repositories.NewNlpRecordRepository(orm)
@@ -98,34 +129,37 @@ func main() {
 		HTML5:  true,
 	}))
 
-	e.GET("/health_check", heathCheck)
+	healthCheck := NewHealthCheck(pro0)
+
+	e.GET("/health_check", healthCheck.HeathCheck)
 
 	q := e.Group("/swagger")
-	q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
+	// q.Use(middleware.BasicAuth(common1.StaffAuthMiddleware))
 	q.GET("/*", echoSwagger.WrapHandler)
 
 	api := e.Group("/v1")
 	authGateway.NewHTTPGateway(api, secure0)
-	nlpDashboardGateway.NewWebSocket(api)
-
 	// api.Use(middleware.JWTWithConfig(jwtConfig))
 
 	appGateway.NewHTTPGateway(api, svc0)
 	storyGateway.NewHTTPGateway(api, svc1)
 	nlpTraininglogGateway.NewHTTPGateway(api, svc2)
-	nlpGateway.NewHTTPGateway(api, svc3)
+	nlpGateway.NewHTTPGateway(api, svc3, pro0)
 	fbGateway.NewHTTPGateway(api, svc3)
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
 	clientGateway.NewHTTPGateway(api)
+	nlpDashboardGateway.NewWebSocketGateway(api, event0)
+
+	go consume0.ConsumeNlpLoggingMessage()
 
 	// Start server
-	e.Logger.Fatal(e.Start(":" + common0.EchoPort))
+	e.Logger.Fatal(e.Start(":" + selectENV.EchoPort))
 
 	defer e.Close()
 	defer orm.DB.Close()
-}
-
-func heathCheck(c echo.Context) error {
-	return c.String(http.StatusOK, "PONG")
+	defer pro0.Close()
+	defer consume0.Close()
+	defer event0.CloseChannel()
+	defer event0.Shutdown()
 }

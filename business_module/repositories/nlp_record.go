@@ -10,14 +10,14 @@ import (
 
 // NlpRecordRepository nlp query appearance
 type NlpRecordRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // INlpRecordRepository nlp query appearance interface
 type INlpRecordRepository interface {
-	Save(nlpRecordDomain *domains.NlpRecordDomain)
-	BulkInsert(nlpRecordDomain []interface{}, bulkCount int) error
-	BulkDeleteByIDs(nlpRecordDomain []string) *gorm.DB
+	Save(Domain *domains.NlpRecordDomain)
+	BulkInsert(Domains []interface{}, bulkCount int) error
+	BulkDeleteByIDs(IDs []string) *gorm.DB
 	FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain
 	FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uuid.UUID) []domains.NlpRecordDomain
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
@@ -27,43 +27,43 @@ type INlpRecordRepository interface {
 	CountByKeywordMinhash(KeywordMinhash uint32) int64
 	Delete() *gorm.DB
 	DeleteByID(id uuid.UUID) *gorm.DB
-	UpdateByID(nlpRecordDomain *domains.NlpRecordDomain)
+	UpdateByID(Domain *domains.NlpRecordDomain)
 }
 
 // NewNlpRecordRepository new nlp record instance
-func NewNlpRecordRepository(data *datasources.FillChatGORM) INlpRecordRepository {
+func NewNlpRecordRepository(data *datasources.GORM) INlpRecordRepository {
 	return &NlpRecordRepository{data}
 }
 
 // Save create new nlp record domain
-func (repo *NlpRecordRepository) Save(nlpRecordDomain *domains.NlpRecordDomain) {
-	repo.DB.Create(&nlpRecordDomain)
+func (repo *NlpRecordRepository) Save(Domain *domains.NlpRecordDomain) {
+	repo.DB.Create(&Domain)
 }
 
 // FindByKeyword find similar keyword group
 func (repo *NlpRecordRepository) FindByKeyword(keyword string) []domains.NlpRecordDomain {
-	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Where("keyword = ?", keyword).Find(&nlpRecordDomain)
-	return nlpRecordDomain
+	var Domain []domains.NlpRecordDomain
+	repo.DB.Where("keyword = ?", keyword).Find(&Domain)
+	return Domain
 }
 
 // FindByKeywordMinhashAndStoryID find similar keyword group and story ids
 func (repo *NlpRecordRepository) FindByKeywordMinhashAndStoryID(keywordMinhash uint32, storyID []uuid.UUID) []domains.NlpRecordDomain {
-	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Where("story_id IN(?) and keyword_minhash = ?", storyID, keywordMinhash).Find(&nlpRecordDomain)
-	return nlpRecordDomain
+	var Domain []domains.NlpRecordDomain
+	repo.DB.Where("story_id IN(?) and keyword_minhash = ?", storyID, keywordMinhash).Find(&Domain)
+	return Domain
 }
 
 // FindByKeywordMinhash find similar keyword group
 func (repo *NlpRecordRepository) FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain {
-	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Where("keyword_minhash = ?", keywordMinhash).Find(&nlpRecordDomain)
-	return nlpRecordDomain
+	var Domain []domains.NlpRecordDomain
+	repo.DB.Where("keyword_minhash = ?", keywordMinhash).Find(&Domain)
+	return Domain
 }
 
 // BulkInsert BulkInsert
-func (repo *NlpRecordRepository) BulkInsert(nlpRecordDomain []interface{}, bulkCount int) error {
-	return repo.FillChatGORM.BulkInsert(nlpRecordDomain, bulkCount)
+func (repo *NlpRecordRepository) BulkInsert(Domains []interface{}, bulkCount int) error {
+	return repo.GORM.BulkInsert(Domains, bulkCount)
 }
 
 // BulkDeleteByIDs BulkDeleteByIDs
@@ -92,26 +92,26 @@ func (repo *NlpRecordRepository) CountByKeywordMinhash(KeywordMinhash uint32) in
 
 // Pagination Pagination
 func (repo *NlpRecordRepository) Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain {
-	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id desc").Find(&nlpRecordDomain)
-	return nlpRecordDomain
+	var Domain []domains.NlpRecordDomain	
+	repo.DB.Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
+	return Domain
 }
 
 // PaginationByKeywordMinhash PaginationByKeywordMinhash
 func (repo *NlpRecordRepository) PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpRecordDomain {
-	var nlpRecordDomain []domains.NlpRecordDomain
-	repo.DB.Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&nlpRecordDomain).Offset(Limit * (PageIndex - 1)).Order("id desc").Find(&nlpRecordDomain)
-	return nlpRecordDomain
+	var Domain []domains.NlpRecordDomain
+	repo.DB.Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
+	return Domain
 }
 
 // DeleteByID DeleteByID
 func (repo *NlpRecordRepository) DeleteByID(id uuid.UUID) *gorm.DB {
-	domain := &domains.NlpRecordDomain{}
-	domain.ID = id
-	return repo.DB.Unscoped().Delete(domain)
+	Domain := &domains.NlpRecordDomain{}
+	Domain.ID = id
+	return repo.DB.Unscoped().Delete(Domain)
 }
 
 // UpdateByID UpdateByID
-func (repo *NlpRecordRepository) UpdateByID(nlpRecordDomain *domains.NlpRecordDomain) {
-	repo.DB.Save(nlpRecordDomain)
+func (repo *NlpRecordRepository) UpdateByID(Domain *domains.NlpRecordDomain) {
+	repo.DB.Save(Domain)
 }

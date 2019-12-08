@@ -18,7 +18,7 @@ export class HttpRepository {
             url: `${this.BASE_API}/v1/client/login`,
             headers: { 'Content-Type': 'application/json' },
             body: {
-                email: username,
+                username: username,
                 password: password
             }
         })
@@ -61,6 +61,22 @@ export class HttpRepository {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": this._getAuthorizedBearer()
+            }
+        })
+    }
+
+    insertNlpRecords(nlpRecord){
+        return ajax({
+            method: "POST",
+            url: `${this.BASE_API}/v1/nlp/record`,
+            headers: { 
+                'Content-Type': 'application/json',
+                "Authorization": this._getAuthorizedBearer()
+            },
+            body: {
+                keyword: nlpRecord.keyword,
+                intent: nlpRecord.intent,
+                story_name: nlpRecord.story_name
             }
         })
     }
@@ -136,14 +152,22 @@ export class HttpRepository {
 
     // EndPoint: /v1/story
     getAllStories() {
-        return ajax({
-            method: "GET",
-            url: `${this.BASE_API}/v1/story`,
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": this._getAuthorizedBearer()
-            }
-        })
+        // return ajax({ 
+        //     method: "GET", 
+        //     url: `${this.BASE_API}/v1/story`,
+        //     headers: { 
+        //         "Content-Type": "application/json",
+        //         "Authorization": this._getAuthorizedBearer() 
+        //     }
+        // })
+
+        return of([
+            { id: 1, name: "GREETING", desc: "good for greet", owner: "632861333807100" },
+            { id: 2, name: "FAQ", desc: "good for greet", owner: "632861333807100" },
+            { id: 3, name: "PRODUCT", desc: "good for greet", owner: "632861333807100" }
+        ]).pipe(
+            delay(600)
+        )
     }
 
     // EndPoint: /v1/story?id=

@@ -9,28 +9,28 @@ import (
 
 // AppStoryRepository app story mapping
 type AppStoryRepository struct {
-	*datasources.FillChatGORM
+	*datasources.GORM
 }
 
 // IAppStoryRepository app story mapping interface
 type IAppStoryRepository interface {
-	Save(appStoryDomain *domains.AppStoryDomain)
+	Save(Domain *domains.AppStoryDomain)
 	FindByAppID(appID uuid.UUID) []domains.AppStoryDomain
 }
 
 // NewAppStoryRepository app story mapping instance
-func NewAppStoryRepository(data *datasources.FillChatGORM) IAppStoryRepository {
+func NewAppStoryRepository(data *datasources.GORM) IAppStoryRepository {
 	return &AppStoryRepository{data}
 }
 
 // Save find similar app ids
-func (repo *AppStoryRepository) Save(appStoryDomain *domains.AppStoryDomain) {
-	repo.DB.Create(&appStoryDomain)
+func (repo *AppStoryRepository) Save(Domain *domains.AppStoryDomain) {
+	repo.DB.Create(&Domain)
 }
 
 // FindByAppID find similar app ids
 func (repo *AppStoryRepository) FindByAppID(appID uuid.UUID) []domains.AppStoryDomain {
-	var appStoryDomain []domains.AppStoryDomain
-	repo.DB.Where(&domains.AppStoryDomain{StoryID: appID}).Find(&appStoryDomain)
-	return appStoryDomain
+	var Domain []domains.AppStoryDomain
+	repo.DB.Where(&domains.AppStoryDomain{StoryID: appID}).Find(&Domain)
+	return Domain
 }

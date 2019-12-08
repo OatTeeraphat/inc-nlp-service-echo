@@ -1,4 +1,4 @@
-var settingPage = Vue.component('setting-page', {    
+export const settingPage = Vue.component('setting-page', {    
     template: `
 	<div class="warp">
 		<nav-component></nav-component>
@@ -273,6 +273,6 @@ var settingPage = Vue.component('setting-page', {
         this.$settingPresenter.getInitialState(this.$refs) 
     },
     beforeDestroy: function () {
-        this.$webChatService.disposable()
+        this.$settingPresenter.beforeDestroy()
     }
 })

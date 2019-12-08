@@ -7,9 +7,7 @@ const colorByStory = {
 
 export default Vue.component('stack-chart-training', {
 	extends: VueChartJs.HorizontalBar,
-	props: {
-		dataChart: Object
-	},
+	props: ['dataChart'],
   	mounted () {
 		this.$nextTick(() => {
 			this.createChart()

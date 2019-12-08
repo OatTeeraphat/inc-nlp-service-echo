@@ -1,4 +1,4 @@
-export default Vue.component('story-page', {    
+export const storyPage = Vue.component('story-page', {    
     template: `
     <div class="warp">
         <nav-component></nav-component>

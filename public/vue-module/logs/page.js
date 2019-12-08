@@ -1,4 +1,4 @@
-export default Vue.component('logs-page', {    
+export const accessLogPage = Vue.component('logs-page', {    
     template: `
 	<div class="warp">
 		<nav-component></nav-component>
@@ -68,149 +68,12 @@ export default Vue.component('logs-page', {
     </div> 
     `,
     data: function () {
-        return {
-            log: [
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-                {
-                    "keyword": "สวัสดีครับบบบบบบบบบ",
-                    "intent": "สวัสดีค่ะพี่ขา",
-                    "distance": 8,
-                    "story_id": 1,
-                    "time": new Date(),
-                    "destination": "http://localhost:9999/v1/nlp/reply"
-                },
-            ]
-        }
+        return this.$nlpLoggingPresenter.view
     },
     mounted: function () {
+        this.$nlpLoggingPresenter.onMounted()
     },
     beforeDestroy: function () {
+        this.$nlpLoggingPresenter.beforeDestroy()
     }
 })

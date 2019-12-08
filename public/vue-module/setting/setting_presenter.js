@@ -1,3 +1,5 @@
+import { GetNlpReplyAdapter } from './get_nlp_reply_adapter.js'
+
 class SettingViewModel {
 	constructor() {
 		this.chat_logs = []
@@ -10,7 +12,7 @@ class SettingViewModel {
 	}
 }
 
-class SettingPresenter {
+export class SettingPresenter {
 	constructor(settingService) {
 		this.view = new SettingViewModel()
 		this.settingService = settingService
@@ -69,6 +71,7 @@ class SettingPresenter {
 		nlpResult.subscribe(item => {
 			this.view.debug.result = new GetNlpReplyAdapter().adapt(item.response)
 			this.view.debug.loading = false
+			console.log("success")
 		})
 	}
 
@@ -90,7 +93,7 @@ class SettingPresenter {
 		return d.toISOString()
 	}
 
-	disposal() {
+	beforeDestroy() {
 		this.view = new SettingViewModel()
 	}
 }

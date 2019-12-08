@@ -14,9 +14,9 @@ import (
 func TestDatasource(t *testing.T) {
 	convey.Convey("Subject: NewNlpRecordRepository testcase", t, func() {
 
-		var mock *commons.FillChatSelectENV
+		var mock *commons.GORM
 
-		orm := datasources.NewFillChatGORM(mock)
+		orm := datasources.NewGORM(mock)
 
 		convey.Convey("Save 2 NlpRecordDomains", func() {
 			nlpRecordRepo := repositories.NewNlpRecordRepository(orm)

@@ -1,17 +1,18 @@
 package gateway
 
 import (
+	"github.com/labstack/gommon/log"
+	"inc-nlp-service-echo/event_module/eventbus"
 	"net/http"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 )
 
-// Websocket Websocket
-type Websocket struct {
+// WebsocketGetway WebsocketGetway
+type WebsocketGetway struct {
 	Upgrader *websocket.Upgrader
-	// Conn *websocket.Conn
+	EventBus eventbus.IEventBus
 }
 
 func newWebsocketConfig() *websocket.Upgrader {
@@ -25,29 +26,26 @@ func newWebsocketConfig() *websocket.Upgrader {
 	}
 }
 
-// NewWebSocket NewWebSocket
-func NewWebSocket(e *echo.Group) {
-	handle := &Websocket{
+// NewWebSocketGateway NewWebSocketGateway
+func NewWebSocketGateway(e *echo.Group, event eventbus.IEventBus) {
+	handle := &WebsocketGetway{
 		Upgrader: newWebsocketConfig(),
+		EventBus: event,
 	}
 
 	e.Any("/nlp/dashboard/logging", handle.GetLogging)
 }
 
 // GetLogging GetLogging
-func (ws Websocket) GetLogging(e echo.Context) error {
+func (ws WebsocketGetway) GetLogging(e echo.Context) error {
 	conn, err := ws.Upgrader.Upgrade(e.Response(), e.Request(), nil)
+
 	if err != nil {
 		log.Error(err)
 		return err
 	}
 
-	writeError := conn.WriteMessage(websocket.TextMessage, []byte("hello"))
-
-	if writeError != nil {
-		log.Error(writeError)
-		return writeError
-	}
+	go ws.EventBus.Subscriber(conn)
 
 	return nil
 }

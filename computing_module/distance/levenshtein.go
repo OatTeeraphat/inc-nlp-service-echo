@@ -38,9 +38,8 @@ func GenerateKeywordMinhash(keyword string) uint32 {
 
 // FindMinDistanceFromNlpModels find minimum distance from nlp model
 func FindMinDistanceFromNlpModels(nlpReplyModels []dao.ReadNlpReplyDao, incomingKeyword string) dao.ReadNlpReplyDao {
-
-	minDistance := float32(math.Inf(InitialInfinityPositiveValue))
-	minIDX := InitialMinimumIndex
+	var MinDistance = float32(math.Inf(0))
+	var MinIndex = 0
 
 	for index, item := range nlpReplyModels {
 
@@ -48,12 +47,11 @@ func FindMinDistanceFromNlpModels(nlpReplyModels []dao.ReadNlpReplyDao, incoming
 
 		nlpReplyModels[index].Distance = distance
 
-		if distance <= minDistance {
-			minDistance = distance
-			minIDX = index
+		if distance <= MinDistance {
+			MinDistance = distance
+			MinIndex = index
 		}
 	}
-
-	nlpReplyModels[minIDX].Keyword = incomingKeyword
-	return nlpReplyModels[minIDX]
+	nlpReplyModels[MinIndex].Keyword = incomingKeyword
+	return nlpReplyModels[MinIndex]
 }

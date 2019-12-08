@@ -7,7 +7,7 @@ export default Vue.component('bubble-chart-intent', {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(this.dataChart)
+      //console.log(this.dataChart)
       this.createChart()
     })
   },

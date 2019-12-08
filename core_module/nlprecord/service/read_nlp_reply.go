@@ -37,6 +37,7 @@ func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDa
 			Keyword:  keyword,
 			Intent:   "DEFAULT_MESSAGE",
 			Distance: 999,
+			StoryID:  uuid.NewV4().String(),
 		}
 
 		go svc.saveToNlpTrainingLogs(&readNlpReplyDao, 1)
@@ -45,10 +46,10 @@ func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDa
 	}
 
 	for _, item := range nlpFindByKeyword {
-		eachNlpModel := dao.ReadNlpReplyDao{Keyword: item.Keyword, Intent: item.Intent, StoryID: uuid.NewV4().String()}
+		eachNlpModel := dao.ReadNlpReplyDao{}
 		eachNlpModel.Keyword = item.Keyword
 		eachNlpModel.Intent = item.Intent
-		eachNlpModel.StoryID = item.StoryID.String()
+		eachNlpModel.StoryID = uuid.NewV4().String()
 		readNlpReplyDao = append(readNlpReplyDao, eachNlpModel)
 	}
 
@@ -70,6 +71,9 @@ func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, appID uint
 	domain.KeywordMinhash = distance.GenerateKeywordMinhash(nlpResult.Keyword)
 	domain.Intent = nlpResult.Intent
 	domain.Distance = nlpResult.Distance
+
+	fmt.Println("###### STORY ID ###,", nlpResult.StoryID)
+
 	u2, err := uuid.FromString(nlpResult.StoryID)
 
 	if err != nil {
@@ -78,7 +82,6 @@ func (svc Service) saveToNlpDashboard(nlpResult *dao.ReadNlpReplyDao, appID uint
 
 	domain.StoryID = u2
 	svc.nlpDashboardRepository.Save(&domain)
-
 }
 
 // saveNlpTrainingSetsService saveNlpTrainingSetsService

@@ -1,4 +1,4 @@
-export default Vue.component('main-page', {
+export const mainPage = Vue.component('main-page', {
     template: `
     <div class="login-warp">
         <div class="justify-content-center">

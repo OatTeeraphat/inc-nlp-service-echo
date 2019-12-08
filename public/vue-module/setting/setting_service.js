@@ -1,4 +1,4 @@
-class SettingService {
+export class SettingService {
 
 	constructor(httpRepository, vueErrorHandler) {
 		this.httpRepository = httpRepository

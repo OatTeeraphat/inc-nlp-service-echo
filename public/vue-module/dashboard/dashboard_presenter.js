@@ -57,17 +57,19 @@ export class DashBoardPresenter {
 			})
 
 		this.dashBoardService.getDataGrowthInPeriodByAppId(this.period)
-			.subscribe(item => {
-				let data = new GetChartTrainingStat().adapt(item)
-				this.view.training_stat.label = data.labels
-				this.view.training_stat.amount = data.amount
-			})
+		.subscribe(item => {
+			//console.log(item)
+			let data = new GetChartTrainingStat().adapt(item)
+			this.view.training_stat.label = data.labels
+			this.view.training_stat.amount = data.amount
+		})
 
 		this.dashBoardService.getCountNlpSetInStoryByAppId(this.stack_limit)
-			.subscribe(item => {
-				let data = new GetChartTrainingSummary().adapt(item)
-				this.view.training_stat.stacks = data.stacks
-			})
+		.subscribe(item => {
+			//console.log(item)
+			let data = new GetChartTrainingSummary().adapt(item)
+			this.view.training_stat.stacks = data.stacks
+		})
 
 		this.dashBoardService.getModelStatInPeriodByAppId(this.period, this.view.model_stat.confidence)
 			.subscribe(item => {
@@ -79,11 +81,11 @@ export class DashBoardPresenter {
 			})
 
 		this.dashBoardService.getBubbleChart(this.limit)
-			.subscribe(item => {
-				let data = new GetChartTopIntent().adapt(item)
-				this.view.bubble_chart.data = data.intents
-				console.log(data.intents[0].data)
-			})
+		.subscribe(item => {
+			let data = new GetChartTopIntent().adapt(item)
+			this.view.bubble_chart.data = data.intents
+			//console.log(data.intents[0].data)
+		})
 
 	}
 	
