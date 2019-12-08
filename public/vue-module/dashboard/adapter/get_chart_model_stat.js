@@ -30,7 +30,7 @@ class GetChartModelStat {
 
 		item.ratio = this.calculateCanBeSloveRatio(models)
 
-		console.log(item)
+		//console.log(item)
 
 		return item
 

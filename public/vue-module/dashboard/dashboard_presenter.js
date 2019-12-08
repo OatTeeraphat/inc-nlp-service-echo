@@ -63,7 +63,7 @@ export class DashBoardPresenter {
 
 		this.dashBoardService.getDataGrowthInPeriodByAppId(this.period)
 		.subscribe(item => {
-			console.log(item)
+			//console.log(item)
 			let data = new GetChartTrainingStat().adapt(item)
 			this.view.training_stat.label = data.labels
 			this.view.training_stat.amount = data.amount
@@ -71,7 +71,7 @@ export class DashBoardPresenter {
 
 		this.dashBoardService.getCountNlpSetInStoryByAppId(this.stack_limit)
 		.subscribe(item => {
-			console.log(item)
+			//console.log(item)
 			let data = new GetChartTrainingSummary().adapt(item)
 			this.view.training_stat.stacks = data.stacks
 		})
@@ -89,7 +89,7 @@ export class DashBoardPresenter {
 		.subscribe(item => {
 			let data = new GetChartTopIntent().adapt(item)
 			this.view.bubble_chart.data = data.intents
-			console.log(data.intents[0].data)
+			//console.log(data.intents[0].data)
 		})
 
 	}

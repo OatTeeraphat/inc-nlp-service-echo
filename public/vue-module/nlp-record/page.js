@@ -135,7 +135,11 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                         </tbody>
                         <tbody v-if="searchNlpRecordByKeywordComputed === '' " @scroll="$nlpRecordPresenter.getMoreNlpRecordByInfiniteScroll($event)" v-bind:class="{ 'highlight' : $nlpRecordPresenter.view.addRow.highlight }" >
                             <tr v-for="item in $nlpRecordPresenter.view.nlpRecords">
+                                <th scope="row" class="col-1 d-none">
+                                    <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
+                                </th>
                                 <th scope="row" class="col-1">
+                                    <i class="fe fe-check-square" @click=""></i>
                                     <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
                                 </th>
                                 <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
