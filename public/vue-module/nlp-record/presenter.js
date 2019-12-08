@@ -88,6 +88,7 @@ export class NlpRecordPresenter {
         )
         this.nlpRecordsService.insertNlpRecords().subscribe(
             it => {
+                console.log("########", it)
                 this.view.addRow.keyword = ""
                 this.view.addRow.intent = ""
                 this.view.addRow.story = ""
@@ -103,6 +104,7 @@ export class NlpRecordPresenter {
                 of(null).pipe(delay(1)).subscribe(() => this.$refs.keyword.focus())
             }
         )
+        this.view.addRow.inputDisabled = false
         this.nlpRecordsService.getSearchStories().subscribe()
     }
 

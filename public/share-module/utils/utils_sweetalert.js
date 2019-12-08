@@ -25,6 +25,11 @@ const swal2 = function (type, props, confirm=false) {
 			popup.showCancelButton = false
 			popup.customClass.confirmButton = "swal2--error"
 			break;
+		case ALERT.DANGER:
+			popup.icon = "error"
+			popup.showCancelButton = true
+			popup.customClass.confirmButton = "swal2--error"
+			break;
 		case ALERT.WARNNING :
 			popup.icon = "warning"
 			popup.showCancelButton = true

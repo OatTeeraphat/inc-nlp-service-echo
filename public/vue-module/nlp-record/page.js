@@ -119,8 +119,6 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                                             : true
                                                         "
                                                         class="dropdown-item" href="#">{{ item.name }}</button>
-                                                <div class="dropdown-divider"></div>
-                                                <router-link class="dropdown-item" href="#" :to="{ path: '/story'}">Add New Story</router-link>
                                             </div>
                                         </div>
                                     </div>

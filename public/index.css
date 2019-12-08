@@ -248,7 +248,7 @@
      min-height: 54px !important;
 }
  .table-fixed tbody {
-     height: calc(100vh - 410px);
+     height: calc(100vh - 370px);
      overflow-y: auto;
      width: 100%;
 }
@@ -275,6 +275,7 @@
      border-top: 0;
      position: relative;
      top: -1px;
+     height: calc(100vh - 410px);
  }
  .table-panael i{
      position: relative;
@@ -1058,14 +1059,14 @@ h3 .linear-preload{
   vertical-align: text-top;
   width: 20px;
   height: 20px;
-  background: #ddd;
+  background: #e5e8eb;
   border-radius: 5px;
 }
 .styled-checkbox:hover + label:before {
-  background: #ddd;
+  background: #d1d5da;
 }
 .styled-checkbox:focus + label:before {
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.15);
 }
 .styled-checkbox:checked + label:before {
   background: #663ab7;
