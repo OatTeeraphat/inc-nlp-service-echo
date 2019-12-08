@@ -42,6 +42,7 @@ export class NlpRecordPresenter {
     }
 
     onToggleAddRows() {
+        // this.view.addRow.toggleRow = this.view.addRow.toggleRow;
         this.view.addRow = new NlpRecordViewModel().addRow
     }
 

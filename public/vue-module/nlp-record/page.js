@@ -77,7 +77,7 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                         <tbody class="table-panael">
                             <tr class="tr-add " v-bind:class="{ 'd-none': $nlpRecordPresenter.view.addRow.toggleRow }">
                                 <td colspan="5" class="col-12"><strong class="hover-cursor table-panael-button" 
-                                    @click=" $nlpRecordPresenter.view.addRow.toggleRow = !$nlpRecordPresenter.view.addRow.toggleRow ">
+                                    @click="$nlpRecordPresenter.view.addRow.toggleRow = !$nlpRecordPresenter.view.addRow.toggleRow">
                                     <i class="fe fe-plus-circle mr-1"></i> Add Row</strong>
                                 </td>
                             </tr>
@@ -88,11 +88,12 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                 'animated' : $nlpRecordPresenter.view.addRow.toggleRow
                             }">
                                 <th scope="row" class="col-1">
-                                    <button type="button" class="btn btn-table btn-link hover-danger" title="hidden add row bar" 
-                                            @click="
-                                                $nlpRecordPresenter.view.addRow.toggleRow = !$nlpRecordPresenter.view.addRow.toggleRow;
-                                                $nlpRecordPresenter.onToggleAddRows();
-                                            " >
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-table btn-link hover-danger" 
+                                        title="hidden add row bar" 
+                                        @click="$nlpRecordPresenter.onToggleAddRows()" 
+                                    >
                                         <i class="fe fe-minimize-2"></i>
                                     </button>
                                 </th>
