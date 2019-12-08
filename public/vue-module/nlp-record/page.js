@@ -106,7 +106,7 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                         <div class="input-group-append" v-bind:class="{ show : $nlpRecordPresenter.view.addRow.toggleStory }" >
                                             <button class="btn dropdown-toggle p-0 box-shadow-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-event" v-bind:class="{ show : $nlpRecordPresenter.view.addRow.toggleStory }">
-                                                <button class="dropdown-item" @click="$nlpRecordPresenter.view.addRow.story = '----'; $nlpRecordPresenter.view.addRow.toggleStory = false">----</button>
+                                                <button class="dropdown-item" @click="$nlpRecordPresenter.view.addRow.story = ''; $nlpRecordPresenter.view.addRow.toggleStory = false">----</button>
                                                 <button v-for="item in $nlpRecordPresenter.view.allStory" 
                                                         @click="
                                                         
@@ -127,9 +127,9 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                 </td>
                                 <td class="col-1 text-center">
                                     <!-- // TODO: update one keyword, intent, story -->
-                                    <button @click="$nlpRecordPresenter.insertNlpRecordsRow()" type="button" class="btn btn-link btn-table hover-success" title="Add Row">
-                                        <i class="fe fe-plus-circle d-none"></i>
-                                        <div class="spinner-border" role="status">
+                                    <button @click="$nlpRecordPresenter.insertNlpRecordsRow()" type="button" class="btn btn-link btn-table hover-success" title="Add Row" >
+                                        <i class="fe fe-plus-circle" v-bind:class="{'d-none' : $nlpRecordPresenter.view.addRow.inputDisabled }" ></i>
+                                        <div class="spinner-border" role="status" v-bind:class="{'d-none' : !$nlpRecordPresenter.view.addRow.inputDisabled }" >
                                             <span class="sr-only">Loading...</span>
                                         </div>
                                     </button>
@@ -138,11 +138,9 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                         </tbody>
                         <tbody v-if="searchNlpRecordByKeywordComputed === '' " @scroll="$nlpRecordPresenter.getMoreNlpRecordByInfiniteScroll($event)" v-bind:class="{ 'highlight' : $nlpRecordPresenter.view.addRow.highlight }" >
                             <tr v-for="item in $nlpRecordPresenter.view.nlpRecords">
-                                <th scope="row" class="col-1 d-none">
-                                    <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
-                                </th>
                                 <th scope="row" class="col-1">
-                                    <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
+                                    <input :value="item.id" :id="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox" class="styled-checkbox">
+                                    <label :for="item.id"></label>
                                 </th>
                                 <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                                 <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
