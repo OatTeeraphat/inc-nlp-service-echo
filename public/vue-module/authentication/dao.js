@@ -2,6 +2,7 @@ export class GetClientSignInAdapter {
     adapt(model) {
 
         return {
+            consumer_id: model.consumer_id,
             client_id: model.client_id,
             client_secret: model.client_secret,
             email: model.email,
