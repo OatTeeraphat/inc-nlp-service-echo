@@ -1035,6 +1035,41 @@ h3 .linear-preload{
 	}
 } */
 
+/* input[type=checkbox] {
+display:none;
+}
+ 
+input[type=checkbox] + label
+{
+background: #999;
+height: 16px;
+width: 16px;
+display:inline-block;
+padding: 0 0 0 0px;
+}
+input[type=checkbox]:checked + label
+{
+background: #0080FF;
+height: 16px;
+width: 16px;
+display:inline-block;
+padding: 0 0 0 0px;
+} */
 
+.fe-loader{
 
+    animation:spin 4s linear infinite;
+}
 
+@keyframes spin { 
+    100% { 
+        -webkit-transform: rotate(360deg); 
+        transform:rotate(360deg); 
+    } 
+}
+
+.spinner-border{
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.1em;
+}

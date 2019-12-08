@@ -128,7 +128,10 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                 <td class="col-1 text-center">
                                     <!-- // TODO: update one keyword, intent, story -->
                                     <button @click="$nlpRecordPresenter.insertNlpRecordsRow()" type="button" class="btn btn-link btn-table hover-success" title="Add Row">
-                                        <i class="fe fe-plus-circle"></i>
+                                        <i class="fe fe-plus-circle d-none"></i>
+                                        <div class="spinner-border" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
                                     </button>
                                 </td>
                             </tr>
@@ -139,7 +142,6 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                     <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
                                 </th>
                                 <th scope="row" class="col-1">
-                                    <i class="fe fe-check-square" @click=""></i>
                                     <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox">
                                 </th>
                                 <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
