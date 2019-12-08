@@ -1,11 +1,6 @@
 export default Vue.component('line-chart-api-usage', {
 	extends: VueChartJs.Line,
-	props: {
-		dataChart : Object,
-		dataLabel : Object,
-		title: String,
-		point: Boolean
-	},
+	props: ['dataChart', 'dataLabel', 'title', 'point'],
 	mounted() {
 		this.$nextTick(() => {
 			this.createChart()
