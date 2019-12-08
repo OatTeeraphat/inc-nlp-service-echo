@@ -1,8 +1,8 @@
 class AuthenticationViewModel {
     constructor() {
         this.isNotSignInLoading =  true
-        this.username =  "memoryneung@gmail.com"
-        this.password =  "neung1234"
+        this.username =  "admin@incommonstudio.com"
+        this.password =  ""
         this.rememberMe =  true
     }
 }

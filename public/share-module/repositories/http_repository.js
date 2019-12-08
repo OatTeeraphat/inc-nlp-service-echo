@@ -16,7 +16,7 @@ export class HttpRepository {
             url: `${this.BASE_API}/v1/login`,
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: {
-                email: username,
+                username: username,
                 password: password
             }
         })
