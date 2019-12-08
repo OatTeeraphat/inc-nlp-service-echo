@@ -1,10 +1,6 @@
 export default Vue.component('bubble-chart-intent', {
   extends: VueChartJs.Bubble,
   props: ['dataChart'],
-  created() {
-    Chart.defaults.global.plugins.datalabels.color = "#fff";
-    //console.log(Chart.defaults.global.plugins.datalabels)
-  },
   mounted() {
     this.$nextTick(() => {
       //console.log(this.dataChart)

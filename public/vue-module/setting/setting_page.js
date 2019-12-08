@@ -42,7 +42,6 @@ export const settingPage = Vue.component('setting-page', {
                                                 <small><strong>Save</strong></small>
                                             </button>
                                         </h3>
-                                        
                                         <p class="text-muted mb-0">TEST</p>
                                     </div>
                                 </div>
@@ -53,7 +52,7 @@ export const settingPage = Vue.component('setting-page', {
                                     <div class="media-body">
                                         <p class="text-muted mb-2 mt-1">Your Client Id</p>
                                         <h6 class="card-title mb-0">
-                                            <strong>{{app_info.id}}</strong>
+                                            <strong>{{ app_info.id.substr(0,20) }}</strong>
                                             <div class="linear-preload" v-bind:class="{ invisible: app_info.id }">
                                                 <div class="indeterminate-preload"></div>
                                             </div>

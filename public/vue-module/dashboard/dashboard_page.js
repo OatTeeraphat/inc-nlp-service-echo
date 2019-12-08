@@ -29,7 +29,7 @@ export const dashboardPage = Vue.component('dashboard-page', {
 														<div class="indeterminate-preload"></div>
 													</div>
 												</h3>
-												<small class="text-muted" v-bind:class="{ invisible: !app_info.name }">App ID : <span class="position-relative"> {{ app_info.id }} </span> </small>
+												<small class="text-muted" v-bind:class="{ invisible: !app_info.name }">App ID : <span class="position-relative"> {{ app_info.id.substr(0,20) }} </span> </small>
 										</div>
 								</div>
 							<div class="d-flex">
