@@ -14,7 +14,7 @@ export class HttpRepository {
         return ajax({
             method: "POST",
             url: `${this.BASE_API}/v1/login`,
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: {
                 email: username,
                 password: password
