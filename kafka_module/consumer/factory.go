@@ -16,14 +16,14 @@ type Consumer struct {
 }
 
 // NewKafkaConsumer NewKafkaConsumer
-func NewKafkaConsumer(selectENV *commons.SelectENV, event eventbus.IEventBus, topic string) *Consumer {
+func NewKafkaConsumer(selectENV *commons.SelectENV, event eventbus.IEventBus, topic string, consumerGroup string) *Consumer {
 
 	topics := []string{selectENV.KafkaTopicPrefix + topic}
 
 	kafkaConf := config.NewKafkaConsumerConfig(selectENV)
 	kafkaBroker := config.NewKafkaBroker(selectENV)
 
-	consumer, err := cluster.NewConsumer(kafkaBroker, "GROUP_ONE", topics, kafkaConf)
+	consumer, err := cluster.NewConsumer(kafkaBroker, consumerGroup, topics, kafkaConf)
 	if err != nil {
 		panic(err)
 	}

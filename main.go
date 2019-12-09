@@ -37,6 +37,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	uuid "github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
@@ -89,7 +90,7 @@ func main() {
 
 	e := echo.New()
 	event0 := eventbus.NewEventBus(0, "nlp.dashboard.logging")
-	consumer0 := consumer.NewKafkaConsumer(selectENV, event0, "nlp.dashboard.logging")
+	consumer0 := consumer.NewKafkaConsumer(selectENV, event0, "nlp.dashboard.logging", uuid.NewV4().String())
 	producer0 := producer.NewKafkaProducer(selectENV, event0, "nlp.dashboard.logging")
 
 	e.Use(
