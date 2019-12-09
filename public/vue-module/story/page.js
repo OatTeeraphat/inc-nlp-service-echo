@@ -66,45 +66,61 @@ export const storyPage = Vue.component('story-page', {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-5">
                         <div class="table-responsive">
                             <table class="table table-fixed">
                                 <thead>
                                     <tr>
-                                        <th class="col-1" scope="col">#</th>
-                                        <th class="col-4" scope="col">Story Name</th>
-                                        <th class="col-5" scope="col">Description</th>
-                                        <th class="col-2 text-center" scope="col">Action</th>
+                                        <th class="col-2" scope="col">#</th>
+                                        <th class="col-7" scope="col">Story</th>
+                                        <th class="col-3 text-center" scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr class="tr-add">
-                                        <td class="col-12" colspan="12" >
-                                            <strong class="mx-3"><i class="fe fe-plus-circle mr-1"></i> New Story</strong>
+                                <tbody class="table-panael">
+                                    
+                                    <tr class="tr-add " v-if="!$storyPresenter.view.addRow.toggleRow">
+                                        <td colspan="5" class="col-12"><strong class="hover-cursor table-panael-button" 
+                                            @click=" 
+                                                $storyPresenter.view.addRow.toggleRow = !$storyPresenter.view.addRow.toggleRow
+                                            ">
+                                                <i class="fe fe-plus-circle mr-1"></i> Add Row</strong>
                                         </td>
                                     </tr>
-                                    <tr class="tr-input d-none">
-                                        <th scope="row" class="col-1">
-                                            <button type="button" class="btn btn-table btn-link hover-danger" title="Cancle">
+                                    <tr class="tr-input faster" v-if="$storyPresenter.view.addRow.toggleRow" v-bind:class="{
+                                         'fadeIn' : $storyPresenter.view.addRow.toggleRow,
+                                         'animated' : $storyPresenter.view.addRow.toggleRow,
+                                    }">
+                                        <th scope="row" class="col-2">
+                                            <button type="button" class="btn btn-table btn-link hover-danger" title="Cancle" @click="
+                                                $storyPresenter.view.addRow.toggleRow = !$storyPresenter.view.addRow.toggleRow
+                                            ">
                                                 <i class="fe fe-x text-danger "></i>
                                             </button>
                                         </th>
-                                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Story Name Here"></td>
-                                        <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description Here"></td>
-                                        <td class="col-2 text-center">
+                                        <td class="col-7"><input type="text" class="form-control-plaintext p-0" placeholder="Story Name Here"></td>
+                                        <td class="col-3 text-center">
                                             <button type="button" class="btn btn-link btn-table hover-success" title="Add Row">
                                                 <i class="fe fe-plus-circle"></i>
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr v-for="item in $storyPresenter.view.stories">
-                                        <th scope="row" class="col-1">
-                                            <input :value="item.id" v-model="$storyPresenter.view.storiesCheckList.ids" type="checkbox">
+                                </tbody>
+                                <tbody class="table-select">
+                                    <tr v-for="item in $storyPresenter.view.stories" v-bind:class="{'tr-active' : $storyPresenter.view.currentStory == item.id }" @click="
+                                        $storyPresenter.view.currentStory = item.id
+                                    ">
+                                        <th scope="row" class="col-2">
+                                            <input :value="item.id" :id="item.id" v-model="$storyPresenter.view.storiesCheckList.ids" type="checkbox" class="styled-checkbox">
+                                            <label :for="item.id"></label>
                                         </th>
-                                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Story Name" v-model="item.name"></td>
-                                        <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description" v-model="item.desc"></td>
-                                        <td class="col-2 text-center" @click="$storyPresenter.deleteStoryByID(item.id)" >
-                                            <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
+                                        <td class="col-7">
+                                            <input type="text" class="form-control-plaintext p-0" placeholder="Story Name" v-model="item.name" readonly>
+                                        </td>
+                                        <td class="col-3 text-center" >
+                                            <button type="button" class="btn btn-link btn-table hover-warning mr-2" title="edit">
+                                                <i class="fe fe-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="remove"  @click="$storyPresenter.deleteStoryByID(item.id)">
                                                 <i class="fe fe-delete"></i>
                                             </button>
                                         </td>
@@ -113,43 +129,57 @@ export const storyPage = Vue.component('story-page', {
                             </table>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-7">
                         <div class="table-responsive">
                             <table class="table table-fixed">
                                 <thead>
                                     <tr>
                                         <th class="col-1" scope="col">#</th>
-                                        <th class="col-4" scope="col">Intents</th>
-                                        <th class="col-5" scope="col">Description</th>
+                                        <th class="col-3" scope="col">Sentence</th>
+                                        <th class="col-4" scope="col">Intent</th>
+                                        <th class="col-2 text-center" scope="col">Story</th>
                                         <th class="col-2 text-center" scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr class="tr-add">
-                                        <td class="col-12" colspan="12" >
-                                            <strong class="mx-3"><i class="fe fe-plus-circle mr-1"></i> Add Intents</strong>
+                                <tbody class="table-panael">
+                                    <tr class="tr-add " v-if="!$storyPresenter.view.addRow2.toggleRow">
+                                        <td colspan="5" class="col-12"><strong class="hover-cursor table-panael-button" 
+                                            @click=" 
+                                                 $storyPresenter.view.addRow2.toggleRow = !$storyPresenter.view.addRow2.toggleRow
+                                            ">
+                                                <i class="fe fe-plus-circle mr-1"></i> Add Row</strong>
                                         </td>
                                     </tr>
-                                    <tr class="tr-input">
+                                    <tr class="tr-input faster" v-if="$storyPresenter.view.addRow2.toggleRow" v-bind:class="{
+                                         'fadeIn' : $storyPresenter.view.addRow2.toggleRow,
+                                         'animated' : $storyPresenter.view.addRow2.toggleRow,
+                                    }">
                                         <th scope="row" class="col-1">
-                                            <button type="button" class="btn btn-table btn-link hover-danger" title="Cancle">
+                                            <button type="button" class="btn btn-table btn-link hover-danger" title="Cancle" @click="
+                                                $storyPresenter.view.addRow2.toggleRow = !$storyPresenter.view.addRow2.toggleRow
+                                            ">
                                                 <i class="fe fe-x text-danger "></i>
                                             </button>
                                         </th>
-                                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intents Here"></td>
-                                        <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description Here"></td>
+                                        <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence"></td>
+                                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent"></td>
+                                        <th class="col-2 text-center" scope="col"><span class="badge badge-purple bg-dark px-2"><i class="fe fe-lock"></i>Greeting</span></th>
                                         <td class="col-2 text-center">
                                             <button type="button" class="btn btn-link btn-table hover-success" title="Add Row">
                                                 <i class="fe fe-plus-circle"></i>
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr v-for="item in $storyPresenter.view.intents">
+                                </tbody>
+                                <tbody>
+                                    <tr v-for="item in $storyPresenter.view.trainingSet">
                                         <th scope="row" class="col-1">
-                                            <input type="checkbox">
+                                            <input :value="item.id" :id="item.id" v-model="$storyPresenter.view.storiesCheckList.ids" type="checkbox" class="styled-checkbox">
+                                            <label :for="item.id"></label>
                                         </th>
-                                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intents" v-model="item.intent"></td>
-                                        <td class="col-5"><input type="text" class="form-control-plaintext p-0" placeholder="Description" v-model="item.desc"></td>
+                                        <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence" v-model="item.keyword"></td>
+                                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Description" v-model="item.intent"></td>
+                                        <th class="col-2 text-center" scope="col"><span class="badge badge-purple">{{item.story}}</span></th>
                                         <td class="col-2 text-center" @click="$storyPresenter.deleteStoryByID(item.id)" >
                                             <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
                                                 <i class="fe fe-delete"></i>

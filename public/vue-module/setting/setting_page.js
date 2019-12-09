@@ -42,7 +42,7 @@ export const settingPage = Vue.component('setting-page', {
                                                 <small><strong>Save</strong></small>
                                             </button>
                                         </h3>
-                                        <p class="text-muted mb-0">TEST</p>
+                                        <p class="text-muted mb-0">Your App Name</p>
                                     </div>
                                 </div>
                                 <hr>
