@@ -16,8 +16,7 @@ type EventBus struct {
 
 // EventBus EventBus
 type IEventBus interface {
-	// Subscriber() chan interface{}
-	Subscriber(conn *websocket.Conn)
+	NlpLoggingSubscriber(conn *websocket.Conn)
 	Publisher(msg string)
 	CloseChannel()
 	Shutdown()
@@ -34,43 +33,9 @@ func (event *EventBus) Publisher(msg string) {
 	event.Pubsub.Pub(msg, event.Topic)
 }
 
-func (event *EventBus) Subscriber(conn *websocket.Conn) {
-	i := 0
-	ch := event.Pubsub.Sub(event.Topic)
-
-	defer conn.Close()
-	defer event.Unsubscribe(ch)
-
-	for {
-
-		if msg, ok := <-ch; ok {
-			fmt.Printf("Received %s, %d times.\n", msg, i)
-
-			// b, err := getBytes(msg)
-
-			// if err != nil {
-			// 	fmt.Println("getBytes Error")
-			// 	break
-			// }
-
-			errr := conn.WriteJSON(msg)
-
-			if errr != nil {
-				fmt.Println("WriteMessage Error")
-				break
-			}
-
-			i++
-		} else {
-			fmt.Println("else #####")
-			break
-		}
-	}
+func (event *EventBus) subscribe() chan interface{} {
+	return event.Pubsub.Sub(event.Topic)
 }
-
-// func (event *EventBus) Subscriber() chan interface{} {
-// 	return event.Pubsub.Sub(event.Topic)
-// }
 
 func (event *EventBus) Unsubscribe(channel chan interface{}) {
 	fmt.Println("### unsubscribe ###")

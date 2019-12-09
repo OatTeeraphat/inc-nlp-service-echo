@@ -1,9 +1,6 @@
 export class CookieRepository {
-    
-    constructor(cookies) {
-        // by cookie-js
-        this.cookies = cookies
-    }
+
+    constructor(cookies) { this.cookies = cookies }
 
     setClientSession(value, duration = 7) {
         return this.cookies.set("x-client-session", value, { expires: duration })

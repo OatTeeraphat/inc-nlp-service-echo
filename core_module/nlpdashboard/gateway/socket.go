@@ -45,7 +45,7 @@ func (ws WebsocketGetway) GetLogging(e echo.Context) error {
 		return err
 	}
 
-	go ws.EventBus.Subscriber(conn)
+	go ws.EventBus.NlpLoggingSubscriber(conn)
 
 	return nil
 }

@@ -88,8 +88,8 @@ func main() {
 
 	e := echo.New()
 	event0 := eventbus.NewEventBus(0, "ping.kafka")
-	consume0 := consumer.NewConsumerSarama(selectENV, event0)
-	pro0 := producer.NewProducer(selectENV, event0)
+	consumer0 := consumer.NewKafkaConsumer(selectENV, event0, "ping.kafka")
+	producer0 := producer.NewKafkaProducer(selectENV, event0, "ping.kafka")
 
 	e.Use(
 		middleware.Logger(),
@@ -128,7 +128,7 @@ func main() {
 		HTML5:  true,
 	}))
 
-	healthCheck := NewHealthCheck(pro0)
+	healthCheck := NewHealthCheck(producer0)
 
 	e.GET("/health_check", healthCheck.HeathCheck)
 
@@ -143,21 +143,22 @@ func main() {
 	appGateway.NewHTTPGateway(api, svc0)
 	storyGateway.NewHTTPGateway(api, svc1)
 	nlpTraininglogGateway.NewHTTPGateway(api, svc2)
-	nlpGateway.NewHTTPGateway(api, svc3, pro0)
+	nlpGateway.NewHTTPGateway(api, svc3, producer0)
 	fbGateway.NewHTTPGateway(api, svc3)
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
 	nlpDashboardGateway.NewWebSocketGateway(api, event0)
 
-	go consume0.ConsumeNlpLoggingMessage()
+	go consumer0.ConsumeNlpLoggingMessage()
 
 	// Start server
 	e.Logger.Fatal(e.Start(":" + selectENV.EchoPort))
 
 	defer e.Close()
 	defer orm.DB.Close()
-	defer pro0.Close()
-	defer consume0.Close()
+	defer producer0.Close()
+	defer consumer0.Close()
+
 	defer event0.CloseChannel()
 	defer event0.Shutdown()
 }

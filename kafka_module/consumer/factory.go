@@ -1,72 +1,54 @@
 package consumer
 
 import (
-	"crypto/tls"
 	"inc-nlp-service-echo/common_module/commons"
 	"inc-nlp-service-echo/event_module/eventbus"
 	"inc-nlp-service-echo/kafka_module/config"
 	"log"
-	"strings"
 
-	"github.com/Shopify/sarama"
+	cluster "github.com/bsm/sarama-cluster"
 )
 
 // Consumer Consumer
 type Consumer struct {
-	Config   sarama.Consumer
-	Topic    string
+	Cluster  *cluster.Consumer
 	EventBus eventbus.IEventBus
 }
 
-func createTLSConfiguration() (t *tls.Config) {
-	t = &tls.Config{
-		InsecureSkipVerify: false,
-	}
-	return t
-}
+// NewKafkaConsumer NewKafkaConsumer
+func NewKafkaConsumer(selectENV *commons.SelectENV, event eventbus.IEventBus, topic string) *Consumer {
 
-// NewConsumerSarama NewConsumerSarama
-func NewConsumerSarama(selectENV *commons.SelectENV, event eventbus.IEventBus) *Consumer {
-	algorithm := "sha256"
-	splitBrokers := strings.Split(selectENV.KafkaBrokers, ",")
-	conf := sarama.NewConfig()
-	conf.Producer.Retry.Max = 1
-	conf.Producer.RequiredAcks = sarama.WaitForAll
-	conf.Producer.Return.Successes = true
-	conf.Metadata.Full = true
-	conf.Version = sarama.V0_10_0_0
-	conf.ClientID = "sasl_scram_client"
-	conf.Metadata.Full = true
-	conf.Net.SASL.Enable = true
-	conf.Net.SASL.User = selectENV.KafkaUsername
-	conf.Net.SASL.Password = selectENV.KafkaPassword
-	conf.Net.SASL.Handshake = true
-	if algorithm == "sha512" {
-		conf.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &config.XDGSCRAMClient{HashGeneratorFcn: config.SHA512} }
-		conf.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeSCRAMSHA512)
-	} else if algorithm == "sha256" {
-		conf.Net.SASL.SCRAMClientGeneratorFunc = func() sarama.SCRAMClient { return &config.XDGSCRAMClient{HashGeneratorFcn: config.SHA256} }
-		conf.Net.SASL.Mechanism = sarama.SASLMechanism(sarama.SASLTypeSCRAMSHA256)
+	topics := []string{selectENV.KafkaTopicPrefix + topic}
 
-	} else {
-		log.Fatalf("invalid SHA algorithm \"%s\": can be either \"sha256\" or \"sha512\"", algorithm)
-	}
+	kafkaConf := config.NewKafkaConsumerConfig(selectENV)
+	kafkaBroker := config.NewKafkaBroker(selectENV)
 
-	conf.Net.TLS.Enable = true
-	conf.Net.TLS.Config = createTLSConfiguration()
-	consumer, err := sarama.NewConsumer(splitBrokers, conf)
+	consumer, err := cluster.NewConsumer(kafkaBroker, "GROUP_ONE", topics, kafkaConf)
 	if err != nil {
 		panic(err)
 	}
 
+	// consume errors
+	go func() {
+		for err := range consumer.Errors() {
+			log.Printf("Error: %s\n", err.Error())
+		}
+	}()
+
+	// consume notifications
+	go func() {
+		for ntf := range consumer.Notifications() {
+			log.Printf("Rebalanced: %+v\n", ntf)
+		}
+	}()
+
 	return &Consumer{
-		Config:   consumer,
-		Topic:    selectENV.KafkaTopicPrefix + "ping.kafka",
+		Cluster:  consumer,
 		EventBus: event,
 	}
 }
 
 // Close Close
 func (con *Consumer) Close() {
-	con.Config.Close()
+	con.Cluster.Close()
 }
