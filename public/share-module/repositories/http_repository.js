@@ -2,8 +2,8 @@ export class HttpRepository {
 
     constructor(cookieRepo) {
         this.cookieRepo = cookieRepo
-        // this.BASE_API = "http://localhost:9000"
-        this.BASE_API = "https://inc-nlp-service-echo.herokuapp.com"
+        this.BASE_API = getHttpHost()
+        // this.BASE_API = "https://inc-nlp-service-echo.herokuapp.com"
         this.GATEWAY_API = "https://inc-auth.herokuapp.com"
     }
 
