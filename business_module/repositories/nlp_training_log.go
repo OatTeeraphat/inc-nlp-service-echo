@@ -16,6 +16,7 @@ type NlpTrainingLogRepository struct {
 // INlpTrainingLogRepository nlp query appearance interface
 type INlpTrainingLogRepository interface {
 	Save(Domain *domains.NlpTrainingLogDomain)
+	FindByID(ID uuid.UUID) domains.NlpTrainingLogDomain
 	Count() int64
 	Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain
 	DeleteByID(ID uuid.UUID) *gorm.DB
@@ -39,6 +40,13 @@ func (repo *NlpTrainingLogRepository) Count() int64 {
 	var totalPage int64
 	repo.DB.Table("nlp_training_logs").Count(&totalPage)
 	return totalPage
+}
+
+// FindByID FindByID
+func (repo *NlpTrainingLogRepository) FindByID(ID uuid.UUID) domains.NlpTrainingLogDomain {
+	var Domain domains.NlpTrainingLogDomain
+	repo.DB.Where("id = ?", ID).Find(&Domain)
+	return Domain
 }
 
 // Pagination Pagination

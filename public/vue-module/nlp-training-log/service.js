@@ -66,6 +66,25 @@ export class NlpTrainingLogService {
         )
     }
 
+    trainByID = (id) => {
+        let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Train NLP" }, true)
+        return from( confirmModal ).pipe(
+            switchMap( result => {
+                console.debug(result)
+                if (result.value) {
+                    return this.httpRepository.trainNlpTrainingLogByID(id).pipe(
+                        this.vueErrorHandler.catchHttpError(),
+                    )
+                }
+                return throwError(false)
+            }),
+            map( it => {
+                swal2('success', { text: "resolve", title: "Train NLP" })
+                return it
+            }),
+        )
+    }
+
     nextPaginationPage = (page, keyword) => {
         this.infiniteHandler$$.next({ page: page, keyword: keyword })
     }

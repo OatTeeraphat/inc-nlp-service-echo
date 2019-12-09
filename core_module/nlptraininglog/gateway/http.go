@@ -20,6 +20,7 @@ func NewHTTPGateway(e *echo.Group, svc0 nlptraininglog.Service) {
 		NlpTrainingLogService: svc0,
 	}
 
+	e.POST("/nlp/log/train", handle.TrainByID)
 	e.GET("/nlp/log/pagination", handle.SearchPagination)
 	e.DELETE("/nlp/log", handle.DeleteByID)
 	e.DELETE("/nlp/log/bulk", handle.BulkDeleteByID)
@@ -35,7 +36,16 @@ func (h HTTPGateway) SearchPagination(e echo.Context) error {
 	response := h.NlpTrainingLogService.SearchPagination(page, keyword)
 
 	return e.JSON(http.StatusOK, response)
+}
 
+// TrainByID TrainByID
+func (h HTTPGateway) TrainByID(e echo.Context) error {
+	ID := e.QueryParam("id")
+	response, error := h.NlpTrainingLogService.TrainByID(ID)
+	if error != nil {
+		return e.String(http.StatusUnprocessableEntity, "INVALID")
+	}
+	return e.String(http.StatusOK, response)
 }
 
 // DeleteByID DeleteByID

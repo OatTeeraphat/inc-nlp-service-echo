@@ -194,6 +194,16 @@ export class HttpRepository {
         })
     }
 
+    trainNlpTrainingLogByID(id) {
+        return ajax({
+            method: "POST",
+            url: `${this.BASE_API}/v1/nlp/log/train?id=${id}`,
+            headers: {
+                "Authorization": this._getAuthorizedBearer()
+            }
+        })
+    }
+
     // END_POINT: /v1/nlp/log/bulk
     bulkDeleteNlpTrainingLogsByIDs(body) {
         return ajax({

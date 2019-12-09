@@ -26,7 +26,7 @@ export class VueErrorHandler {
                 if ( this.vueRouter.history.current.path !== "/login" ) {
                     this.vueRouter.replace('/login')
                 }
-                
+
             }
             
             else if (e.status == 500) {

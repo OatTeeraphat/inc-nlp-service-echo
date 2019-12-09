@@ -44,10 +44,7 @@ func (x *XDGSCRAMClient) Done() bool {
 func NewKafkaConsumerConfig(envConf *commons.SelectENV) *cluster.Config {
 	algorithm := "sha256"
 	conf := cluster.NewConfig()
-	conf.Producer.Retry.Max = 1
-	conf.Producer.RequiredAcks = sarama.WaitForAll
-	conf.Producer.Return.Successes = true
-	conf.Metadata.Full = true
+	conf.Consumer.Offsets.Initial = sarama.ReceiveTime
 	conf.Version = sarama.V0_10_0_0
 	conf.ClientID = "sasl_scram_client"
 	conf.Metadata.Full = true
@@ -81,7 +78,6 @@ func NewKafkaProducerConfig(envConf *commons.SelectENV) *sarama.Config {
 	conf.Producer.Retry.Max = 1
 	conf.Producer.RequiredAcks = sarama.WaitForAll
 	conf.Producer.Return.Successes = true
-	conf.Metadata.Full = true
 	conf.Version = sarama.V0_10_0_0
 	conf.ClientID = "sasl_scram_client"
 	conf.Metadata.Full = true

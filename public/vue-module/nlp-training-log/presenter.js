@@ -72,6 +72,12 @@ export class NlpTrainingLogPresenter {
         )
     }
 
+    trainByID(id) {
+        this.nlpTrainingLogService.trainByID(id).subscribe( () => {
+            this.view.nlpLogs = this.view.nlpLogs.filter( item => item.id !== id)
+        })
+    }
+
     beforeDestroy() {
         // this.nlpTrainingLogService.disposable()
         this.$nlpTrainingLogInfiniteScrollSubscription.unsubscribe()

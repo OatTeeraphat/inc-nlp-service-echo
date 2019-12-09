@@ -74,12 +74,11 @@ export const nlpTrainingLog = Vue.component('nlp-training-log-page', {
                                 <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Story Here" v-model="item.story_name"></td>
                                 <td class="col-1"><input type="text" class="form-control-plaintext p-0 text-center" placeholder="Story Here" readonly v-model="item.distance"></td>
                                 <td class="col-2 text-center">
-                                    <button type="button" class="btn btn-link btn-table hover-success" title="Cancle">
+                                    <button @click="$nlpTrainingLogPresenter.trainByID(item.id)" type="button" class="btn btn-link btn-table hover-success" title="Train">
                                         <i class="fe fe-plus-circle"></i>
                                     </button>
-                                    <!-- // TODO: delete one by ID -->
                                     <button @click="$nlpTrainingLogPresenter.deleteByID(item.id)" type="button"class="btn btn-link btn-table hover-danger mr-2" title="Cancle">
-                                    <i class="fe fe-delete"></i>
+                                        <i class="fe fe-delete"></i>
                                     </button>
                                 </td>
                             </tr>

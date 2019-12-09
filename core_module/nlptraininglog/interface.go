@@ -11,6 +11,7 @@ type HTTPGateway interface {
 	SearchPagination(e echo.Context) error
 	DeleteByID(e echo.Context) error
 	BulkDeleteByID(e echo.Context) error
+	TrainByID(e echo.Context) error
 }
 
 // Service INlpTrainingLogService
@@ -18,4 +19,5 @@ type Service interface {
 	SearchPagination(Page string, keyword string) dao.SearchPaginationDao
 	DeleteByID(ID string) (string, error)
 	BulkDeleteByID(IDs dao.BulkDeleteByIDsDao) (string, error)
+	TrainByID(ID string) (string, error)
 }

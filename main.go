@@ -15,8 +15,8 @@ import (
 	nlpDashboardGateway "inc-nlp-service-echo/core_module/nlpdashboard/gateway"
 	nlpDashboardService "inc-nlp-service-echo/core_module/nlpdashboard/service"
 	"inc-nlp-service-echo/core_module/nlprecord/dao"
-	nlpGateway "inc-nlp-service-echo/core_module/nlprecord/gateway"
-	nlpService "inc-nlp-service-echo/core_module/nlprecord/service"
+	nlpRecordGateway "inc-nlp-service-echo/core_module/nlprecord/gateway"
+	nlpRecordService "inc-nlp-service-echo/core_module/nlprecord/service"
 	nlpTraininglogGateway "inc-nlp-service-echo/core_module/nlptraininglog/gateway"
 	nlpTraininglogService "inc-nlp-service-echo/core_module/nlptraininglog/service"
 	storyGateway "inc-nlp-service-echo/core_module/story/gateway"
@@ -37,7 +37,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	uuid "github.com/satori/go.uuid"
 	log "github.com/sirupsen/logrus"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
@@ -90,7 +89,7 @@ func main() {
 
 	e := echo.New()
 	event0 := eventbus.NewEventBus(0, "nlp.dashboard.logging")
-	consumer0 := consumer.NewKafkaConsumer(selectENV, event0, "nlp.dashboard.logging", uuid.NewV4().String())
+	consumer0 := consumer.NewKafkaConsumer(selectENV, event0, "nlp.dashboard.logging", "groupid")
 	producer0 := producer.NewKafkaProducer(selectENV, event0, "nlp.dashboard.logging")
 
 	e.Use(
@@ -118,8 +117,8 @@ func main() {
 
 	svc0 := appService.NewService(repo6)
 	svc1 := storyService.NewService(repo4)
-	svc2 := nlpTraininglogService.NewService(repo0)
-	svc3 := nlpService.NewService(repo1, repo0, repo3, repo7)
+	svc2 := nlpTraininglogService.NewService(repo1, repo0)
+	svc3 := nlpRecordService.NewService(repo1, repo0, repo3, repo7)
 	svc4 := categorizeService.NewService(repo5, repo6)
 	svc5 := nlpDashboardService.NewService(repo7)
 
@@ -145,7 +144,7 @@ func main() {
 	appGateway.NewHTTPGateway(api, svc0)
 	storyGateway.NewHTTPGateway(api, svc1)
 	nlpTraininglogGateway.NewHTTPGateway(api, svc2)
-	nlpGateway.NewHTTPGateway(api, svc3, producer0)
+	nlpRecordGateway.NewHTTPGateway(api, svc3, producer0)
 	fbGateway.NewHTTPGateway(api, svc3)
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
