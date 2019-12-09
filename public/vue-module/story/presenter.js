@@ -1,18 +1,41 @@
 class StoryViewModel {
     constructor() {
+        this.currentStory = ""
         this.stories = []
         this.storiesCheckList = {
             ids: []
         }
-        this.intents = [
-            { id: 1, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-            { id: 2, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-            { id: 3, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-            { id: 4, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-            { id: 5, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-            { id: 6, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' },
-            { id: 7, intent: 'Greeting', desc: 'ต้อนรับชาวโลก' }
-        ]
+        this.trainingSet = [
+            { id: 1, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            { id: 2, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            { id: 3, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            { id: 4, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            { id: 5, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            { id: 6, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            { id: 7, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' }
+        ],
+        this.addRow = {
+            toggleRow: false,
+            toggleStory: false,
+            highlight: false,
+            inputDisabled: false,
+            keyword: "",
+            intent: "",
+            story: "",
+            search_story: "",
+            listStory: "",
+        }
+        this.addRow2 = {
+            toggleRow: false,
+            toggleStory: false,
+            highlight: false,
+            inputDisabled: false,
+            keyword: "",
+            intent: "",
+            story: "",
+            search_story: "",
+            listStory: "",
+        }
     }
 }
 
@@ -24,7 +47,12 @@ export class StoryPresenter {
 
     onMounted() {
         this.storyService.getStoryState().subscribe(it => { 
-            this.view.stories.push(...it) 
+            console.log('it ', it)
+            if (it != []){
+                this.view.currentStory = it[0]['id']
+            }
+            
+            this.view.stories = it
         })
     }
 

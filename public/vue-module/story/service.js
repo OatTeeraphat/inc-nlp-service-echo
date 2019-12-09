@@ -13,9 +13,8 @@ export class StoryService {
     getStoryState() {
 
         return this.httpRepository.getAllStories().pipe(
-            takeUntil(this.unsubscribe),
-            switchMap( ({ response }) => {
-                return of(new GetStoryModelAdapter().adapt(response))
+            map( response => {
+                return new GetStoryModelAdapter().adapt(response)
             }),
             this.vueErrorHandler.catchHttpError(),
         )

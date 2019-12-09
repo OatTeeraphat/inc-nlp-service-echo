@@ -247,8 +247,30 @@
      border-bottom: 1px solid #fbedc6;
      min-height: 54px !important;
 }
+ .table-select .tr-active th, .table-select .tr-active td{
+    background: #f2effa;
+    border-bottom: none;
+    min-height: 54px !important;
+    cursor: pointer;
+}
+ .table-select .tr-active th input, .table-select .tr-active td input{
+    font-weight: 600;
+    color: #673AB7;
+}
+ .table-select .tr-active:hover th, .table-select .tr-active:hover td{
+    background: #f2effa;
+ }
+ .table-select tr:hover th, .table-select tr:hover td{
+    background: #f8f9fa;
+    border-bottom: none;
+    min-height: 54px !important;
+    cursor: pointer;
+}
+.table-select tr:hover th input, .table-select tr:hover td input{
+    cursor: pointer;
+}
  .table-fixed tbody {
-     height: calc(100vh - 410px);
+     height: calc(100vh - 370px);
      overflow-y: auto;
      width: 100%;
 }
@@ -275,6 +297,7 @@
      border-top: 0;
      position: relative;
      top: -1px;
+     height: calc(100vh - 410px);
  }
  .table-panael i{
      position: relative;
@@ -777,11 +800,21 @@ h3 .linear-preload{
      max-width: 50px;
      max-height: 50px;
 }
+ .badge .fe{
+    font-size: 0.9em;
+    left: -1.5px;
+    font-weight: 900;
+}
  .badge-setting{
      font-size: 0.9em;
      position: relative;
      top: -1px;
 }
+ .badge-story{font-size: 0.9em;top: 2px;position: relative;padding: .25em .5em;}
+ .badge-purple{
+     background-color: #663ab7;
+     color: #fff;
+ }
  .textarea-code{
      color: #e83e8c!important;
      font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
@@ -1058,14 +1091,14 @@ h3 .linear-preload{
   vertical-align: text-top;
   width: 20px;
   height: 20px;
-  background: #ddd;
+  background: #e5e8eb;
   border-radius: 5px;
 }
 .styled-checkbox:hover + label:before {
-  background: #ddd;
+  background: #d1d5da;
 }
 .styled-checkbox:focus + label:before {
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.15);
 }
 .styled-checkbox:checked + label:before {
   background: #663ab7;
@@ -1081,12 +1114,27 @@ h3 .linear-preload{
 .styled-checkbox:checked + label:after {
   content: "";
   position: absolute;
-  left: 5px;
-  top: 9px;
+  left: 4px!important;
+  top: 9px!important;
   background: white;
-  width: 2px;
-  height: 2px;
-  box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white;
-  -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
-}   
+  width: 3px!important;
+  height: 3px!important;
+  box-shadow: 2px 0 0 white, 4px 0 0 white, 4px -2px 0 white, 4px -4px 0 white, 4px -6px 0 white, 4px -8px 0 white !important;
+  -webkit-transform: rotate(45deg)!important;
+          transform: rotate(45deg)!important;
+}
+.tr-active .styled-checkbox + label:before{
+    background: #663ab7;
+}
+.tr-active .styled-checkbox + label:after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 8.5px;
+    background: white;
+    width: 3px;
+    height: 3px;
+    box-shadow: 0px -2px 0 white, 0px -4px 0 white, 0px -6px 0 white, 0px -9px 0 white;
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}

@@ -87,7 +87,7 @@ export class NlpRecordsService {
 
     insertNlpRecords(){
         return this.$insertNlpRecord.pipe(
-            debounceTime(1000),
+            debounceTime(100),
             switchMap( nlpRecord => {
 
                 nlpRecord = new GetNlpRecordInsertModelAdapter().adapt(nlpRecord)
@@ -104,16 +104,15 @@ export class NlpRecordsService {
                                 "updated_at": response.updated_at
                             } 
                         }),
+                        map(next => {
+                            swal2(ALERT.TOAST, { title: 'Insert Success', icon: 'success' })
+                            return next
+                        }),
                         this.vueErrorHandler.catchHttpError()
                     )
                 }
-                swal2(ALERT.ERROR, { title: 'Invalid Field', text: 'Sentence Or Intent Can\'\t be empty field' })
-                return empty()
-                
-            }),
-            map(next => {
-                swal2(ALERT.TOAST, { title: 'Insert Success', icon: 'success' })
-                return next
+                swal2(ALERT.TOAST, { title: 'Invalid Field', icon: 'error'})
+                return of({})
             })
         )
     }
@@ -143,7 +142,7 @@ export class NlpRecordsService {
         )
     }
     deleteNlpRecordByID(id) {     
-        let confirmModal = swal2('warning', { text: "Are you sure ?", title: "Delete NLP records" }, true)
+        let confirmModal = swal2(ALERT.DANGER, { text: "Are you sure ?", title: "Delete NLP records" }, true)
         return from( confirmModal ).pipe(
             switchMap( result => {
 
