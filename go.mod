@@ -7,6 +7,7 @@ require (
 	github.com/Shopify/sarama v1.24.1
 	github.com/agnivade/levenshtein v1.0.3
 	github.com/aryahadii/ngram v0.0.0-20170825131822-84d2901a89b2
+	github.com/bsm/sarama-cluster v2.1.15+incompatible
 	github.com/cskr/pubsub v1.0.2
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/dgryski/go-metro v0.0.0-20180109044635-280f6062b5bc
