@@ -5,7 +5,7 @@ type ReadStoryDao struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"desc"`
-	Owner       string `json:"owner"`
+	AppID       string `json:"app_id"`
 	CreateAt    int64  `json:"create_at"`
 	UpdatedAt   int64  `json:"updated_at"`
 }

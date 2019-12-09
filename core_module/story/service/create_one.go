@@ -3,6 +3,8 @@ package service
 import (
 	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/core_module/story/dao"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 // CreateOneStory CreateOneStory
@@ -17,7 +19,7 @@ func (s Service) CreateOneStory(newStoryModel dao.NewStoryDao) string {
 
 	storyRecord.Name = newStoryModel.Name
 	storyRecord.Description = newStoryModel.Description
-	storyRecord.Owner = newStoryModel.Owner
+	storyRecord.AppID = uuid.NewV4()
 
 	s.storyRepo.Save(&storyRecord)
 

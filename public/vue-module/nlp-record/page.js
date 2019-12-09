@@ -44,7 +44,6 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                             <input class="custom-file-input" name="xlsx" type="file" id="file" ref="file" @change="$nlpRecordPresenter.uploadXlSXNlpRecord($event.target.name, $event.target.files); fileCount = $event.target.files.length">
                                         </form>
                                         <small class="text-muted">XLSX file max size 20 mb</small>
-                                        </form>
                                     </div>
                                 </div>
                                 <div class="btn-group" role="group">

@@ -1,11 +1,12 @@
 package domains
 
-// StoryDomain StoryDomain
+import uuid "github.com/satori/go.uuid"
+
 type StoryDomain struct {
 	BaseDomain
 	Name        string
 	Description string
-	Owner       string // staff, specific app
+	AppID       uuid.UUID // staff, specific app
 }
 
 // TableName StoryDomain
