@@ -92,7 +92,7 @@ func (repo *NlpRecordRepository) CountByKeywordMinhash(KeywordMinhash uint32) in
 
 // Pagination Pagination
 func (repo *NlpRecordRepository) Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain {
-	var Domain []domains.NlpRecordDomain	
+	var Domain []domains.NlpRecordDomain
 	repo.DB.Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
 	return Domain
 }

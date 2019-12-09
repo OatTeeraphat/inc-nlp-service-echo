@@ -57,6 +57,11 @@ export class NlpTrainingLogPresenter {
 
             this.view.nlpLogs = this.view.nlpLogs.filter( ({ id }) => !this.view.nlpLogsCheckedList.ids.includes(id) )
             this.view.nlpLogsCheckedList.ids = []
+
+            if (this.view.nlpLogs.length == 0) {
+                this.view.page = 1
+                this.nlpTrainingLogService.nextPaginationPage(this.view.page, this.view.searchKeyword)
+            }
         })
     }
 

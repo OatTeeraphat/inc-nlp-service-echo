@@ -19,7 +19,7 @@ type INlpTrainingLogRepository interface {
 	Count() int64
 	Pagination(PageIndex int, Limit int) []domains.NlpTrainingLogDomain
 	DeleteByID(ID uuid.UUID) *gorm.DB
-	BulkDeleteByIDs(ids []uuid.UUID) *gorm.DB
+	BulkDeleteByIDs(ids []string) *gorm.DB
 	CountByKeywordMinhash(KeywordMinhash uint32) int64
 	PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpTrainingLogDomain
 }
@@ -56,7 +56,7 @@ func (repo *NlpTrainingLogRepository) DeleteByID(ID uuid.UUID) *gorm.DB {
 }
 
 // BulkDeleteByIDs BulkDeleteByIDs
-func (repo *NlpTrainingLogRepository) BulkDeleteByIDs(ids []uuid.UUID) *gorm.DB {
+func (repo *NlpTrainingLogRepository) BulkDeleteByIDs(ids []string) *gorm.DB {
 	return repo.DB.Unscoped().Where(ids).Delete(&domains.NlpTrainingLogDomain{})
 }
 
