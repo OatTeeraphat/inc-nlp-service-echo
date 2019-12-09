@@ -25,14 +25,13 @@ export class SettingPresenter {
 		})
 
 		this.settingService.getAppInfoByClientId().subscribe(appInfo => {
-			// this.view.app_info = appInfo.response
+			this.view.app_info = appInfo.response
 		})
 
 		this.settingService.getAppCredentialByAppId().subscribe(appSecret => {
-			console.log(appSecret)
-			// const { access_token, client_secret } = appSecret.response
-			// this.view.app_secret = `secret ${client_secret}`
-			// this.view.app_token = `token ${access_token}`
+			const { access_token, client_secret } = appSecret.response
+			this.view.app_secret = `secret ${client_secret}`
+			this.view.app_token = `token ${access_token}`
 		})
 
 		this.settingService.setNlpConfidenceByClientID().subscribe()

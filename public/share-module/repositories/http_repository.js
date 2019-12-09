@@ -2,7 +2,9 @@ export class HttpRepository {
 
     constructor(cookieRepo) {
         this.cookieRepo = cookieRepo
-        this.BASE_API = getHttpHost()
+        // this.BASE_API = "http://localhost:9000"
+        this.BASE_API = "https://inc-nlp-service-echo.herokuapp.com"
+        this.GATEWAY_API = "https://inc-auth.herokuapp.com"
     }
 
     _getAuthorizedBearer() {
@@ -13,8 +15,9 @@ export class HttpRepository {
     clientSignIn(username, password) {
         return ajax({
             method: "POST",
-            url: `${this.BASE_API}/v1/login`,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            // url: `${this.GATEWAY_API}/login`,
+            url: `${this.BASE_API}/v1/client/login`,
+            headers: { 'Content-Type': 'application/json' },
             body: {
                 username: username,
                 password: password
@@ -26,7 +29,7 @@ export class HttpRepository {
     signOut() {
         return of()
     }
-    
+
 
     // END_POINT: /v1/nlp/record/pagination?page=
     getNlpRecordsPagination(page) {
@@ -81,14 +84,14 @@ export class HttpRepository {
 
     putNlpRecord(id, keyword, intent, story_name) {
         console.log(id, keyword, intent, story_name)
-        return ajax ({
-            method: "PUT", 
+        return ajax({
+            method: "PUT",
             url: `${this.BASE_API}/v1/nlp/record`,
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
-                "Authorization": this._getAuthorizedBearer() 
+                "Authorization": this._getAuthorizedBearer()
             },
-            body: {	
+            body: {
                 "id": id,
                 "keyword": keyword,
                 "intent": intent,
@@ -101,13 +104,13 @@ export class HttpRepository {
         return ajax({
             methods: "GET",
             url: `${this.BASE_API}/v1/nlp/dashboard/gte?=${id}`,
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
-                "Authorization": this._getAuthorizedBearer() 
+                "Authorization": this._getAuthorizedBearer()
             },
         })
     }
-    
+
 
     uploadXlSXNlpRecord(formData) {
         return ajax({
@@ -183,10 +186,10 @@ export class HttpRepository {
     // END_POINT: /v1/nlp/log?id=
     deleteNlpTrainingLogByID(id) {
         return ajax({
-            method: "DELETE", 
+            method: "DELETE",
             url: `${this.BASE_API}/v1/nlp/log?id=${id}`,
-            headers: { 
-                "Authorization": this._getAuthorizedBearer() 
+            headers: {
+                "Authorization": this._getAuthorizedBearer()
             }
         })
     }
@@ -194,11 +197,11 @@ export class HttpRepository {
     // END_POINT: /v1/nlp/log/bulk
     bulkDeleteNlpTrainingLogsByIDs(body) {
         return ajax({
-            method: "DELETE", 
+            method: "DELETE",
             url: `${this.BASE_API}/v1/nlp/log/bulk`,
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": this._getAuthorizedBearer() 
+                "Authorization": this._getAuthorizedBearer()
             },
             body: body
         })
@@ -237,10 +240,11 @@ export class HttpRepository {
         delay(600)
     )
 
-    getAppInfoByClientId = () => {
+    getAppInfoByClientId = (client_id = this.cookieRepo.getClientId()) => {
         return ajax({
             method: "GET",
-            url: `${this.BASE_API}/user/3794bfa3-b010-43fd-a670-d604c7740bda/app`
+            // url: `${this.GATEWAY_API}/user/${client_id}/app`
+            url: `${this.BASE_API}/v1/client/${client_id}/app`
         })
     }
 
@@ -249,10 +253,11 @@ export class HttpRepository {
         delay(600)
     )
 
-    getAppCredentialByAppId = () => {
+    getAppCredentialByAppId = (client_id = this.cookieRepo.getClientId()) => {
         return ajax({
             method: "GET",
-            url: `${this.BASE_API}/user/3794bfa3-b010-43fd-a670-d604c7740bda/secret`
+            // url: `${this.GATEWAY_API}/user/3794bfa3-b010-43fd-a670-d604c7740bda/secret`
+            url: `${this.BASE_API}/v1/client/${client_id}/secret`
         })
     }
 
@@ -262,7 +267,7 @@ export class HttpRepository {
     }).pipe(
         delay(600)
     )
-    
+
     // END_POINT: ############# TODO: ###############
     revokeSecretByAppId = () => of({
         client_secret: 'secret re/' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
@@ -277,22 +282,22 @@ export class HttpRepository {
     */
 
     getApiStatInPeriodByAppId = (period) => of(
-        [   
-            { time: "2019-11-01 00:00:00.00+00", call: "0", avg_time : "0" },
-            { time: "2019-11-02 00:00:00.00+00", call: "40", avg_time: "82.32"  },
-            { time: "2019-11-03 00:00:00.00+00", call: "320", avg_time: "120.2"  },
-            { time: "2019-11-04 00:00:00.00+00", call: "140", avg_time: "112.26"  },
-            { time: "2019-11-05 00:00:00.00+00", call: "160", avg_time: "130.39"  },
-            { time: "2019-11-06 00:00:00.00+00", call: "75", avg_time: "90.16"  },
-            { time: "2019-11-07 00:00:00.00+00", call: "10", avg_time: "60.33"  },
-            { time: "2019-11-08 00:00:00.00+00", call: "40", avg_time: "92.51"  },
-            { time: "2019-11-09 00:00:00.00+00", call: "320", avg_time: "123.01"  },
-            { time: "2019-11-10 00:00:00.00+00", call: "140", avg_time: "152.33"  },
-            { time: "2019-11-11 00:00:00.00+00", call: "160", avg_time: "72.04"  },
-            { time: "2019-11-12 00:00:00.00+00", call: "75", avg_time: "92.30"  },
-            { time: "2019-11-13 00:00:00.00+00", call: "320", avg_time: "98.43"  },
-            { time: "2019-11-14 00:00:00.00+00", call: "140", avg_time: "91.52"  },
-            { time: "2019-11-15 00:00:00.00+00", call: "75", avg_time: "134.66"  },
+        [
+            { time: "2019-11-01 00:00:00.00+00", call: "0", avg_time: "0" },
+            { time: "2019-11-02 00:00:00.00+00", call: "40", avg_time: "82.32" },
+            { time: "2019-11-03 00:00:00.00+00", call: "320", avg_time: "120.2" },
+            { time: "2019-11-04 00:00:00.00+00", call: "140", avg_time: "112.26" },
+            { time: "2019-11-05 00:00:00.00+00", call: "160", avg_time: "130.39" },
+            { time: "2019-11-06 00:00:00.00+00", call: "75", avg_time: "90.16" },
+            { time: "2019-11-07 00:00:00.00+00", call: "10", avg_time: "60.33" },
+            { time: "2019-11-08 00:00:00.00+00", call: "40", avg_time: "92.51" },
+            { time: "2019-11-09 00:00:00.00+00", call: "320", avg_time: "123.01" },
+            { time: "2019-11-10 00:00:00.00+00", call: "140", avg_time: "152.33" },
+            { time: "2019-11-11 00:00:00.00+00", call: "160", avg_time: "72.04" },
+            { time: "2019-11-12 00:00:00.00+00", call: "75", avg_time: "92.30" },
+            { time: "2019-11-13 00:00:00.00+00", call: "320", avg_time: "98.43" },
+            { time: "2019-11-14 00:00:00.00+00", call: "140", avg_time: "91.52" },
+            { time: "2019-11-15 00:00:00.00+00", call: "75", avg_time: "134.66" },
         ]
     ).pipe(
         delay(600)
@@ -359,7 +364,7 @@ export class HttpRepository {
                ( story[*] limit-1 row, story[Non Training] 1row, summary 15 row )
     */
 
-    getCountNlpSetInStoryByAppId = (limit) => of (
+    getCountNlpSetInStoryByAppId = (limit) => of(
         [
             { story_name: "GREETING", amount: 120 },
             { story_name: "FAQ", amount: 140 },
@@ -375,7 +380,7 @@ export class HttpRepository {
         [
             {
                 label: 'GREETING',
-                data: [ 
+                data: [
                     { intent: "สวัสดีจ้า", call: "1938" },
                     { intent: "หิวมั้ย", call: "1038" },
                     { intent: "สบายดีรึป่าว", call: "7" },

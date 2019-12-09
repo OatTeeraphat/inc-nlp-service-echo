@@ -26,6 +26,7 @@ import (
 	fbGateway "inc-nlp-service-echo/core_module/facebook/gateway"
 
 	authGateway "inc-nlp-service-echo/core_module/authentication/gateway"
+	clientGateway "inc-nlp-service-echo/core_module/client/gateway"
 
 	"inc-nlp-service-echo/business_module/repositories"
 	"net/http"
@@ -147,6 +148,7 @@ func main() {
 	fbGateway.NewHTTPGateway(api, svc3)
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
+	clientGateway.NewHTTPGateway(api)
 	nlpDashboardGateway.NewWebSocketGateway(api, event0)
 
 	go consumer0.ConsumeNlpLoggingMessage()

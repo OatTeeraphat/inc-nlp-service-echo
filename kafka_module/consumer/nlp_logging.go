@@ -25,15 +25,19 @@ func (con Consumer) ConsumeNlpLoggingMessage() {
 
 	// Get signnal for finish
 	doneCh := make(chan struct{})
+
 	go func() {
 		for {
 			select {
+
 			case err := <-con.Cluster.Errors():
 				fmt.Println(err)
+
 			case msg := <-con.Cluster.Messages():
 				msgCount++
 				go con.EventBus.Publisher(string(msg.Value))
 				fmt.Println("Received messages", string(msg.Key), string(msg.Value))
+
 			case <-signals:
 				fmt.Println("Interrupt is detected")
 				doneCh <- struct{}{}
