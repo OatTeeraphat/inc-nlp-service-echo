@@ -9,6 +9,7 @@ type NlpRecordDomain struct {
 	KeywordMinhash uint32 `gorm:"index:idx_keyword_minhash"`
 	Intent         string
 	StoryID        uuid.UUID `gorm:"index:idx_keyword_minhash,idx_story_id"`
+	AppID          uuid.UUID
 }
 
 // TableName NlpRecordDomain

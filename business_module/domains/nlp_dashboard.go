@@ -10,6 +10,7 @@ type NlpDashboardDomain struct {
 	KeywordMinhash uint32
 	Intent         string
 	StoryID        uuid.UUID
+	AppID          uuid.UUID
 }
 
 // TableName NlpRecordDomain

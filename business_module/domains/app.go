@@ -1,7 +1,6 @@
 package domains
 
 import (
-	"github.com/jinzhu/gorm/dialects/postgres"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -11,7 +10,7 @@ type AppDomain struct {
 	Name     string
 	Category string
 	ClientID uuid.UUID
-	Channel  postgres.Jsonb
+	// Channel  postgres.Jsonb
 }
 
 // TableName StoryDomain
