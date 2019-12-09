@@ -88,9 +88,9 @@ func main() {
 	log.SetLevel(log.DebugLevel)
 
 	e := echo.New()
-	event0 := eventbus.NewEventBus(0, "ping.kafka")
-	consumer0 := consumer.NewKafkaConsumer(selectENV, event0, "ping.kafka")
-	producer0 := producer.NewKafkaProducer(selectENV, event0, "ping.kafka")
+	event0 := eventbus.NewEventBus(0, "nlp.dashboard.logging")
+	consumer0 := consumer.NewKafkaConsumer(selectENV, event0, "nlp.dashboard.logging")
+	producer0 := producer.NewKafkaProducer(selectENV, event0, "nlp.dashboard.logging")
 
 	e.Use(
 		middleware.Logger(),

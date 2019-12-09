@@ -35,7 +35,7 @@ func (con Consumer) ConsumeNlpLoggingMessage() {
 
 			case msg := <-con.Cluster.Messages():
 				msgCount++
-				go con.EventBus.Publisher(string(msg.Value))
+				con.EventBus.Publisher(string(msg.Value))
 				fmt.Println("Received messages", string(msg.Key), string(msg.Value))
 
 			case <-signals:
