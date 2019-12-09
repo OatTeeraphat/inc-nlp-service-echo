@@ -39,6 +39,7 @@ export class NlpRecordPresenter {
         this.$getNlpRecordsByInfiniteScrollSubscription = null
         this.$uploadXlSXNlpRecordUnSubscription = null
         this.$updateNlpRecordRowSubscription = null
+        this.$insertNlpRecordsSubscription = null
     }
 
     onToggleAddRows() {
@@ -80,13 +81,7 @@ export class NlpRecordPresenter {
                 // let index = this.view.nlpRecords.findIndex(item => item.id === it.id);
             }
         )
-        this.nlpRecordsService.getAllStories().subscribe(
-            it => {
-                this.view.allStory = it
-                this.view.addRow.listStory = this.view.allStory
-            }
-        )
-        this.nlpRecordsService.insertNlpRecords().subscribe(
+        this.$insertNlpRecordsSubscription = this.nlpRecordsService.insertNlpRecords().subscribe(
             it => {
                 this.view.addRow.keyword = ""
                 this.view.addRow.intent = ""
@@ -101,6 +96,12 @@ export class NlpRecordPresenter {
                 }
 
                 of(null).pipe(delay(1)).subscribe(() => this.$refs.keyword.focus())
+            }
+        )
+        this.nlpRecordsService.getAllStories().subscribe(
+            it => {
+                this.view.allStory = it
+                this.view.addRow.listStory = this.view.allStory
             }
         )
         this.nlpRecordsService.getSearchStories().subscribe()
@@ -199,6 +200,7 @@ export class NlpRecordPresenter {
         this.$getNlpRecordsByInfiniteScrollSubscription.unsubscribe()
         this.$uploadXlSXNlpRecordUnSubscription.unsubscribe()
         this.$updateNlpRecordRowSubscription.unsubscribe()
+        this.$insertNlpRecordsSubscription.unsubscribe()
         this.nlpRecordsService.nextPageNlpRecordsByInfiniteScroll(1)
         
         // set page index to 1
