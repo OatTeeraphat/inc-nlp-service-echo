@@ -104,6 +104,7 @@ export class NlpRecordPresenter {
                 of(null).pipe(delay(1)).subscribe(() => this.$refs.keyword.focus())
             }
         )
+        
         this.view.addRow.inputDisabled = false
         this.nlpRecordsService.getSearchStories().subscribe()
     }

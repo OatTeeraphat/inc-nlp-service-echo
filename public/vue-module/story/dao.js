@@ -8,6 +8,7 @@ export class GetStoryModelAdapter extends Array {
                 desc: model.desc,
                 count_intent: model.count_intent,
                 updated_at: model.updated_at,
+                is_edit : false
             })
         })
 
