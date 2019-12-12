@@ -1,8 +1,11 @@
 class StoryViewModel {
     constructor() {
         this.currentStory = ""
-        this.stories = []
+        this.stories = [],
         this.storiesCheckList = {
+            ids: []
+        }
+        this.trainingSetCheckList = {
             ids: []
         }
         this.trainingSet = [
@@ -16,14 +19,10 @@ class StoryViewModel {
         ],
         this.addRow = {
             toggleRow: false,
-            toggleStory: false,
+            toggleInput: false,
             highlight: false,
             inputDisabled: false,
-            keyword: "",
-            intent: "",
-            story: "",
-            search_story: "",
-            listStory: "",
+            name: "",
         }
         this.addRow2 = {
             toggleRow: false,
@@ -43,9 +42,12 @@ export class StoryPresenter {
     constructor(storyService) {
         this.view = new StoryViewModel()
         this.storyService = storyService
+        this.$refs = {}
     }
 
-    onMounted() {
+    onMounted(ref) {
+        this.$refs = ref
+
         this.storyService.getStoryState().subscribe(it => { 
             console.log('it ', it)
             if (it != []){
@@ -54,6 +56,9 @@ export class StoryPresenter {
             
             this.view.stories = it
         })
+
+        this.storyService.setStoryByID().subscribe()
+
     }
 
     selectAllStory() {
@@ -61,6 +66,21 @@ export class StoryPresenter {
         this.view.stories.forEach( ({ id }) => { this.view.storiesCheckList.ids.push(id) })
     }
 
+
+    editStoryByID(id, index) {
+
+        let toggleDelay = of({}).pipe(delay(100))
+        toggleDelay.subscribe(() => this.$refs.story[index].focus())
+
+        let editValue = this.view.stories.filter(item => item.id == id)
+        this.storyService.nextSetStoryByID({
+            name: editValue.name,
+            desc: editValue.desc
+        }, id)
+        //this.storyService.nextSetStoryByID()
+    }
+
+    
     deleteStoryByID (id) {
         this.storyService.deleteStoryByID(id).subscribe( () =>  {
             this.view.stories = this.view.stories.filter( item => item.id !== id ) 

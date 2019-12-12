@@ -253,10 +253,18 @@
     min-height: 54px !important;
     cursor: pointer;
 }
- .table-select .tr-active th input, .table-select .tr-active td input{
+  .table-select th h3, .table-select td h3{
+    font-size: 1em;
+    margin: 0;
+    line-height: 1.75em;
+}
+ .table-select .tr-active th h3, .table-select .tr-active td h3{
     font-weight: 600;
     color: #673AB7;
 }
+ .story-input{
+     text-transform: uppercase;
+ }
  .table-select .tr-active:hover th, .table-select .tr-active:hover td{
     background: #f2effa;
  }

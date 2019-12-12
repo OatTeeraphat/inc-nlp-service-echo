@@ -171,6 +171,13 @@ export class HttpRepository {
         )
     }
 
+    updateStoryByID(id) {
+        console.log( "updateStoryByID : " , id)
+        return of("OK").pipe(
+            delay(600)
+        )
+    }
+
     // EndPoint: /v1/story?id=
     deleteStoryByID(id) {
         return ajax({

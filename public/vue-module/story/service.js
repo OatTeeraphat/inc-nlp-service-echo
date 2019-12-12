@@ -8,6 +8,8 @@ export class StoryService {
         this.httpRepository = httpRepository
         this.cookieRepository = cookieRepository
         this.unsubscribe = new Subject()
+        this.$$addStory = new Subject()
+        this.$$setStoryByID = new Subject()
     }
 
     getStoryState() {
@@ -18,6 +20,23 @@ export class StoryService {
             }),
             this.vueErrorHandler.catchHttpError(),
         )
+    }
+
+    setStoryByID(storyID) {
+        return this.$$setStoryByID.pipe(
+            switchMap(() => {
+                if (storyID) {
+                    return this.httpRepository.updateStoryByID(storyID).pipe(
+                        this.vueErrorHandler.catchHttpError(),
+                    )
+                }
+                return of({})
+            }),
+        )
+    }
+
+    nextSetStoryByID(story, id){
+        return this.$$setStoryByID.next(story)
     }
 
     deleteStoryByID(storyID) {
