@@ -37,6 +37,7 @@ import { dashboardPage } from './vue-module/dashboard/dashboard_page.js'
 import { webChatPage } from './vue-module/webchat/webchat_page.js'
 import { accessLogPage } from './vue-module/logs/page.js'
 import { settingPage } from './vue-module/setting/setting_page.js'
+import { apiDocumentPage } from './vue-module/api-documents/page.js'  
 
 
 import './vue-custom-module/navbar/nav_component.js'
@@ -68,6 +69,7 @@ const routes = [
     { path: '/webchat', name: 'webchat', component: webChatPage, beforeEnter: authGuard.ifAuthenticated },
     { path: '/settings', name: 'setting', component: settingPage, beforeEnter: authGuard.ifAuthenticated },
     { path: '/logging', name: 'logging', component: accessLogPage , beforeEnter: authGuard.ifAuthenticated },
+    { path: '/doc', name: 'doc', component: apiDocumentPage }
 ]
 
 // vue Router
