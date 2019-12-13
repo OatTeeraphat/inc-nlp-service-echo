@@ -9,11 +9,11 @@ export default Vue.component('nav-component', {
 					<i class="fe fe-menu"></i>
 				</button>
 				<div class="dropdown-menu dropdown-menu-right animated faster bounceIn">
-					<router-link class="dropdown-item" href="#" :to="{ path: '/setting'}">SETTING</router-link>
+					<router-link class="dropdown-item" :to="{ path: '/setting'}">SETTING</router-link>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" @click="$authPresenter.clientSignOut()">SIGN OUT</a>
 				</div>
-			</div>
+			</div>	
 		</nav>
 		
 		<nav class="nav nav-underline nav-sub container bg-light">
@@ -23,7 +23,7 @@ export default Vue.component('nav-component', {
 			<router-link class="nav-link" :to="{ path: '/logs'}"> LOGS </router-link>
 			<router-link class="nav-link" :to="{ path: '/story'}"> STORY </router-link>
 			<router-link class="nav-link" :to="{ path: '/logging'}"> LOGGING </router-link>
-			<router-link class="nav-link" :to="{ path: '/setting'}"> SETTING </router-link>
+			<router-link class="nav-link" :to="{ path: '/settings'}"> SETTING </router-link>
 		</nav>
 
 	</div>

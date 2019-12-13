@@ -5,7 +5,13 @@ class SettingViewModel {
 		this.chat_logs = []
 		this.is_edit = { confidence: false, app_info: false }
 		this.confidence = 0
-		this.app_info = {}
+		this.app_info = {
+			id: "",
+			name: "",
+			owner: "",
+			plan: "",
+			status: 0
+		}
 		this.app_secret = ""
 		this.app_token = ""
 		this.debug = { keyword: "", loading: false }
@@ -14,12 +20,13 @@ class SettingViewModel {
 
 export class SettingPresenter {
 	constructor(settingService) {
+		this.$refs = {}
 		this.view = new SettingViewModel()
 		this.settingService = settingService
 	}
 
-	getInitialState() {
-
+	getInitialState($refs) {
+		this.$refs = $refs
 		this.settingService.getNlpConfidenceByClientId().subscribe(item => {
 			this.view.confidence = item.confidence
 		})
@@ -59,16 +66,15 @@ export class SettingPresenter {
 		this.view.is_edit.app_info = false
 	}
 
-	onEditAppInfo($refs) {
+	onEditAppInfo() {
 		let toggleDelay = of({}).pipe(delay(200))
-		toggleDelay.subscribe(() => $refs.focus())
+		toggleDelay.subscribe(() => this.$refs.info.focus())
 		this.view.is_edit.app_info = true
 	}
 
 	onSendNlpKeyword() {
 		this.view.debug.loading = true
-		let nlpResult = this.settingService.getNlpDebugResult(this.view.debug.keyword)
-		nlpResult.subscribe(item => {
+		this.settingService.getNlpDebugResult(this.view.debug.keyword).subscribe(item => {
 			this.view.debug.result = new GetNlpReplyAdapter().adapt(item.response)
 			this.view.debug.loading = false
 			console.log("success")
@@ -94,6 +100,7 @@ export class SettingPresenter {
 	}
 
 	beforeDestroy() {
+		// console.log("beforeDestroy setting")
 		this.view = new SettingViewModel()
 	}
 }

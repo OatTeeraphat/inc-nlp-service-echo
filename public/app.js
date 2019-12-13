@@ -60,13 +60,13 @@ const authGuard = new AuthGuard(cookieRepo)
 const routes = [
     { path: '/', name: 'auth',  component: mainPage , beforeEnter: authGuard.ifNotAuthenticated },
     { path: '/login', name: 'login',  component: mainPage , beforeEnter: authGuard.ifNotAuthenticated },
-    { path: '/welcome', name: 'welcome',  component: welcomePage },
+    // { path: '/welcome', name: 'welcome',  component: welcomePage },
     { path: '/dashboard', name: 'dashboard', component: dashboardPage, beforeEnter: authGuard.ifAuthenticated },
     { path: '/nlp', name: 'nlp', component: nlpRecordPage, beforeEnter: authGuard.ifAuthenticated },
     { path: '/logs', name: 'logs', component: nlpTrainingLog , beforeEnter: authGuard.ifAuthenticated },
     { path: '/story', name: 'story', component: storyPage , beforeEnter: authGuard.ifAuthenticated },
     { path: '/webchat', name: 'webchat', component: webChatPage, beforeEnter: authGuard.ifAuthenticated },
-    { path: '/setting', name: 'setting', component: settingPage, beforeEnter: authGuard.ifAuthenticated },
+    { path: '/settings', name: 'setting', component: settingPage, beforeEnter: authGuard.ifAuthenticated },
     { path: '/logging', name: 'logging', component: accessLogPage , beforeEnter: authGuard.ifAuthenticated },
 ]
 

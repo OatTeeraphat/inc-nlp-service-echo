@@ -40,9 +40,10 @@ class StoryViewModel {
 
 export class StoryPresenter {
     constructor(storyService) {
+        this.$refs = {}
         this.view = new StoryViewModel()
         this.storyService = storyService
-        this.$refs = {}
+        this.$getNlpRecordByStoryIDsSubscription = null
     }
 
     onMounted(ref) {
@@ -59,7 +60,7 @@ export class StoryPresenter {
 
         this.storyService.setStoryByID().subscribe()
 
-        this.storyService.getNlpRecordByStoryIDs().subscribe( it => {
+        this.$getNlpRecordByStoryIDsSubscription = this.storyService.getNlpRecordByStoryIDs().subscribe( it => {
             this.view.trainingSet.push(...it.nlp_record)
         })
 
@@ -83,7 +84,6 @@ export class StoryPresenter {
             name: editValue.name,
             desc: editValue.desc
         }, id)
-        //this.storyService.nextSetStoryByID()
     }
 
     
@@ -95,5 +95,6 @@ export class StoryPresenter {
 
     beforeDestroy() {
         this.view = new StoryViewModel()
+        this.$getNlpRecordByStoryIDsSubscription.unsubscribe()
     }
 }

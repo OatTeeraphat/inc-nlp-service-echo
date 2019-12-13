@@ -8,7 +8,13 @@ class DashBoardViewModel {
 		this.period = "halfOfMonth",
 			this.stack_limit = 10,
 			this.current_confidence = 50,
-			this.app_info = {},
+			this.app_info = {
+				id: "",
+				name: "",
+				owner: "",
+				plan: "",
+				status: 0
+			},
 			this.api_stat = {
 				label: [],
 				call: {},
