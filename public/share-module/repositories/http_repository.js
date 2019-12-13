@@ -153,22 +153,33 @@ export class HttpRepository {
 
     // EndPoint: /v1/story
     getAllStories() {
-        // return ajax({ 
-        //     method: "GET", 
-        //     url: `${this.BASE_API}/v1/story`,
-        //     headers: { 
-        //         "Content-Type": "application/json",
-        //         "Authorization": this._getAuthorizedBearer() 
-        //     }
-        // })
+        return ajax({ 
+            method: "GET", 
+            url: `${this.BASE_API}/v1/story`,
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": this._getAuthorizedBearer() 
+            }
+        })
 
-        return of([
-            { id: 1, name: "GREETING", desc: "good for greet", count_intent: "270", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" },
-            { id: 2, name: "FAQ", desc: "good for greet", count_intent:"1190", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" },
-            { id: 3, name: "PRODUCT", desc: "good for greet", count_intent: "980", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" }
-        ]).pipe(
-            delay(600)
-        )
+        // return of([
+        //     { id: 1, name: "GREETING", desc: "good for greet", count_intent: "270", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" },
+        //     { id: 2, name: "FAQ", desc: "good for greet", count_intent:"1190", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" },
+        //     { id: 3, name: "PRODUCT", desc: "good for greet", count_intent: "980", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" }
+        // ]).pipe(
+        //     delay(600)
+        // )
+    }
+
+    getNlpRecordByStoryIDs(storyIDs, pageIndex) {
+        return ajax({ 
+            method: "GET", 
+            url: `${this.BASE_API}/v1/nlp/record/by_story?page=1&story_id=00000000-0000-0000-0000-000000000000`,
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": this._getAuthorizedBearer() 
+            }
+        })
     }
 
     updateStoryByID(id) {

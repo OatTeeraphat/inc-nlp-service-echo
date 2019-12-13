@@ -6,7 +6,6 @@ export class VueErrorHandler {
     }
 
     catchHttpError = (title="Can't Reslove", description) => catchError( e => {
-
         
         if ( e instanceof AjaxError ) {
             

@@ -23,8 +23,10 @@ type INlpRecordRepository interface {
 	FindByKeyword(keyword string) []domains.NlpRecordDomain
 	Pagination(PageIndex int, Limit int) []domains.NlpRecordDomain
 	PaginationByKeywordMinhash(KeywordMinhash uint32, PageIndex int, Limit int) []domains.NlpRecordDomain
+	PaginationByStoryIDs(storyIDs []string, PageIndex int, Limit int) []domains.NlpRecordDomain
 	Count() int64
 	CountByKeywordMinhash(KeywordMinhash uint32) int64
+	CountByStoryIDs(storyIDs []string) int64
 	Delete() *gorm.DB
 	DeleteByID(id uuid.UUID) *gorm.DB
 	UpdateByID(Domain *domains.NlpRecordDomain)
@@ -102,6 +104,20 @@ func (repo *NlpRecordRepository) PaginationByKeywordMinhash(KeywordMinhash uint3
 	var Domain []domains.NlpRecordDomain
 	repo.DB.Where(&domains.NlpRecordDomain{KeywordMinhash: KeywordMinhash}).Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
 	return Domain
+}
+
+// PaginationByStoryIDs PaginationByStoryIDs
+func (repo *NlpRecordRepository) PaginationByStoryIDs(storyIDs []string, PageIndex int, Limit int) []domains.NlpRecordDomain {
+	var Domain []domains.NlpRecordDomain
+	repo.DB.Where("story_id IN(?)", storyIDs).Limit(Limit).Find(&Domain).Offset(Limit * (PageIndex - 1)).Order("updated_at desc").Find(&Domain)
+	return Domain
+}
+
+// CountByStoryIDs CountByStoryIDs
+func (repo *NlpRecordRepository) CountByStoryIDs(storyIDs []string) int64 {
+	var totalPage int64
+	repo.DB.Model(&domains.NlpRecordDomain{}).Where("story_id IN(?)", storyIDs).Count(&totalPage)
+	return totalPage
 }
 
 // DeleteByID DeleteByID

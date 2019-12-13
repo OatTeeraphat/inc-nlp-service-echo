@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	nlp "inc-nlp-service-echo/core_module/nlprecord"
 	"inc-nlp-service-echo/core_module/nlprecord/dao"
 	"inc-nlp-service-echo/kafka_module/producer"
@@ -25,6 +24,7 @@ func NewHTTPGateway(e *echo.Group, svc nlp.Service, kafkaProducer *producer.Prod
 		KafkaProducer: kafkaProducer,
 	}
 
+	e.GET("/nlp/record/by_story", handle.ReadByStoryIDs)
 	e.GET("/nlp/record/reply", handle.ReadNlpReply)
 	e.GET("/nlp/record/pagination", handle.SearchPagination)
 	e.POST("/nlp/record", handle.CreateRecord)
@@ -158,7 +158,6 @@ func (con *HTTPGateway) DeleteByID(e echo.Context) error {
 func (con *HTTPGateway) BulkDeleteByIDs(e echo.Context) error {
 	ids := new([]string)
 	e.Bind(&ids)
-	fmt.Print(*ids)
 	response, error := con.NlpService.BulkDeleteByIDs(*ids)
 
 	if error != nil {
@@ -170,8 +169,18 @@ func (con *HTTPGateway) BulkDeleteByIDs(e echo.Context) error {
 
 // UpdateByIDAndClientID update nlp record by id and ClientID
 func (con *HTTPGateway) UpdateByIDAndClientID(e echo.Context) error {
-	domain := new(dao.UpdateNlpRecordDao)
-	e.Bind(&domain)
-	response := con.NlpService.UpdateByIDAndClientID(*domain)
+	body := new(dao.UpdateNlpRecordDao)
+	e.Bind(&body)
+	response := con.NlpService.UpdateByIDAndClientID(*body)
 	return e.String(http.StatusOK, response)
+}
+
+// ReadByStoryIDs ReadByStoryIDs
+func (con *HTTPGateway) ReadByStoryIDs(e echo.Context) error {
+	// body := new(dao.ReadNlpRecordByStoryIDsDao)
+	// e.Bind(&body)
+	page := e.QueryParam("page")
+	storyIDs := e.QueryParam("story_id")
+	response := con.NlpService.ReadByStoryIDs(page, storyIDs)
+	return e.JSON(http.StatusOK, response)
 }

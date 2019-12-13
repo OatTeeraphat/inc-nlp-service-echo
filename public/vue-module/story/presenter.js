@@ -9,13 +9,13 @@ class StoryViewModel {
             ids: []
         }
         this.trainingSet = [
-            { id: 1, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
-            { id: 2, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
-            { id: 3, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
-            { id: 4, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
-            { id: 5, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
-            { id: 6, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
-            { id: 7, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' }
+            // { id: 1, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            // { id: 2, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            // { id: 3, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            // { id: 4, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            // { id: 5, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            // { id: 6, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' },
+            // { id: 7, keyword: 'ยินดีต้อนรับ', intent: 'ต้อนรับชาวโลก', story: 'Greeting' }
         ],
         this.addRow = {
             toggleRow: false,
@@ -58,6 +58,12 @@ export class StoryPresenter {
         })
 
         this.storyService.setStoryByID().subscribe()
+
+        this.storyService.getNlpRecordByStoryIDs().subscribe( it => {
+            this.view.trainingSet.push(...it.nlp_record)
+        })
+
+        this.storyService.nextPage()
 
     }
 

@@ -1,6 +1,7 @@
 export class GetStoryModelAdapter extends Array {
 
     adapt(models) {
+        console.log(models)
         models.map( model => {
             this.push({
                 id: model.id,
@@ -13,6 +14,31 @@ export class GetStoryModelAdapter extends Array {
         })
 
         return this
+    }
+
+}
+
+export class GetPaginationNlpRecordByStoryIDs extends Array {
+
+    adapt(models) {
+        console.log(models)
+
+        models.nlp_record.map( model => {
+            this.push({
+                id: model.id,
+                keyword: model.keyword,
+                intent: model.intent,
+                story: "GREETING",
+                updated_at: model.updated_at
+            })
+        })
+
+        return {
+            page: models.page,
+            limit: models.limit,
+            total: models.total,
+            nlp_record: this
+        }
     }
 
 }

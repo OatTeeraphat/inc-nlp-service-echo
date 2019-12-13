@@ -27,6 +27,7 @@ type Service interface {
 	DropAllRecord() string
 	SearchPagination(keyword string, intent string, story string, page string) dao.SearchPaginationDao
 	ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDao
+	ReadByStoryIDs(page string, storyIDs string) dao.ReadNlpRecordByStoryIDsResponse
 	DeleteByID(id string) string
 	BulkDeleteByIDs(ids []string) (string, error)
 	UpdateByIDAndClientID(updateNlpRecordDao dao.UpdateNlpRecordDao) string

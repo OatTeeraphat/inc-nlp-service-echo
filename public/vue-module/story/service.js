@@ -1,4 +1,4 @@
-import { GetStoryModelAdapter } from './dao.js'
+import { GetStoryModelAdapter, GetPaginationNlpRecordByStoryIDs } from './dao.js'
 
 export class StoryService {
     
@@ -7,19 +7,40 @@ export class StoryService {
         this.vueErrorHandler = vueErrorHandler
         this.httpRepository = httpRepository
         this.cookieRepository = cookieRepository
-        this.unsubscribe = new Subject()
         this.$$addStory = new Subject()
         this.$$setStoryByID = new Subject()
+        this.$$getPaginationNlpRecordByStoryIDs = new Subject()
     }
 
     getStoryState() {
 
         return this.httpRepository.getAllStories().pipe(
-            map( response => {
+            map( ({response}) => {
                 return new GetStoryModelAdapter().adapt(response)
             }),
             this.vueErrorHandler.catchHttpError(),
         )
+    }
+
+    getNlpRecordByStoryIDs() {
+        return this.$$getPaginationNlpRecordByStoryIDs.pipe(
+            throttleTime(200),
+            exhaustMap( ({ page, story_id }) => {
+                return  this.httpRepository.getNlpRecordByStoryIDs(story_id, page).pipe(
+                    map( ({response}) => {
+                        return new GetPaginationNlpRecordByStoryIDs().adapt(response)
+                    }),
+                    this.vueErrorHandler.catchHttpError(),
+                )
+            })
+        )
+    }
+
+    nextPage() {
+        return this.$$getPaginationNlpRecordByStoryIDs.next({
+            page: "1",
+            story_id: ["00000000-0000-0000-0000-000000000000"]
+        })
     }
 
     setStoryByID(storyID) {
@@ -57,10 +78,5 @@ export class StoryService {
             }),
             finalize(() =>  { console.log("complete") })
         )
-    }
-
-    disposable() {
-        this.unsubscribe.next()
-        this.unsubscribe.complete()
     }
 }
