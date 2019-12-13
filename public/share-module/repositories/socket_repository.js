@@ -8,18 +8,19 @@ export class SocketRepository {
     }
     
     getNlpDashboardLogging() {
-        return webSocket({
-            url: getSocketHost() + '/v1/nlp/dashboard/logging',
-            openObserver: {
-                next: () => {
-                    console.log('connetion ok');
-                }
-            },
-            closeObserver: {
-                next: () => {
-                    console.log('websocket subscription')
-                }
-            }
-        })
+        return new WebSocketSubject({url: getSocketHost() + '/v1/nlp/dashboard/logging'})
+        // return webSocket({
+        //     url: getSocketHost() + '/v1/nlp/dashboard/logging',
+        //     openObserver: {
+        //         next: () => {
+        //             console.log('connetion ok');
+        //         }
+        //     },
+        //     closeObserver: {
+        //         next: () => {
+        //             console.log('websocket subscription')
+        //         }
+        //     }
+        // })
     }
 }

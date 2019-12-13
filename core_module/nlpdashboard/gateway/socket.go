@@ -1,9 +1,10 @@
 package gateway
 
 import (
-	"github.com/labstack/gommon/log"
 	"inc-nlp-service-echo/event_module/eventbus"
 	"net/http"
+
+	"github.com/labstack/gommon/log"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"

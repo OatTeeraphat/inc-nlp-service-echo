@@ -1,8 +1,6 @@
 package eventbus
 
 import (
-	"bytes"
-	"encoding/gob"
 	"fmt"
 
 	"github.com/cskr/pubsub"
@@ -10,14 +8,15 @@ import (
 )
 
 type EventBus struct {
-	Pubsub *pubsub.PubSub
-	Topic  string
+	Pubsub  *pubsub.PubSub
+	Topic   string
+	Channel chan interface{}
 }
 
 // EventBus EventBus
 type IEventBus interface {
 	NlpLoggingSubscriber(conn *websocket.Conn)
-	Publisher(msg string)
+	NlpLoggingPublisher(msg string)
 	CloseChannel()
 	Shutdown()
 }
@@ -29,8 +28,40 @@ func NewEventBus(capcity int, topic string) IEventBus {
 	}
 }
 
-func (event *EventBus) Publisher(msg string) {
+func (event *EventBus) NlpLoggingPublisher(msg string) {
 	event.Pubsub.Pub(msg, event.Topic)
+}
+
+func (event *EventBus) NlpLoggingSubscriber(conn *websocket.Conn) {
+	i := 0
+	ch := event.subscribe()
+
+	defer func() {
+		defer event.Unsubscribe(ch)
+		defer conn.Close()
+	}()
+
+	for {
+
+		if msg, ok := <-ch; ok {
+			fmt.Printf("Received %s, %d times.\n", msg, i)
+
+			errr := conn.WriteJSON(msg)
+
+			if errr != nil {
+				fmt.Println("WriteMessage Error")
+				break
+			}
+
+			i++
+
+		} else {
+			fmt.Println("else #####")
+			break
+		}
+	}
+
+	fmt.Println("loop ending #####")
 }
 
 func (event *EventBus) subscribe() chan interface{} {
@@ -48,14 +79,4 @@ func (event *EventBus) CloseChannel() {
 
 func (event *EventBus) Shutdown() {
 	event.Pubsub.Shutdown()
-}
-
-func getBytes(key interface{}) ([]byte, error) {
-	var buf bytes.Buffer
-	enc := gob.NewEncoder(&buf)
-	err := enc.Encode(key)
-	if err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
 }

@@ -19,13 +19,18 @@ export class NlpLoggingPresenter {
     }
 
     onMounted() {
-        this.getNlpDashboardLogging = this.nlpLoggingService.getNlpDashboardLogging().subscribe( it => {
-            this.view.log.push(it)
-        })
+        this.getNlpDashboardLogging = this.nlpLoggingService.getNlpDashboardLogging().subscribe( 
+            it => {
+                this.view.log.push(it)
+            },
+            e => { console.log('error') },
+            () => {console.log('complete')}
+        )
         
     }
 
     beforeDestroy() {
+        console.log("before destroy")
         this.getNlpDashboardLogging.unsubscribe()
     }
 }
