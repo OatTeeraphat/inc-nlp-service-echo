@@ -23,5 +23,6 @@ require (
 	github.com/smartystreets/goconvey v1.6.4
 	github.com/stretchr/testify v1.4.0
 	github.com/swaggo/echo-swagger v0.0.0-20191205130555-62f81ea88919
+	github.com/vektra/mockery v0.0.0-20181123154057-e78b021dcbb5 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c
 )
