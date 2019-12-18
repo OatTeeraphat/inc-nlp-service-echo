@@ -19,7 +19,7 @@ func (s Service) CreateOneStory(newStoryModel dao.NewStoryDao) string {
 
 	storyRecord.Name = newStoryModel.Name
 	storyRecord.Description = newStoryModel.Description
-	storyRecord.AppID = uuid.NewV4()
+	storyRecord.AppID = uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000")
 
 	s.storyRepo.Save(&storyRecord)
 
