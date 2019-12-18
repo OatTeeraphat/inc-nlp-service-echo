@@ -23,7 +23,21 @@ func TestServiceCreateOneStory(t *testing.T) {
 		MockStorySave       domains.StoryDomain
 	}{
 		{
-			Name: "invalid case",
+			Name: "ok case",
+			MockStoryDAO: dao.NewStoryDao{
+				AppID:       "00000000-0000-0000-0000-000000000000",
+				Name:        "name0",
+				Description: "desc0",
+			},
+			MockStoryFindByName: domains.StoryDomain{},
+			MockStorySave: domains.StoryDomain{
+				Name:        "name0",
+				Description: "desc0",
+			},
+			Expected: "OK",
+		},
+		{
+			Name: "invalid story name duplicate case",
 			MockStoryDAO: dao.NewStoryDao{
 				AppID:       "00000000-0000-0000-0000-000000000000",
 				Name:        "name0",
@@ -43,21 +57,7 @@ func TestServiceCreateOneStory(t *testing.T) {
 			Expected:      "invalid",
 		},
 		{
-			Name: "ok case",
-			MockStoryDAO: dao.NewStoryDao{
-				AppID:       "00000000-0000-0000-0000-000000000000",
-				Name:        "name0",
-				Description: "desc0",
-			},
-			MockStoryFindByName: domains.StoryDomain{},
-			MockStorySave: domains.StoryDomain{
-				Name:        "name0",
-				Description: "desc0",
-			},
-			Expected: "OK",
-		},
-		{
-			Name: "invalid",
+			Name: "invalid app id format",
 			MockStoryDAO: dao.NewStoryDao{
 				AppID:       "invalid",
 				Name:        "name0",
