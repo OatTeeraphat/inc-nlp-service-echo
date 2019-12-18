@@ -15,11 +15,12 @@ func TestServiceCreateOneStory(t *testing.T) {
 	assert := assert.New(t)
 
 	var TestCase = []struct {
-		Name            string
-		Input           string
-		Expected        string
-		MockStoryDAO    dao.NewStoryDao
-		MockStoryDomain domains.StoryDomain
+		Name                string
+		Input               string
+		Expected            string
+		MockStoryDAO        dao.NewStoryDao
+		MockStoryFindByName domains.StoryDomain
+		MockStorySave       domains.StoryDomain
 	}{
 		{
 			Name: "invalid case",
@@ -28,7 +29,7 @@ func TestServiceCreateOneStory(t *testing.T) {
 				Name:        "name0",
 				Description: "desc0",
 			},
-			MockStoryDomain: domains.StoryDomain{
+			MockStoryFindByName: domains.StoryDomain{
 				BaseDomain: domains.BaseDomain{
 					ID:        uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000"),
 					CreatedAt: time.Date(0, 0, 0, 0, 0, 0, 0, time.UTC),
@@ -38,7 +39,8 @@ func TestServiceCreateOneStory(t *testing.T) {
 				Name:        "name0",
 				Description: "desc0",
 			},
-			Expected: "invalid",
+			MockStorySave: domains.StoryDomain{},
+			Expected:      "invalid",
 		},
 		{
 			Name: "ok case",
@@ -47,21 +49,33 @@ func TestServiceCreateOneStory(t *testing.T) {
 				Name:        "name0",
 				Description: "desc0",
 			},
-			MockStoryDomain: domains.StoryDomain{},
-			Expected:        "OK",
+			MockStoryFindByName: domains.StoryDomain{},
+			MockStorySave: domains.StoryDomain{
+				Name:        "name0",
+				Description: "desc0",
+			},
+			Expected: "OK",
+		},
+		{
+			Name: "invalid",
+			MockStoryDAO: dao.NewStoryDao{
+				AppID:       "invalid",
+				Name:        "name0",
+				Description: "desc0",
+			},
+			MockStoryFindByName: domains.StoryDomain{},
+			MockStorySave: domains.StoryDomain{
+				Name:        "name0",
+				Description: "desc0",
+			},
+			Expected: "invalid",
 		},
 	}
 
 	for _, test := range TestCase {
 		mockStoryRepo := &mocks.IStoryRepository{}
-		mockStoryRepo.On("FindByName", "name0").Return(test.MockStoryDomain)
-
-		var storyDomain domains.StoryDomain
-		storyDomain.Name = test.MockStoryDAO.Name
-		storyDomain.Description = test.MockStoryDAO.Description
-		storyDomain.AppID = test.MockStoryDomain.AppID
-
-		mockStoryRepo.On("Save", &storyDomain).Return(nil)
+		mockStoryRepo.On("FindByName", "name0").Return(test.MockStoryFindByName)
+		mockStoryRepo.On("Save", &test.MockStorySave).Return(nil)
 
 		service := NewService(mockStoryRepo)
 

@@ -11,6 +11,12 @@ import (
 func (s Service) CreateOneStory(newStoryModel dao.NewStoryDao) string {
 	var storyRecord domains.StoryDomain
 
+	_, err := uuid.FromString(newStoryModel.AppID)
+
+	if err != nil {
+		return "invalid"
+	}
+
 	isStoryNameExisting := s.storyRepo.FindByName(newStoryModel.Name)
 
 	if isStoryNameExisting.Name != "" {
