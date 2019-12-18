@@ -59,7 +59,7 @@ func TestServiceCreateOneStory(t *testing.T) {
 		{
 			Name: "invalid app id format",
 			MockStoryDAO: dao.NewStoryDao{
-				AppID:       "invalid",
+				AppID:       "00000000-0000-0000-0000-invalid",
 				Name:        "name0",
 				Description: "desc0",
 			},
