@@ -31,20 +31,31 @@ func (m *MockRepository) DeleteByID(ID uuid.UUID) *gorm.DB {
 	return args.Get(0).(*gorm.DB)
 }
 
-func TestService_ReadAll(t *testing.T) {
+func TestServiceReadAll(t *testing.T) {
 
 	mock := new(MockRepository)
-	domain := []domains.StoryDomain{}
-	for i := 0; i < 1; i++ {
-		item := domains.StoryDomain{}
-		item.ID = uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000")
-		item.AppID = uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000")
-		item.CreatedAt = time.Date(0, 0, 0, 0, 0, 0, 0, time.UTC)
-		item.UpdatedAt = time.Date(0, 0, 0, 0, 0, 0, 0, time.UTC)
-		item.Name = "name" + string(i)
-		item.Description = "desc" + string(i)
-		domain = append(domain, item)
-	}
+
+	var domain []domains.StoryDomain
+
+	item0 := domains.StoryDomain{}
+	item0.ID = uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000")
+	item0.AppID = uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000")
+	item0.CreatedAt = time.Date(0, 0, 0, 0, 0, 0, 0, time.UTC)
+	item0.UpdatedAt = time.Date(0, 0, 0, 0, 0, 0, 0, time.UTC)
+	item0.Name = "name0"
+	item0.Description = "desc0"
+
+	item1 := domains.StoryDomain{}
+	item1.ID = uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000")
+	item1.AppID = uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000")
+	item1.CreatedAt = time.Date(0, 0, 0, 0, 0, 0, 0, time.UTC)
+	item1.UpdatedAt = time.Date(0, 0, 0, 0, 0, 0, 0, time.UTC)
+	item1.Name = "name1"
+	item1.Description = "desc1"
+
+	domain = append(domain, item0)
+	domain = append(domain, item1)
+
 	mock.On("FindAll").Return(domain)
 
 	service := NewService(mock)
@@ -53,8 +64,16 @@ func TestService_ReadAll(t *testing.T) {
 	expected := []dao.ReadStoryDao{
 		{
 			ID:          "00000000-0000-0000-0000-000000000000",
-			Name:        "name\x00",
-			Description: "desc\x00",
+			Name:        "name0",
+			Description: "desc0",
+			AppID:       "00000000-0000-0000-0000-000000000000",
+			CreateAt:    -62169984000,
+			UpdatedAt:   -62169984000,
+		},
+		{
+			ID:          "00000000-0000-0000-0000-000000000000",
+			Name:        "name1",
+			Description: "desc1",
 			AppID:       "00000000-0000-0000-0000-000000000000",
 			CreateAt:    -62169984000,
 			UpdatedAt:   -62169984000,
