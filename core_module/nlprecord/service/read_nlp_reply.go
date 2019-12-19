@@ -17,7 +17,7 @@ func (svc Service) ReadNlpReply(keyword string, appID string) dao.ReadNlpReplyDa
 	var keywordMinhash uint32
 
 	if keyword == "" {
-		log.Fatal("no keyword")
+		log.Debug("no keyword")
 	}
 
 	keywordMinhash = distance.GenerateKeywordMinhash(keyword)
