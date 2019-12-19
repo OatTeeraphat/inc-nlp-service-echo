@@ -3,7 +3,6 @@ package datasources
 import (
 	"errors"
 	"fmt"
-	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/common_module/commons"
 	"log"
 	"reflect"
@@ -36,18 +35,28 @@ func NewGORM(config *commons.SelectENV) *GORM {
 		log.Fatalln("database error connected", err.Error())
 	}
 	// Migrate the schema
-	db.AutoMigrate(
-		&domains.NlpRecordDomain{},
-		&domains.NlpTrainingLogDomain{},
-		&domains.AppStoryDomain{},
-		&domains.StoryDomain{},
-		&domains.AppDomain{},
-		&domains.NlpDashboardDomain{},
-		&domains.ClientDomain{},
-	)
+	// db.AutoMigrate(
+	// 	&domains.NlpRecordDomain{},
+	// 	&domains.NlpTrainingLogDomain{},
+	// 	&domains.AppStoryDomain{},
+	// 	&domains.StoryDomain{},
+	// 	&domains.AppDomain{},
+	// 	&domains.NlpDashboardDomain{},
+	// 	&domains.ClientDomain{},
+	// )
+
+	db.DB().SetMaxOpenConns(5)
+	db.DB().SetMaxIdleConns(5)
+	db.DB().SetConnMaxLifetime(1 * time.Minute)
+
 	return &GORM{
 		DB: db,
 	}
+}
+
+// AutoMigration AutoMigration
+func (gorm *GORM) AutoMigration(value ...interface{}) {
+	gorm.DB.AutoMigrate(value)
 }
 
 // BulkInsert multiple records at once
@@ -56,7 +65,7 @@ func NewGORM(config *commons.SelectENV) *GORM {
 //                  Embedding a large number of variables at once will raise an error beyond the limit of prepared statement.
 //                  Larger size will normally lead the better performance, but 2000 to 3000 is reasonable.
 // [excludeColumns] Columns you want to exclude from insert. You can omit if there is no column you want to exclude.
-func (gorm GORM) BulkInsert(objects []interface{}, chunkSize int, excludeColumns ...string) error {
+func (gorm *GORM) BulkInsert(objects []interface{}, chunkSize int, excludeColumns ...string) error {
 	// Split records with specified size not to exceed Database parameter limit
 	for _, objSet := range splitObjects(objects, chunkSize) {
 		if err := insertObjSet(gorm.DB, objSet, excludeColumns...); err != nil {
