@@ -46,6 +46,7 @@ func NewGORM(config *commons.SelectENV) *GORM {
 		&domains.ClientDomain{},
 	)
 
+	// FIXME: tuning for each Postgres Spec and Application
 	db.DB().SetMaxOpenConns(2)
 	db.DB().SetMaxIdleConns(2)
 	db.DB().SetConnMaxLifetime(1 * time.Minute)
