@@ -11,8 +11,10 @@ import (
 func (s Service) TrainByID(ID string) (string, error) {
 
 	u2, err := uuid.FromString(ID)
+
 	if err != nil {
 		fmt.Printf("Something went wrong: %s", err)
+		return "nil got", err
 	}
 
 	domain := s.nlpTrainingLogRepository.FindByID(u2)

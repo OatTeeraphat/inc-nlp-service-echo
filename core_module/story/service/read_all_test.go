@@ -16,14 +16,13 @@ func TestServiceReadAll(t *testing.T) {
 	assert := assert.New(t)
 
 	var TestCase = []struct {
-		Name            string
-		Input           string
-		MockStoryDomain []domains.StoryDomain
-		Expected        []dao.ReadStoryDao
+		name            string
+		mockStoryDomain []domains.StoryDomain
+		expected        []dao.ReadStoryDao
 	}{
 		{
-			Name: "give story UUID format",
-			MockStoryDomain: []domains.StoryDomain{
+			name: "give story UUID format",
+			mockStoryDomain: []domains.StoryDomain{
 				{
 					BaseDomain: domains.BaseDomain{
 						ID:        uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000"),
@@ -45,7 +44,7 @@ func TestServiceReadAll(t *testing.T) {
 					Description: "desc1",
 				},
 			},
-			Expected: []dao.ReadStoryDao{
+			expected: []dao.ReadStoryDao{
 				{
 					ID:          "00000000-0000-0000-0000-000000000000",
 					Name:        "name0",
@@ -70,9 +69,9 @@ func TestServiceReadAll(t *testing.T) {
 		mockStoryRepo := &mocks.IStoryRepository{}
 		service := NewService(mockStoryRepo)
 
-		mockStoryRepo.On("FindAll").Return(test.MockStoryDomain)
+		mockStoryRepo.On("FindAll").Return(test.mockStoryDomain)
 
-		assert.Equal(service.ReadAll(), test.Expected)
+		assert.Equal(service.ReadAll(), test.expected)
 
 	}
 }

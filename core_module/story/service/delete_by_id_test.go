@@ -4,8 +4,8 @@ import (
 	"inc-nlp-service-echo/business_module/repositories/mocks"
 	"testing"
 
-	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestServiceDeleteByID(t *testing.T) {
@@ -13,21 +13,23 @@ func TestServiceDeleteByID(t *testing.T) {
 	assert := assert.New(t)
 
 	var TestCase = []struct {
-		Name     string
-		Input    string
-		Expected string
+		name           string
+		mockDeleteByID string
+		expected       string
 	}{
-		{Name: "give story UUID format", Input: "00000000-0000-0000-0000-000000000000", Expected: "OK"},
-		{Name: "give story other format", Input: "00000000-0000-0000-0000", Expected: "..."},
+		{name: "give story UUID format", mockDeleteByID: "00000000-0000-0000-0000-000000000000", expected: "OK"},
+		{name: "give story other format", mockDeleteByID: "00000000-0000-0000-0000", expected: "..."},
 	}
 
 	for _, test := range TestCase {
 		mockStoryRepo := &mocks.IStoryRepository{}
-		mockStoryRepo.On("DeleteByID", uuid.FromStringOrNil(test.Input)).Return(nil)
+		mockStoryRepo.On("DeleteByID", mock.Anything).Return(nil)
 
 		service := NewService(mockStoryRepo)
 
-		assert.Equal(service.DeleteByID(test.Input), test.Expected)
+		actual := service.DeleteByID(test.mockDeleteByID)
+
+		assert.Equal(actual, test.expected)
 	}
 
 }

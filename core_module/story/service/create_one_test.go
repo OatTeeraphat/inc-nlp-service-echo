@@ -9,41 +9,37 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestServiceCreateOneStory(t *testing.T) {
 	assert := assert.New(t)
 
 	var TestCase = []struct {
-		Name                string
-		Input               string
-		Expected            string
-		MockStoryDAO        dao.NewStoryDao
-		MockStoryFindByName domains.StoryDomain
-		MockStorySave       domains.StoryDomain
+		name                string
+		expected            string
+		mockStoryDAO        dao.NewStoryDao
+		mockStoryFindByName domains.StoryDomain
+		mockStorySave       domains.StoryDomain
 	}{
 		{
-			Name: "ok case",
-			MockStoryDAO: dao.NewStoryDao{
+			name: "ok case",
+			mockStoryDAO: dao.NewStoryDao{
 				AppID:       "00000000-0000-0000-0000-000000000000",
 				Name:        "name0",
 				Description: "desc0",
 			},
-			MockStoryFindByName: domains.StoryDomain{},
-			MockStorySave: domains.StoryDomain{
-				Name:        "name0",
-				Description: "desc0",
-			},
-			Expected: "OK",
+			mockStoryFindByName: domains.StoryDomain{},
+			expected:            "OK",
 		},
 		{
-			Name: "invalid story name duplicate case",
-			MockStoryDAO: dao.NewStoryDao{
+			name: "invalid story name duplicate case",
+			mockStoryDAO: dao.NewStoryDao{
 				AppID:       "00000000-0000-0000-0000-000000000000",
 				Name:        "name0",
 				Description: "desc0",
 			},
-			MockStoryFindByName: domains.StoryDomain{
+			mockStoryFindByName: domains.StoryDomain{
 				BaseDomain: domains.BaseDomain{
 					ID:        uuid.FromStringOrNil("00000000-0000-0000-0000-000000000000"),
 					CreatedAt: time.Date(0, 0, 0, 0, 0, 0, 0, time.UTC),
@@ -53,35 +49,30 @@ func TestServiceCreateOneStory(t *testing.T) {
 				Name:        "name0",
 				Description: "desc0",
 			},
-			MockStorySave: domains.StoryDomain{},
-			Expected:      "invalid",
+			expected: "invalid",
 		},
 		{
-			Name: "invalid app id format",
-			MockStoryDAO: dao.NewStoryDao{
+			name: "invalid app id format",
+			mockStoryDAO: dao.NewStoryDao{
 				AppID:       "00000000-0000-0000-0000-invalid",
 				Name:        "name0",
 				Description: "desc0",
 			},
-			MockStoryFindByName: domains.StoryDomain{},
-			MockStorySave: domains.StoryDomain{
-				Name:        "name0",
-				Description: "desc0",
-			},
-			Expected: "invalid",
+			mockStoryFindByName: domains.StoryDomain{},
+			expected:            "invalid",
 		},
 	}
 
 	for _, test := range TestCase {
 		mockStoryRepo := &mocks.IStoryRepository{}
-		mockStoryRepo.On("FindByName", "name0").Return(test.MockStoryFindByName)
-		mockStoryRepo.On("Save", &test.MockStorySave).Return(nil)
+		mockStoryRepo.On("FindByName", mock.Anything).Return(test.mockStoryFindByName)
+		mockStoryRepo.On("Save", mock.Anything).Return(nil).Once()
 
 		service := NewService(mockStoryRepo)
 
-		actual := service.CreateOneStory(test.MockStoryDAO)
+		actual := service.CreateOneStory(test.mockStoryDAO)
 
-		assert.Equal(actual, test.Expected)
+		assert.Equal(actual, test.expected)
 	}
 
 }
