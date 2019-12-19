@@ -6,9 +6,9 @@ import uuid "github.com/satori/go.uuid"
 type NlpRecordDomain struct {
 	BaseDomain
 	Keyword        string
-	KeywordMinhash uint32 `gorm:"index:idx_keyword_minhash"`
+	KeywordMinhash uint32
 	Intent         string
-	StoryID        uuid.UUID `gorm:"index:idx_keyword_minhash,idx_story_id"`
+	StoryID        uuid.UUID
 	AppID          uuid.UUID
 }
 

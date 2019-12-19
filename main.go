@@ -3,7 +3,6 @@ package main
 import (
 	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
-	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/common_module/commons"
 	"inc-nlp-service-echo/event_module/eventbus"
 	"inc-nlp-service-echo/kafka_module/consumer"
@@ -101,16 +100,6 @@ func main() {
 	)
 
 	orm := datasources.NewGORM(selectENV)
-
-	orm.AutoMigration(
-		&domains.NlpRecordDomain{},
-		&domains.NlpTrainingLogDomain{},
-		&domains.AppStoryDomain{},
-		&domains.StoryDomain{},
-		&domains.AppDomain{},
-		&domains.NlpDashboardDomain{},
-		&domains.ClientDomain{},
-	)
 
 	orm.DB.LogMode(selectENV.IsGORMLogging)
 

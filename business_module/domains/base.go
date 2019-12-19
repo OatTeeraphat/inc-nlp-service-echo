@@ -9,7 +9,7 @@ import (
 
 // BaseDomain BaseDomain
 type BaseDomain struct {
-	ID        uuid.UUID `gorm:"primary_key;type:uuid;default:uuid_generate_v4()"`
+	ID        uuid.UUID `gorm:"primary_key;type:uuid;"`
 	CreatedAt time.Time `gorm:"type:timestamp"`
 	UpdatedAt time.Time `gorm:"type:timestamp"`
 	// DeletedAt *time.Time `gorm:"type:timestamp"`

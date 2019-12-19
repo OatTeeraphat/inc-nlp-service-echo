@@ -3,6 +3,7 @@ package datasources
 import (
 	"errors"
 	"fmt"
+	"inc-nlp-service-echo/business_module/domains"
 	"inc-nlp-service-echo/common_module/commons"
 	"log"
 	"reflect"
@@ -35,18 +36,18 @@ func NewGORM(config *commons.SelectENV) *GORM {
 		log.Fatalln("database error connected", err.Error())
 	}
 	// Migrate the schema
-	// db.AutoMigrate(
-	// 	&domains.NlpRecordDomain{},
-	// 	&domains.NlpTrainingLogDomain{},
-	// 	&domains.AppStoryDomain{},
-	// 	&domains.StoryDomain{},
-	// 	&domains.AppDomain{},
-	// 	&domains.NlpDashboardDomain{},
-	// 	&domains.ClientDomain{},
-	// )
+	db.AutoMigrate(
+		&domains.NlpRecordDomain{},
+		&domains.NlpTrainingLogDomain{},
+		&domains.AppStoryDomain{},
+		&domains.StoryDomain{},
+		&domains.AppDomain{},
+		&domains.NlpDashboardDomain{},
+		&domains.ClientDomain{},
+	)
 
-	db.DB().SetMaxOpenConns(5)
-	db.DB().SetMaxIdleConns(5)
+	db.DB().SetMaxOpenConns(2)
+	db.DB().SetMaxIdleConns(2)
 	db.DB().SetConnMaxLifetime(1 * time.Minute)
 
 	return &GORM{
