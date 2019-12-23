@@ -59,7 +59,7 @@ func (repo *NlpRecordRepository) FindByKeywordMinhashAndStoryID(keywordMinhash u
 // FindByKeywordMinhash find similar keyword group
 func (repo *NlpRecordRepository) FindByKeywordMinhash(keywordMinhash uint32) []domains.NlpRecordDomain {
 	var Domain []domains.NlpRecordDomain
-	repo.DB.Where("keyword_minhash = ?", keywordMinhash).Find(&Domain)
+	repo.DB.Where("keyword_minhash = ?", keywordMinhash).Limit(10).Find(&Domain)
 	return Domain
 }
 
