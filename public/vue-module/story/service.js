@@ -48,9 +48,11 @@ export class StoryService {
             switchMap(() => {
                 if (storyID) {
                     return this.httpRepository.updateStoryByID(storyID).pipe(
+                        swal2(ALERT.TOAST, { title: 'Insert Success', icon: 'success' }),
                         this.vueErrorHandler.catchHttpError(),
                     )
                 }
+                swal2(ALERT.TOAST, { title: 'Invalid Field', icon: 'error' })
                 return of({})
             }),
         )
@@ -78,5 +80,51 @@ export class StoryService {
             }),
             finalize(() =>  { console.log("complete") })
         )
+    }
+
+    insertStory() {
+
+        return this.$$addStory.pipe(
+
+            switchMap( story => {
+
+                let condition = story.name !== ""
+
+                if(condition) { 
+                    return this.httpRepository.insertStory(story).pipe(
+                        map (response => {
+
+                            return {
+                                "name": response.name,
+                                "desc": response.desc,
+                                "count_intent": "0",
+                                "owner": "632861333807100",
+                                "updated_at" : "2019-11-01 00:00:00.00+00"
+                            }
+
+                        }),
+                        map(next => {
+                            swal2(ALERT.TOAST, { title: 'Insert Success', icon: 'success' })
+                            return next
+                        }),
+                        this.vueErrorHandler.catchHttpError()
+                    )
+
+                }
+
+                swal2(ALERT.TOAST, { title: 'Invalid Field', icon: 'error' })
+                return of(null)
+
+            })
+        )
+    }
+
+    nextInsertStory(story) {
+        return this.$$addStory.next(story)
+    }
+
+    disposable() {
+        this.unsubscribe.next()
+        this.unsubscribe.complete()
     }
 }

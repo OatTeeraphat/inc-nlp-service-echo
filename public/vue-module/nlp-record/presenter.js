@@ -91,7 +91,7 @@ export class NlpRecordPresenter {
                 this.view.addRow.inputDisabled = false
                 this.toggleStory = false
 
-                if (it !== "ERROR") {
+                if (it !== null) {
                     this.view.nlpRecords = [it, ...this.view.nlpRecords]
                     this.view.addRow.highlight = true
                 }

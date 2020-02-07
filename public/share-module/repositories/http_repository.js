@@ -125,7 +125,6 @@ export class HttpRepository {
     }
 
 
-
     // END_POINT: /v1/nlp/record/bulk
     bulkDeleteNlpRecordsByIDs(ids) {
         return ajax({
@@ -181,6 +180,14 @@ export class HttpRepository {
             }
         })
     }
+
+    insertStory(story) {
+        console.log("insertStory", story)
+        return of({ id: Math.floor(Math.random() * 10), name: story.name, desc: story.desc, count_intent: "270", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" }).pipe(
+            delay(1000)
+        )
+    }
+
 
     updateStoryByID(id) {
         console.log( "updateStoryByID : " , id)
