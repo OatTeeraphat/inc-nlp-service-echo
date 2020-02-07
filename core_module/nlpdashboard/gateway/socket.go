@@ -1,7 +1,7 @@
 package gateway
 
 import (
-	"inc-nlp-service-echo/event_module/eventbus"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/gommon/log"
@@ -13,7 +13,6 @@ import (
 // WebsocketGetway WebsocketGetway
 type WebsocketGetway struct {
 	Upgrader *websocket.Upgrader
-	EventBus eventbus.IEventBus
 }
 
 func newWebsocketConfig() *websocket.Upgrader {
@@ -28,10 +27,9 @@ func newWebsocketConfig() *websocket.Upgrader {
 }
 
 // NewWebSocketGateway NewWebSocketGateway
-func NewWebSocketGateway(e *echo.Group, event eventbus.IEventBus) {
+func NewWebSocketGateway(e *echo.Group) {
 	handle := &WebsocketGetway{
 		Upgrader: newWebsocketConfig(),
-		EventBus: event,
 	}
 
 	e.Any("/nlp/dashboard/logging", handle.GetLogging)
@@ -45,8 +43,8 @@ func (ws WebsocketGetway) GetLogging(e echo.Context) error {
 		log.Error(err)
 		return err
 	}
-
-	go ws.EventBus.NlpLoggingSubscriber(conn)
+	fmt.Print(conn)
+	// go ws.EventBus.NlpLoggingSubscriber(conn)
 
 	return nil
 }

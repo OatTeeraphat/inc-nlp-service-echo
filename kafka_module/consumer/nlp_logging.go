@@ -10,12 +10,6 @@ import (
 // ConsumeNlpLoggingMessage ConsumeNlpLoggingMessage
 func (con Consumer) ConsumeNlpLoggingMessage() {
 
-	// log.Println("commence consuming")
-	// partitionConsumer, err := con.Config.ConsumePartition(con.Topic, 0, sarama.OffsetOldest)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
 	log.Println("consumer created")
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, os.Interrupt)
@@ -35,7 +29,6 @@ func (con Consumer) ConsumeNlpLoggingMessage() {
 
 			case msg := <-con.Cluster.Messages():
 				msgCount++
-				go con.EventBus.NlpLoggingPublisher(string(msg.Value))
 				fmt.Println("Received messages", string(msg.Key), string(msg.Value))
 
 			case <-signals:

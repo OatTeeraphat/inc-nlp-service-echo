@@ -2,7 +2,6 @@ package producer
 
 import (
 	"inc-nlp-service-echo/common_module/commons"
-	"inc-nlp-service-echo/event_module/eventbus"
 	"inc-nlp-service-echo/kafka_module/config"
 
 	"github.com/Shopify/sarama"
@@ -14,11 +13,10 @@ import (
 type Producer struct {
 	Topic    string
 	Producer sarama.SyncProducer
-	EventBus eventbus.IEventBus
 }
 
 // NewKafkaProducer NewKafkaProducer
-func NewKafkaProducer(selectENV *commons.SelectENV, event eventbus.IEventBus, topic string) *Producer {
+func NewKafkaProducer(selectENV *commons.SelectENV, topic string) *Producer {
 	kafkaConf := config.NewKafkaProducerConfig(selectENV)
 	kafkaBroker := config.NewKafkaBroker(selectENV)
 
@@ -31,7 +29,6 @@ func NewKafkaProducer(selectENV *commons.SelectENV, event eventbus.IEventBus, to
 	return &Producer{
 		Producer: syncProducer,
 		Topic:    selectENV.KafkaTopicPrefix + topic,
-		EventBus: event,
 	}
 }
 

@@ -4,7 +4,6 @@ import (
 	"inc-nlp-service-echo/auth_module/security"
 	"inc-nlp-service-echo/business_module/datasources"
 	"inc-nlp-service-echo/common_module/commons"
-	"inc-nlp-service-echo/event_module/eventbus"
 	"inc-nlp-service-echo/kafka_module/consumer"
 	"inc-nlp-service-echo/kafka_module/producer"
 
@@ -88,9 +87,9 @@ func main() {
 	log.SetLevel(log.DebugLevel)
 
 	e := echo.New()
-	event0 := eventbus.NewEventBus(0, "nlp.dashboard.logging")
-	consumer0 := consumer.NewKafkaConsumer(selectENV, event0, "nlp.dashboard.logging", "groupid")
-	producer0 := producer.NewKafkaProducer(selectENV, event0, "nlp.dashboard.logging")
+	// event0 := eventbus.NewEventBus(0, "nlp.dashboard.logging")
+	consumer0 := consumer.NewKafkaConsumer(selectENV, "nlp.dashboard.logging", "groupid")
+	producer0 := producer.NewKafkaProducer(selectENV, "nlp.dashboard.logging")
 
 	e.Use(
 		middleware.Logger(),
@@ -149,7 +148,7 @@ func main() {
 	categorizeGateway.NewHTTPGateway(api, svc4)
 	nlpDashboardGateway.NewHTTPGateway(api, svc5)
 	clientGateway.NewHTTPGateway(api)
-	nlpDashboardGateway.NewWebSocketGateway(api, event0)
+	nlpDashboardGateway.NewWebSocketGateway(api)
 
 	go consumer0.ConsumeNlpLoggingMessage()
 
@@ -161,6 +160,4 @@ func main() {
 	defer producer0.Close()
 	defer consumer0.Close()
 
-	defer event0.CloseChannel()
-	defer event0.Shutdown()
 }
