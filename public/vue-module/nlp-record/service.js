@@ -8,7 +8,7 @@ import {
 // nlp records service
 export class NlpRecordsService {
 
-    constructor( httpRepository, vueRouter, localStorageRepository, cookieRepository, vueErrorHandler) {
+    constructor( httpRepository, vueRouter, localStorageRepository, cookieRepository, vueErrorHandler ) {
         this.vueRouter = vueRouter
         this.vueErrorHandler = vueErrorHandler
         this.httpRepository = httpRepository
@@ -58,6 +58,7 @@ export class NlpRecordsService {
             this.vueErrorHandler.catchHttpError(),
         )
     }
+
     searchNlpRecordsPaginationByKeywordSubject() {
         return this.$searchNlpRecordByKeyword.pipe( 
             debounceTime(150),
@@ -65,13 +66,13 @@ export class NlpRecordsService {
         )
     }
 
-
     getNlpRecordsPagination(page) {
         return this.httpRepository.getNlpRecordsPagination(page).pipe(
             map( ({ response }) => new GetNlpRecordsPagination().adapt(response) ),
             this.vueErrorHandler.catchHttpError(),
         )
     }
+
     getNlpRecordsByInfiniteScrollSubject() {
         // console.log(this.$infiniteHandler.getValue())
         return this.$infiniteHandler.pipe(
@@ -79,6 +80,7 @@ export class NlpRecordsService {
             exhaustMap( ({ page }) =>  this.getNlpRecordsPagination(page) ),
         )
     }
+    
     nextPageNlpRecordsByInfiniteScroll(page) {
         this.$infiniteHandler.next({
             page: page
@@ -91,11 +93,12 @@ export class NlpRecordsService {
             switchMap( nlpRecord => {
 
                 nlpRecord = new GetNlpRecordInsertModelAdapter().adapt(nlpRecord)
+                
+                let condition = nlpRecord.keyword !== "" && nlpRecord.intent !== ""
 
-                let condition = nlpRecord.keyword !== "" &&  nlpRecord.intent !== ""
                 if (condition){
                     return this.httpRepository.insertNlpRecords(nlpRecord).pipe(
-                        map( ({ response }) => { 
+                        map( ({ response }) => {
                             return {
                                 "id": response.id,
                                 "intent": response.intent,
@@ -111,9 +114,12 @@ export class NlpRecordsService {
                         this.vueErrorHandler.catchHttpError()
                     )
                 }
+
                 swal2(ALERT.TOAST, { title: 'Invalid Field', icon: 'error'})
-                return of({})
+                return of(null)
+
             })
+
         )
     }
 

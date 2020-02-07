@@ -125,7 +125,7 @@
                                                     item.is_edit = !item.is_edit;
                                                     item.is_edit ? $storyPresenter.editStoryByID(item.id, index) : true;
                                                 ">
-                                                    <i class="fe fe-edit"></i>
+                                                    <i class="fe fe-edit" v-bind:class="{ 'fe-save' : item.is_edit, 'fe-edit' : !item.is_edit }"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="remove"  @click="$storyPresenter.deleteStoryByID(item.id)">
                                                     <i class="fe fe-delete"></i>

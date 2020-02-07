@@ -23,6 +23,7 @@ class StoryViewModel {
             highlight: false,
             inputDisabled: false,
             name: "",
+            desc: ""
         }
         this.addRow2 = {
             toggleRow: false,
@@ -49,12 +50,24 @@ export class StoryPresenter {
         this.$refs = ref
 
         this.storyService.getStoryState().subscribe(it => { 
-            console.log('it ', it)
             if (it != []){
                 this.view.currentStory = it[0]['id']
             }
             
             this.view.stories = it
+        })
+
+        this.storyService.insertStory().subscribe(it => {
+
+            this.view.addRow.name = ""
+            this.view.addRow.desc = ""
+            console.log(this.view.stories)
+
+            if (it !== null) {
+                this.view.stories = [it, ...this.view.stories]
+                this.view.addRow.highlight = true
+            }
+
         })
 
         this.storyService.setStoryByID().subscribe()
@@ -64,6 +77,25 @@ export class StoryPresenter {
     selectAllStory() {
         this.view.storiesCheckList.ids = []
         this.view.stories.forEach( ({ id }) => { this.view.storiesCheckList.ids.push(id) })
+    }
+
+    insertStory() {
+
+        let _addRow = this.view.addRow
+
+        this.storyService.nextInsertStory({
+            name: _addRow.name,
+            desc: _addRow.desc,
+        })
+
+        this.view.addRow.highlight = false
+        this.view.addRow.inputDisabled = true
+
+    }
+
+    selectAllTrainingSet() {
+        this.view.trainingSetCheckList.ids = []
+        this.view.stories.forEach(({ id }) => { this.view.trainingSetCheckList.ids.push(id) })
     }
 
 
@@ -86,6 +118,8 @@ export class StoryPresenter {
             this.view.stories = this.view.stories.filter( item => item.id !== id ) 
         })
     }
+
+
 
     beforeDestroy() {
         this.view = new StoryViewModel()
