@@ -27,7 +27,8 @@ export class StoryService {
             throttleTime(200),
             exhaustMap( ({ page, story_id }) => {
                 return  this.httpRepository.getNlpRecordByStoryIDs(story_id, page).pipe(
-                    map( ({response}) => {
+                    map( response => {
+                        console.log('response', response)
                         return new GetPaginationNlpRecordByStoryIDs().adapt(response)
                     }),
                     this.vueErrorHandler.catchHttpError(),

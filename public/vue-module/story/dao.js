@@ -21,7 +21,7 @@ export class GetStoryModelAdapter extends Array {
 export class GetPaginationNlpRecordByStoryIDs extends Array {
 
     adapt(models) {
-        console.log(models)
+        console.log('models', models)
 
         models.nlp_record.map( model => {
             this.push({
