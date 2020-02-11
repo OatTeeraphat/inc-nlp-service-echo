@@ -18,7 +18,7 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-4">
                         <div class="row my-3">
                             <div class="col">
                                 <div class="btn-group mr-2">
@@ -69,27 +69,31 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                 <thead>
                                     <tr>
                                         <th class="col-2" scope="col">#</th>
-                                        <th class="col-7" scope="col">Story</th>
-                                        <th class="col-3 text-center" scope="col">Action</th>
+                                        <th class="col-6" scope="col">Story</th>
+                                        <th class="col-4 text-center" scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-panael">
                         
                                     <tr class="tr-add " v-if="!$storyPresenter.view.addRow.toggleRow">
-                                        <td colspan="5" class="col-12"><strong class="hover-cursor table-panael-button" @click=" 
-                                                                            $storyPresenter.view.addRow.toggleRow = !$storyPresenter.view.addRow.toggleRow
-                                                                        ">
-                                                <i class="fe fe-plus-circle mr-1"></i> Add Row</strong>
+                                        <td colspan="5" class="col-12">
+                                            <strong class="hover-cursor table-panael-button" @click=" 
+                                                $storyPresenter.view.addRow.toggleRow = !$storyPresenter.view.addRow.toggleRow
+                                            ">
+                                            <i class="fe fe-plus-circle mr-1"></i> Add Row</strong>
                                         </td>
                                     </tr>
-                                    <tr class="tr-input faster" v-if="$storyPresenter.view.addRow.toggleRow" v-bind:class="{
-                                                                    'fadeIn' : $storyPresenter.view.addRow.toggleRow,
-                                                                    'animated' : $storyPresenter.view.addRow.toggleRow,
-                                                                }">
+                                    <tr class="tr-input faster" v-if="$storyPresenter.view.addRow.toggleRow" 
+                                        v-bind:class="{
+                                            'fadeIn' : $storyPresenter.view.addRow.toggleRow,
+                                            'animated' : $storyPresenter.view.addRow.toggleRow,
+                                        }"
+                                    >
                                         <th scope="row" class="col-2">
-                                            <button type="button" class="btn btn-table btn-link hover-danger" title="Cancle" @click="
-                                                                            $storyPresenter.view.addRow.toggleRow = !$storyPresenter.view.addRow.toggleRow
-                                                                        ">
+                                            <button type="button" class="btn btn-table btn-link" title="Cancle" 
+                                            @click="
+                                                $storyPresenter.view.addRow.toggleRow = !$storyPresenter.view.addRow.toggleRow
+                                            ">
                                                 <i class="fe fe-minimize-2"></i>
                                             </button>
                                         </th>
@@ -104,13 +108,13 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                 <tbody class="table-select">
                                     <tr v-for="(item, index) in $storyPresenter.view.stories" v-bind:class="{'tr-active' : $storyPresenter.view.currentStory == item.id }"
                                         @click="
-                                                                    $storyPresenter.view.currentStory = item.id
-                                                                ">
+                                            $storyPresenter.view.currentStory = item.id
+                                        ">
                                         <th scope="row" class="col-2">
                                             <input :value="item.id" :id="item.id" v-model="$storyPresenter.view.storiesCheckList.ids" type="checkbox" class="styled-checkbox">
                                             <label :for="item.id"></label>
                                         </th>
-                                        <td class="col-7">
+                                        <td class="col-6">
                                             <h3 class="story-input" v-bind:class="{ 'd-none' : item.is_edit }">{{ item.name }}</h3>
                                             <input type="text" class="form-control-plaintext p-0 story-input" placeholder="Story Name" v-model="item.name" ref="story"
                                                 v-bind:class="{ 'd-none' : !item.is_edit }" @keyup.enter="
@@ -118,11 +122,12 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                                                             item.is_edit ? $storyPresenter.editStoryByID(item.id, index) : true;
                                                                         ">
                                         </td>
-                                        <td class="col-3 text-center">
-                                            <button type="button" class="btn btn-link btn-table hover-warning mr-2" title="edit" @click="
-                                                                            item.is_edit = !item.is_edit;
-                                                                            item.is_edit ? $storyPresenter.editStoryByID(item.id, index) : true;
-                                                                        ">
+                                        <td class="col-4 text-center">
+                                            <button type="button" class="btn btn-link btn-table hover-warning mr-2" title="edit" 
+                                            @click="
+                                                    item.is_edit = !item.is_edit;
+                                                    !item.is_edit ? $storyPresenter.editStoryByID(item.id, index) : true;
+                                                ">
                                                 <i class="fe fe-edit" v-bind:class="{ 'fe-save' : item.is_edit, 'fe-edit' : !item.is_edit }"></i>
                                             </button>
                                             <button type="button" class="btn btn-link btn-table hover-danger mr-2" title="remove" @click="$storyPresenter.deleteStoryByID(item.id)">
@@ -134,7 +139,7 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                             </table>
                         </div>
                     </div>
-                    <div class="col-7">
+                    <div class="col-8">
                         <div class="row my-3">
                             <div class="col-12 col-md-9">
                                 <div class="">
@@ -185,10 +190,10 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                 <thead>
                                     <tr>
                                         <th class="col-1" scope="col">#</th>
-                                        <th class="col-4" scope="col">Sentence</th>
+                                        <th class="col-3" scope="col">Sentence</th>
                                         <th class="col-4" scope="col">Intent</th>
-                                        <th class="col-2" scope="col">Story</th>
-                                        <th class="col-1 text-center" scope="col">Action</th>
+                                        <th class="col-3" scope="col">Story</th>
+                                        <th class="col-1 text-center" scope="col"></th>
                                     </tr>
                                     
                                 </thead>
@@ -216,9 +221,9 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                             </button>
                                         </th>
                                         <!-- // TODO: add one new keyword, intent, story -->
-                                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence Here" v-model="$nlpRecordPresenter.view.addRow.keyword" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow()" ref="keyword" autofocus :disabled="$nlpRecordPresenter.view.addRow.inputDisabled" ></td>
+                                        <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Sentence Here" v-model="$nlpRecordPresenter.view.addRow.keyword" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow()" ref="keyword" autofocus :disabled="$nlpRecordPresenter.view.addRow.inputDisabled" ></td>
                                         <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="$nlpRecordPresenter.view.addRow.intent" @keyup.enter="$nlpRecordPresenter.insertNlpRecordsRow()" ref="intent" :disabled="$nlpRecordPresenter.view.addRow.inputDisabled" ></td>
-                                        <td class="col-2">
+                                        <td class="col-3">
                                             <div class="input-group">
                                                 <input type="text" class="form-control-plaintext p-0 input-dropdown-event" placeholder="Story Here" data-toggle="dropdown" :disabled="true" v-model="$nlpRecordPresenter.view.addRow.story" @focus="$nlpRecordPresenter.view.addRow.toggleStory = true" ref="story_name" >
                                                 <div class="input-group-append" v-bind:class="{ show : $nlpRecordPresenter.view.addRow.toggleStory }" >
@@ -252,38 +257,48 @@ export const nlpRecordPage = Vue.component('nlp-record-page', {
                                         </td>
                                     </tr>
                                 </tbody>
-                                <tbody v-if="searchNlpRecordByKeywordComputed === '' " @scroll="$nlpRecordPresenter.getMoreNlpRecordByInfiniteScroll($event)" v-bind:class="{ 'highlight' : $nlpRecordPresenter.view.addRow.highlight }" >
-                                    <tr v-for="item in $nlpRecordPresenter.view.nlpRecords">
+                                <tbody v-if="searchNlpRecordByKeywordComputed === '' " @scroll="$nlpRecordPresenter.getMoreNlpRecordByInfiniteScroll($event)" v-bind:class="{ 'highlight' : $nlpRecordPresenter.view.addRow.highlight }" class="table-select" >
+                                    <tr v-for="item in $nlpRecordPresenter.view.nlpRecords" :ref="item.id" v-bind:class="{ 'tr-active' : $nlpRecordPresenter.view.currentRow == item.id }"
+                                        @click="$nlpRecordPresenter.view.currentRow = item.id"
+                                    >
                                         <th scope="row" class="col-1">
                                             <input :value="item.id" :id="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox" class="styled-checkbox">
                                             <label :for="item.id"></label>
                                         </th>
-                                        <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
-                                        <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
-                                        <td class="col-2"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item)" type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
+                                        <td class="col-3"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item,$event)" type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
+                                        <td class="col-4"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item,$event)" type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
+                                        <td class="col-3 overflow-hidden"><input @keyup.enter="$nlpRecordPresenter.updateNlpRecordRow(item,$event)" type="hidden" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"><span class="badge badge-purple bg-purple px-2"><i class="fe fe-lock"></i>{{ item.story_name }}</span></td>
                                         <td class="col-1 text-center"> 
-                                            <button @click="$nlpRecordPresenter.deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
+                                            <button @click="$nlpRecordPresenter.deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table" title="cancel">
                                                 <i class="fe fe-delete"></i>
+                                                <div class="spinner-border" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
                                             </button>
                                         </td>
                                     </tr>
                                 </tbody>
 
                                 <tbody v-else v-bind:class="{ 'highlight' : $nlpRecordPresenter.view.addRow.highlight }" >
-                                    <tr v-for="item in $nlpRecordPresenter.view.nlpRecordsByKeyword">
+                                    
+                                    <tr v-for="item in $nlpRecordPresenter.view.nlpRecordsByKeyword"">
                                         <th scope="row" class="col-1">
                                             <input :value="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsByKeywordCheckedList.ids" type="checkbox">
                                         </th>
                                         <!-- // TODO: update one keyword, intent, story -->
-                                        <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
+                                        <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Keyword Here" v-model="item.keyword"></td>
                                         <td class="col-4"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
-                                        <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"></td>
+                                        <td class="col-3 overflow-hidden"><input type="hidden" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.story_name"><span class="badge badge-purple bg-dark px-2"><i class="fe fe-lock"></i>{{ item.story_name }}</span></td>
                                         <td class="col-1 text-center">
-                                            <button @click="$nlpRecordPresenter.deleteNlpRecordByID(item.id)" type="button" class="btn btn-link btn-table hover-danger" title="cancel">
+                                            <button type="button" class="btn btn-link btn-table" title="cancel">
                                                 <i class="fe fe-delete"></i>
+                                                <div class="spinner-border" role="status">
+                                                    <span class="sr-only">Loading...</span>
+                                                </div>
                                             </button>
                                         </td>
                                     </tr>
+
                                 </tbody>
                             </table>
                             <div class="row" v-show="$nlpRecordPresenter.view.isShowLoadingIndicator">

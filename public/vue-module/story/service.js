@@ -27,8 +27,7 @@ export class StoryService {
             throttleTime(200),
             exhaustMap( ({ page, story_id }) => {
                 return  this.httpRepository.getNlpRecordByStoryIDs(story_id, page).pipe(
-                    map( response => {
-                        console.log('response', response)
+                    map(({ response }) => {
                         return new GetPaginationNlpRecordByStoryIDs().adapt(response)
                     }),
                     this.vueErrorHandler.catchHttpError(),
@@ -94,7 +93,7 @@ export class StoryService {
                 if(condition) { 
                     return this.httpRepository.insertStory(story).pipe(
                         map (response => {
-
+                            
                             return {
                                 "name": response.name,
                                 "desc": response.desc,

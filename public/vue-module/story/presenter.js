@@ -103,7 +103,6 @@ export class StoryPresenter {
 
     editStoryByID(id, index) {
 
-        console.log('edit')
         let toggleDelay = of({}).pipe(delay(100))
         toggleDelay.subscribe(() => this.$refs.story[index].focus())
 
@@ -112,6 +111,7 @@ export class StoryPresenter {
             name: editValue.name,
             desc: editValue.desc
         }, id)
+        
     }
 
     

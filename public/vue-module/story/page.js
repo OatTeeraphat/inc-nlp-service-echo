@@ -106,7 +106,8 @@
                                         </tr>
                                     </tbody>
                                     <tbody class="table-select">
-                                        <tr v-for="(item, index) in $storyPresenter.view.stories" v-bind:class="{'tr-active' : $storyPresenter.view.currentStory == item.id }" @click="
+                                        <tr v-for="(item, index) in $storyPresenter.view.stories" v-bind:class="{'tr-active' : $storyPresenter.view.currentStory == item.id }" 
+                                        @click="
                                             $storyPresenter.view.currentStory = item.id
                                         ">
                                             <th scope="row" class="col-2">
@@ -178,7 +179,7 @@
                                             </td>
                                         </tr>
                                     </tbody>
-                                    <tbody>
+                                    <tbody class="table-select">
                                         <tr v-for="item in $storyPresenter.view.trainingSet">
                                             <th scope="row" class="col-1">
                                                 <input :value="item.id" :id="'training'+item.id" v-model="$storyPresenter.view.trainingSetCheckList.ids" type="checkbox" class="styled-checkbox">

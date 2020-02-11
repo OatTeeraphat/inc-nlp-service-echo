@@ -67,11 +67,12 @@ export const nlpTrainingLog = Vue.component('nlp-training-log-page', {
                         <tbody>
                             <tr v-for="item in $nlpTrainingLogPresenter.view.nlpLogs">
                                 <th scope="row" class="col-1">
-                                    <input :value="item.id" v-model="$nlpTrainingLogPresenter.view.nlpLogsCheckedList.ids" type="checkbox">
+                                    <input :value="item.id" :id="item.id" v-model="$nlpRecordPresenter.view.nlpRecordsCheckedList.ids" type="checkbox" class="styled-checkbox">
+                                    <label :for="item.id"></label>
                                 </th>
                                 <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" readonly v-model="item.keyword"></td>
                                 <td class="col-3"><input type="text" class="form-control-plaintext p-0" placeholder="Intent Here" v-model="item.intent"></td>
-                                <td class="col-2"><input type="text" class="form-control-plaintext p-0" placeholder="Story Here" v-model="item.story_name"></td>
+                                <td class="col-2"><input type="hidden" class="form-control-plaintext p-0" placeholder="Story Here" v-model="item.story_name"><span class="badge badge-purple bg-purple px-2"><i class="fe fe-lock"></i>{{ item.story_name }}</span></td>
                                 <td class="col-1"><input type="text" class="form-control-plaintext p-0 text-center" placeholder="Story Here" readonly v-model="item.distance"></td>
                                 <td class="col-2 text-center">
                                     <button @click="$nlpTrainingLogPresenter.trainByID(item.id)" type="button" class="btn btn-link btn-table hover-success" title="Train">
