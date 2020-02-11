@@ -21,6 +21,7 @@ func NewHTTPGateway(e *echo.Group, storyService story.Service) {
 
 	e.GET("/story", handle.ReadAll)
 	e.POST("/story", handle.CreateOneStory)
+	e.PUT("/story", handle.UpdateOneByID)
 	e.DELETE("/story", handle.DeleteByID)
 
 }
@@ -29,6 +30,13 @@ func NewHTTPGateway(e *echo.Group, storyService story.Service) {
 func (h HTTPGateway) ReadAll(e echo.Context) error {
 	response := h.storyService.ReadAll()
 	return e.JSON(http.StatusOK, response)
+}
+
+// UpdateOneByID UpdateOneByID
+func (h HTTPGateway) UpdateOneByID(e echo.Context) error {
+	storyID := e.QueryParam("id")
+	response := h.storyService.UpdateOneByID(storyID)
+	return e.String(http.StatusOK, response)
 }
 
 // CreateOneStory CreateOneStory
