@@ -21,7 +21,6 @@ export default Vue.component('nav-component', {
 			<router-link class="nav-link active" :to="{ path: '/dashboard'}" exact> DASHBOARD </router-link>
 			<router-link class="nav-link" :to="{ path: '/nlp'}"> TRAINIG SET </router-link>
 			<router-link class="nav-link" :to="{ path: '/logs'}"> LOGS </router-link>
-			<router-link class="nav-link" :to="{ path: '/story'}"> STORY </router-link>
 			<router-link class="nav-link" :to="{ path: '/logging'}"> LOGGING </router-link>
 			<router-link class="nav-link" :to="{ path: '/settings'}"> SETTING </router-link>
 		</nav>

@@ -227,8 +227,11 @@
      text-align: center;
 }
  .input-dropdown-event:focus{color: #673AB7;font-weight: 600;}
- .form-control-plaintext:focus{
+ .form-control-plaintext:focus, .form-control-plaintext:active{
      outline: 0;
+     background-color: #fffbf0;
+     border-bottom: 1px solid #6c757c;
+     color: #000;
 }
  .tr-add > td{
      background: #f6f6f6;
@@ -247,11 +250,40 @@
      border-bottom: 1px solid #fbedc6;
      min-height: 54px !important;
 }
- .table-select .tr-active th, .table-select .tr-active td{
+ .table-select .tr-active th, .table-select .tr-active td, .tr-action th, .tr-action td{
     background: #f2effa;
     border-bottom: none;
     min-height: 54px !important;
     cursor: pointer;
+}
+ .tr-action th input, .tr-action td input, .tr-action .spinner-border{
+    color: #663ab7 !important;
+    background-color: #f2effa !important;
+ }
+
+ .tr-remove th input, .tr-remove td input, .tr-remove .spinner-border{
+    color: #dc3545!important;
+ }
+
+ .tr-remove .badge-purple, .tr-remove .bg-purple{
+    background-color: #dc3545!important;
+ }
+
+ .tr-remove th, .tr-remove td{
+    background: #fdeeef!important;
+    border-bottom: none;
+    min-height: 54px !important;
+    cursor: pointer;    
+    transition: all 0.3s ease;
+}
+ .tr-remove .fe-delete, .tr-action .fe-delete{
+     display: none;
+}
+ .tr-remove .spinner-border, .tr-action .spinner-border{
+     display: block !important;
+}
+ .btn-table .spinner-border{
+     display: none;
 }
   .table-select th h3, .table-select td h3{
     font-size: 1em;

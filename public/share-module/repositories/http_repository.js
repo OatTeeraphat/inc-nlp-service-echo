@@ -179,18 +179,24 @@ export class HttpRepository {
                 "Authorization": this._getAuthorizedBearer() 
             }
         })
+
+        // return of([
+        //     { id: 1, name: "GREETING", desc: "good for greet", count_intent: "270", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" },
+        //     { id: 2, name: "FAQ", desc: "good for greet", count_intent:"1190", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" },
+        //     { id: 3, name: "PRODUCT", desc: "good for greet", count_intent: "980", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" }
+        // ]).pipe(
+        //     delay(600)
+        // )
+
     }
 
     insertStory(story) {
-        console.log("insertStory", story)
-        return of({ id: Math.floor(Math.random() * 10), name: story.name, desc: story.desc, count_intent: "270", owner: "632861333807100", updated_at: "2019-11-01 00:00:00.00+00" }).pipe(
-            delay(1000)
+        return of(story).pipe(
+            delay(600)
         )
     }
 
-
     updateStoryByID(id) {
-        console.log( "updateStoryByID : " , id)
         return of("OK").pipe(
             delay(600)
         )

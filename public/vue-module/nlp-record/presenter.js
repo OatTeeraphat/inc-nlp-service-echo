@@ -1,6 +1,7 @@
 class NlpRecordViewModel {
     constructor(){
         // default value
+        this.currentRow = ""
         this.isShowLoadingIndicator = false
         this.page = 1
         this.limit = 1
@@ -56,6 +57,9 @@ export class NlpRecordPresenter {
                 this.view.limit = item.limit
                 this.view.nlpRecords.push(...item.nlp_records)
                 this.view.isShowLoadingIndicator = false
+                if (item != []) {
+                    this.view.currentRow = item.nlp_records[0]['id']
+                }
             }, 
             error => {
                 console.error(error)
@@ -77,8 +81,9 @@ export class NlpRecordPresenter {
 
         this.$updateNlpRecordRowSubscription = this.nlpRecordsService.updateNlpRecordRowSubject().subscribe( 
             it => {
-                console.log(it)
+                //console.log(it, )
                 // let index = this.view.nlpRecords.findIndex(item => item.id === it.id);
+                this.$refs[it.id][0].classList.remove('tr-action')
             }
         )
         this.$insertNlpRecordsSubscription = this.nlpRecordsService.insertNlpRecords().subscribe(
@@ -152,10 +157,22 @@ export class NlpRecordPresenter {
     }
 
     deleteNlpRecordByID(id) {
-        this.nlpRecordsService.deleteNlpRecordByID(id).subscribe( () =>  {
-            this.view.nlpRecords = this.view.nlpRecords.filter( item => item.id !== id) 
-            this.view.nlpRecordsByKeyword = this.view.nlpRecordsByKeyword.filter( item => item.id !== id) 
+
+        let row = this.$refs[id][0]
+        row.classList.add('tr-remove')
+        row.blur()
+
+        this.nlpRecordsService.deleteNlpRecordByID(id).subscribe( status =>  {
+            
+            if (!!status) {
+                this.view.nlpRecords = this.view.nlpRecords.filter(item => item.id !== id)
+                this.view.nlpRecordsByKeyword = this.view.nlpRecordsByKeyword.filter(item => item.id !== id)
+            }
+
+            row.classList.remove('tr-remove')
+            
         })
+
     }
 
     searchNlpRecordByKeyword(event)  {
@@ -182,13 +199,18 @@ export class NlpRecordPresenter {
   
     }
  
-    updateNlpRecordRow(item) {
+    updateNlpRecordRow(item, $event) {      
+
+        this.$refs[item.id][0].classList.add('tr-action')
+        $event.target.blur()
+
         this.nlpRecordsService.nextUpdateNlpRecordRow({
             id: item.id,
             keyword: item.keyword,
             intent: item.intent,
             story_name: item.story_name
         })
+        
     }
 
     beforeDestroy() {

@@ -147,22 +147,24 @@ export class NlpRecordsService {
             }),
         )
     }
+
     deleteNlpRecordByID(id) {     
         let confirmModal = swal2(ALERT.DANGER, { text: "Are you sure ?", title: "Delete NLP records" }, true)
         return from( confirmModal ).pipe(
+            delay(500),
             switchMap( result => {
 
                 if (result.value) {
                     return this.httpRepository.deleteNlpRecordByID(id).pipe(
-                        this.vueErrorHandler.catchHttpError(),
+                        map( () => {
+                            swal2(ALERT.TOAST, { title: 'Delete NLP record', icon: 'success' })
+                            return true
+                        })
                     )
-                } 
+                }
+                
+                return of(false)
 
-                return throwError(false)
-            }),
-            map( it => {
-                swal2('success', { text: "resolve", title: "Delete NLP record" })
-                return of(it)
             })
         )
     }
