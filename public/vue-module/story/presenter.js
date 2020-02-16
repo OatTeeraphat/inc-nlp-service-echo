@@ -67,10 +67,10 @@ export class StoryPresenter {
 
         this.storyService.setStoryByID().subscribe()
 
-        this.$getNlpRecordByStoryIDsSubscription = this.storyService.getNlpRecordByStoryIDs().subscribe( it => {
+        // this.$getNlpRecordByStoryIDsSubscription = this.storyService.getNlpRecordByStoryIDs().subscribe( it => {
             
-            this.view.trainingSet.push(...it.nlp_record)
-        })
+        //     this.view.trainingSet.push(...it.nlp_record)
+        // })
 
         this.storyService.nextPage()
 
@@ -125,6 +125,6 @@ export class StoryPresenter {
 
     beforeDestroy() {
         this.view = new StoryViewModel()
-        this.$getNlpRecordByStoryIDsSubscription.unsubscribe()
+        // this.$getNlpRecordByStoryIDsSubscription.unsubscribe()
     }
 }
