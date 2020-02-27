@@ -19,6 +19,7 @@ class NlpRecordViewModel {
         this.allStory = []
         this.addRow = {
             toggleRow : false,
+            toggleType : "",
             toggleStory: false,
             highlight : false,
             inputDisabled: false,
@@ -33,7 +34,7 @@ class NlpRecordViewModel {
 
 export class NlpRecordPresenter {
     constructor(nlpRecordsService) {
-        this.$refs = {}
+        this.$refs = {} 
         this.view = new NlpRecordViewModel()
         this.nlpRecordsService = nlpRecordsService
         this.$searchNlpRecordsServiceSubscription = null
@@ -44,8 +45,7 @@ export class NlpRecordPresenter {
     }
 
     onToggleAddRows() {
-        // this.view.addRow.toggleRow = this.view.addRow.toggleRow;
-        this.view.addRow = new NlpRecordViewModel().addRow
+        return of(this.view.addRow.toggleRow).pipe(delay(1)).subscribe(it => this.view.addRow.toggleRow = !it )
     }
 
     onMounted($refs) {
@@ -103,6 +103,7 @@ export class NlpRecordPresenter {
 
                 of(null).pipe(delay(1)).subscribe(() => this.$refs.keyword.focus())
             }
+            
         )
         
         this.view.addRow.inputDisabled = false
